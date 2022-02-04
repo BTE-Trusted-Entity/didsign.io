@@ -4,7 +4,6 @@ import Header from "./Header"
 import SignerComponent from "./SignerComponent"
 import VerifyerComponent from "./VerifyerComponent"
 import ZipButton from "./ZipButton"
-import video from '../ImageAssets/animation.mp4'
 import SignVerifyBtn from "./SignVerifyBtn"
 import Footer from "./Footer"
 

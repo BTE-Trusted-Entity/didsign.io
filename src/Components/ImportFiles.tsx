@@ -1,7 +1,6 @@
 import Dropzone, { DropEvent, FileRejection } from "react-dropzone"
 import "../Styles/App.css"
 import React from "react"
-import "../Styles/HashLabel.css"
 import video from '../ImageAssets/animation.mp4'
 import fast from '../ImageAssets/animation2.mp4'
 
