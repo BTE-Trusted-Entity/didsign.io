@@ -2,11 +2,11 @@ import React from "react"
 
 function Icon() {
     return (
-        <div className="absolute bottom-24 left-0">
-            <svg
+        <div className="absolute top-[48%] left-0">
+            <svg className="big-phone:w-[255px] big-phone:h-[82px]"
                 xmlns="http://www.w3.org/2000/svg"
-                width="502"
-                height="154"
+                width="402"
+                height="124"
                 viewBox="0 0 502 154"
             >
                 <defs>
