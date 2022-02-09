@@ -29,7 +29,6 @@ function VerifyerComponent() {
 
     return (
         <div>
-            <Files handleDrop={handleDrop} handleDragEnter={handleDrag} handleDragLeave={handleLeave} dragStatus={isDrag} />
         </div>
     )
 }

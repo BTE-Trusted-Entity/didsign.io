@@ -22,5 +22,5 @@
   },
   "include": [
     "src"
-  ]
+, "hooks.ts", "store.ts"  ]
 }
