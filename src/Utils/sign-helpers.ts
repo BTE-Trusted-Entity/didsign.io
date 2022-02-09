@@ -4,7 +4,8 @@ import { base16 } from "multiformats/bases/base16"
 import * as json from "multiformats/codecs/json"
 import JSZip from "jszip"
 import { saveAs } from "file-saver"
-import { SignDoc } from "./types"
+import { Signature, SignDoc } from "./types"
+
 
 declare global {
     // eslint-disable-next-line
@@ -19,7 +20,8 @@ export namespace SignHelper {
 
             return hashArray[0]
         }
-        return await createHash(hashArray)
+        const sortedHash = [...hashArray].sort()
+        return await createHash(sortedHash)
 
     }
 
@@ -40,30 +42,31 @@ export namespace SignHelper {
         zip.file("myDIDSign.signature", JSON.stringify(didSign))
         zip.generateAsync({ type: "blob" })
             .then(function (content: Blob) {
-                // see FileSaver.js
                 saveAs(content, "signed-files.zip")
 
             })
     }
 
-    export const openSporan = async (finalHash: string): Promise<string> => {
+    export const openSporan = async (finalHash: string): Promise<Signature> => {
         const signObj = await window.kilt.sporran.signWithDid(finalHash)
-        
+        const sign: Signature = { did: signObj.did, signature: signObj.signature }
+        return sign
+    }
+
+    export const generateJWS = (signature: Signature, finalHash: string): string => {
         const header = {
             "alg": "ED25519",
             "typ": "JWS",
-            "keyID": signObj.did
+            "keyID": signature.did
         }
-        const encodedHeaders = btoa(JSON.stringify(header))
+        const encodedHeaders = btoa(JSON.stringify(header)).replaceAll("=","")
         const claim = {
             "hash": finalHash,
         }
-        const encodedPlayload = btoa(JSON.stringify(claim))
-        const encodedSignature = btoa(signObj.signature)
-        const jwt: SignDoc["jwt"] = `${encodedHeaders}.${encodedPlayload}.${encodedSignature}`
-        return jwt
+        const encodedPlayload = btoa(JSON.stringify(claim)).replaceAll("=","")
+        const encodedSignature = btoa(signature.signature).replaceAll("=","")
+        const jws = `${encodedHeaders}.${encodedPlayload}.${encodedSignature}`
+        return jws
     }
-
-
 
 }

@@ -1,4 +1,9 @@
+
+export interface Signature{
+    signature:string
+    did:string
+}
 export interface SignDoc{
-    jwt:string
-    fileHashes:string[]
+    jws:string
+    hashes:string[]
 }

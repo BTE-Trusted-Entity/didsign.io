@@ -3,6 +3,10 @@
   font-family: sans-serif;
 
 }
+#temporary-bounce {
+    -webkit-animation-iteration-count: 3;
+    animation-iteration-count: 3;
+  }
 ul {
   margin: 0;
 }

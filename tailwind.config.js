@@ -38,9 +38,13 @@ module.exports = {
               'mid-body':'#CEE8FF',
               'header':'#2A2231',
               'bottom-body':'#DDF0FF',
-              'header-below':'rgba(68,55,79,0.6)'
+              'header-below':'rgba(68,55,79,0.6)',
+              'signing-label':'#11A770'
           },
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwind-scrollbar'),
+
+  ],
 }
