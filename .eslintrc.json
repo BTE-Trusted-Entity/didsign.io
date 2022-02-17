@@ -4,9 +4,10 @@
         "es2021": true
     },
     "extends": [
-        "eslint:recommended",
+        "plugin:prettier/recommended",
         "plugin:react/recommended",
         "plugin:@typescript-eslint/recommended"
+        
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -18,12 +19,13 @@
     },
     "plugins": [
         "react",
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "prettier"
     ],
     "rules": {
         "indent": [
             "error",
-            4
+            2
         ],
         "linebreak-style": [
             "error",
@@ -32,6 +34,9 @@
         "semi": [
             "error",
             "never"
+        ],
+        "@typescript-eslint/no-extra-semi":[
+            0
         ]
     }
 }

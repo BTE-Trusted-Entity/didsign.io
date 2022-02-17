@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="502px" height="154px" viewBox="0 0 502 154" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="104.392925%" id="linearGradient-1">
+            <stop stop-color="#3E6E99" stop-opacity="0.297983023" offset="0%"></stop>
+            <stop stop-color="#DDF0FF" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="117.84674%" id="linearGradient-2">
+            <stop stop-color="#3E6E99" stop-opacity="0.297983023" offset="0%"></stop>
+            <stop stop-color="#DDF0FF" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="113.828912%" id="linearGradient-3">
+            <stop stop-color="#3E6E99" stop-opacity="0.297983023" offset="0%"></stop>
+            <stop stop-color="#DDF0FF" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="114.261599%" id="linearGradient-4">
+            <stop stop-color="#3E6E99" stop-opacity="0.297983023" offset="0%"></stop>
+            <stop stop-color="#DDF0FF" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="117.84674%" id="linearGradient-5">
+            <stop stop-color="#3E6E99" stop-opacity="0.297983023" offset="0%"></stop>
+            <stop stop-color="#DDF0FF" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="131.61474%" id="linearGradient-6">
+            <stop stop-color="#3E6E99" stop-opacity="0.297983023" offset="0%"></stop>
+            <stop stop-color="#DDF0FF" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="UI-Design" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.49777803">
+        <g id="Bubbles-reworked" transform="translate(0.000000, -587.000000)" fill-rule="nonzero">
+            <g id="Group" transform="translate(-0.000000, 587.105069)">
+                <path d="M0,5.89493115 C45.6732181,11.7360313 80.9747773,50.7521528 80.9747773,98.0133952 C80.9747773,118.600063 74.276614,137.622291 62.9407433,153.019623 L0,153.018931 L0,5.89493115 Z" id="Combined-Shape" fill="url(#linearGradient-1)"></path>
+                <circle id="Oval" fill="url(#linearGradient-2)" cx="196.556251" cy="66.9611428" r="66.9611428"></circle>
+                <path d="M92.9611428,48.8949311 C129.942761,48.8949311 159.922286,78.8744559 159.922286,115.856074 C159.922286,129.650434 155.751133,142.470569 148.601302,153.124006 L37.3209837,153.124006 C30.1711521,142.470569 26,129.650434 26,115.856074 C26,78.8744559 55.9795248,48.8949311 92.9611428,48.8949311 Z" id="Combined-Shape" fill="url(#linearGradient-3)"></path>
+                <path d="M434.655993,91.8949311 C469.467158,91.8949311 498.074018,118.458722 501.311985,152.421718 L368,152.421718 C371.237968,118.458722 399.844827,91.8949311 434.655993,91.8949311 Z" id="Combined-Shape" fill="url(#linearGradient-4)"></path>
+                <path d="M173.80611,69.8949311 C199.104125,69.8949311 219.612219,90.4030249 219.612219,115.701041 C219.612219,130.779106 212.326983,144.155613 201.084483,152.502591 L146.527736,152.502591 C135.285236,144.155613 128,130.779106 128,115.701041 C128,90.4030249 148.508094,69.8949311 173.80611,69.8949311 Z" id="Combined-Shape" fill="url(#linearGradient-5)"></path>
+                <path d="M349.944758,115.894931 C372.202412,115.894931 390.752283,131.769837 394.889516,152.814793 L305,152.814793 C309.137232,131.769837 327.687104,115.894931 349.944758,115.894931 Z" id="Combined-Shape" fill="url(#linearGradient-6)"></path>
+            </g>
+        </g>
+    </g>
+</svg>

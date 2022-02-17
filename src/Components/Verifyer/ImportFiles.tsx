@@ -1,17 +1,17 @@
 import Dropzone from 'react-dropzone'
-import '../Styles/App.css'
+import '../../Styles/App.css'
 import React, { useCallback, useState } from 'react'
-import ImportIcon from '../ImageAssets/iconBIG_import_NEW.svg'
-import ReleaseIcon from '../ImageAssets/iconBIG_import_release.svg'
+import ImportIcon from '../../ImageAssets/iconBIG_import_NEW.svg'
+import ReleaseIcon from '../../ImageAssets/iconBIG_import_release.svg'
+import { addFile, addFileName } from '../../Features/Signer/FileSlice'
+import video from '../../ImageAssets/animation.mp4'
+import fast from '../../ImageAssets/animation2.mp4'
+import { useAppDispatch } from '../../app/hooks'
+import JSZip from 'jszip'
+import { newUnzip } from '../../Utils/verify-helper'
+import { updateDID, updateSign } from '../../Features/Signer/SignatureSlice'
 
-import { addFile } from '../Features/Signer/FileSlice'
-import { addHash } from '../Features/Signer/hashSlice'
-import { createHash } from '../Utils/sign-helpers'
-import video from '../ImageAssets/animation.mp4'
-import fast from '../ImageAssets/animation2.mp4'
-import { useAppDispatch } from '../app/hooks'
-
-export function ImportFilesSigner() {
+export function ImportFiles() {
   const [videoSource, setVideoSource] = useState<string>(video)
   const [impIcon, setImportIcon] = useState<string>(ImportIcon)
 
@@ -38,14 +38,24 @@ export function ImportFilesSigner() {
         ).defaultPlaybackRate = 1.0
         setImportIcon(ImportIcon)
         setVideoSource(video)
-
-        const reader = new FileReader()
-        reader.onload = async function () {
-          const newHash = await createHash(reader.result)
-          dispatch(addHash(newHash))
-        }
-        reader.readAsText(file)
         dispatch(addFile(file))
+        if (file.type == 'application/zip') {
+          const unzip = new JSZip()
+          const unzipFile = await unzip.loadAsync(file)
+          const filenames = Object.keys(unzipFile.files)
+          if (filenames.includes('DIDsign.signature')) {
+            dispatch(addFileName(Object.keys(unzipFile.files)))
+            const sign = await newUnzip(file)
+            if (sign === undefined) {
+              console.log('error')
+              return
+            }
+            const did = sign.keyID.split('#')[0]
+            const signaure = sign.signature
+            dispatch(updateDID(did))
+            dispatch(updateSign(signaure))
+          }
+        }
       })
     },
     [videoSource]
@@ -56,7 +66,7 @@ export function ImportFilesSigner() {
       <div className=" mt-10 mx-auto w-[48%] h-52 relative 2xl:w-[48%] 2xl:h-80">
         <video
           id="video"
-          className=" border-1 object-cover rounded-t-lg bg-sky-900 border-sky-800 absolute h-full w-full "
+          className=" border-dashed border-1 object-cover rounded-t-lg bg-sky-900 border-sky-800 absolute h-full w-full "
           src={videoSource}
           autoPlay
           loop

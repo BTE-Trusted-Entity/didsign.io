@@ -1,0 +1,49 @@
+import React from 'react'
+import { useAppSelector } from '../app/hooks'
+import { selectFile, selectFilename } from '../Features/Signer/FileSlice'
+import DelIcon from '../ImageAssets/icon_elete.svg'
+import ZipIcon from '../ImageAssets/doc_zip.svg'
+
+export function ZippedFile() {
+  const fileName = useAppSelector(selectFilename)
+  const files = useAppSelector(selectFile)
+  if (fileName.length == 0) {
+    return null
+  }
+  return (
+    <div className="flex flex-col space-y-1 w-[96%] pl-4 pr-4 pb-2">
+      <div className="flex items-center mt-2 scrollbar-thumb-sky-800">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-4 w-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+        <div className="mx-2 flex space-x-1 ">
+          <img src={ZipIcon} />
+          <div className="mx-2 flex -space-y-1 flex-col">
+            <span className="text-left text-gray-900text-md 3xl:text-lg">
+              {files[0].name}
+            </span>
+          </div>
+        </div>
+        <div className="flex space-x-2 ml-auto">
+          <button>
+            {' '}
+            <img src={DelIcon} />{' '}
+          </button>
+        </div>
+        <div className="flex space-x-2 mr-0"></div>
+      </div>
+      <div className=" border-b-[1px] border-b-gray-900 border-dotted w-full"></div>
+    </div>
+  )
+}

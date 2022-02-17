@@ -1,55 +1,50 @@
-import React from "react"
-import "../Styles/App.css"
-import Header from "./Header"
-import SignerComponent from "./SignerComponent"
-import VerifyerComponent from "./VerifyerComponent"
-import SignVerifyBtn from "./SignVerifyBtn"
-import Footer from "./Footer"
-import BottomLeftBubble from "../SVGAssets/BottomLeftBubble"
-import BottomRightBubble from "../SVGAssets/BottomRightBubble"
-import TopLeftBubble from "../SVGAssets/TopLeftBubble"
-import TopRightBubble from "../SVGAssets/TopRightBubble"
-import BottomSection from "./BottomSection"
-import CenterRightBubble from "../SVGAssets/CenterRightBubble"
-import CenterLeftBubble from "../SVGAssets/CenterLeftBubble"
+import React from 'react'
+import '../Styles/App.css'
+import Header from './Header'
+import SignerComponent from './SignerComponent'
+import VerifyerComponent from './VerifyerComponent'
+import SignVerifyBtn from './SignVerifyBtn'
+import { Footer } from './Footer'
+import { BottomSectionSigner } from './BottomSection'
+import { useAppSelector } from '../app/hooks'
+import { selectUser } from '../Features/Signer/UserSlice'
+import { BottomSectionVerifyer } from './BottomSectionVerifyer'
+import TopRightBubble from '../ImageAssets/TopRightBubble.svg'
+import TopLeftBubble from '../ImageAssets/TopLeftBubble.svg'
+import BottomLeftBubble from '../ImageAssets/BottomLeftBubble.svg'
+import BottomRightBubble from '../ImageAssets/BottomRightBubble.svg'
 
-const Signer = true
 function showSigner() {
-    return <SignerComponent />
+  return <SignerComponent />
 }
 function showVerifyer() {
-    return <VerifyerComponent />
+  return <VerifyerComponent />
 }
-function RenderTopBubbles() {
-    return (
-        <div>
-
-            <TopLeftBubble />
-
-
-            <TopRightBubble />
-
-        </div>
-    )
+export function DIDSign() {
+  const userIsSigner = useAppSelector(selectUser)
+  return (
+    <div className="relative min-h-screen w-screen overflow-y-scroll bg-bottom-body overflow-x-hidden flex flex-col">
+      <img
+        src={TopLeftBubble}
+        className="absolute top-0 left-0 h-[150px] pointer-events-none"
+      />
+      <img
+        src={TopRightBubble}
+        className="absolute top-0 right-0 pointer-events-none"
+      />
+      <Header />
+      <SignVerifyBtn />
+      {userIsSigner ? showSigner() : showVerifyer()}
+      {userIsSigner ? <BottomSectionSigner /> : <BottomSectionVerifyer />}
+      <Footer />
+      <img
+        src={BottomLeftBubble}
+        className="absolute bottom-0 left-0 h-1/2 w-1/4 pointer-events-none"
+      />
+      <img
+        src={BottomRightBubble}
+        className=" absolute bottom-0 right-0 h-1/2 w-1/4 pointer-events-none"
+      />
+    </div>
+  )
 }
-function DIDSign() {
-    return (
-        <div className="relative h-screen w-screen bg-bottom-body">
-            <RenderTopBubbles />
-            <div className="flex flex-col overflow-x-hidden">
-                <Header />
-                <SignVerifyBtn />
-                {Signer ? showSigner() : showVerifyer()}
-            </div>
-            
-            <BottomSection />
-            <BottomLeftBubble />
-            <BottomRightBubble />
-            <Footer />
-
-        </div>
-    )
-}
-export default DIDSign
-
-

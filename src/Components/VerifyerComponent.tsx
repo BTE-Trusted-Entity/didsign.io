@@ -1,36 +1,31 @@
-import React, { useCallback, useState } from 'react'
-import { VerifyHelper } from '../Utils/verify-helper'
-import Files from './ImportFiles'
+import React from 'react'
+import { ImportFiles } from './Verifyer/ImportFiles'
+import { FileList } from './FileList'
+import { selectFile, selectFilename } from '../Features/Signer/FileSlice'
+import { useAppSelector } from '../app/hooks'
+import { FileNameList } from './FileNameList'
+import { ZippedFile } from './ZippedFile'
 
 function VerifyerComponent() {
-    const [hashes, setHashes] = useState<string[]>([])
-    const [finalHash, setFinalHash] = useState<string>("")
-    const [droppedFile, setDroppedFile] = useState<File[]>([])
-    const [isDrag, setIsDrag] = useState<boolean>(false)
+  const fileName = useAppSelector(selectFilename)
+  const file = useAppSelector(selectFile)
 
-    const handleDrop = useCallback((acceptedFiles: File[]) => {
-        acceptedFiles.forEach(async (file: File) => {
-            if (file.type == "application/zip") {
-                VerifyHelper.unzip(file)
-            }
-            setDroppedFile(droppedFile => [...droppedFile, file])
-
-            setIsDrag(false)
-
-        })
-    }, [isDrag])
-    const handleDrag = useCallback(() => {
-        setIsDrag(true)
-    }, [isDrag])
-    const handleLeave = useCallback(() => {
-        setIsDrag(false)
-
-    }, [isDrag])
-
-    return (
-        <div>
-        </div>
-    )
+  return (
+    <div className="bg-mid-body w-screen overflow-y-hidden relative">
+      <ImportFiles />
+      <div
+        className={`scrollbar-thin scrollbar-thumb-sky-700 overflow-y-scroll relative flex-col -space-y-1 mx-auto w-[48%] min-h-[150px] 2xl:min-h-[200px] max-h-[900px]
+             big-phone:w-2/3 bg-[#ddf0ff80] border-solid border-[#517ca240] border-2`}
+      >
+        {file.length === 0 && (
+          <span className="absolute top-2 left-8 text-[#2a223180] font-[Overpass Regular] text-[16px]">
+            Files
+          </span>
+        )}
+        <ZippedFile />
+        {fileName.length > 0 ? <FileNameList /> : <FileList />}
+      </div>
+    </div>
+  )
 }
 export default VerifyerComponent
-

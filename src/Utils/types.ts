@@ -1,9 +1,8 @@
-
-export interface Signature{
-    signature:string
-    did:string
+export interface Signature {
+  signature: string
+  keyID: string
 }
-export interface SignDoc{
-    jws:string
-    hashes:string[]
+export interface SignDoc {
+  jws: string
+  hashes: string[]
 }

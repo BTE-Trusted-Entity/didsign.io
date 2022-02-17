@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="30px" viewBox="0 0 22 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>doc_type/image</title>
+    <g id="doc_type/image" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-9">
+            <g id="Group-3">
+                <rect id="Rectangle" stroke="#3E6E99" fill="#FFFFFF" x="0.5" y="0.5" width="21" height="29"></rect>
+                <rect id="Rectangle" fill="#3E6E99" x="3.74468085" y="10.6153846" width="14.9787234" height="9.23076923"></rect>
+            </g>
+            <g id="Group" transform="translate(3.744681, 10.615385)" fill="#FFFFFF">
+                <polygon id="Triangle" points="4.68085106 3.23076923 8.42553191 8.30769231 0.936170213 8.30769231"></polygon>
+                <polygon id="Triangle-Copy" points="8.68085106 4.15384615 11.7446809 8.30769231 5.61702128 8.30769231"></polygon>
+                <ellipse id="Oval" cx="12.1702128" cy="2.76923077" rx="1.40425532" ry="1.38461538"></ellipse>
+            </g>
+        </g>
+    </g>
+</svg>

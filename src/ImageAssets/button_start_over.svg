@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="130px" height="44px" viewBox="0 0 130 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>button/secondary start over 4</title>
+    <defs>
+        <path d="M115.000387,-0.000387002087 C123.284658,-0.000387002087 130.000387,6.71534175 130.000387,14.999613 L129.999387,44.000613 L85.999387,-0.000387002087 L115.000387,-0.000387002087 Z" id="path-1"></path>
+        <filter x="-22.7%" y="-27.3%" width="145.5%" height="145.5%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="-2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="3" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.0753856739 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <linearGradient x1="88.6540673%" y1="13.0079409%" x2="57.3466041%" y2="45.0220685%" id="linearGradient-3">
+            <stop stop-color="#FFFFFF" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#000000" stop-opacity="0.225307651" offset="100%"></stop>
+        </linearGradient>
+        <path d="M115.000613,0.000387002087 C123.284884,0.000387002087 130.000613,6.71611575 130.000613,15.000387 L129.999613,44.001387 L85.999613,0.000387002087 L115.000613,0.000387002087 Z" id="path-4"></path>
+        <filter x="-22.7%" y="-27.3%" width="145.5%" height="145.5%" filterUnits="objectBoundingBox" id="filter-5">
+            <feOffset dx="0" dy="-2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="3" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.0753856739 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="button/secondary-start-over-4" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <text id="start-over" transform="translate(114.000000, 30.000000) rotate(-45.000000) translate(-114.000000, -30.000000) " font-family="Overpass-Regular, Overpass" font-size="9" font-weight="normal" line-spacing="8" letter-spacing="0.0642857143" fill="#F06543">
+            <tspan x="104" y="31">start</tspan>
+            <tspan x="104.662143" y="39">over</tspan>
+        </text>
+        <g id="Combined-Shape" transform="translate(108.000387, 22.000000) rotate(-90.000000) translate(-108.000387, -22.000000) ">
+            <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+            <path stroke-opacity="0.253805521" stroke="#517CA2" stroke-width="1" d="M115.000387,0.499612998 C119.004451,0.499612998 122.629451,2.12258078 125.253435,4.74656467 C127.877419,7.37054856 129.500387,10.9955486 129.500387,14.9995958 L129.500387,14.9995958 L129.499429,42.7935284 L87.2064744,0.499612998 Z" stroke-linejoin="square" fill-opacity="0.5" fill="#DDF0FF" fill-rule="evenodd"></path>
+        </g>
+        <g id="Combined-Shape" transform="translate(108.000113, 22.000887) rotate(-90.000000) translate(-108.000113, -22.000887) ">
+            <use fill="black" fill-opacity="1" filter="url(#filter-5)" xlink:href="#path-4"></use>
+            <use fill-opacity="0" fill="#DDF0FF" fill-rule="evenodd" xlink:href="#path-4"></use>
+            <use fill-opacity="0.45" fill="url(#linearGradient-3)" fill-rule="evenodd" xlink:href="#path-4"></use>
+        </g>
+    </g>
+</svg>

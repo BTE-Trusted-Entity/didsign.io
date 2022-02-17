@@ -1,23 +1,21 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { fileSlice } from '../Features/Signer/FileSlice'
 import { hashSlice } from '../Features/Signer/hashSlice'
-import {SignatureSlice} from '../Features/Signer/SignatureSlice'
-
-
+import { SignatureSlice } from '../Features/Signer/SignatureSlice'
+import { UserSlice } from '../Features/Signer/UserSlice'
 
 export const store = configureStore({
-    reducer: {
-        hash: hashSlice.reducer,
-        files: fileSlice.reducer,
-        signature: SignatureSlice.reducer,
-
-
-    },
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({
-            serializableCheck: false,
-            immutableCheck: false
-        })
+  reducer: {
+    hash: hashSlice.reducer,
+    files: fileSlice.reducer,
+    signature: SignatureSlice.reducer,
+    userType: UserSlice.reducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+      immutableCheck: false,
+    }),
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

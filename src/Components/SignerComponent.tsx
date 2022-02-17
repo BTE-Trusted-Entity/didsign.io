@@ -1,28 +1,21 @@
-import "../Styles/App.css"
-import React from "react"
-import Files from "./ImportFiles"
-import FileList from "./FileList"
-import Icon from "../SVGAssets/Icon"
-import CenterRightBubble from "../SVGAssets/CenterRightBubble"
-import BottomSection from "./BottomSection"
-import Footer from "./Footer"
-import CenterLeftBubble from "../SVGAssets/CenterLeftBubble"
-
+import '../Styles/App.css'
+import React from 'react'
+import { ImportFilesSigner } from './ImportFiles'
+import { FileList } from './FileList'
 function SignerComponent() {
-    return (
-
-        <div className="bg-mid-body w-screen overflow-y-hidden">
-            <Files />
-            <div className="flex-col -space-y-1 mx-auto w-[48%] h-16 2xl:h-56 xl:h-32 overflow-y-scroll mt-5 big-phone:w-2/3 scrollbar-thin scrollbar-thumb-sky-700">
-                <FileList />
-            </div>
-            
-
-        </div>
-
-    )
+  return (
+    <div className="bg-mid-body w-screen overflow-y-hidden">
+      <ImportFilesSigner />
+      <div
+        className={`scrollbar-thin scrollbar-thumb-sky-700 overflow-y-scroll relative flex-col -space-y-1 mx-auto w-[48%] min-h-[150px] 2xl:min-h-[200px] max-h-[900px]
+             big-phone:w-2/3 bg-[#ddf0ff80] border-solid border-[#517ca240] border-2`}
+      >
+        <span className="absolute top-2 left-8 text-[#2a223180] font-[Overpass Regular] text-[16px]">
+          Files
+        </span>
+        <FileList />
+      </div>
+    </div>
+  )
 }
 export default SignerComponent
-
-
-
