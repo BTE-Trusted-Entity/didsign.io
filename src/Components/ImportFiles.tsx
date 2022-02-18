@@ -53,7 +53,7 @@ export function ImportFilesSigner() {
 
   return (
     <div>
-      <div className=" mt-10 mx-auto lg-w-[48%] big-phone:w-[80%] h-52 relative 2xl:h-80">
+      <div className=" mt-10 mx-auto w-[48%] big-phone:w-[80%] h-52 relative 2xl:h-80">
         <video
           id="video"
           className=" border-1 object-cover rounded-t-lg bg-sky-900 border-sky-800 absolute h-full w-full "
