@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
+import { EndpointSlice } from '../Features/Signer/EndpointSlice'
 import { fileSlice } from '../Features/Signer/FileSlice'
 import { hashSlice } from '../Features/Signer/hashSlice'
 import { SignatureSlice } from '../Features/Signer/SignatureSlice'
@@ -10,6 +11,7 @@ export const store = configureStore({
     files: fileSlice.reducer,
     signature: SignatureSlice.reducer,
     userType: UserSlice.reducer,
+    endpoint: EndpointSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

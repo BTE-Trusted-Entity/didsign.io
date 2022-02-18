@@ -53,7 +53,7 @@ export function ImportFilesSigner() {
 
   return (
     <div>
-      <div className=" mt-10 mx-auto w-[48%] h-52 relative 2xl:w-[48%] 2xl:h-80">
+      <div className=" mt-10 mx-auto lg-w-[48%] big-phone:w-[80%] h-52 relative 2xl:h-80">
         <video
           id="video"
           className=" border-1 object-cover rounded-t-lg bg-sky-900 border-sky-800 absolute h-full w-full "
@@ -73,14 +73,18 @@ export function ImportFilesSigner() {
             <div {...getRootProps({ className: 'h-full w-full relative' })}>
               <input {...getInputProps()} />
               <div className="flex justify-center items-center w-full h-full">
-                <label className="absolute top-6 font-normal drop-shadow-lg shadow-black pointer-events-none text-white text-center 2xl:text-xl text-md 3xl:text-xl lg:text-[18px] md:text-md sm:text-sm phone:text-xs font-[Overpass Regular]">
-                  Drag & drop your files <br />
-                  here to sign
-                </label>
+                {videoSource === video && (
+                  <label className="absolute top-6 font-normal drop-shadow-lg shadow-black pointer-events-none text-white text-center 2xl:text-xl text-md 3xl:text-xl lg:text-[18px] md:text-md sm:text-sm phone:text-xs font-[Overpass Regular]">
+                    Drag & drop your files <br />
+                    here to sign
+                  </label>
+                )}
                 <img src={impIcon} />
-                <label className="absolute bottom-8 font-normal drop-shadow-lg shadow-black pointer-events-none text-white text-center 2xl:text-xl text-md 3xl:text-xl lg:text-[18px] md:text-md sm:text-sm phone:text-xs font-[Overpass Regular]">
-                  Or click to browse your files
-                </label>
+                {videoSource === video && (
+                  <label className="absolute bottom-8 font-normal drop-shadow-lg shadow-black pointer-events-none text-white text-center 2xl:text-xl text-md 3xl:text-xl lg:text-[18px] md:text-md sm:text-sm phone:text-xs font-[Overpass Regular]">
+                    Or click to browse your files
+                  </label>
+                )}
               </div>
             </div>
           )}
