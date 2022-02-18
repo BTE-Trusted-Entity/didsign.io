@@ -1,14 +1,12 @@
 import React from 'react'
-import DelIcon from '../ImageAssets/icon_elete.svg'
 import DocIcon from '../ImageAssets/doc_generic.svg'
 import OkIcon from '../ImageAssets/icon_oK.svg'
 import '../Styles/App.css'
-import { useAppDispatch, useAppSelector } from '../app/hooks'
+import { useAppSelector } from '../app/hooks'
 import { selectFilename } from '../Features/Signer/FileSlice'
 import DIDIcon from '../ImageAssets/doc_signature.svg'
 
 export function FileNameList() {
-  const dispatch = useAppDispatch()
   const fileName = useAppSelector(selectFilename)
 
   if (fileName.length === 0) {
