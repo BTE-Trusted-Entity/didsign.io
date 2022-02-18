@@ -4,9 +4,9 @@ function Header() {
   return (
     <div>
       <div className="bg-header w-screen h-[9rem] 2xl:h-[12rem] flex-auto items-center big-phone:h-20">
-        <div className=" ml-[26%] h-[80%] my-auto w-1/6">
+        <div className=" ml-[26%] h-[80%] my-auto w-1/6 2xl:w-[14%]">
           <img
-            className=" ml-0 w-full big-phone:w-1/3 h-full 2xl:w-[14%] object-fill"
+            className=" ml-0 w-full big-phone:w-1/3 h-full  object-fill"
             src={logo}
           />
         </div>
