@@ -1,14 +1,28 @@
 import React from 'react'
-import { useAppSelector } from '../app/hooks'
-import { selectFile, selectFilename } from '../Features/Signer/FileSlice'
+import { useAppDispatch, useAppSelector } from '../app/hooks'
+import {
+  clearAll,
+  clearFileName,
+  selectFile,
+  selectFilename,
+} from '../Features/Signer/FileSlice'
 import DelIcon from '../ImageAssets/icon_elete.svg'
 import ZipIcon from '../ImageAssets/doc_zip.svg'
+import { clearEndpoint } from '../Features/Signer/EndpointSlice'
+import { clearHash } from '../Features/Signer/hashSlice'
 
 export function ZippedFile() {
   const fileName = useAppSelector(selectFilename)
   const files = useAppSelector(selectFile)
+  const dispatch = useAppDispatch()
   if (fileName.length == 0) {
     return null
+  }
+  const handleDelete = () => {
+    dispatch(clearFileName())
+    dispatch(clearEndpoint())
+    dispatch(clearHash())
+    dispatch(clearAll())
   }
   return (
     <div className="flex flex-col space-y-1 w-[96%] pl-4 pr-4 pb-2">
@@ -36,7 +50,7 @@ export function ZippedFile() {
           </div>
         </div>
         <div className="flex space-x-2 ml-auto">
-          <button>
+          <button onClick={handleDelete}>
             {' '}
             <img src={DelIcon} />{' '}
           </button>
