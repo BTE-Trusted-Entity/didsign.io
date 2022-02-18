@@ -22,6 +22,7 @@ export const SignatureSlice = createSlice({
     },
   },
 })
+
 export const { clearSign, updateSign, updateDID } = SignatureSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type

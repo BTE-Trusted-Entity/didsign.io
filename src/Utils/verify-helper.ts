@@ -1,14 +1,18 @@
-import { Signature, SignDoc } from './types'
+import { ISignatureAndEndPoint, SignDoc } from './types'
 import * as Kilt from '@kiltprotocol/sdk-js'
 import { createHash } from './sign-helpers'
 import * as zip from '@zip.js/zip.js'
 
-export const app = async (jws: string): Promise<Signature | undefined> => {
+export const getVerifiedData = async (
+  jws: string
+): Promise<ISignatureAndEndPoint | undefined> => {
   const header = atob(jws.split('.')[0])
   const payload = atob(jws.split('.')[1])
   const sign = atob(jws.split('.')[2])
   const keyID = JSON.parse(header).keyID
   const hash = JSON.parse(payload).hash
+  const urls: string[] = []
+  const types: string[] = []
 
   await Kilt.init({ address: 'wss://spiritnet.kilt.io' })
   const signature = await Kilt.Did.DidUtils.verifyDidSignature({
@@ -18,12 +22,29 @@ export const app = async (jws: string): Promise<Signature | undefined> => {
     keyRelationship: Kilt.KeyRelationship.authentication,
   })
   const status = signature.verified
-  console.log(status)
+  const attesterFullDid = await Kilt.Did.DefaultResolver.resolveDoc(
+    keyID.split('#')[0]
+  )
+  if (attesterFullDid != null && attesterFullDid.details != undefined) {
+    const endPoints = attesterFullDid.details.getEndpoints()
+    for (const endPoint of endPoints) {
+      urls.push(...endPoint.urls)
+      types.push(...endPoint.types)
+    }
+  }
+  console.log(urls)
   if (status) {
-    return { keyID: keyID, signature: sign } as Signature
+    return {
+      did: keyID.split('#')[0],
+      signature: sign,
+      urls: urls,
+      types: types,
+    } as ISignatureAndEndPoint
   }
 }
-export const newUnzip = async (file: File): Promise<Signature | undefined> => {
+export const newUnzip = async (
+  file: File
+): Promise<ISignatureAndEndPoint | undefined> => {
   const reader = new zip.ZipReader(new zip.BlobReader(file))
   const fileData: string[] = []
   let doc: SignDoc = { jws: '', hashes: [] }
@@ -45,7 +66,7 @@ export const newUnzip = async (file: File): Promise<Signature | undefined> => {
     await reader.close()
 
     if (JSON.stringify(fileData.sort()) == JSON.stringify(doc.hashes.sort())) {
-      return await app(doc.jws)
+      return await getVerifiedData(doc.jws)
     } else {
       return undefined
     }

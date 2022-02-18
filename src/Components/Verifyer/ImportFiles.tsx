@@ -9,7 +9,7 @@ import fast from '../../ImageAssets/animation2.mp4'
 import { useAppDispatch } from '../../app/hooks'
 import JSZip from 'jszip'
 import { newUnzip } from '../../Utils/verify-helper'
-import { updateDID, updateSign } from '../../Features/Signer/SignatureSlice'
+import { update } from '../../Features/Signer/EndpointSlice'
 
 export function ImportFiles() {
   const [videoSource, setVideoSource] = useState<string>(video)
@@ -50,10 +50,7 @@ export function ImportFiles() {
               console.log('error')
               return
             }
-            const did = sign.keyID.split('#')[0]
-            const signaure = sign.signature
-            dispatch(updateDID(did))
-            dispatch(updateSign(signaure))
+            dispatch(update(sign))
           }
         }
       })
@@ -63,10 +60,10 @@ export function ImportFiles() {
 
   return (
     <div>
-      <div className=" mt-10 mx-auto w-[48%] h-52 relative 2xl:w-[48%] 2xl:h-80">
+      <div className=" mt-10 mx-auto w-[48%] big-phone:w-[80%] h-52 relative 2xl:w-[48%] 2xl:h-80">
         <video
           id="video"
-          className=" border-dashed border-1 object-cover rounded-t-lg bg-sky-900 border-sky-800 absolute h-full w-full "
+          className=" border-dashed border-1 object-cover rounded-t-lg bg-sky-900 border-sky-800 absolute h-full w-full top-0 bottom-0 left-0 right-0 "
           src={videoSource}
           autoPlay
           loop
@@ -80,17 +77,21 @@ export function ImportFiles() {
           onDragEnter={handleDrag}
         >
           {({ getRootProps, getInputProps }) => (
-            <div {...getRootProps({ className: 'h-full w-full relative' })}>
+            <div {...getRootProps({ className: 'h-full w-full absolute' })}>
               <input {...getInputProps()} />
               <div className="flex justify-center items-center w-full h-full">
-                <label className="absolute top-6 font-normal drop-shadow-lg shadow-black pointer-events-none text-white text-center 2xl:text-xl text-md 3xl:text-xl lg:text-[18px] md:text-md sm:text-sm phone:text-xs font-[Overpass Regular]">
-                  Drag & drop your files <br />
-                  here to sign
-                </label>
+                {videoSource === video && (
+                  <label className="absolute top-6 font-normal drop-shadow-lg shadow-black pointer-events-none text-white text-center 2xl:text-xl text-md 3xl:text-xl lg:text-[18px] md:text-md sm:text-sm phone:text-xs font-[Overpass Regular]">
+                    Drag & drop your files <br />
+                    here to Verify
+                  </label>
+                )}
                 <img src={impIcon} />
-                <label className="absolute bottom-8 font-normal drop-shadow-lg shadow-black pointer-events-none text-white text-center 2xl:text-xl text-md 3xl:text-xl lg:text-[18px] md:text-md sm:text-sm phone:text-xs font-[Overpass Regular]">
-                  Or click to browse your files
-                </label>
+                {videoSource === video && (
+                  <label className="absolute bottom-8 font-normal drop-shadow-lg shadow-black pointer-events-none text-white text-center 2xl:text-xl text-md 3xl:text-xl lg:text-[18px] md:text-md sm:text-sm phone:text-xs font-[Overpass Regular]">
+                    Or click to browse your files
+                  </label>
+                )}
               </div>
             </div>
           )}
