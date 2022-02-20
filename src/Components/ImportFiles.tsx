@@ -16,26 +16,35 @@ export function ImportFilesSigner() {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon)
 
   const dispatch = useAppDispatch()
-  const handleDrag = useCallback(() => {
-    ;(
-      document.getElementById('video') as HTMLVideoElement
-    ).defaultPlaybackRate = 3.0
-    setVideoSource(fast)
+  const handleDrag = () => {
+    ;(document.getElementById('fast') as HTMLVideoElement).playbackRate = 2.0
+    ;(document.getElementById('fast') as HTMLVideoElement).classList.remove(
+      'invisible'
+    )
+    ;(document.getElementById('video') as HTMLVideoElement).classList.add(
+      'invisible'
+    )
+
     setImportIcon(ReleaseIcon)
-  }, [])
-  const handleLeave = useCallback(() => {
-    ;(
-      document.getElementById('video') as HTMLVideoElement
-    ).defaultPlaybackRate = 1.0
-    setVideoSource(video)
+  }
+  const handleLeave = () => {
+    ;(document.getElementById('video') as HTMLVideoElement).classList.remove(
+      'invisible'
+    )
+    ;(document.getElementById('fast') as HTMLVideoElement).classList.add(
+      'invisible'
+    )
     setImportIcon(ImportIcon)
-  }, [])
+  }
   const handleDrop = useCallback(
     (acceptedFiles: File[]) => {
       acceptedFiles.forEach(async (file: File) => {
         ;(
           document.getElementById('video') as HTMLVideoElement
-        ).defaultPlaybackRate = 1.0
+        ).classList.remove('invisible')
+        ;(document.getElementById('fast') as HTMLVideoElement).classList.add(
+          'invisible'
+        )
         setImportIcon(ImportIcon)
         setVideoSource(video)
 
@@ -55,9 +64,21 @@ export function ImportFilesSigner() {
     <div>
       <div className=" mt-10 mx-auto w-[48%] big-phone:w-[80%] h-52 relative 2xl:h-80">
         <video
+          id="fast"
+          preload="auto"
+          className="invisible border-dashed border-1 object-cover rounded-t-lg bg-sky-900 border-sky-800 absolute h-full w-full top-0 bottom-0 left-0 right-0 "
+          src={fast}
+          autoPlay
+          loop
+          muted
+        >
+          Your browser does not support the video tag.
+        </video>
+        <video
           id="video"
-          className=" border-1 object-cover rounded-t-lg bg-sky-900 border-sky-800 absolute h-full w-full "
-          src={videoSource}
+          preload="auto"
+          className=" border-dashed border-1 object-cover rounded-t-lg bg-sky-900 border-sky-800 absolute h-full w-full top-0 bottom-0 left-0 right-0 "
+          src={video}
           autoPlay
           loop
           muted
