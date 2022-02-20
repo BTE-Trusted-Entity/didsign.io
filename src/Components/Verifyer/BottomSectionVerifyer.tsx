@@ -68,10 +68,10 @@ export function BottomSectionVerifyer() {
     )
   }
   return (
-    <div className=" bg-bottom-body w-screen relative pb-8">
+    <div className=" bg-bottom-body w-screen relative">
       <div
         ref={verificationRef}
-        className={`bg-[#ddf0ff80] border-solid relative border-[#517ca240] border-2 rounded-b-lg min-h-[7rem] max-h-screen mx-auto w-[48%] big-phone:w-[80%]`}
+        className={`bg-[#ddf0ff80] border-solid relative border-[#517ca240] border-2 rounded-b-lg min-h-[6rem] max-h-screen mx-auto w-[48%] big-phone:w-[80%] mb-8`}
       >
         {sign != '' ? (
           renderSignCom()

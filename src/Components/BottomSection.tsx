@@ -7,7 +7,7 @@ import { DownloadBtns } from './DownloadBtns'
 export function BottomSectionSigner() {
   const sign = useAppSelector(selectSign)
   return (
-    <div className=" bg-bottom-body w-screen relative h-1/4">
+    <div className=" bg-bottom-body w-screen relative">
       <div className="flex-col items-center justify-center w-screen">
         {sign == '' ? <SignBtn /> : <DownloadBtns />}
       </div>

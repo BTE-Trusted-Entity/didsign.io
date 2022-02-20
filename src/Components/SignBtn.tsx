@@ -63,7 +63,7 @@ export function SignBtn() {
       })
   }
   return (
-    <div className="bg-[#ddf0ff80] border-solid border-[#517ca240] border-2 rounded-b-lg mt-0  mx-auto w-[48%] flex items-center justify-center mb-8">
+    <div className="bg-[#ddf0ff80] border-solid border-[#517ca240] border-2 rounded-b-lg mt-0  mx-auto w-[48%] flex items-center h-[6rem] justify-center mb-8">
       {hashes.length == 0 ? <ButtonDisabled /> : <ButtonEnabled />}
     </div>
   )
