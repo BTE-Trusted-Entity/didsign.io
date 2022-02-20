@@ -25,8 +25,10 @@ export function FileNameList() {
             ) : (
               <img src={DocIcon} />
             )}
-            <div className="mx-2 flex -space-y-1 flex-col">
-              <span className={`text-left text-gray-900 text-md 3xl:text-lg `}>
+            <div className="mx-2 flex -space-y-1 flex-col w-3/4">
+              <span
+                className={`overflow-wrap break-words text-left text-gray-900 text-md 3xl:text-lg `}
+              >
                 {file}
               </span>
             </div>
