@@ -14,11 +14,9 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import JSZip from 'jszip'
 import { newUnzip } from '../../Utils/verify-helper'
 import { update } from '../../Features/Signer/EndpointSlice'
-import { FileNameList } from '../FileNameList'
 
 export function ImportFiles() {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon)
-  const fileName = useAppSelector(selectFilename)
 
   const dispatch = useAppDispatch()
   const handleDrag = () => {
