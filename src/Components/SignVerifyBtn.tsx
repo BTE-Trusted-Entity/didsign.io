@@ -1,5 +1,6 @@
 import React from 'react'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
+import { clearEndpoint } from '../Features/Signer/EndpointSlice'
 import { clearAll, clearFileName } from '../Features/Signer/FileSlice'
 import { clearHash } from '../Features/Signer/hashSlice'
 import { clearSign } from '../Features/Signer/SignatureSlice'
@@ -14,6 +15,7 @@ function SignVerifyBtn() {
     dispatch(clearAll())
     dispatch(clearHash())
     dispatch(clearFileName())
+    dispatch(clearEndpoint())
     const id = (event.currentTarget as HTMLDivElement).id
     id == 'signer' ? dispatch(updateType(true)) : dispatch(updateType(false))
   }
