@@ -2,7 +2,6 @@ import { ISignatureAndEndPoint, SignDoc } from './types'
 import * as Kilt from '@kiltprotocol/sdk-js'
 import { createHash } from './sign-helpers'
 import * as zip from '@zip.js/zip.js'
-import { couldStartTrivia } from 'typescript'
 
 const fileStatuses = {
   fileStatusArray: [] as boolean[],
