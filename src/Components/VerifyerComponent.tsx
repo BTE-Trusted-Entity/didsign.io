@@ -11,7 +11,7 @@ function VerifyerComponent() {
   const file = useAppSelector(selectFile)
 
   return (
-    <div className="bg-mid-body w-screen overflow-y-hidden relative">
+    <div className="bg-mid-body w-screen overflow-y-hidden overflow-x-hidden relative">
       <ImportFiles />
       <div
         className={`scrollbar-thin scrollbar-thumb-sky-700 overflow-y-scroll relative flex-col -space-y-1 mx-auto w-[48%] min-h-[150px] 2xl:min-h-[200px] max-h-[900px]
