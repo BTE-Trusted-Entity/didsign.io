@@ -5,14 +5,8 @@ import * as json from 'multiformats/codecs/json'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import { Signature } from './types'
-declare global {
-  // eslint-disable-next-line
-  interface Window {
-    kilt: any
-  }
-}
-window.kilt = window.kilt || {}
 
+window.kilt = window.kilt || {}
 export const createHashFromHashArray = async (
   hashArray: string[]
 ): Promise<string> => {

@@ -2,6 +2,18 @@ import { ISignatureAndEndPoint, SignDoc } from './types'
 import * as Kilt from '@kiltprotocol/sdk-js'
 import { createHash } from './sign-helpers'
 import * as zip from '@zip.js/zip.js'
+import { couldStartTrivia } from 'typescript'
+
+const fileStatuses = {
+  fileStatusArray: [] as boolean[],
+  addStatus(status: boolean) {
+    this.fileStatusArray.push(status)
+    return this
+  },
+  get fileStatus() {
+    return this.fileStatusArray
+  },
+}
 
 export const getVerifiedData = async (
   jws: string
@@ -31,14 +43,16 @@ export const getVerifiedData = async (
       urls.push(...endPoint.urls)
       types.push(...endPoint.types)
     }
+    await Kilt.disconnect()
   }
-  console.log(urls)
+
   if (status) {
     return {
       did: keyID.split('#')[0],
       signature: sign,
       urls: urls,
       types: types,
+      fileStatus: fileStatuses.fileStatus,
     } as ISignatureAndEndPoint
   }
 }
@@ -48,7 +62,9 @@ export const newUnzip = async (
   const reader = new zip.ZipReader(new zip.BlobReader(file))
   const fileData: string[] = []
   let doc: SignDoc = { jws: '', hashes: [] }
-
+  if (fileStatuses.fileStatusArray.length > 0) {
+    fileStatuses.fileStatusArray = []
+  }
   // get all entries from the zip
   const entries = await reader.getEntries()
   if (entries.length) {
@@ -56,19 +72,22 @@ export const newUnzip = async (
       if (entry.getData != undefined) {
         const text = await entry.getData(new zip.TextWriter())
         if (entry.filename == 'DIDsign.signature') {
+          fileStatuses.addStatus(true)
           doc = JSON.parse(text)
           continue
         }
+
         const hash = await createHash(text)
+        if (JSON.stringify(doc.hashes).includes(hash)) {
+          fileStatuses.addStatus(true)
+        } else {
+          fileStatuses.addStatus(false)
+        }
         fileData.push(hash)
       }
     }
     await reader.close()
 
-    if (JSON.stringify(fileData.sort()) == JSON.stringify(doc.hashes.sort())) {
-      return await getVerifiedData(doc.jws)
-    } else {
-      return undefined
-    }
+    return await getVerifiedData(doc.jws)
   }
 }

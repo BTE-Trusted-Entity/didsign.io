@@ -12,6 +12,7 @@ export interface ISignatureAndEndPoint {
   did: string
   urls: string[]
   types: string[]
+  fileStatus: Boolean[]
 }
 export interface Endpoint {
   urls: string[]
