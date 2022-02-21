@@ -3,14 +3,10 @@ import '../../Styles/App.css'
 import React, { useCallback, useState } from 'react'
 import ImportIcon from '../../ImageAssets/iconBIG_import_NEW.svg'
 import ReleaseIcon from '../../ImageAssets/iconBIG_import_release.svg'
-import {
-  addFile,
-  addFileName,
-  selectFilename,
-} from '../../Features/Signer/FileSlice'
+import { addFile, addFileName } from '../../Features/Signer/FileSlice'
 import video from '../../ImageAssets/animation.mp4'
 import fast from '../../ImageAssets/animation2.mp4'
-import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import { useAppDispatch } from '../../app/hooks'
 import JSZip from 'jszip'
 import { newUnzip } from '../../Utils/verify-helper'
 import { update } from '../../Features/Signer/EndpointSlice'
