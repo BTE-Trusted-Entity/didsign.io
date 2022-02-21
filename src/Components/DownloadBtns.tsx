@@ -31,7 +31,7 @@ export function DownloadBtns() {
   }
   return (
     <div>
-      <div className="bg-[#ddf0ff80] border-solid border-[#517ca240] border-2 mx-auto flex flex-col items-center justify-center rounded-b-lg w-[48%] pt-4 pr-4 shadow-md mb-8">
+      <div className="bg-[#ddf0ff80] border-solid border-[#517ca240] border-2 mx-auto flex flex-col items-center justify-center rounded-b-lg w-[48%] big-phone:w-[80%] pt-4 pr-4 shadow-md mb-8">
         <div className="w-1/2 h-10 2xl:w-[40%] 2xl:h-12 flex space-x-2 justify-center items-center">
           <span className="pr-2 text-[14px] font-[Overpass Regular]">now</span>
           <button
@@ -42,7 +42,7 @@ export function DownloadBtns() {
           </button>
         </div>
         <div className="w-1/2 2xl:w-[36%] h-10 2xl:h-12 flex space-x-3 justify-start items-center">
-          <span className="text-[14px] font-[Overpass Regular]">
+          <span className="text-[14px] 2xl:w-[36%] font-[Overpass Regular] text-right">
             or only download
           </span>
           <button

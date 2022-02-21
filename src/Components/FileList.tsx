@@ -7,6 +7,7 @@ import { deleteFile, selectFile } from '../Features/Signer/FileSlice'
 import { deleteItem, selectHash } from '../Features/Signer/hashSlice'
 import { clearSign } from '../Features/Signer/SignatureSlice'
 import DIDIcon from '../ImageAssets/doc_signature.svg'
+import ImageIcon from '../ImageAssets/doc_image.svg'
 
 export function FileList() {
   const dispatch = useAppDispatch()
@@ -30,15 +31,17 @@ export function FileList() {
           className=" pl-28 pr-4 flex flex-col space-y-1 w-[96%]"
         >
           <div className="flex items-center mt-2 ">
-            {file.name == 'DIDsign.signature' ? (
+            {file.type.includes('image') ? (
+              <img src={ImageIcon} />
+            ) : file.name == 'DIDsign.signature' ? (
               <img src={DIDIcon} />
             ) : (
               <img src={DocIcon} />
             )}
-            <div className="mx-2 flex -space-y-1 flex-col w-3/4">
+            <div className="mx-2 flex -space-y-1 w-3/4">
               <span
                 className={`text-justified overflow-wrap break-words text-left text-gray-900text-md 3xl:text-lg ${
-                  file.name == 'DIDsign.signature' && 'text-red-700'
+                  file.name == 'DIDsign.signature' && 'text-red-700 w-3/6 '
                 }`}
               >
                 {file.name}
