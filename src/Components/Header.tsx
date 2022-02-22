@@ -11,8 +11,8 @@ function Header() {
           />
         </div>
 
-        <div className="mx-auto w-full h-[20%] bg-[#44374f99] big-phone:h-6 ">
-          <p className="w-full pt-1 h-full ml-[26%] text-left big-phone:w-3/6 text-white font-[Overpass Regular] text-sm tracking-wider big-phone:text-[8px] big-phone:tracking-normal">
+        <div className="mx-auto w-full h-[20%] bg-[#44374f99] big-phone:h-6 flex items-center ">
+          <p className="w-[70%]  h-1/2 ml-[26%] text-left big-phone:w-3/6 text-white font-['Overpass'] text-[16px] tracking-wider big-phone:text-[8px] big-phone:tracking-normal">
             Documents that build trust - securely signed with your Decentralized
             Identifier (DID)
           </p>

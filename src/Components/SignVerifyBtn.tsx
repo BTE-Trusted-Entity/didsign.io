@@ -24,14 +24,16 @@ function SignVerifyBtn() {
       <div className="flex w-screen mx-auto h-10">
         <div
           id="signer"
-          className={`flex flex-col space-y-1 items-center justify-center h-full w-1/2 ${
+          className={`flex flex-col items-center justify-center h-full w-1/2 ${
             !userIsSigner && 'bg-selected-button'
           } `}
           onClick={handleSigner}
         >
           <button
-            className={`h-10/12 w-1/2 bg-transparent font-normal text-[18px] uppercase big-phone:text-sm big-phone:h-1/2 3xl:text-2xl font-[Overpass Regular] ${
-              !userIsSigner ? 'text-[#3e6e9980]' : 'text-[#2A2231]'
+            className={` w-full bg-transparent font-normal text-[18px] uppercase big-phone:text-sm big-phone:h-1/2 3xl:text-2xl font-['Overpass'] ${
+              !userIsSigner
+                ? 'text-[#3e6e9980] bg-selected-button'
+                : 'text-[#2A2231]'
             } `}
           >
             SIGN
@@ -45,13 +47,13 @@ function SignVerifyBtn() {
         </div>
         <div
           id="verifyer"
-          className={`flex flex-col space-y-1 items-center justify-center h-full w-1/2 ${
+          className={`flex flex-col items-center justify-center h-full w-1/2 ${
             userIsSigner && 'bg-selected-button'
           }`}
           onClick={handleSigner}
         >
           <button
-            className={`h-10/12 w-1/2 bg-transparent font-normal text-[18px] uppercase big-phone:text-sm big-phone:h-1/2 3xl:text-2xl font-[Overpass Regular] ${
+            className={` w-full bg-transparent font-normal text-[18px] uppercase big-phone:text-sm big-phone:h-1/2 3xl:text-2xl font-['Overpass']] ${
               userIsSigner ? 'text-[#3e6e9980]' : 'text-[#2A2231]'
             }`}
           >

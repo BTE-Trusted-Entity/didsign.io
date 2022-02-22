@@ -78,7 +78,7 @@ export function ImportFilesSigner() {
         <video
           id="video"
           preload="auto"
-          className=" border-dashed border-1 object-cover rounded-t-lg bg-sky-900 border-sky-800 absolute h-full w-full top-0 bottom-0 left-0 right-0 "
+          className=" border-dashed border-[1px] object-cover rounded-t-lg bg-sky-900 border-sky-800 absolute h-full w-full top-0 bottom-0 left-0 right-0 "
           src={video}
           autoPlay
           loop
@@ -96,14 +96,14 @@ export function ImportFilesSigner() {
               <input {...getInputProps()} />
               <div className="flex justify-center items-center w-full h-full">
                 {videoSource === video && (
-                  <label className="absolute top-6 font-normal drop-shadow-lg shadow-black pointer-events-none text-white text-center 2xl:text-xl text-md 3xl:text-xl lg:text-[18px] md:text-md sm:text-sm phone:text-xs font-[Overpass Regular]">
+                  <label className="absolute top-6 font-normal drop-shadow-lg shadow-black pointer-events-none text-white text-center 2xl:text-xl text-md 3xl:text-xl lg:text-[20px] md:text-md sm:text-sm phone:text-xs font-['Overpass']">
                     Drag & drop your files <br />
                     here to sign
                   </label>
                 )}
                 <img src={impIcon} />
                 {videoSource === video && (
-                  <label className="absolute bottom-8 font-normal drop-shadow-lg shadow-black pointer-events-none text-white text-center 2xl:text-xl text-md 3xl:text-xl lg:text-[18px] md:text-md sm:text-sm phone:text-xs font-[Overpass Regular]">
+                  <label className="absolute bottom-8 font-normal drop-shadow-lg shadow-black pointer-events-none text-white text-center 2xl:text-xl text-md 3xl:text-xl lg:text-[20px] md:text-md sm:text-sm phone:text-xs font-['Overpass']">
                     Or click to browse your files
                   </label>
                 )}
