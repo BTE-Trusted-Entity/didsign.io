@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="68px" height="68px" viewBox="0 0 68 68" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon/info</title>
+    <defs>
+        <circle id="path-1" cx="34" cy="34" r="34"></circle>
+        <filter x="-4.4%" y="-4.4%" width="108.8%" height="108.8%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.349764737 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="icon/info" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Oval-Copy-13">
+            <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+            <use fill-opacity="0.499330747" fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+        </g>
+        <circle id="Oval" fill="#3E6E99" cx="34" cy="34" r="23"></circle>
+        <g id="Group-6" transform="translate(34.000000, 34.500000) scale(1, -1) translate(-34.000000, -34.500000) translate(31.000000, 21.000000)" fill="#FFFFFF">
+            <path d="M3,0 C4.65685425,-3.04359188e-16 6,1.34314575 6,3 L6,16 C6,17.6568542 4.65685425,19 3,19 C1.34314575,19 2.02906125e-16,17.6568542 0,16 L0,3 C-2.02906125e-16,1.34314575 1.34314575,3.04359188e-16 3,0 Z" id="Rectangle-Copy" transform="translate(3.000000, 9.500000) rotate(-360.000000) translate(-3.000000, -9.500000) "></path>
+            <circle id="Oval" cx="3" cy="24" r="3"></circle>
+        </g>
+    </g>
+</svg>
