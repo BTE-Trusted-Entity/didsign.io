@@ -66,11 +66,14 @@ export const newUnzip = async (
   }
   // get all entries from the zip
   const entries = await reader.getEntries()
-  if (entries.length) {
-    for (const entry of entries) {
+  const files = entries.filter((key: zip.Entry) => {
+    return !key.filename.match(/^__MACOSX\//)
+  })
+  if (files.length) {
+    for (const entry of files) {
       if (entry.getData != undefined) {
         const text = await entry.getData(new zip.TextWriter())
-        if (entry.filename == 'DIDsign.signature') {
+        if (entry.filename == 'signature.didsign') {
           fileStatuses.addStatus(true)
           doc = JSON.parse(text)
           continue

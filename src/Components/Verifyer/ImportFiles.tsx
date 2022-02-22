@@ -47,13 +47,14 @@ export function ImportFiles() {
       if (file.type == 'application/zip' && acceptedFiles.length === 1) {
         const unzip = new JSZip()
         const unzipFile = await unzip.loadAsync(file)
-        const filenames = Object.keys(unzipFile.files)
-        const match = filenames.filter((s) => s.includes('DIDsign.signature'))
-        if (match.length > 0) {
+        const filenames = Object.keys(unzipFile.files).filter((key) => {
+          return !key.match(/^__MACOSX\//)
+        })
+        if (filenames.includes('signature.didsign')) {
           ;(document.getElementById('dropzone') as HTMLDivElement).draggable =
             false
           dispatch(addFile(file))
-          dispatch(addFileName(Object.keys(unzipFile.files)))
+          dispatch(addFileName(filenames))
           const sign = await newUnzip(file)
           if (sign === undefined) {
             console.log('error')
@@ -68,7 +69,7 @@ export function ImportFiles() {
   return (
     <div
       id="dropzone"
-      className=" mt-10 mx-auto w-[48%] big-phone:w-[80%] h-52 relative 2xl:h-80"
+      className=" mt-10 mx-auto w-[48%] big-phone:w-[80%] h-52 relative 2xl:h-80 shadow-inner"
     >
       <video
         id="fast"
@@ -107,14 +108,14 @@ export function ImportFiles() {
             <input {...getInputProps()} />
             <div className="flex justify-center items-center w-full h-full">
               {impIcon === ImportIcon && (
-                <label className="absolute top-6 font-normal drop-shadow-lg shadow-black pointer-events-none text-white text-center 2xl:text-xl text-md 3xl:text-xl lg:text-[18px] md:text-md sm:text-sm phone:text-xs font-[Overpass Regular]">
+                <label className="absolute top-6 font-normal drop-shadow-lg shadow-black pointer-events-none text-white text-center 2xl:text-xl text-md 3xl:text-xl lg:text-[18px] md:text-md sm:text-sm phone:text-xs font-['Overpass']">
                   Drag & drop your files <br />
                   here to Verify
                 </label>
               )}
               <img src={impIcon} />
               {impIcon === ImportIcon && (
-                <label className="absolute bottom-8 font-normal drop-shadow-lg shadow-black pointer-events-none text-white text-center 2xl:text-xl text-md 3xl:text-xl lg:text-[18px] md:text-md sm:text-sm phone:text-xs font-[Overpass Regular]">
+                <label className="absolute bottom-8 font-normal drop-shadow-lg shadow-black pointer-events-none text-white text-center 2xl:text-xl text-md 3xl:text-xl lg:text-[18px] md:text-md sm:text-sm phone:text-xs font-['Overpass']">
                   Or click to browse your files
                 </label>
               )}
