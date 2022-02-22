@@ -7,7 +7,7 @@ import {
   selectFilename,
 } from '../Features/Signer/FileSlice'
 import DelIcon from '../ImageAssets/icon_elete.svg'
-import ZipIcon from '../ImageAssets/doc_zip.svg'
+import ZipIcon from '../ImageAssets/doc_zip_NEW.svg'
 import { clearEndpoint } from '../Features/Signer/EndpointSlice'
 import { clearHash } from '../Features/Signer/hashSlice'
 
@@ -44,7 +44,7 @@ export function ZippedFile() {
         <div className="mx-2 flex space-x-1 ">
           <img src={ZipIcon} />
           <div className="mx-2 flex -space-y-1 flex-col">
-            <span className="text-left text-gray-900text-md 3xl:text-lg">
+            <span className="text-left text-gray-900text-md 3xl:text-lg font-['Overpass'] text-normal">
               {files[0].name}
             </span>
           </div>
