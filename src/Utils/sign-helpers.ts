@@ -6,7 +6,7 @@ import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import { Signature } from './types'
 
-window.kilt = window.kilt || {}
+const sporranWindow = window.kilt || {}
 export const createHashFromHashArray = async (
   hashArray: string[]
 ): Promise<string> => {
@@ -37,7 +37,7 @@ export const generateZipFile = async (files: File[]) => {
 }
 
 export const openSporan = async (finalHash: string): Promise<Signature> => {
-  const signObj = await window.kilt.sporran.signWithDid(finalHash)
+  const signObj = await sporranWindow.sporran.signWithDid(finalHash)
   const sign: Signature = {
     keyID: signObj.didKeyUri,
     signature: signObj.signature,
