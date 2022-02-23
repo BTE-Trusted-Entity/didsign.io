@@ -93,12 +93,14 @@ export function BottomSectionVerifyer() {
             Verification
           </span>
         )}
-        <button
-          className="absolute -right-1 -bottom-1"
-          onClick={handleStartOver}
-        >
-          <img className="h-12 w-12" src={BtnStartOver} />
-        </button>
+        {sign != '' && (
+          <button
+            className="absolute -right-1 -bottom-1"
+            onClick={handleStartOver}
+          >
+            <img className="h-12 w-12" src={BtnStartOver} />
+          </button>
+        )}
       </div>
     </div>
   )

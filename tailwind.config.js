@@ -40,6 +40,22 @@ module.exports = {
         'signing-label': '#11A770',
         'selected-button': '#B7CFE5',
       },
+      animation: {
+        reveal: 'reveal 0.5s ease-in forwards',
+        unreveal: 'unreveal 0.5s ease forwards',
+      },
+      keyframes: {
+        reveal: {
+          '100%': {
+            transform: 'translateY(-125%)',
+          },
+        },
+        unreveal: {
+          '100%': {
+            transform: 'translateY(90%)',
+          },
+        },
+      },
     },
   },
   plugins: [require('tailwind-scrollbar')],

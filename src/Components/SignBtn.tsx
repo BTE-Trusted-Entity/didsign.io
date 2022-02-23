@@ -48,6 +48,9 @@ export function SignBtn() {
     ;(
       document.getElementById('sporran-popup') as HTMLDivElement
     ).classList.remove('invisible')
+    ;(document.getElementById('sporran-popup') as HTMLDivElement).classList.add(
+      'animate-reveal'
+    )
     ;(
       document.getElementById('sign-component') as HTMLDivElement
     ).classList.add('blur-sm')
@@ -86,6 +89,12 @@ export function SignBtn() {
     setPopupIcon(InfoIcon)
     setSignStatus('Default')
     ;(document.getElementById('sporran-popup') as HTMLDivElement).classList.add(
+      'animate-unreveal'
+    )
+    ;(
+      document.getElementById('sporran-popup') as HTMLDivElement
+    ).classList.remove('animate-reveal')
+    ;(document.getElementById('sporran-popup') as HTMLDivElement).classList.add(
       'invisible'
     )
     ;(
@@ -99,7 +108,7 @@ export function SignBtn() {
     <div>
       <div
         id="sporran-popup"
-        className="invisible fixed w-[24%] h-[fit] bg-mid-body shadow-2xl rounded-md left-1/2 top-1/4 mt-[3%] -ml-[12%]"
+        className="fixed invisible w-[24%] h-[fit] bg-mid-body shadow-2xl  rounded-md left-1/2 top-[80%] 2xl:top-[60%] mt-[3%] -ml-[12%]"
       >
         <div className="flex flex-col w-full h-full items-center mt-4 space-y-5 pl-4 pr-4 pb-4 ">
           <div>
