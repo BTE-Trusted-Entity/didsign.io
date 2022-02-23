@@ -45,7 +45,6 @@ export function ImportFilesSigner() {
         ;(document.getElementById('fast') as HTMLVideoElement).classList.add(
           'invisible'
         )
-        console.log(file.type)
         setImportIcon(ImportIcon)
         setVideoSource(video)
 
