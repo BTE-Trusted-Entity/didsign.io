@@ -37,10 +37,6 @@ export function ImportFiles() {
   }
   const handleDrop = useCallback((acceptedFiles: File[]) => {
     acceptedFiles.forEach(async (file: File) => {
-      if (file.name === 'DIDsign (1).signature') {
-        return
-      }
-      console.log(file.name)
       ;(document.getElementById('video') as HTMLVideoElement).classList.remove(
         'invisible'
       )
