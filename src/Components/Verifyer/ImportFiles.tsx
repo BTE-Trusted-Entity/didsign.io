@@ -1,18 +1,24 @@
 import Dropzone from 'react-dropzone'
 import '../../Styles/App.css'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import ImportIcon from '../../ImageAssets/iconBIG_import_NEW.svg'
 import ReleaseIcon from '../../ImageAssets/iconBIG_import_release.svg'
 import { addFile, addFileName } from '../../Features/Signer/FileSlice'
 import video from '../../ImageAssets/animation.mp4'
 import fast from '../../ImageAssets/animation2.mp4'
-import { useAppDispatch } from '../../app/hooks'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import JSZip from 'jszip'
-import { newUnzip } from '../../Utils/verify-helper'
+import { getVerifiedData, newUnzip } from '../../Utils/verify-helper'
 import { update } from '../../Features/Signer/EndpointSlice'
+import { createHash } from '../../Utils/sign-helpers'
+import { addHash, selectHash } from '../../Features/Signer/hashSlice'
+import { SignDoc } from '../../Utils/types'
 
 export function ImportFiles() {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon)
+  const [jws, setJWS] = useState<string>('')
+  const [jwsHash, setJwsHash] = useState<string[]>([])
+  const hashes = useAppSelector(selectHash)
 
   const dispatch = useAppDispatch()
   const handleDrag = () => {
@@ -35,39 +41,70 @@ export function ImportFiles() {
     )
     setImportIcon(ImportIcon)
   }
-  const handleDrop = useCallback((acceptedFiles: File[]) => {
-    acceptedFiles.forEach(async (file: File) => {
-      ;(document.getElementById('video') as HTMLVideoElement).classList.remove(
-        'invisible'
-      )
-      ;(document.getElementById('fast') as HTMLVideoElement).classList.add(
-        'invisible'
-      )
-      setImportIcon(ImportIcon)
-
-      const fileType = file.name.match(/\.[0-9a-z]+$/i)
-      if (fileType?.includes('.zip') && acceptedFiles.length === 1) {
-        const unzip = new JSZip()
-        const unzipFile = await unzip.loadAsync(file)
-        const filenames = Object.keys(unzipFile.files).filter((key) => {
-          return !key.match(/^__MACOSX\//)
-        })
-        if (filenames.includes('signature.didsign')) {
-          ;(document.getElementById('dropzone') as HTMLDivElement).draggable =
-            false
-          dispatch(addFile(file))
-          dispatch(addFileName(filenames))
-          const sign = await newUnzip(file)
-          if (sign === undefined) {
-            console.log('error')
+  const handleDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      acceptedFiles.forEach(async (file: File) => {
+        ;(
+          document.getElementById('video') as HTMLVideoElement
+        ).classList.remove('invisible')
+        ;(document.getElementById('fast') as HTMLVideoElement).classList.add(
+          'invisible'
+        )
+        setImportIcon(ImportIcon)
+        const fileType = file.name.match(/\.[0-9a-z]+$/i)
+        if (fileType?.includes('.zip') && acceptedFiles.length === 1) {
+          const unzip = new JSZip()
+          const unzipFile = await unzip.loadAsync(file)
+          const filenames = Object.keys(unzipFile.files).filter((key) => {
+            return !key.match(/^__MACOSX\//)
+          })
+          if (filenames.includes('signature.didsign')) {
+            ;(document.getElementById('dropzone') as HTMLDivElement).draggable =
+              false
+            dispatch(addFile(file))
+            dispatch(addFileName(filenames))
+            const sign = await newUnzip(file)
+            if (sign === undefined) {
+              console.log('error')
+              return
+            }
+            dispatch(update(sign))
             return
           }
-          dispatch(update(sign))
+        }
+        dispatch(addFile(file))
+        let doc: SignDoc = { jws: '', hashes: [] }
+        const reader = new FileReader()
+        reader.readAsText(file)
+        reader.onload = async function () {
+          if (file.name === 'signature.didsign') {
+            doc = JSON.parse(reader.result as string)
+            setJWS(doc.jws)
+            setJwsHash(doc.hashes)
+          } else {
+            const regularFileHash = await createHash(reader.result)
+            dispatch(addHash(regularFileHash))
+          }
+        }
+      })
+    },
+    [jws, jwsHash]
+  )
+  const verify = async () => {
+    const matchedHashes = hashes.filter((hash) => jwsHash.includes(hash))
+    if (matchedHashes.length > 0) {
+      if (jws != 'Verified' && jwsHash.length > 0) {
+        const verifiedSignatureInstance = await getVerifiedData(jws)
+        if (verifiedSignatureInstance != undefined) {
+          dispatch(update(verifiedSignatureInstance))
+          setJWS('Verified')
         }
       }
-    })
-  }, [])
-
+    }
+  }
+  useEffect(() => {
+    verify()
+  }, [jwsHash, hashes])
   return (
     <div
       id="dropzone"
