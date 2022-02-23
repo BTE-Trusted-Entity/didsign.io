@@ -44,7 +44,9 @@ export function ImportFiles() {
         'invisible'
       )
       setImportIcon(ImportIcon)
-      if (file.type.includes('zip') && acceptedFiles.length === 1) {
+
+      const fileType = file.name.match(/\.[0-9a-z]+$/i)
+      if (fileType?.includes('.zip') && acceptedFiles.length === 1) {
         const unzip = new JSZip()
         const unzipFile = await unzip.loadAsync(file)
         const filenames = Object.keys(unzipFile.files).filter((key) => {
