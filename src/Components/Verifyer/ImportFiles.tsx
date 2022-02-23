@@ -37,6 +37,10 @@ export function ImportFiles() {
   }
   const handleDrop = useCallback((acceptedFiles: File[]) => {
     acceptedFiles.forEach(async (file: File) => {
+      if (file.name === 'DIDsign (1).signature') {
+        return
+      }
+      console.log(file.name)
       ;(document.getElementById('video') as HTMLVideoElement).classList.remove(
         'invisible'
       )
@@ -44,7 +48,7 @@ export function ImportFiles() {
         'invisible'
       )
       setImportIcon(ImportIcon)
-      if (file.type == 'application/zip' && acceptedFiles.length === 1) {
+      if (file.type.includes('zip') && acceptedFiles.length === 1) {
         const unzip = new JSZip()
         const unzipFile = await unzip.loadAsync(file)
         const filenames = Object.keys(unzipFile.files).filter((key) => {
@@ -74,7 +78,7 @@ export function ImportFiles() {
       <video
         id="fast"
         preload="auto"
-        className="invisible border-dashed border-1 object-cover rounded-t-lg bg-sky-900 border-sky-800 absolute h-full w-full top-0 bottom-0 left-0 right-0 "
+        className="invisible object-cover rounded-t-lg bg-sky-900 absolute h-full w-full top-0 bottom-0 left-0 right-0 "
         src={fast}
         autoPlay
         loop
@@ -85,7 +89,7 @@ export function ImportFiles() {
       <video
         id="video"
         preload="auto"
-        className=" border-dashed border-1 object-cover rounded-t-lg bg-sky-900 border-sky-800 absolute h-full w-full top-0 bottom-0 left-0 right-0 "
+        className=" shadow-inner object-cover rounded-t-lg bg-sky-900 absolute h-full w-full top-0 bottom-0 left-0 right-0 "
         src={video}
         autoPlay
         loop
