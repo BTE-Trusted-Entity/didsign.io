@@ -12,19 +12,19 @@ export function Footer() {
       />
 
       <div className="items-center flex-wrap justify-center mx-auto w-fit space-x-2 absolute">
-        <span className="text-white font-['Overpass'] lg:text-[16px] 2xl:text-[20px] md:text-xs">
+        <span className="text-white font-['Overpass'] lg:text-[16px] 2xl:text-lg md:text-xs">
           Imprint{' '}
         </span>
-        <span className="text-white font-['Overpass'] lg:text-[16px] 2xl:text-[20px] md:text-xs">
+        <span className="text-white font-['Overpass'] lg:text-[16px] 2xl:text-lg md:text-xs">
           -
         </span>
-        <span className="text-white font-['Overpass'] lg:text-[16px] 2xl:text-[20px] md:text-xs">
+        <span className="text-white font-['Overpass'] lg:text-[16px] 2xl:text-lg md:text-xs">
           Terms and Conditions
         </span>
-        <span className="text-white font-['Overpass'] lg:text-[16px] 2xl:text-[20px] md:text-xs">
+        <span className="text-white font-['Overpass'] lg:text-[16px] 2xl:text-lg md:text-xs">
           -
         </span>
-        <span className="text-white font-['Overpass'] lg:text-[16px] 2xl:text-[20px] md:text-xs">
+        <span className="text-white font-['Overpass'] lg:text-[16px] 2xl:text-lg md:text-xs">
           Privacy Policy{' '}
         </span>
       </div>
