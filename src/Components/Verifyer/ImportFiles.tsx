@@ -6,19 +6,22 @@ import ReleaseIcon from '../../ImageAssets/iconBIG_import_release.svg'
 import { addFile, addFileName } from '../../Features/Signer/FileSlice'
 import video from '../../ImageAssets/animation.mp4'
 import fast from '../../ImageAssets/animation2.mp4'
-import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import { useAppDispatch } from '../../app/hooks'
 import JSZip from 'jszip'
 import { getVerifiedData, newUnzip } from '../../Utils/verify-helper'
-import { update } from '../../Features/Signer/EndpointSlice'
+import {
+  update,
+  updateIndividualFileStatus,
+  updateIndividualFileStatusOnIndex,
+} from '../../Features/Signer/EndpointSlice'
 import { createHash } from '../../Utils/sign-helpers'
-import { addHash, selectHash } from '../../Features/Signer/hashSlice'
 import { SignDoc } from '../../Utils/types'
 
 export function ImportFiles() {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon)
-  const [jws, setJWS] = useState<string>('')
+  const [jws, setJWS] = useState<string>()
   const [jwsHash, setJwsHash] = useState<string[]>([])
-  const hashes = useAppSelector(selectHash)
+  const [fileHash, setFileHash] = useState<string[]>([])
 
   const dispatch = useAppDispatch()
   const handleDrag = () => {
@@ -72,8 +75,8 @@ export function ImportFiles() {
             return
           }
         }
-        dispatch(addFile(file))
         let doc: SignDoc = { jws: '', hashes: [] }
+        dispatch(addFile(file))
         const reader = new FileReader()
         reader.readAsText(file)
         reader.onload = async function () {
@@ -81,30 +84,38 @@ export function ImportFiles() {
             doc = JSON.parse(reader.result as string)
             setJWS(doc.jws)
             setJwsHash(doc.hashes)
+            dispatch(updateIndividualFileStatus(true))
           } else {
+            dispatch(updateIndividualFileStatus(false))
             const regularFileHash = await createHash(reader.result)
-            dispatch(addHash(regularFileHash))
+            setFileHash([...fileHash, regularFileHash])
           }
         }
       })
     },
-    [jws, jwsHash]
+    [jws, jwsHash, fileHash]
   )
-  const verify = async () => {
-    const matchedHashes = hashes.filter((hash) => jwsHash.includes(hash))
-    if (matchedHashes.length > 0) {
-      if (jws != 'Verified' && jwsHash.length > 0) {
-        const verifiedSignatureInstance = await getVerifiedData(jws)
-        if (verifiedSignatureInstance != undefined) {
-          dispatch(update(verifiedSignatureInstance))
-          setJWS('Verified')
-        }
-      }
-    }
-  }
+
   useEffect(() => {
-    verify()
-  }, [jwsHash, hashes])
+    if (jwsHash.length > 0) {
+      fileHash.filter(async (hash) => {
+        if (jwsHash.includes(hash)) {
+          dispatch(
+            updateIndividualFileStatusOnIndex(fileHash.indexOf(hash) + 1)
+          )
+          if (jws !== 'Verified' && jwsHash.length > 0) {
+            const verifiedSignatureInstance = await getVerifiedData(
+              jws as string
+            )
+            if (verifiedSignatureInstance != undefined) {
+              dispatch(update(verifiedSignatureInstance))
+              setJWS('Verified')
+            }
+          }
+        }
+      })
+    }
+  }, [jwsHash, fileHash])
   return (
     <div
       id="dropzone"
@@ -139,7 +150,6 @@ export function ImportFiles() {
       >
         {({ getRootProps, getInputProps }) => (
           <div
-            id="dropzone"
             {...getRootProps({
               className: 'h-full w-full absolute',
             })}
@@ -147,14 +157,14 @@ export function ImportFiles() {
             <input {...getInputProps()} />
             <div className="flex justify-center items-center w-full h-full">
               {impIcon === ImportIcon && (
-                <label className="absolute top-6 font-normal drop-shadow-lg shadow-black pointer-events-none text-white text-center 2xl:text-xl text-md 3xl:text-xl lg:text-[18px] md:text-md sm:text-sm phone:text-xs font-['Overpass']">
+                <label className="absolute top-6 font-normal drop-shadow-lg shadow-black pointer-events-none text-white text-center 2xl:text-xl text-md lg:text-[18px] md:text-md sm:text-sm phone:text-xs font-['Overpass']">
                   Drag & drop your files <br />
                   here to Verify
                 </label>
               )}
-              <img src={impIcon} />
+              <img className="2xl:w-[90px] 2xl:h-[90px]" src={impIcon} />
               {impIcon === ImportIcon && (
-                <label className="absolute bottom-8 font-normal drop-shadow-lg shadow-black pointer-events-none text-white text-center 2xl:text-xl text-md 3xl:text-xl lg:text-[18px] md:text-md sm:text-sm phone:text-xs font-['Overpass']">
+                <label className="absolute bottom-8 font-normal drop-shadow-lg shadow-black pointer-events-none text-white text-center 2xl:text-xl text-md lg:text-[18px] md:text-md sm:text-sm phone:text-xs font-['Overpass']">
                   Or click to browse your files
                 </label>
               )}

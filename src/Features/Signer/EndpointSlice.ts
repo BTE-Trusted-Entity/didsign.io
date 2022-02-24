@@ -26,12 +26,25 @@ export const EndpointSlice = createSlice({
       state.types = state.types.concat(action.payload.types)
       state.urls = state.urls.concat(action.payload.urls)
       state.did = action.payload.did
-      state.fileStatus = action.payload.fileStatus
+    },
+    updateIndividualFileStatus: (state, action: PayloadAction<boolean>) => {
+      state.fileStatus = state.fileStatus.concat(action.payload)
+    },
+    updateIndividualFileStatusOnIndex: (
+      state,
+      action: PayloadAction<number>
+    ) => {
+      state.fileStatus[action.payload] = true
     },
   },
 })
 
-export const { clearEndpoint, update } = EndpointSlice.actions
+export const {
+  clearEndpoint,
+  update,
+  updateIndividualFileStatus,
+  updateIndividualFileStatusOnIndex,
+} = EndpointSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectEndpointURL = (state: RootState) => state.endpoint.urls

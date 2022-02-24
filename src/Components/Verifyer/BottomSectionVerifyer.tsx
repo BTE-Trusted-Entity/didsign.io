@@ -2,6 +2,7 @@ import React, { useMemo, useRef } from 'react'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import {
   clearEndpoint,
+  fileStatus,
   selectEndpointTypes,
   selectEndpointURL,
   selectVerifiedDid,
@@ -11,12 +12,15 @@ import OkIcon from '../../ImageAssets/icon_oK.svg'
 import BtnStartOver from '../../ImageAssets/button_start_over_NEW.svg'
 import { clearAll, clearFileName } from '../../Features/Signer/FileSlice'
 import { clearHash } from '../../Features/Signer/hashSlice'
+import AttentionIcon from '../../ImageAssets/icon_attention.svg'
 
 export function BottomSectionVerifyer() {
   const sign = useAppSelector(selectVerifiedSign)
   const did = useAppSelector(selectVerifiedDid)
   const urls = useAppSelector(selectEndpointURL)
   const types = useAppSelector(selectEndpointTypes)
+  const status = useAppSelector(fileStatus)
+
   const verificationRef = useRef<null | HTMLDivElement>(null)
   const dispatch = useAppDispatch()
   const scrollToBottom = () => {
@@ -31,53 +35,77 @@ export function BottomSectionVerifyer() {
     dispatch(clearHash())
     dispatch(clearFileName())
   }
-
-  function renderSignCom() {
+  function renderVerificationError() {
     return (
       <div className="flex flex-col w-[90%] mx-auto ml-3 2xl:space-y-5 mt-10 mb-10 sm:space-y-5 big-phone:space-y-12">
         <div className="flex w-full items-center justify-start lg:space-x-3 md:space-x-5">
-          <p className=" text-green-600 font-['Overpass'] text-[16px] 2xl:text-[20px] w-[12%]">
+          <p className=" text-[#F06543] font-['Overpass'] text-[16px] 2xl:text-[20px] w-[12%]">
             Verification
           </p>
-          <img src={OkIcon} />{' '}
+          <img src={AttentionIcon} />{' '}
         </div>
         <div className="w-full flex flex-wrap lg:space-x-3 md:space-x-5 h-14 justify-start">
           <p className="pr-4 w-[12%] text-[#2A2231] font-['Overpass'] lg:text-[16px] 2xl:text-[20px] big-phone:text-[12px]">
-            Signature
+            Attention
           </p>
-          <span className=" tracking-tighter overflow-wrap break-words text-[#2A2231] font-['Overpass'] 2xl:text-[18px] lg:text-[14px] w-4/5 big-phone:text-[10px]">
-            {sign}
+          <span className=" tracking-tighter overflow-wrap break-words text-[#F06543] font-['Overpass'] 2xl:text-[18px] lg:text-[14px] w-4/5 big-phone:text-[10px]">
+            The signature does not match with the imported files. Please make
+            sure to import the correct files.
           </span>
-        </div>
-        <div className="w-full flex flex-wrap  lg:space-x-3 md:space-x-5 h-14 justify-start ">
-          <span className="pr-4 w-[12%] text-[#2A2231] font-['Overpass'] lg:text-[16px] big-phone:text-[12px] 2xl:text-[20px]">
-            Signed By
-          </span>
-          <span className="tracking-tighter overflow-wrap break-words text-[#2A2231] font-['Overpass'] lg:text-[14px] big-phone:text-[10px] w-4/5 2xl:text-[18px]">
-            {did}
-          </span>
-        </div>
-        <div className="w-full flex flex-wrap lg:space-x-3 md:space-x-5 h-fit ">
-          <span className="pr-4 w-[12%]   tracking-tighter text-left text-[#2A2231] font-['Overpass'] lg:text-[16px] big-phone:text-[12px] 2xl:text-[20px]">
-            Service Endpoints
-          </span>
-
-          <div className="flex flex-col space-y-2 h-fit w-4/5">
-            {urls.map((url: string, index: number) => (
-              <div key={index} className="flex flex-col h-fit space-y-1 ">
-                <span className="tracking-tighter overflow-wrap break-words text-[#2A2231] font-['Overpass'] lg:text-[14px] big-phone:text-[10px]  w-full 2xl:text-[18px]">
-                  {types[index]}
-                </span>
-                <span className=" tracking-tighter overflow-wrap break-words text-[#2A2231] font-['Overpass'] lg:text-[14px] big-phone:text-[10px] w-full 2xl:text-[18px]">
-                  {url}
-                </span>
-                <div className=" border-b-[1px] border-b-gray-900 border-dotted w-full"></div>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     )
+  }
+  function renderSignCom() {
+    if (status.includes(false)) {
+      return renderVerificationError()
+    } else {
+      return (
+        <div className="flex flex-col w-[90%] mx-auto ml-3 2xl:space-y-5 mt-10 mb-10 sm:space-y-5 big-phone:space-y-12">
+          <div className="flex w-full items-center justify-start lg:space-x-3 md:space-x-5">
+            <p className=" text-green-600 font-['Overpass'] text-[16px] 2xl:text-[20px] w-[12%]">
+              Verification
+            </p>
+            <img src={OkIcon} />{' '}
+          </div>
+          <div className="w-full flex flex-wrap lg:space-x-3 md:space-x-5 h-14 justify-start">
+            <p className="pr-4 w-[12%] text-[#2A2231] font-['Overpass'] lg:text-[16px] 2xl:text-[20px] big-phone:text-[12px]">
+              Signature
+            </p>
+            <span className=" tracking-tighter overflow-wrap break-words text-[#2A2231] font-['Overpass'] 2xl:text-[18px] lg:text-[14px] w-4/5 big-phone:text-[10px]">
+              {sign}
+            </span>
+          </div>
+          <div className="w-full flex flex-wrap  lg:space-x-3 md:space-x-5 h-14 justify-start ">
+            <span className="pr-4 w-[12%] text-[#2A2231] font-['Overpass'] lg:text-[16px] big-phone:text-[12px] 2xl:text-[20px]">
+              Signed By
+            </span>
+            <span className="tracking-tighter overflow-wrap break-words text-[#2A2231] font-['Overpass'] lg:text-[14px] big-phone:text-[10px] w-4/5 2xl:text-[18px]">
+              {did}
+            </span>
+          </div>
+          <div className="w-full flex flex-wrap lg:space-x-3 md:space-x-5 h-fit ">
+            <span className="pr-4 w-[12%]   tracking-tighter text-left text-[#2A2231] font-['Overpass'] lg:text-[16px] big-phone:text-[12px] 2xl:text-[20px]">
+              Service Endpoints
+            </span>
+
+            <div className="flex flex-col space-y-2 h-fit w-4/5">
+              {urls.map((url: string, index: number) => (
+                <div key={index} className="flex flex-col h-fit space-y-1 ">
+                  <span className="tracking-tighter overflow-wrap break-words text-[#2A2231] font-['Overpass'] lg:text-[14px] big-phone:text-[10px]  w-full 2xl:text-[18px]">
+                    {types[index]}
+                  </span>
+                  <span className=" tracking-tighter overflow-wrap break-words text-[#2A2231] font-['Overpass'] lg:text-[14px] big-phone:text-[10px] w-full 2xl:text-[18px]">
+                    {url}
+                  </span>
+                  <div className=" border-b-[1px] border-b-gray-900 border-dotted w-full"></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )
+    }
   }
   return (
     <div className=" bg-bottom-body w-screen relative">
