@@ -58,6 +58,7 @@ export function SignBtn() {
     ;(
       document.getElementById('sign-component') as HTMLDivElement
     ).style.pointerEvents = 'none'
+    document.body.style.overflowY = 'hidden'
     openSporan(await finalHash)
       .then(async (response) => {
         dispatch(updateSign(response.signature))
@@ -87,6 +88,7 @@ export function SignBtn() {
       })
   }
   const handleDismiss = () => {
+    document.body.style.overflowY = 'scroll'
     ;(
       document.getElementById('sign-component') as HTMLDivElement
     ).style.pointerEvents = 'visible'
