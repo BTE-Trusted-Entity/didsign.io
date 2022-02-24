@@ -23,15 +23,8 @@ function showVerifyer() {
 export function DIDSign() {
   const userIsSigner = useAppSelector(selectUser)
 
-  useEffect(() => {
-    if (userIsSigner) {
-      document.title = 'DIDsign-sign'
-    } else {
-      document.title = 'DIDsign-verify'
-    }
-  }, [userIsSigner])
   return (
-    <div className="relative min-h-screen w-screen overflow-y-scroll bg-bottom-body overflow-x-hidden flex flex-col">
+    <div className="relative min-h-screen w-screen overflow-y-scroll bg-bottom-body overflow-x-hidden flex flex-col scrollbar-thin scrollbar-thumb-sky-700">
       <img
         src={TopLeftBubble}
         className="absolute top-0 left-0 h-[150px] big-phone:h-[60px] pointer-events-none"
