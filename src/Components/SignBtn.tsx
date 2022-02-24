@@ -7,6 +7,7 @@ import { addFileTop } from '../Features/Signer/FileSlice'
 import { Signature, SignDoc } from '../Utils/types'
 import InfoIcon from '../ImageAssets/iconBIG_info.svg'
 import AttentionIcon from '../ImageAssets/iconBIG_attention.svg'
+import CenterLeftBubble from '../ImageAssets/CenterLeftBubble.svg'
 
 export function SignBtn() {
   const [signStatus, setSignStatus] = useState<'Default' | 'Not Signed'>(
@@ -16,8 +17,8 @@ export function SignBtn() {
   function ButtonDisabled() {
     return (
       <button
-        className="font-[Overpass Regular] text-[14px] tracking-wide text-[#ffffff80] text-center w-32 h-8 mt-4 mb-4 rounded-md 
-                my-auto bg-[#718BA3] 2xl:h-[40px] 2xl:w-[180px] shadow-md"
+        className="font-[Overpass Regular] text-[14px] 2xl:text-[18px] tracking-wide text-[#ffffff80] text-center w-32 h-8 mt-4 mb-4 rounded-md 
+                my-auto bg-[#718BA3] 2xl:h-[50px] 2xl:w-[200px] shadow-md"
         onClick={handleChange}
       >
         SIGN
@@ -27,8 +28,8 @@ export function SignBtn() {
   function ButtonEnabled() {
     return (
       <button
-        className="font-[Overpass Regular] text-[14px] tracking-wide text-white text-center w-32 h-8 mt-4 mb-4 rounded-md 
-    my-auto bg-sky-700 2xl:h-[40px] 2xl:w-[180px] shadow-md"
+        className="font-[Overpass Regular] text-[14px] 2xl:text-[18px]  tracking-wide text-white text-center w-32 h-8 mt-4 mb-4 rounded-md 
+    my-auto bg-[#3E6E99] 2xl:h-[50px] 2xl:w-[200px] shadow-md"
         onClick={handleChange}
       >
         SIGN
@@ -54,6 +55,9 @@ export function SignBtn() {
     ;(document.getElementById('sign-btn') as HTMLButtonElement).classList.add(
       'blur-sm'
     )
+    ;(
+      document.getElementById('sign-component') as HTMLDivElement
+    ).style.pointerEvents = 'none'
     openSporan(await finalHash)
       .then(async (response) => {
         dispatch(updateSign(response.signature))
@@ -83,6 +87,9 @@ export function SignBtn() {
       })
   }
   const handleDismiss = () => {
+    ;(
+      document.getElementById('sign-component') as HTMLDivElement
+    ).style.pointerEvents = 'visible'
     setPopupIcon(InfoIcon)
     setSignStatus('Default')
     ;(document.getElementById('sporran-popup') as HTMLDivElement).classList.add(
@@ -101,7 +108,11 @@ export function SignBtn() {
         id="sporran-popup"
         className="invisible fixed w-[24%] h-[fit] bg-mid-body shadow-2xl rounded-md left-1/2 top-1/4 mt-[3%] -ml-[12%]"
       >
-        <div className="flex flex-col w-full h-full items-center mt-4 space-y-5 pl-4 pr-4 pb-4 ">
+        <div className="flex relative flex-col w-full h-full items-center mt-4 space-y-5 pl-4 pr-4 pb-4 ">
+          <img
+            src={CenterLeftBubble}
+            className="absolute bottom-0 left-0 mt-auto pointer-events-none"
+          />
           <div>
             <img src={popupIcon} />
           </div>
@@ -126,12 +137,13 @@ export function SignBtn() {
           )}
           <button
             onClick={handleDismiss}
-            className="font-['Overpass'] -tracking-tigher rounded-md w-1/3 text-[14px] pl-4 pr-4 text-center h-[25px] bg-sky-700 text-white"
+            className="font-['Overpass'] -tracking-tigher rounded-md w-1/3 text-[14px] pl-4 pr-4 text-center h-[25px] bg-[#3E6E99] text-white"
           >
             DISMISS
           </button>
         </div>
       </div>
+
       <div
         id="sign-btn"
         className="bg-[#ddf0ff80] border-solid border-[#517ca240] border-[1px] rounded-b-lg mt-0  mx-auto w-[48%] big-phone:w-[80%] flex items-center h-[6rem] justify-center mb-8 shadow-md"

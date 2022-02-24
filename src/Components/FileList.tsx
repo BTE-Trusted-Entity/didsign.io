@@ -40,7 +40,7 @@ export function FileList() {
             )}
             <div className="mx-2 flex -space-y-1 w-3/4">
               <span
-                className={`font-['Overpass'] text-justified overflow-wrap break-words text-left text-gray-900text-md 3xl:text-lg ${
+                className={`font-['Overpass'] text-justified overflow-wrap break-words text-left text-gray-900text-md 2xl:text-xl ${
                   file.name == 'DIDsign.signature' && 'text-red-700 w-3/6 '
                 }`}
               >
@@ -49,7 +49,7 @@ export function FileList() {
             </div>
             <div className="flex space-x-2 ml-auto w-1/2 justify-end">
               {file.name == 'signature.didsign' ? (
-                <span className="text-left text-red-700 text-md 3xl:text-lg font-['Overpass']">
+                <span className="text-left text-red-700 text-md 2xl:text-xl font-['Overpass']">
                   created by DID sign
                 </span>
               ) : (

@@ -35,14 +35,14 @@ export function BottomSectionVerifyer() {
   function renderSignCom() {
     return (
       <div className="flex flex-col w-[90%] mx-auto ml-3 2xl:space-y-5 mt-10 mb-10 sm:space-y-5 big-phone:space-y-12">
-        <div className="flex w-[90%] items-center justify-start space-x-5">
-          <p className=" text-green-600 font-['Overpass'] text-[16px]">
+        <div className="flex w-full items-center justify-start lg:space-x-3 md:space-x-5">
+          <p className=" text-green-600 font-['Overpass'] text-[16px] 2xl:text-[20px] w-[12%]">
             Verification
           </p>
           <img src={OkIcon} />{' '}
         </div>
         <div className="w-full flex flex-wrap lg:space-x-3 md:space-x-5 h-14 justify-start">
-          <p className="pr-4 w-[12%] text-[#2A2231] font-[Overpass Regular] lg:text-[16px] 2xl:text-[20px] big-phone:text-[12px]">
+          <p className="pr-4 w-[12%] text-[#2A2231] font-['Overpass'] lg:text-[16px] 2xl:text-[20px] big-phone:text-[12px]">
             Signature
           </p>
           <span className=" tracking-tighter overflow-wrap break-words text-[#2A2231] font-['Overpass'] 2xl:text-[18px] lg:text-[14px] w-4/5 big-phone:text-[10px]">
@@ -88,7 +88,7 @@ export function BottomSectionVerifyer() {
         {sign != '' ? (
           renderSignCom()
         ) : (
-          <span className="absolute top-2 left-4 text-[#2a223180]">
+          <span className="absolute top-2 left-6 text-[#2a223180] text-[16px] 2xl:text-[20px]">
             {' '}
             Verification
           </span>
