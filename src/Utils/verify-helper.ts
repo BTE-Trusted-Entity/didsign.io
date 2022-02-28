@@ -1,7 +1,12 @@
-import { ISignatureAndEndPoint, SignDoc } from './types'
+import {
+  ISignatureEndPoint,
+  ISignatureEndPointWithStatus,
+  SignDoc,
+} from './types'
 import * as Kilt from '@kiltprotocol/sdk-js'
 import { createHash } from './sign-helpers'
 import * as zip from '@zip.js/zip.js'
+import JSZip from 'jszip'
 
 const fileStatuses = {
   fileStatusArray: [] as boolean[],
@@ -16,7 +21,7 @@ const fileStatuses = {
 
 export const getVerifiedData = async (
   jws: string
-): Promise<ISignatureAndEndPoint | undefined> => {
+): Promise<ISignatureEndPoint | undefined> => {
   const header = atob(jws.split('.')[0])
   const payload = atob(jws.split('.')[1])
   const sign = atob(jws.split('.')[2])
@@ -51,13 +56,12 @@ export const getVerifiedData = async (
       signature: sign,
       urls: urls,
       types: types,
-      fileStatus: fileStatuses.fileStatus,
-    } as ISignatureAndEndPoint
+    } as ISignatureEndPoint
   }
 }
 export const newUnzip = async (
   file: File
-): Promise<ISignatureAndEndPoint | undefined> => {
+): Promise<ISignatureEndPointWithStatus | undefined> => {
   const reader = new zip.ZipReader(new zip.BlobReader(file))
   const fileData: string[] = []
   let doc: SignDoc = { jws: '', hashes: [] }
@@ -90,6 +94,22 @@ export const newUnzip = async (
     }
     await reader.close()
 
-    return await getVerifiedData(doc.jws)
+    const signatureEndpointInstance: ISignatureEndPoint =
+      (await getVerifiedData(doc.jws)) as ISignatureEndPoint
+    const signEndpointStatus: ISignatureEndPointWithStatus = {
+      signatureWithEndpoint: signatureEndpointInstance,
+      fileStatus: fileStatuses.fileStatus,
+    }
+
+    return signEndpointStatus
   }
+}
+
+export const getFileNames = async (file: File): Promise<string[]> => {
+  const unzip = new JSZip()
+  const unzipFile = await unzip.loadAsync(file)
+  const filenames = Object.keys(unzipFile.files).filter((key) => {
+    return !key.match(/^__MACOSX\//)
+  })
+  return filenames
 }
