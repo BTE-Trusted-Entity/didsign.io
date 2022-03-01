@@ -10,15 +10,13 @@ import AttentionIcon from '../ImageAssets/iconBIG_attention.svg'
 import CenterLeftBubble from '../ImageAssets/CenterLeftBubble.svg'
 
 export function SignBtn() {
-  const [signStatus, setSignStatus] = useState<'Default' | 'Not Signed'>(
-    'Default'
-  )
+  const [signStatus, setSignStatus] = useState<boolean | 'Default'>()
   const [popupIcon, setPopupIcon] = useState<string>(InfoIcon)
   function ButtonDisabled() {
     return (
       <button
-        className="font-[Overpass Regular] text-[14px] 2xl:text-[18px] tracking-wide text-[#ffffff80] text-center w-32 h-8 mt-4 mb-4 rounded-md 
-                my-auto bg-[#718BA3] 2xl:h-[50px] 2xl:w-[200px] shadow-md"
+        className="font-['Overpass'] text-[14px] leading-[16px]  tracking-[0.1px] text-[#ffffff80] text-center w-[160px] h-[30px] mt-4 mb-4 rounded-md 
+                my-auto bg-[#718BA3] shadow-md"
         onClick={handleChange}
       >
         SIGN
@@ -28,8 +26,8 @@ export function SignBtn() {
   function ButtonEnabled() {
     return (
       <button
-        className="font-[Overpass Regular] text-[14px] 2xl:text-[18px]  tracking-wide text-white text-center w-32 h-8 mt-4 mb-4 rounded-md 
-    my-auto bg-[#3E6E99] 2xl:h-[50px] 2xl:w-[200px] shadow-md"
+        className="font-['Overpass'] text-[14px] leading-[16px]  tracking-[0.1px] text-white text-center w-[160px] h-[30px] mt-4 mb-4 rounded-md 
+    my-auto bg-[#3E6E99] shadow-md"
         onClick={handleChange}
       >
         SIGN
@@ -52,9 +50,6 @@ export function SignBtn() {
     ;(
       document.getElementById('sign-component') as HTMLDivElement
     ).classList.add('blur-sm')
-    ;(document.getElementById('sign-btn') as HTMLButtonElement).classList.add(
-      'blur-sm'
-    )
     ;(
       document.getElementById('sign-component') as HTMLDivElement
     ).style.pointerEvents = 'none'
@@ -77,14 +72,11 @@ export function SignBtn() {
         ;(
           document.getElementById('sign-component') as HTMLDivElement
         ).classList.remove('blur-sm')
-        ;(
-          document.getElementById('sign-btn') as HTMLButtonElement
-        ).classList.remove('blur-sm')
       })
 
       .catch(() => {
         setPopupIcon(AttentionIcon)
-        setSignStatus('Not Signed')
+        setSignStatus(false)
       })
   }
   const handleDismiss = () => {
@@ -148,7 +140,7 @@ export function SignBtn() {
 
       <div
         id="sign-btn"
-        className="bg-[#ddf0ff80] border-solid border-[#517ca240] border-[1px] rounded-b-lg mt-0  mx-auto w-[48%] big-phone:w-[80%] flex items-center h-[6rem] justify-center mb-8 shadow-md"
+        className="bg-[#ddf0ff80] border-[#517ca240] border-[1px] rounded-b-[15px] mt-0  mx-auto max-w-[766px] flex items-center h-[6rem] justify-center mb-2 shadow-md"
       >
         {hashes.length == 0 ? <ButtonDisabled /> : <ButtonEnabled />}
       </div>
