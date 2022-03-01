@@ -61,56 +61,62 @@ export function ImportFilesSigner() {
   )
 
   return (
-    <div>
-      <div className=" mt-10 mx-auto w-[48%] big-phone:w-[80%] h-52 relative 2xl:h-80">
-        <video
-          id="fast"
-          preload="auto"
-          className="invisible border-dashed border-1 object-cover rounded-t-lg bg-sky-900 border-sky-800 absolute h-full w-full top-0 bottom-0 left-0 right-0 "
-          src={fast}
-          autoPlay
-          loop
-          muted
-        >
-          Your browser does not support the video tag.
-        </video>
-        <video
-          id="video"
-          preload="auto"
-          className=" border-dashed border-[1px] object-cover rounded-t-lg bg-sky-900 border-sky-800 absolute h-full w-full top-0 bottom-0 left-0 right-0 "
-          src={video}
-          autoPlay
-          loop
-          muted
-        >
-          Your browser does not support the video tag.
-        </video>
-        <Dropzone
-          onDrop={handleDrop}
-          onDragLeave={handleLeave}
-          onDragEnter={handleDrag}
-        >
-          {({ getRootProps, getInputProps }) => (
-            <div {...getRootProps({ className: 'h-full w-full relative' })}>
-              <input {...getInputProps()} />
-              <div className="flex justify-center items-center w-full h-full">
-                {videoSource === video && (
-                  <label className="absolute top-6 font-normal drop-shadow-lg shadow-black pointer-events-none text-white text-center 2xl:text-xl text-md 3xl:text-xl lg:text-[20px] md:text-md sm:text-sm phone:text-xs font-['Overpass']">
-                    Drag & drop your files <br />
-                    here to sign
-                  </label>
-                )}
-                <img src={impIcon} />
-                {videoSource === video && (
-                  <label className="absolute bottom-8 font-normal drop-shadow-lg shadow-black pointer-events-none text-white text-center 2xl:text-xl text-md 3xl:text-xl lg:text-[20px] md:text-md sm:text-sm phone:text-xs font-['Overpass']">
-                    Or click to browse your files
-                  </label>
-                )}
-              </div>
-            </div>
-          )}
-        </Dropzone>
-      </div>
+    <div
+      id="dropzone"
+      className=" mt-3 mx-auto h-[220px] relative max-w-[766px]  flex"
+    >
+      <video
+        id="fast"
+        preload="auto"
+        className="invisible object-cover rounded-t-[15px] shadow-inner  absolute h-full w-full top-0 bottom-0 left-0 right-0 "
+        src={fast}
+        autoPlay
+        loop
+        muted
+      >
+        Your browser does not support the video tag.
+      </video>
+      <video
+        id="video"
+        preload="auto"
+        className=" object-cover rounded-t-[15px] bg-sky-900 absolute h-full w-full top-0 bottom-0 left-0 right-0 "
+        src={video}
+        autoPlay
+        loop
+        muted
+      >
+        Your browser does not support the video tag.
+      </video>
+      <Dropzone
+        onDrop={handleDrop}
+        onDragLeave={handleLeave}
+        onDragEnter={handleDrag}
+      >
+        {({ getRootProps, getInputProps }) => (
+          <div
+            {...getRootProps({
+              className:
+                'h-full w-full absolute flex justify-center items-center',
+            })}
+          >
+            <input {...getInputProps()} />
+            <img className="absolute mx-auto my-auto" src={impIcon} />
+            {impIcon === ImportIcon && (
+              <label className="absolute top-8 pointer-events-none text-white text-center text-[16px] leading-[17px] tracking-[0.11px] font-['Overpass']">
+                Drag & Drop
+              </label>
+            )}
+            {impIcon === ImportIcon && (
+              <label className="absolute top-14 pointer-events-none text-white text-center text-[14px] leading-[16px] tracking-[0.17px] font-['Overpass']">
+                files to sign here
+              </label>
+            )}
+            <label className=" pointer-events-none text-white text-center text-[14px] leading-[16px] font-['Overpass'] tracking-[0.17px] absolute bottom-12">
+              or click to browse your files
+            </label>
+          </div>
+        )}
+      </Dropzone>
     </div>
   )
 }
