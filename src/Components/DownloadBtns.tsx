@@ -49,22 +49,24 @@ export function DownloadBtns() {
     dispatch(clearFileName())
   }
   return (
-    <div className="bg-[#ddf0ff80] border-solid border-[#517ca240] border-[1px] mx-auto flex flex-col items-center justify-center rounded-b-lg w-[48%] big-phone:w-[80%] pt-4 pr-4 shadow-sm mb-8 relative">
-      <div className="w-1/2 h-10 2xl:w-[40%] 2xl:h-12 flex space-x-2 justify-center items-center">
-        <span className="pr-2 text-[14px] font-[Overpass Regular]">now</span>
+    <div className="bg-[#ddf0ff80] border-solid border-[#517ca240] border-[1px] mx-auto flex flex-col items-center justify-center rounded-b-[15px] w-[766px] pt-4 pr-4 shadow-sm mb-8 space-y-4 relative">
+      <div className="flex space-x-2 justify-center items-center ">
+        <span className="w-[110px] text-right text-[14px] font-['Overpass' absolute left-[180px]">
+          now
+        </span>
         <button
-          className="w-[160px] h-[30px] text-[14px]  font-[Overpass Regular] bg-sky-700 text-zinc-50 rounded-md"
+          className="w-[160px] h-[30px] text-[14px] leading-[16px] tracking-[0.1px]  font-['Overpass'] bg-[#3E6E99] text-white rounded-[8px]"
           onClick={handleZip}
         >
           ZIP ALL FILES
         </button>
       </div>
-      <div className="w-1/2 2xl:w-[36%] h-10 2xl:h-12 flex space-x-3 justify-start items-center">
-        <span className="text-[14px] 2xl:w-[36%] font-[Overpass Regular] text-right">
+      <div className="flex space-x-2 justify-start items-center pb-4">
+        <span className="text-[14px] leading-[16px] tracking-[0.1px] w-[110px] font-['Overpass'] text-right absolute left-[185px]">
           or only download
         </span>
         <button
-          className="w-[130px] h-[22px]  font-[Overpass Regular] bg-sky-700 text-zinc-50 text-[12px] rounded-md mt-1.5"
+          className="w-[130px] h-[22px]  font-[Overpass Regular] bg-[#3E6E99] text-white text-[12px] leading-[13px] tracking-[0.09px] rounded-[6px]"
           onClick={handleDownloadSign}
         >
           SIGNATURE
