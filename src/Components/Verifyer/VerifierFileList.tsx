@@ -17,31 +17,32 @@ export function VerifierFileList() {
     return null
   }
   return (
-    <div className="h-auto">
+    <div>
       {files.map((file: File, index: number) => (
         <div
           key={index}
-          className=" pl-28 pr-4 flex flex-col space-y-1 w-[96%]"
+          className="  pl-28 pr-4 pt-2 flex flex-col space-y-1 w-[96%]"
         >
           <div className="flex items-center mt-2 ">
             {file.type.includes('image') ? (
               <img src={ImageIcon} />
-            ) : file.name == 'signature.didsign' ? (
+            ) : file.name.split('.').pop() === 'didsign' ? (
               <img src={DIDIcon} />
             ) : (
               <img src={DocIcon} />
             )}
             <div className="mx-2 flex -space-y-1 w-3/4">
               <span
-                className={`font-['Overpass'] text-justified overflow-wrap break-words text-left text-gray-900text-md 2xl:text-xl ${
-                  file.name == 'DIDsign.signature' && 'text-red-700 w-3/6 '
+                className={`font-['Overpass'] text-justified overflow-wrap break-words text-left text-[14px] leading-[16px] tracking-[0.1px] text-[#2A2231] ${
+                  file.name.split('.').pop() === 'didsign' &&
+                  'text-red-700 w-3/6 '
                 }`}
               >
                 {file.name}
               </span>
             </div>
             <div className="flex space-x-2 ml-auto w-1/2 justify-end">
-              {status[index] && file.name != 'signature.didsign' && (
+              {status[index] && file.name.split('.').pop() !== 'didsign' && (
                 <img src={OkIcon} />
               )}
               {!status[index] && <img src={AttentionIcon} />}
