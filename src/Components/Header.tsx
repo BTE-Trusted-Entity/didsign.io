@@ -1,18 +1,28 @@
 import React from 'react'
 import logo from '../ImageAssets/logo_DIDsign.svg'
+import TopRightBubble from '../ImageAssets/TopRightBubble.svg'
+import TopLeftBubble from '../ImageAssets/TopLeftBubble.svg'
 function Header() {
   return (
     <div>
-      <div className="bg-header w-screen h-[9rem] 2xl:h-[12rem] flex-auto items-center big-phone:h-20">
-        <div className=" ml-[26%] big-phone:mx-auto h-[80%] my-auto big-phone:w-[40%] md:w-1/6 2xl:w-[14%]">
-          <img className=" ml-0 w-full h-full  object-fill" src={logo} />
+      <div className="bg-header w-screen h-[96px] flex flex-col relative pr-2 pl-2">
+        <img
+          src={TopLeftBubble}
+          className="absolute top-0 left-0 pointer-events-none h-full"
+        />
+        <img
+          src={TopRightBubble}
+          className="absolute top-0 right-0 pointer-events-none h-full"
+        />
+        <div className=" content-end w-[766px]  my-auto mx-auto">
+          <img className="w-[168.55px] h-[52px]  object-cover" src={logo} />
         </div>
 
-        <div className="mx-auto w-full h-[20%] bg-[#44374f99] big-phone:h-6 flex items-center ">
-          <p className="leading-loose w-[70%]  h-full  ml-[26%] text-left big-phone:w-3/6 text-white font-['Overpass'] text-[14px] 2xl:text-[18px] tracking-wider big-phone:text-[8px] big-phone:tracking-normal">
-            Documents that build trust - securely signed with your Decentralized
+        <div className="mb-0 w-full h-[24px] bg-[#44374f99]  flex items-center">
+          <span className="mx-auto pt-[1px] h-[18px] w-[766px] text-white font-['Overpass'] text-[14px] leading-[16px] tracking-[0.1px]">
+            Documents that build trust - securely signed with your decentralized
             Identifier (DID)
-          </p>
+          </span>
         </div>
       </div>
     </div>
