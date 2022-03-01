@@ -4,6 +4,7 @@ import { fileSlice } from '../Features/Signer/FileSlice'
 import { hashSlice } from '../Features/Signer/hashSlice'
 import { SignatureSlice } from '../Features/Signer/SignatureSlice'
 import { UserSlice } from '../Features/Signer/UserSlice'
+import { jwsHashSlice } from '../Features/Signer/VerifyJwsSlice'
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     signature: SignatureSlice.reducer,
     userType: UserSlice.reducer,
     endpoint: EndpointSlice.reducer,
+    jwshash: jwsHashSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
