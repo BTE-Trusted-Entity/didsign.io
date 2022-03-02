@@ -4,26 +4,8 @@ module.exports = {
   theme: {
     extend: {
       screens: {
-        phone: { max: '320px' },
-        'big-phone': { max: '480px' },
-
-        sm: '640px',
-        // => @media (min-width: 640px) { ... }
-
-        md: '768px',
-        // => @media (min-width: 768px) { ... }
-
-        lg: '1020px',
-        // => @media (min-width: 1024px) { ... }
-
-        xl: '1280px',
-        // => @media (min-width: 1280px) { ... }
-
-        '2xl': '1530px',
-        // => @media (min-width: 1536px) { ... }
-        '3xl': '1920px',
-
-        '4xl': '2600px',
+        'small-device': { max: '786px' },
+        phone: { max: '550px' },
       },
       fontSize: {
         tiny: ['10px', '15px'],
