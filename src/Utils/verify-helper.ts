@@ -31,33 +31,41 @@ export const getVerifiedData = async (
   const types: string[] = []
 
   await Kilt.init({ address: 'wss://spiritnet.kilt.io' })
-  const signature = await Kilt.Did.DidUtils.verifyDidSignature({
+  const endpoints = Kilt.Did.DidUtils.verifyDidSignature({
     message: hash,
     signature: sign,
     keyId: keyID,
     keyRelationship: Kilt.KeyRelationship.authentication,
   })
-  const status = signature.verified
-  const attesterFullDid = await Kilt.Did.DefaultResolver.resolveDoc(
-    keyID.split('#')[0]
-  )
-  if (attesterFullDid != null && attesterFullDid.details != undefined) {
-    const endPoints = attesterFullDid.details.getEndpoints()
-    for (const endPoint of endPoints) {
-      urls.push(...endPoint.urls)
-      types.push(...endPoint.types)
-    }
-    await Kilt.disconnect()
-  }
+    .then(async (response): Promise<ISignatureEndPoint | undefined> => {
+      const status = response.verified
+      const attesterFullDid = await Kilt.Did.DefaultResolver.resolveDoc(
+        keyID.split('#')[0]
+      )
+      if (attesterFullDid != null && attesterFullDid.details != undefined) {
+        const endPoints = attesterFullDid.details.getEndpoints()
+        for (const endPoint of endPoints) {
+          urls.push(...endPoint.urls)
+          types.push(...endPoint.types)
+        }
+        await Kilt.disconnect()
+      }
 
-  if (status) {
-    return {
-      did: keyID.split('#')[0],
-      signature: sign,
-      urls: urls,
-      types: types,
-    } as ISignatureEndPoint
-  }
+      if (status) {
+        return {
+          did: keyID.split('#')[0],
+          signature: sign,
+          urls: urls,
+          types: types,
+        } as ISignatureEndPoint
+      } else {
+        return undefined
+      }
+    })
+    .catch(() => {
+      return undefined
+    })
+  return endpoints
 }
 export const newUnzip = async (
   file: File
@@ -94,14 +102,17 @@ export const newUnzip = async (
     }
     await reader.close()
 
-    const signatureEndpointInstance: ISignatureEndPoint =
-      (await getVerifiedData(doc.jws)) as ISignatureEndPoint
-    const signEndpointStatus: ISignatureEndPointWithStatus = {
-      signatureWithEndpoint: signatureEndpointInstance,
-      fileStatus: fileStatuses.fileStatus,
-    }
+    const signatureEndpointInstance = await getVerifiedData(doc.jws)
+    if (signatureEndpointInstance != undefined) {
+      const signEndpointStatus: ISignatureEndPointWithStatus = {
+        signatureWithEndpoint: signatureEndpointInstance,
+        fileStatus: fileStatuses.fileStatus,
+      }
 
-    return signEndpointStatus
+      return signEndpointStatus
+    } else {
+      return undefined
+    }
   }
 }
 
