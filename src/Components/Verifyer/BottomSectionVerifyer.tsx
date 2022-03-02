@@ -44,7 +44,7 @@ export const BottomSectionVerifyer = () => {
     ;(document.getElementById('dropzone') as HTMLDivElement).draggable = false
     ;(
       document.getElementById('dropzone') as HTMLDivElement
-    ).style.pointerEvents = 'none'
+    ).style.pointerEvents = 'auto'
   }
   const renderVerificationError = () => {
     return (
