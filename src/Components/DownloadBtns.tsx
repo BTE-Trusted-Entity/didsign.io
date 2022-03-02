@@ -47,6 +47,9 @@ export const DownloadBtns = () => {
     dispatch(clearAll())
     dispatch(clearHash())
     dispatch(clearFileName())
+    ;(
+      document.getElementById('sign-component') as HTMLDivElement
+    ).style.pointerEvents = 'auto'
   }
   return (
     <div className="bg-[#ddf0ff80] border-solid border-[#517ca240] border-[1px] mx-auto flex flex-col items-center justify-center rounded-b-[15px] w-[766px] pt-4 pr-4 shadow-sm mb-8 space-y-4 relative">
