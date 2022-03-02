@@ -13,7 +13,7 @@ export const SignerComponent = () => {
   return (
     <div
       id="sign-component"
-      className="bg-mid-body w-screen relative overflow-x-hidden"
+      className="bg-mid-body w-screen relative overflow-x-hidden small-device:pr-[15px] small-device:pl-[15px]"
     >
       <ImportFilesSigner />
       <div

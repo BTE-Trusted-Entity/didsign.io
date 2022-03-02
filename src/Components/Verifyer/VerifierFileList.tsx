@@ -21,7 +21,7 @@ export const VerifierFileList = () => {
       {files.map((file: File, index: number) => (
         <div
           key={index}
-          className="  pl-28 pr-4 pt-2 flex flex-col space-y-1 w-[96%]"
+          className="  pl-28 phone:pl-16 pr-4 pt-2 flex flex-col space-y-1 w-[96%]"
         >
           <div className="flex items-center mt-2 ">
             {file.type.includes('image') ? (
@@ -33,7 +33,7 @@ export const VerifierFileList = () => {
             )}
             <div className="mx-2 flex -space-y-1 w-3/4">
               <span
-                className={`font-['Overpass'] text-justified overflow-wrap break-words text-left text-[14px] leading-[16px] tracking-[0.1px] text-[#2A2231] ${
+                className={`font-['Overpass'] text-justified overflow-wrap break-words w-full text-left text-[14px] leading-[16px] tracking-[0.1px] text-[#2A2231] ${
                   file.name.split('.').pop() === 'didsign' &&
                   'text-red-700 w-3/6 '
                 }`}

@@ -94,30 +94,30 @@ export const BottomSectionVerifyer = () => {
     } else {
       return (
         <div className="flex flex-col w-[90%] mx-auto ml-3  mt-10 mb-10 space-y-[40px]">
-          <div className="flex w-full items-center justify-self-start space-x-[10px]">
-            <p className=" text-green-600 font-['Overpass'] text-[16px] leading-[17px] tracking-[0.11px] w-[12%]">
+          <div className="flex w-full items-center justify-start space-x-[10px]">
+            <p className=" text-green-600 font-['Overpass'] text-[16px] leading-[17px] tracking-[0.11px] w-[82px]">
               Verification
             </p>
             <img src={OkIcon} />{' '}
           </div>
-          <div className="max-w-full flex w-[698px] space-x-[20px]">
+          <div className="max-w-full flex w-[698px] flex-wrap space-x-[20px] phone:space-x-0 phone:space-y-[20px] phone:pt-4 ">
             <p className="text-[#2A2231] font-['Overpass'] text-[16px] leading-[22px] tracking-[0.11px]">
               Signature
             </p>
-            <span className="overflow-wrap break-words w-4/5 h-[18px] text-[#2A2231] font-['Overpass'] font-bold text-[14px] leading-[22px] tracking-[0.1px]">
+            <span className="phone:w-full overflow-wrap break-words w-4/5 h-[18px] text-[#2A2231] font-['Overpass'] font-bold text-[14px] leading-[22px] tracking-[0.1px]">
               {sign}
             </span>
           </div>
-          <div className="max-w-full  flex w-[698px] space-x-[20px] flex-wrap  ">
+          <div className="max-w-full  flex w-[698px] space-x-[20px] flex-wrap phone:space-x-0 phone:space-y-[20px] phone:w-full phone:pt-20 small-device:pt-4  ">
             <p className="  text-[#2A2231] font-['Overpass'] text-[16px] leading-[17px] tracking-[0.11px]">
               Signed By
             </p>
-            <span className="overflow-wrap break-words h-[18px] w-4/5 text-[#2A2231] font-['Overpass'] font-bold text-[14px] leading-[22px] tracking-[0.1px]">
+            <span className="phone:w-full overflow-wrap break-words h-[18px] w-4/5 text-[#2A2231] font-['Overpass'] font-bold text-[14px] leading-[22px] tracking-[0.1px]">
               {did}
             </span>
           </div>
-          <div className="max-w-full flex w-[698px] space-x-[20px]">
-            <span className="text-[#2A2231] w-[74px] text-right font-['Overpass'] text-[16px] leading-[17px] tracking-[0.11px]">
+          <div className="max-w-full flex w-[698px] flex-wrap space-x-[20px] phone:pt-10 phone:space-x-0 phone:space-y-[20px]">
+            <span className="text-[#2A2231] w-[74px] phone:w-[134px] text-right font-['Overpass'] text-[16px] leading-[17px] tracking-[0.11px] ">
               Service Endpoints
             </span>
 
@@ -158,7 +158,7 @@ export const BottomSectionVerifyer = () => {
     )
   } else {
     return (
-      <div className=" bg-bottom-body w-screen relative pl-2 pr-2">
+      <div className=" bg-bottom-body w-screen relative small-device:pl-[15px] small-device:pr-[15px]">
         <div
           ref={verificationRef}
           className={`bg-[#ddf0ff80] border-solid relative border-[#517ca240] border-[1px] rounded-b-[15px] min-h-[6rem] max-h-screen mx-auto max-w-[766px] mb-2 shadow-md`}
@@ -166,7 +166,7 @@ export const BottomSectionVerifyer = () => {
           {sign != '' ? (
             renderSignCom()
           ) : (
-            <span className="absolute top-6 left-10 font-['Overpass'] text-[#2a223180] text-[16px] leading-[17px] tracking-[0.11px]">
+            <span className="absolute top-6 left-10 phone:left-2 font-['Overpass'] text-[#2a223180] text-[16px] leading-[17px] tracking-[0.11px]">
               {' '}
               Verification
             </span>

@@ -14,14 +14,14 @@ export const VerifyerComponent = () => {
   const file = useAppSelector(selectFile)
 
   return (
-    <div className="bg-mid-body w-screen overflow-y-hidden overflow-x-hidden relative bottom-0 pl-2 pr-2">
+    <div className="bg-mid-body w-screen overflow-y-hidden overflow-x-hidden relative bottom-0 small-device:pl-[15px] small-device:pr-[15px]">
       <ImportFiles />
       <div
         className={`overflow-y-auto relative flex-col -space-y-1 mx-auto max-w-[766px] min-h-[211px] max-h-[900px]
          bg-[#ddf0ff80] border-solid border-[#517ca240] border-t-[1px] border-l-[1px] border-r-[1px]`}
       >
         {file.length >= 0 && fileName.length === 0 && (
-          <span className="absolute top-4 left-10 text-[#2a223180] font-['Overpass'] text-[16px] leading-[17px] tracking-[0.11px] w-[34px]">
+          <span className="absolute top-4 left-10 phone:left-2 text-[#2a223180] font-['Overpass'] text-[16px] leading-[17px] tracking-[0.11px] w-[34px]">
             Files
           </span>
         )}
