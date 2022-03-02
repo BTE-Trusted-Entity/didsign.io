@@ -6,6 +6,7 @@ import ReleaseIcon from '../../ImageAssets/iconBIG_import_release.svg'
 import {
   addFile,
   addFileName,
+  selectFile,
   selectFilename,
 } from '../../Features/Signer/FileSlice'
 import video from '../../ImageAssets/animation.mp4'
@@ -39,6 +40,7 @@ export const ImportFiles = () => {
   const jwsHash = useAppSelector(selectJwsHash)
   const jws = useAppSelector(selectJwsSign)
   const savedFiles = useAppSelector(selectFilename)
+  const files = useAppSelector(selectFile)
 
   const dispatch = useAppDispatch()
   const handleDrag = () => {
@@ -63,10 +65,13 @@ export const ImportFiles = () => {
   }
   const handleZipCase = async (file: File) => {
     ;(document.getElementById('dropzone') as HTMLDivElement).draggable = false
+    ;(
+      document.getElementById('dropzone') as HTMLDivElement
+    ).style.pointerEvents = 'none'
 
     const sign = await newUnzip(file)
     if (sign === undefined) {
-      console.log('error')
+      dispatch(updateSignStatus(false))
       return
     }
     dispatch(update(sign.signatureWithEndpoint))
@@ -97,49 +102,60 @@ export const ImportFiles = () => {
       }
     }
   }
-  const handleDrop = useCallback((acceptedFiles: File[]) => {
-    if (
-      acceptedFiles.filter((file) =>
-        file.name.match(/\.[0-9a-z]+$/i)?.includes('.didsign')
-      ).length > 1
-    ) {
-      return
-    }
-    acceptedFiles.forEach(async (file: File) => {
-      ;(document.getElementById('video') as HTMLVideoElement).classList.remove(
-        'invisible'
-      )
-      ;(document.getElementById('fast') as HTMLVideoElement).classList.add(
-        'invisible'
-      )
-      setImportIcon(ImportIcon)
-      if (file.name.split('.').pop() === 'didsign' && jwsHash.length > 0) {
+  const handleDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      if (
+        acceptedFiles.filter((file) =>
+          file.name.match(/\.[0-9a-z]+$/i)?.includes('.didsign')
+        ).length > 1
+      ) {
         return
       }
-
-      if (file.name.split('.').pop() === 'zip') {
-        const filenames = await getFileNames(file)
-        const didSignFile = filenames.filter((file: string) =>
-          file.match(/\.[0-9a-z]+$/i)?.includes('.didsign')
+      acceptedFiles.forEach(async (file: File) => {
+        ;(
+          document.getElementById('video') as HTMLVideoElement
+        ).classList.remove('invisible')
+        ;(document.getElementById('fast') as HTMLVideoElement).classList.add(
+          'invisible'
         )
+        setImportIcon(ImportIcon)
+        if (file.name.split('.').pop() === 'didsign' && jwsHash.length > 0) {
+          return
+        }
+
+        if (file.name.split('.').pop() === 'zip') {
+          const filenames = await getFileNames(file)
+          const didSignFile = filenames.filter((file: string) =>
+            file.match(/\.[0-9a-z]+$/i)?.includes('.didsign')
+          )
+          if (
+            savedFiles.find((file) => file.split('.').pop() === 'didsign') !=
+              undefined ||
+            (didSignFile.length === 1 && acceptedFiles.length > 1)
+          ) {
+            return
+          }
+
+          if (didSignFile.length === 1) {
+            dispatch(addFile(file))
+            dispatch(addFileName(filenames))
+            await handleZipCase(file)
+            return
+          }
+        }
         if (
-          savedFiles.find((file) => file.split('.').pop() === 'didsign') !=
-            undefined ||
-          (didSignFile.length === 1 && acceptedFiles.length > 1)
+          files.filter((file) =>
+            file.name.match(/\.[0-9a-z]+$/i)?.includes('.didsign')
+          ).length >= 1 &&
+          file.name.split('.').pop() === 'didsign'
         ) {
           return
         }
-
-        if (didSignFile.length === 1) {
-          dispatch(addFile(file))
-          dispatch(addFileName(filenames))
-          await handleZipCase(file)
-          return
-        }
-      }
-      await handleIndividualCase(file)
-    })
-  }, [])
+        await handleIndividualCase(file)
+      })
+    },
+    [files]
+  )
   useEffect(() => {
     if (jwsHash.length > 0) {
       fileHash.filter(async (hash, index) => {
