@@ -13,7 +13,10 @@ import BtnStartOver from '../../ImageAssets/button_start_over_NEW.svg'
 import { clearAll, clearFileName } from '../../Features/Signer/FileSlice'
 import { clearHash } from '../../Features/Signer/hashSlice'
 import AttentionIcon from '../../ImageAssets/icon_attention.svg'
-import { selectJwsSignStatus } from '../../Features/Signer/VerifyJwsSlice'
+import {
+  clearJWS,
+  selectJwsSignStatus,
+} from '../../Features/Signer/VerifyJwsSlice'
 
 export function BottomSectionVerifyer() {
   const sign = useAppSelector(selectVerifiedSign)
@@ -36,6 +39,8 @@ export function BottomSectionVerifyer() {
     dispatch(clearAll())
     dispatch(clearHash())
     dispatch(clearFileName())
+    dispatch(clearHash())
+    dispatch(clearJWS())
   }
   function renderVerificationError() {
     return (
@@ -135,9 +140,15 @@ export function BottomSectionVerifyer() {
       <div className=" bg-bottom-body w-screen relative pl-2 pr-2">
         <div
           ref={verificationRef}
-          className={`bg-[#ddf0ff80] border-solid relative border-[#517ca240] border-[1px] rounded-b-[15px] min-h-[8rem] max-h-screen mx-auto max-w-[766px] mb-4 shadow-md`}
+          className={`bg-[#ddf0ff80] border-solid relative border-[#517ca240] border-[1px] rounded-b-[15px] min-h-[6rem] max-h-screen mx-auto max-w-[766px] mb-2 shadow-md`}
         >
           {showSignatureError()}
+          <button
+            className="absolute -right-1 -bottom-1"
+            onClick={handleStartOver}
+          >
+            <img className="h-12 w-12" src={BtnStartOver} />
+          </button>
         </div>
       </div>
     )
@@ -146,7 +157,7 @@ export function BottomSectionVerifyer() {
       <div className=" bg-bottom-body w-screen relative pl-2 pr-2">
         <div
           ref={verificationRef}
-          className={`bg-[#ddf0ff80] border-solid relative border-[#517ca240] border-[1px] rounded-b-[15px] min-h-[8rem] max-h-screen mx-auto max-w-[766px] mb-4 shadow-md`}
+          className={`bg-[#ddf0ff80] border-solid relative border-[#517ca240] border-[1px] rounded-b-[15px] min-h-[6rem] max-h-screen mx-auto max-w-[766px] mb-2 shadow-md`}
         >
           {sign != '' ? (
             renderSignCom()
