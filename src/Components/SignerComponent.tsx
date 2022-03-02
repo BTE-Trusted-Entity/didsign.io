@@ -13,7 +13,7 @@ function SignerComponent() {
   return (
     <div
       id="sign-component"
-      className="bg-mid-body w-screen relative overflow-y-auto overflow-x-hidden"
+      className="bg-mid-body w-screen relative overflow-x-hidden"
     >
       <ImportFilesSigner />
       <div
