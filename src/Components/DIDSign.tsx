@@ -1,9 +1,9 @@
 import React from 'react'
 import '../Styles/App.css'
-import Header from './Header'
-import SignerComponent from './SignerComponent'
-import VerifyerComponent from './VerifyerComponent'
-import SignVerifyBtn from './SignVerifyBtn'
+import { Header } from './Header'
+import { SignerComponent } from './SignerComponent'
+import { VerifyerComponent } from './VerifyerComponent'
+import { SignVerifyBtn } from './SignVerifyBtn'
 import { Footer } from './Footer'
 import { BottomSectionSigner } from './BottomSection'
 import { useAppSelector } from '../app/hooks'
@@ -13,13 +13,13 @@ import BottomLeftBubble from '../ImageAssets/BottomLeftBubble.svg'
 
 import BottomRightBubble from '../ImageAssets/BottomRightBubble.svg'
 
-function showSigner() {
+const showSigner = () => {
   return <SignerComponent />
 }
-function showVerifyer() {
+const showVerifyer = () => {
   return <VerifyerComponent />
 }
-export function DIDSign() {
+export const DIDSign = () => {
   const userIsSigner = useAppSelector(selectUser)
 
   return (
