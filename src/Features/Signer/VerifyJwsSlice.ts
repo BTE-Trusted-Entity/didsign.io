@@ -24,9 +24,10 @@ export const jwsHashSlice = createSlice({
       state.hashArray = initialState.hashArray
       state.finalHash = initialState.finalHash
       state.sign = initialState.sign
+      state.signStatus = initialState.signStatus
     },
     addJwsHashArray: (state, action: PayloadAction<string[]>) => {
-      state.hashArray = action.payload
+      state.hashArray = state.hashArray.concat(action.payload)
     },
     addJwsSign: (state, action: PayloadAction<string>) => {
       state.sign = action.payload
