@@ -27,7 +27,7 @@ function VerifyerComponent() {
         )}
         <ZippedFile />
         {fileName.length > 0 && <FileNameList />}
-        {file.length > 0 && <VerifierFileList />}
+        {fileName.length === 0 && file.length > 0 && <VerifierFileList />}
         {file.length === 0 && <EmptyFilesList />}
       </div>
       <img
