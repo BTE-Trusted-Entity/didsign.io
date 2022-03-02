@@ -25,49 +25,45 @@ export const SignVerifyBtn = () => {
   }
   return (
     <div className="bg-mid-body">
-      <div className="flex w-screen mx-auto h-[42px]">
+      <div className="flex w-screen mx-auto h-[42px] small-device:pr-[15px] small-device:pl-[15px]">
         <button
           onClick={handleSigner}
           id="signer-btn"
-          className={`flex flex-col  items-end h-full w-1/2 ${
+          className={`flex flex-col  items-end small-device:items-center h-full w-1/2 justify-center ${
             !userIsSigner && ' bg-selected-button'
           }`}
         >
           <span
-            className={`pt-[3px] h-full mr-10 flex flex-col  justify-center items-center w-[100%]  my-auto max-w-[383px] font-normal  text-[17px] leading-[16px]  tracking-[0.16px] uppercase font-['Overpass']   ${
+            className={` h-full mr-10 flex flex-col  justify-center items-center w-[100%]  my-auto max-w-[383px] font-normal  text-[17px] leading-[16px]  tracking-[0.16px] uppercase font-['Overpass']   ${
               !userIsSigner
                 ? 'text-[#3e6e9980] text-[16px] leading-[17px] my-auto '
                 : 'text-[#2A2231]'
             }`}
           >
             SIGN
-            <div
-              className={`${
-                !userIsSigner && 'invisible'
-              } pt-[3px] w-[120px] max-w-[383px] border-b-black border-b-4`}
-            ></div>
+            {userIsSigner && (
+              <div className="pt-[3px] w-[120px] max-w-[383px] border-b-black border-b-4"></div>
+            )}
           </span>
         </button>
         <button
           onClick={handleSigner}
           id="verify-btn"
-          className={`flex flex-col  items-start h-full w-1/2 ${
+          className={`flex flex-col  items-start small-device:items-center h-full w-1/2 justify-center ${
             userIsSigner && ' bg-selected-button'
           }`}
         >
           <span
-            className={`pt-[3px] h-full flex flex-col ml-10  justify-center items-center w-[100%]  my-auto max-w-[383px] font-normal  text-[17px] leading-[16px]  tracking-[0.16px] uppercase font-['Overpass']   ${
+            className={`h-full flex flex-col ml-10  justify-center items-center w-[100%]  my-auto max-w-[383px] font-normal  text-[17px] leading-[16px]  tracking-[0.16px] uppercase font-['Overpass']   ${
               userIsSigner
                 ? 'text-[#3e6e9980] text-[16px] leading-[17px] my-auto '
                 : 'text-[#2A2231]'
             }`}
           >
             Verify
-            <div
-              className={`${
-                userIsSigner && 'invisible'
-              } pt-[3px] w-[120px] max-w-[383px] border-b-black border-b-4`}
-            ></div>
+            {!userIsSigner && (
+              <div className="pt-[3px]  w-[120px] max-w-[383px] border-b-black border-b-4"></div>
+            )}
           </span>
         </button>
       </div>
