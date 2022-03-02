@@ -29,10 +29,14 @@ export const hashSlice = createSlice({
     addHash: (state, action: PayloadAction<string>) => {
       state.value = [...state.value, action.payload]
     },
+    addHashArray: (state, action: PayloadAction<string[]>) => {
+      state.value = action.payload
+    },
   },
 })
 
-export const { deleteItem, clearHash, addHash } = hashSlice.actions
+export const { deleteItem, clearHash, addHash, addHashArray } =
+  hashSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectHash = (state: RootState) => state.hash.value
