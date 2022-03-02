@@ -9,7 +9,7 @@ import ImageIcon from '../ImageAssets/doc_image.svg'
 import { fileStatus } from '../Features/Signer/EndpointSlice'
 import AttentionIcon from '../ImageAssets/icon_attention.svg'
 
-export function FileNameList() {
+export const FileNameList = () => {
   const fileName = useAppSelector(selectFilename)
   const status = useAppSelector(fileStatus)
 

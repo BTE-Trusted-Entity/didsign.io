@@ -11,7 +11,7 @@ import ZipIcon from '../ImageAssets/doc_zip_NEW.svg'
 import { clearEndpoint } from '../Features/Signer/EndpointSlice'
 import { clearHash } from '../Features/Signer/hashSlice'
 
-export function ZippedFile() {
+export const ZippedFile = () => {
   const fileName = useAppSelector(selectFilename)
   const files = useAppSelector(selectFile)
   const dispatch = useAppDispatch()

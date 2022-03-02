@@ -9,10 +9,10 @@ import InfoIcon from '../ImageAssets/iconBIG_info.svg'
 import AttentionIcon from '../ImageAssets/iconBIG_attention.svg'
 import CenterLeftBubble from '../ImageAssets/CenterLeftBubble.svg'
 
-export function SignBtn() {
+export const SignBtn = () => {
   const [signStatus, setSignStatus] = useState<boolean | 'Default'>('Default')
   const [popupIcon, setPopupIcon] = useState<string>(InfoIcon)
-  function ButtonDisabled() {
+  const ButtonDisabled = () => {
     return (
       <button
         className="font-['Overpass'] text-[14px] leading-[16px]  tracking-[0.1px] text-[#ffffff80] text-center w-[160px] h-[30px] mt-4 mb-4 rounded-md 
@@ -23,7 +23,7 @@ export function SignBtn() {
       </button>
     )
   }
-  function ButtonEnabled() {
+  const ButtonEnabled = () => {
     return (
       <button
         className="font-['Overpass'] text-[14px] leading-[16px]  tracking-[0.1px] text-white text-center w-[160px] h-[30px] mt-4 mb-4 rounded-md 

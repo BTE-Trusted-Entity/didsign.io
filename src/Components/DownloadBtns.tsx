@@ -21,7 +21,7 @@ import {
 import '../Styles/App.css'
 import BtnStartOver from '../ImageAssets/button_start_over_NEW.svg'
 
-export function DownloadBtns() {
+export const DownloadBtns = () => {
   const sign = useAppSelector(selectSign)
   const did = useAppSelector(selectDid)
   const finalHash = useAppSelector(selectFinalHash)

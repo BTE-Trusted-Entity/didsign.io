@@ -11,7 +11,7 @@ import video from '../ImageAssets/animation.mp4'
 import fast from '../ImageAssets/animation2.mp4'
 import { useAppDispatch } from '../app/hooks'
 
-export function ImportFilesSigner() {
+export const ImportFilesSigner = () => {
   const [videoSource, setVideoSource] = useState<string>(video)
   const [impIcon, setImportIcon] = useState<string>(ImportIcon)
 

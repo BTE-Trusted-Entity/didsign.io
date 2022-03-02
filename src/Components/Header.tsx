@@ -2,7 +2,7 @@ import React from 'react'
 import logo from '../ImageAssets/logo_DIDsign.svg'
 import TopRightBubble from '../ImageAssets/TopRightBubble.svg'
 import TopLeftBubble from '../ImageAssets/TopLeftBubble.svg'
-function Header() {
+export const Header = () => {
   return (
     <div>
       <div className="bg-header w-screen h-[96px] flex flex-col relative ">
@@ -28,5 +28,3 @@ function Header() {
     </div>
   )
 }
-
-export default Header

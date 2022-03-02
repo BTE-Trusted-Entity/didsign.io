@@ -9,7 +9,7 @@ import { fileStatus } from '../../Features/Signer/EndpointSlice'
 import AttentionIcon from '../../ImageAssets/icon_attention.svg'
 import OkIcon from '../../ImageAssets/icon_oK.svg'
 
-export function VerifierFileList() {
+export const VerifierFileList = () => {
   const files = useAppSelector(selectFile)
   const status = useAppSelector(fileStatus)
 

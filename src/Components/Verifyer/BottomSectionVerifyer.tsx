@@ -18,7 +18,7 @@ import {
   selectJwsSignStatus,
 } from '../../Features/Signer/VerifyJwsSlice'
 
-export function BottomSectionVerifyer() {
+export const BottomSectionVerifyer = () => {
   const sign = useAppSelector(selectVerifiedSign)
   const did = useAppSelector(selectVerifiedDid)
   const urls = useAppSelector(selectEndpointURL)
@@ -42,7 +42,7 @@ export function BottomSectionVerifyer() {
     dispatch(clearHash())
     dispatch(clearJWS())
   }
-  function renderVerificationError() {
+  const renderVerificationError = () => {
     return (
       <div className="flex flex-col w-[90%] mx-auto ml-3  mt-10 mb-10 space-y-[40px]">
         <div className="flex w-full items-center justify-self-start space-x-[10px]">
@@ -63,7 +63,7 @@ export function BottomSectionVerifyer() {
       </div>
     )
   }
-  function showSignatureError() {
+  const showSignatureError = () => {
     return (
       <div className="flex flex-col w-[90%] mx-auto ml-3  mt-10 mb-10 space-y-[40px]">
         <div className="flex w-full items-center justify-self-start space-x-[10px]">
@@ -84,7 +84,7 @@ export function BottomSectionVerifyer() {
       </div>
     )
   }
-  function renderSignCom() {
+  const renderSignCom = () => {
     if (status.includes(false)) {
       return renderVerificationError()
     } else {

@@ -4,7 +4,7 @@ import { SignBtn } from './SignBtn'
 import { selectSign } from '../Features/Signer/SignatureSlice'
 import { DownloadBtns } from './DownloadBtns'
 
-export function BottomSectionSigner() {
+export const BottomSectionSigner = () => {
   const sign = useAppSelector(selectSign)
   return (
     <div className=" bg-bottom-body w-screen relative overflow-x-hidden">

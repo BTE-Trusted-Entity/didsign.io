@@ -2,7 +2,7 @@ import React from 'react'
 import Logo from '../ImageAssets/logo_DIDsign.svg'
 import KiltLogo from '../ImageAssets/Kilt.svg'
 
-export function Footer() {
+export const Footer = () => {
   return (
     <div className="bg-header flex items-center justify-center   h-[35px] w-screen relative mt-auto  big-phone:h-28 ">
       <div className="flex items-center justify-center w-[766px] h-full relative">

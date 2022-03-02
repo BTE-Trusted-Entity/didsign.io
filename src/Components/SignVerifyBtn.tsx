@@ -7,7 +7,7 @@ import { clearSign } from '../Features/Signer/SignatureSlice'
 import { selectUser, updateType } from '../Features/Signer/UserSlice'
 import { clearJWS } from '../Features/Signer/VerifyJwsSlice'
 
-function SignVerifyBtn() {
+export const SignVerifyBtn = () => {
   const userIsSigner = useAppSelector(selectUser)
 
   const dispatch = useAppDispatch()
@@ -74,4 +74,3 @@ function SignVerifyBtn() {
     </div>
   )
 }
-export default SignVerifyBtn

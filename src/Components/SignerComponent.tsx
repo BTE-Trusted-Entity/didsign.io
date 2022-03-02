@@ -8,7 +8,7 @@ import { EmptyFilesList } from './EmptyFilesList'
 import CenterRightBubble from '../ImageAssets/CenterRightBubble.svg'
 import CenterLeftBubble from '../ImageAssets/CenterLeftBubble.svg'
 
-function SignerComponent() {
+export const SignerComponent = () => {
   const files = useAppSelector(selectFile)
   return (
     <div
@@ -36,4 +36,3 @@ function SignerComponent() {
     </div>
   )
 }
-export default SignerComponent

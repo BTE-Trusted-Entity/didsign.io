@@ -33,7 +33,7 @@ import {
 } from '../../Features/Signer/VerifyJwsSlice'
 import { addHash, selectHash } from '../../Features/Signer/hashSlice'
 
-export function ImportFiles() {
+export const ImportFiles = () => {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon)
   const fileHash = useAppSelector(selectHash)
   const jwsHash = useAppSelector(selectJwsHash)

@@ -9,7 +9,7 @@ import CenterRightBubble from '../ImageAssets/CenterRightBubble.svg'
 import CenterLeftBubble from '../ImageAssets/CenterLeftBubble.svg'
 import { EmptyFilesList } from './EmptyFilesList'
 
-function VerifyerComponent() {
+export const VerifyerComponent = () => {
   const fileName = useAppSelector(selectFilename)
   const file = useAppSelector(selectFile)
 
@@ -41,4 +41,3 @@ function VerifyerComponent() {
     </div>
   )
 }
-export default VerifyerComponent

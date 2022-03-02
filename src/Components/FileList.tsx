@@ -9,7 +9,7 @@ import { clearSign } from '../Features/Signer/SignatureSlice'
 import DIDIcon from '../ImageAssets/doc_signature_NEW.svg'
 import ImageIcon from '../ImageAssets/doc_image.svg'
 
-export function FileList() {
+export const FileList = () => {
   const dispatch = useAppDispatch()
   const files = useAppSelector(selectFile)
   const hash = useAppSelector(selectHash)
