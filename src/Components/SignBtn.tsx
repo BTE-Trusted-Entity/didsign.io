@@ -10,7 +10,7 @@ import AttentionIcon from '../ImageAssets/iconBIG_attention.svg'
 import CenterLeftBubble from '../ImageAssets/CenterLeftBubble.svg'
 
 export function SignBtn() {
-  const [signStatus, setSignStatus] = useState<boolean | 'Default'>()
+  const [signStatus, setSignStatus] = useState<boolean | 'Default'>('Default')
   const [popupIcon, setPopupIcon] = useState<string>(InfoIcon)
   function ButtonDisabled() {
     return (
@@ -62,6 +62,8 @@ export function SignBtn() {
           keyID: response.keyID,
           signature: response.signature,
         }
+        document.body.style.overflowY = 'scroll'
+
         const jws = generateJWS(signature, await finalHash)
         const signedDoc: SignDoc = { hashes: hashes, jws: jws }
         const blob = new Blob([JSON.stringify(signedDoc)], {
@@ -131,7 +133,7 @@ export function SignBtn() {
           )}
           <button
             onClick={handleDismiss}
-            className="font-['Overpass'] -tracking-tigher rounded-md w-1/3 text-[14px] pl-4 pr-4 text-center h-[25px] bg-[#3E6E99] text-white"
+            className="font-['Overpass'] rounded-md w-1/3 text-[12px] leading-[12px]  tracking-[0.1px] pl-4 pr-4 text-center h-[25px] bg-[#3E6E99] text-white"
           >
             DISMISS
           </button>
