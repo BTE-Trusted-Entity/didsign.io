@@ -3,7 +3,11 @@ import '../../Styles/App.css'
 import React, { useCallback, useEffect, useState } from 'react'
 import ImportIcon from '../../ImageAssets/iconBIG_import_NEW.svg'
 import ReleaseIcon from '../../ImageAssets/iconBIG_import_release.svg'
-import { addFile, addFileName } from '../../Features/Signer/FileSlice'
+import {
+  addFile,
+  addFileName,
+  selectFilename,
+} from '../../Features/Signer/FileSlice'
 import video from '../../ImageAssets/animation.mp4'
 import fast from '../../ImageAssets/animation2.mp4'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
@@ -18,22 +22,23 @@ import {
   updateIndividualFileStatus,
   updateIndividualFileStatusOnIndex,
 } from '../../Features/Signer/EndpointSlice'
-import { createHash } from '../../Utils/sign-helpers'
+import { createHash, createHashFromHashArray } from '../../Utils/sign-helpers'
 import { SignDoc } from '../../Utils/types'
 import {
   addJwsHashArray,
-  selectBaseHash,
-  selectJwsSignStatus,
+  addJwsSign,
+  selectJwsHash,
+  selectJwsSign,
   updateSignStatus,
 } from '../../Features/Signer/VerifyJwsSlice'
+import { addHash, selectHash } from '../../Features/Signer/hashSlice'
 
 export function ImportFiles() {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon)
-  const [jws, setJWS] = useState<string>()
-  const [jwsHash, setJwsHash] = useState<string[]>([])
-  const [fileHash, setFileHash] = useState<string[]>([])
-  const baseHash = useAppSelector(selectBaseHash)
-  const jwsStatus = useAppSelector(selectJwsSignStatus)
+  const fileHash = useAppSelector(selectHash)
+  const jwsHash = useAppSelector(selectJwsHash)
+  const jws = useAppSelector(selectJwsSign)
+  const savedFiles = useAppSelector(selectFilename)
 
   const dispatch = useAppDispatch()
   const handleDrag = () => {
@@ -75,79 +80,81 @@ export function ImportFiles() {
     reader.onload = async function () {
       if (file.name.split('.').pop() === 'didsign') {
         doc = JSON.parse(reader.result as string)
-        setJWS(doc.jws)
-        setJwsHash(doc.hashes)
+        const baseHash = await createHashFromHashArray(doc.hashes)
+        const hashFromJWS: string = JSON.parse(atob(doc.jws.split('.')[1])).hash
+        if (baseHash != hashFromJWS) {
+          dispatch(updateSignStatus(false))
+        }
+        dispatch(addJwsSign(doc.jws))
         dispatch(addJwsHashArray(doc.hashes))
         dispatch(updateIndividualFileStatus(true))
 
-        setFileHash((oldHash) => [...oldHash, 'hash'])
+        dispatch(addHash('hash'))
       } else {
         const hash = await createHash(reader.result)
-        setFileHash((oldHash) => [...oldHash, hash])
+        dispatch(addHash(hash))
         dispatch(updateIndividualFileStatus(false))
       }
     }
   }
-  const handleDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      if (
-        acceptedFiles.filter((file) =>
-          file.name.match(/\.[0-9a-z]+$/i)?.includes('.didsign')
-        ).length > 1
-      ) {
+  const handleDrop = useCallback((acceptedFiles: File[]) => {
+    if (
+      acceptedFiles.filter((file) =>
+        file.name.match(/\.[0-9a-z]+$/i)?.includes('.didsign')
+      ).length > 1
+    ) {
+      return
+    }
+    acceptedFiles.forEach(async (file: File) => {
+      ;(document.getElementById('video') as HTMLVideoElement).classList.remove(
+        'invisible'
+      )
+      ;(document.getElementById('fast') as HTMLVideoElement).classList.add(
+        'invisible'
+      )
+      setImportIcon(ImportIcon)
+      if (file.name.split('.').pop() === 'didsign' && jwsHash.length > 0) {
         return
       }
-      acceptedFiles.forEach(async (file: File) => {
-        ;(
-          document.getElementById('video') as HTMLVideoElement
-        ).classList.remove('invisible')
-        ;(document.getElementById('fast') as HTMLVideoElement).classList.add(
-          'invisible'
+
+      if (file.name.split('.').pop() === 'zip') {
+        const filenames = await getFileNames(file)
+        const didSignFile = filenames.filter((file: string) =>
+          file.match(/\.[0-9a-z]+$/i)?.includes('.didsign')
         )
-        setImportIcon(ImportIcon)
-        if (file.name.split('.').pop() === 'didsign' && jwsHash.length > 0) {
+        if (
+          savedFiles.find((file) => file.split('.').pop() === 'didsign') !=
+            undefined ||
+          (didSignFile.length === 1 && acceptedFiles.length > 1)
+        ) {
           return
         }
 
-        if (file.name.split('.').pop() === 'zip') {
-          const filenames = await getFileNames(file)
-          const didSignFile = filenames.filter((file: string) =>
-            file.match(/\.[0-9a-z]+$/i)?.includes('.didsign')
-          )
-          if (didSignFile.length === 1) {
-            dispatch(addFile(file))
-            dispatch(addFileName(filenames))
-            await handleZipCase(file)
-            return
-          }
+        if (didSignFile.length === 1) {
+          dispatch(addFile(file))
+          dispatch(addFileName(filenames))
+          await handleZipCase(file)
+          return
         }
-        await handleIndividualCase(file)
-      })
-    },
-    [baseHash]
-  )
+      }
+      await handleIndividualCase(file)
+    })
+  }, [])
   useEffect(() => {
-    if (jwsHash.length > 0 && jwsStatus == 'Not Checked') {
+    if (jwsHash.length > 0) {
       fileHash.filter(async (hash, index) => {
         if (jwsHash.includes(hash)) {
           dispatch(updateIndividualFileStatusOnIndex(index))
           if (jws != 'Verified') {
-            if (index > 1) {
+            if (index >= 1 && fileHash.length > 2) {
               return
             }
-            const hashFromJWS: string = JSON.parse(
-              atob(jws!.split('.')[1])
-            ).hash
-            if ((await baseHash) != hashFromJWS) {
-              dispatch(updateSignStatus(false))
-              return
-            }
-            setJWS('Verified')
-            const verifiedSignatureInstance = await getVerifiedData(
-              jws as string
-            )
+            const verifiedSignatureInstance = await getVerifiedData(jws)
             if (verifiedSignatureInstance != undefined) {
               dispatch(update(verifiedSignatureInstance))
+              dispatch(addJwsSign('Verified'))
+            } else {
+              dispatch(updateSignStatus(false))
             }
           } else {
             return
@@ -155,7 +162,7 @@ export function ImportFiles() {
         }
       })
     }
-  }, [jwsHash, jws, fileHash, jwsStatus])
+  }, [fileHash])
   return (
     <div
       id="dropzone"
