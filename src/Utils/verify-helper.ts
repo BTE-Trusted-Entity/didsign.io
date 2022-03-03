@@ -4,24 +4,16 @@ import {
   SignDoc,
 } from './types'
 import * as Kilt from '@kiltprotocol/sdk-js'
-import { createHash } from './sign-helpers'
+import { createHash, createHashFromHashArray } from './sign-helpers'
 import * as zip from '@zip.js/zip.js'
 import JSZip from 'jszip'
-
-const fileStatuses = {
-  fileStatusArray: [] as boolean[],
-  addStatus(status: boolean) {
-    this.fileStatusArray.push(status)
-    return this
-  },
-  get fileStatus() {
-    return this.fileStatusArray
-  },
-}
 
 export const getVerifiedData = async (
   jws: string
 ): Promise<ISignatureEndPoint | undefined> => {
+  if (jws === '') {
+    return undefined
+  }
   const header = atob(jws.split('.')[0])
   const payload = atob(jws.split('.')[1])
   const sign = atob(jws.split('.')[2])
@@ -73,9 +65,7 @@ export const newUnzip = async (
   const reader = new zip.ZipReader(new zip.BlobReader(file))
   const fileData: string[] = []
   let doc: SignDoc = { jws: '', hashes: [] }
-  if (fileStatuses.fileStatusArray.length > 0) {
-    fileStatuses.fileStatusArray = []
-  }
+  const fileStatuses: boolean[] = []
   // get all entries from the zip
   const entries = await reader.getEntries()
   const files = entries.filter((key: zip.Entry) => {
@@ -85,28 +75,41 @@ export const newUnzip = async (
     for (const entry of files) {
       if (entry.getData != undefined) {
         const text = await entry.getData(new zip.TextWriter())
-        if (entry.filename == 'signature.didsign') {
-          fileStatuses.addStatus(true)
-          doc = JSON.parse(text)
+        const didSignFile = entry.filename.split('.').pop() == 'didsign'
+        if (didSignFile) {
+          fileStatuses.push(true)
+          doc = { hashes: JSON.parse(text).hashes, jws: JSON.parse(text).jws }
           continue
-        }
-
-        const hash = await createHash(text)
-        if (JSON.stringify(doc.hashes).includes(hash)) {
-          fileStatuses.addStatus(true)
         } else {
-          fileStatuses.addStatus(false)
+          const hash = await createHash(text)
+          fileData.push(hash)
         }
-        fileData.push(hash)
       }
     }
     await reader.close()
+    fileData.map((hash) => {
+      if (doc.hashes.includes(hash)) {
+        fileStatuses.push(true)
+      } else {
+        fileStatuses.push(false)
+      }
+    })
+    const baseHash = await createHashFromHashArray(doc.hashes)
+
+    const jwsBaseHash = atob(doc.jws.split('.')[1])
+
+    if (
+      baseHash != JSON.parse(jwsBaseHash).hash ||
+      fileStatuses.includes(false)
+    ) {
+      return undefined
+    }
 
     const signatureEndpointInstance = await getVerifiedData(doc.jws)
     if (signatureEndpointInstance != undefined) {
       const signEndpointStatus: ISignatureEndPointWithStatus = {
         signatureWithEndpoint: signatureEndpointInstance,
-        fileStatus: fileStatuses.fileStatus,
+        fileStatus: fileStatuses,
       }
 
       return signEndpointStatus
@@ -123,4 +126,16 @@ export const getFileNames = async (file: File): Promise<string[]> => {
     return !key.match(/^__MACOSX\//)
   })
   return filenames
+}
+export const replaceFileStatus = (statusArray: boolean[]): boolean[] => {
+  statusArray = statusArray.map((element) => {
+    if (element === true) {
+      return false
+    }
+    return element
+  })
+  return statusArray
+}
+export const isDidSignFile = (file: string) => {
+  return file.split('.').pop() == 'didsign'
 }
