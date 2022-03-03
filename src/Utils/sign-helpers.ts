@@ -6,17 +6,6 @@ import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import { Signature } from './types'
 
-const sporranWindow = window.kilt || {}
-export const createHashFromHashArray = async (
-  hashArray: string[]
-): Promise<string> => {
-  if (hashArray.length === 1) {
-    return hashArray[0]
-  }
-  const sortedHash = [...hashArray].sort()
-  return await createHash(sortedHash)
-}
-
 export const sha56 = hasher.from({
   name: 'sha2-256',
   code: 0x12,
@@ -29,6 +18,18 @@ export const createHash = async (
   const hash = await sha56.digest(json.encode(blob))
   return base16.baseEncode(hash.bytes)
 }
+
+const sporranWindow = window.kilt || {}
+export const createHashFromHashArray = async (
+  hashArray: string[]
+): Promise<string> => {
+  if (hashArray.length === 1) {
+    return hashArray[0]
+  }
+  const sortedHash = [...hashArray].sort()
+  return await createHash(sortedHash)
+}
+
 export const generateZipFile = async (files: File[]) => {
   const zip = new JSZip()
   files.map((file) => zip.file(file.name, file))
