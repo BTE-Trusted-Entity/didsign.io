@@ -6,7 +6,7 @@ interface HashState {
   hashArray: string[]
   finalHash: string
   sign: string
-  signStatus: boolean | 'Not Checked'
+  signStatus: boolean | 'Not Checked' | 'Validating'
 }
 
 // Define the initial state using that type
@@ -21,19 +21,31 @@ export const jwsHashSlice = createSlice({
   initialState,
   reducers: {
     clearJWS: (state) => {
-      state.hashArray = initialState.hashArray
-      state.finalHash = initialState.finalHash
-      state.sign = initialState.sign
-      state.signStatus = initialState.signStatus
+      return {
+        ...state,
+        hashArray: initialState.hashArray,
+        finalHash: initialState.finalHash,
+        sign: initialState.sign,
+        signStatus: initialState.signStatus,
+      }
     },
     addJwsHashArray: (state, action: PayloadAction<string[]>) => {
       state.hashArray = state.hashArray.concat(action.payload)
     },
     addJwsSign: (state, action: PayloadAction<string>) => {
-      state.sign = action.payload
+      return {
+        ...state,
+        sign: action.payload,
+      }
     },
-    updateSignStatus: (state, action: PayloadAction<boolean>) => {
-      state.signStatus = action.payload
+    updateSignStatus: (
+      state,
+      action: PayloadAction<boolean | 'Not Checked' | 'Validating'>
+    ) => {
+      return {
+        ...state,
+        signStatus: action.payload,
+      }
     },
   },
 })
