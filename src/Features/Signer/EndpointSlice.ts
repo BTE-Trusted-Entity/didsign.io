@@ -4,6 +4,7 @@ import {
   ISignatureEndPoint,
   ISignatureEndPointWithStatus,
 } from '../../Utils/types'
+import { replaceFileStatus } from '../../Utils/verify-helper'
 
 const initialState: ISignatureEndPointWithStatus = {
   signatureWithEndpoint: { signature: '', did: '', urls: [], types: [] },
@@ -20,7 +21,6 @@ export const EndpointSlice = createSlice({
       state.signatureWithEndpoint.urls = initialState.signatureWithEndpoint.urls
       state.signatureWithEndpoint.types =
         initialState.signatureWithEndpoint.types
-      state.fileStatus = initialState.fileStatus
     },
     // Use the PayloadAction type to declare the contents of `action.payload`
     update: (state, action: PayloadAction<ISignatureEndPoint>) => {
@@ -43,6 +43,16 @@ export const EndpointSlice = createSlice({
     ) => {
       state.fileStatus[action.payload] = true
     },
+    deleteFilestatus: (state, action: PayloadAction<number>) => {
+      state.fileStatus.splice(action.payload, 1)
+    },
+
+    replaceStatus: (state) => {
+      return {
+        ...state,
+        fileStatus: replaceFileStatus(state.fileStatus),
+      }
+    },
   },
 })
 
@@ -52,6 +62,8 @@ export const {
   updateIndividualFileStatus,
   updateIndividualFileStatusOnIndex,
   updateAllFilesStatus,
+  deleteFilestatus,
+  replaceStatus,
 } = EndpointSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
@@ -64,5 +76,4 @@ export const selectVerifiedDid = (state: RootState) =>
 export const selectVerifiedSign = (state: RootState) =>
   state.endpoint.signatureWithEndpoint.signature
 export const fileStatus = (state: RootState) => state.endpoint.fileStatus
-
 export default EndpointSlice.reducer
