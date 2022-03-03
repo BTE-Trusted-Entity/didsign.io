@@ -11,22 +11,12 @@ export const Footer = () => {
           src={Logo}
         />
 
-        <div className="items-center flex flex-wrap max-w-3/4 justify-center space-x-2">
-          <span className="text-white font-['Overpass'] text-[14px] leading-[16px] tracking-[0.1px]">
-            Imprint{' '}
-          </span>
-          <span className="text-white font-['Overpass'] text-[14px] leading-[16px] tracking-[0.1px]">
-            -
-          </span>
-          <span className="text-white font-['Overpass'] text-[14px] leading-[16px] tracking-[0.1px] ">
-            Terms and Conditions
-          </span>
-          <span className="text-white font-['Overpass'] text-[14px] leading-[16px] tracking-[0.1px]">
-            -
-          </span>
-          <span className="text-white font-['Overpass'] text-[14px] leading-[16px] tracking-[0.1px]">
-            Privacy Policy{' '}
-          </span>
+        <div className="items-center flex flex-wrap max-w-3/4 justify-center space-x-2 text-white font-['Overpass'] text-[14px] leading-[16px] tracking-[0.1px]">
+          <span>Imprint </span>
+          <span>-</span>
+          <span>Terms and Conditions</span>
+          <span>-</span>
+          <span>Privacy Policy </span>
         </div>
 
         <img
