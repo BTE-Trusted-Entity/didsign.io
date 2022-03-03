@@ -25,7 +25,7 @@ export const SignVerifyBtn = () => {
   }
   return (
     <div className="bg-mid-body">
-      <div className="flex w-screen mx-auto h-[42px] small-device:pr-[15px] small-device:pl-[15px]">
+      <div className="flex w-screen mx-auto h-[42px]">
         <button
           onClick={handleSigner}
           id="signer-btn"
