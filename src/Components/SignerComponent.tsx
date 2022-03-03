@@ -1,4 +1,3 @@
-import '../Styles/App.css'
 import React from 'react'
 import { ImportFilesSigner } from './ImportFiles'
 import { FileList } from './FileList'

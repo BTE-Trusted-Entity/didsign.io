@@ -1,7 +1,6 @@
 import React from 'react'
 import DocIcon from '../ImageAssets/doc_generic.svg'
 import OkIcon from '../ImageAssets/icon_oK.svg'
-import '../Styles/App.css'
 import { useAppSelector } from '../app/hooks'
 import { selectFilename } from '../Features/Signer/FileSlice'
 import DIDIcon from '../ImageAssets/doc_signature_NEW.svg'
@@ -26,7 +25,7 @@ export const FileNameList = () => {
           <div className="flex items-center mt-2">
             {file.includes('png') || file.includes('jpg') ? (
               <img src={ImageIcon} />
-            ) : file == 'signature.didsign' ? (
+            ) : file.split('.').pop() === 'didsign' ? (
               <img src={DIDIcon} />
             ) : (
               <img src={DocIcon} />

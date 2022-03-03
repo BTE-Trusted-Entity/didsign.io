@@ -18,7 +18,6 @@ import {
   clearFileName,
   selectFile,
 } from '../Features/Signer/FileSlice'
-import '../Styles/App.css'
 import BtnStartOver from '../ImageAssets/button_start_over_NEW.svg'
 
 export const DownloadBtns = () => {

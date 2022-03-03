@@ -1,7 +1,6 @@
 import React from 'react'
 import DelIcon from '../ImageAssets/icon_elete.svg'
 import DocIcon from '../ImageAssets/doc_generic.svg'
-import '../Styles/App.css'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { deleteFile, selectFile } from '../Features/Signer/FileSlice'
 import { deleteItem, selectHash } from '../Features/Signer/hashSlice'
