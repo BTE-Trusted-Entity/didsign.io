@@ -1,24 +1,17 @@
 import React from 'react'
-import '../Styles/App.css'
 import { Header } from './Header'
 import { SignerComponent } from './SignerComponent'
-import { VerifyerComponent } from './VerifyerComponent'
+import { VerifierComponent } from './VerifierComponent'
 import { SignVerifyBtn } from './SignVerifyBtn'
 import { Footer } from './Footer'
 import { BottomSectionSigner } from './BottomSection'
 import { useAppSelector } from '../app/hooks'
 import { selectUser } from '../Features/Signer/UserSlice'
-import { BottomSectionVerifyer } from './Verifyer/BottomSectionVerifyer'
+import { BottomSectionVerifyer } from './Verifier/BottomSectionVerifyer'
 import BottomLeftBubble from '../ImageAssets/BottomLeftBubble.svg'
 
 import BottomRightBubble from '../ImageAssets/BottomRightBubble.svg'
 
-const showSigner = () => {
-  return <SignerComponent />
-}
-const showVerifyer = () => {
-  return <VerifyerComponent />
-}
 export const DIDSign = () => {
   const userIsSigner = useAppSelector(selectUser)
 
@@ -26,7 +19,7 @@ export const DIDSign = () => {
     <div className="relative min-h-screen w-screen overflow-y-auto bg-bottom-body overflow-x-hidden flex flex-col">
       <Header />
       <SignVerifyBtn />
-      {userIsSigner ? showSigner() : showVerifyer()}
+      {userIsSigner ? <SignerComponent /> : <VerifierComponent />}
       {userIsSigner ? <BottomSectionSigner /> : <BottomSectionVerifyer />}
       <Footer />
       <img
