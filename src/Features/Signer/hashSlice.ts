@@ -22,15 +22,21 @@ export const hashSlice = createSlice({
       value: state.value.filter((element) => element !== action.payload),
     }),
     clearHash: (state) => {
-      state.value = initialState.value
-      state.finalHash = initialState.finalHash
+      return {
+        ...state,
+        value: initialState.value,
+        finalHash: initialState.finalHash,
+      }
     },
     // Use the PayloadAction type to declare the contents of `action.payload`
     addHash: (state, action: PayloadAction<string>) => {
       state.value = [...state.value, action.payload]
     },
     addHashArray: (state, action: PayloadAction<string[]>) => {
-      state.value = action.payload
+      return {
+        ...state,
+        value: action.payload,
+      }
     },
   },
 })

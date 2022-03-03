@@ -13,11 +13,17 @@ export const UserSlice = createSlice({
   initialState,
   reducers: {
     clearType: (state) => {
-      state.isSigner = initialState.isSigner
+      return {
+        ...state,
+        isSigner: initialState.isSigner,
+      }
     },
     // Use the PayloadAction type to declare the contents of `action.payload`
     updateType: (state, action: PayloadAction<boolean>) => {
-      state.isSigner = action.payload
+      return {
+        ...state,
+        isSigner: action.payload,
+      }
     },
   },
 })

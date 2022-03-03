@@ -21,7 +21,10 @@ export const fileSlice = createSlice({
       value: state.value.filter((element) => element !== action.payload),
     }),
     clearAll: (state) => {
-      state.value = initialState.value
+      return {
+        ...state,
+        value: initialState.value,
+      }
     },
     // Use the PayloadAction type to declare the contents of `action.payload`
     addFile: (state, action: PayloadAction<File>) => {
@@ -34,7 +37,10 @@ export const fileSlice = createSlice({
       state.filename = state.filename.concat(action.payload)
     },
     clearFileName: (state) => {
-      state.filename = initialState.filename
+      return {
+        ...state,
+        filename: initialState.filename,
+      }
     },
   },
 })

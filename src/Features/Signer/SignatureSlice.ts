@@ -11,14 +11,23 @@ export const SignatureSlice = createSlice({
   initialState,
   reducers: {
     clearSign: (state) => {
-      state.signature = initialState.signature
+      return {
+        ...state,
+        signature: initialState.signature,
+      }
     },
     // Use the PayloadAction type to declare the contents of `action.payload`
     updateSign: (state, action: PayloadAction<string>) => {
-      state.signature = action.payload
+      return {
+        ...state,
+        signature: action.payload,
+      }
     },
     updateDID: (state, action: PayloadAction<string>) => {
-      state.keyID = action.payload
+      return {
+        ...state,
+        keyID: action.payload,
+      }
     },
   },
 })
