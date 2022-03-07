@@ -8,6 +8,7 @@ import { Signature, SignDoc } from '../Utils/types'
 import InfoIcon from '../ImageAssets/iconBIG_info.svg'
 import AttentionIcon from '../ImageAssets/iconBIG_attention.svg'
 import CenterLeftBubble from '../ImageAssets/CenterLeftBubble.svg'
+import info from '../ImageAssets/icon_info.svg'
 
 export const SignBtn = () => {
   const [signStatus, setSignStatus] = useState<boolean | 'Default'>('Default')
@@ -142,9 +143,10 @@ export const SignBtn = () => {
 
       <div
         id="sign-btn"
-        className="bg-[#ddf0ff80] border-[#517ca240] border-[1px] rounded-b-[15px] mt-0  mx-auto max-w-[766px] flex items-center h-[6rem] justify-center mb-2 shadow-md"
+        className="bg-[#ddf0ff80] border-[#517ca240] border-[1px] space-x-2 rounded-b-[15px] mt-0  mx-auto max-w-[766px] flex items-center h-[6rem] justify-center mb-2 shadow-md"
       >
         {hashes.length == 0 ? <ButtonDisabled /> : <ButtonEnabled />}
+        <img src={info}></img>
       </div>
     </div>
   )
