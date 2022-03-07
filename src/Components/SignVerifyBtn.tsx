@@ -29,7 +29,7 @@ export const SignVerifyBtn = () => {
         <button
           onClick={handleSigner}
           id="signer-btn"
-          className={`flex flex-col  items-end small-device:items-center h-full w-1/2 justify-center ${
+          className={`flex flex-col  items-end small-device:items-start h-full w-1/2 justify-center ${
             !userIsSigner && ' bg-selected-button'
           }`}
         >
@@ -49,7 +49,7 @@ export const SignVerifyBtn = () => {
         <button
           onClick={handleSigner}
           id="verify-btn"
-          className={`flex flex-col  items-start small-device:items-center h-full w-1/2 justify-center ${
+          className={`flex flex-col  items-start small-device:items-end h-full w-1/2 justify-start ${
             userIsSigner && ' bg-selected-button'
           }`}
         >
@@ -62,7 +62,7 @@ export const SignVerifyBtn = () => {
           >
             Verify
             {!userIsSigner && (
-              <div className="pt-[3px]  w-[120px] max-w-[383px] border-b-black border-b-4"></div>
+              <div className="pt-[3px] justify-end  w-[120px] max-w-[383px] border-b-black border-b-4"></div>
             )}
           </span>
         </button>
