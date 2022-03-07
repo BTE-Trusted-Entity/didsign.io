@@ -3,7 +3,17 @@ import {
   ISignatureEndPointWithStatus,
   SignDoc,
 } from './types'
-import * as Kilt from '@kiltprotocol/sdk-js'
+import {
+  init,
+  Did,
+  KeyRelationship,
+  disconnect,
+  IRequestForAttestation,
+  RequestForAttestation,
+  Credential,
+  ICredential,
+  Attestation,
+} from '@kiltprotocol/sdk-js'
 import { createHash, createHashFromHashArray } from './sign-helpers'
 import * as zip from '@zip.js/zip.js'
 import JSZip from 'jszip'
@@ -22,16 +32,16 @@ export const getVerifiedData = async (
   const urls: string[] = []
   const types: string[] = []
 
-  await Kilt.init({ address: 'wss://spiritnet.kilt.io' })
-  const endpoints = Kilt.Did.DidUtils.verifyDidSignature({
+  await init({ address: 'wss://spiritnet.kilt.io' })
+  const endpoints = Did.DidUtils.verifyDidSignature({
     message: hash,
     signature: sign,
     keyId: keyID,
-    keyRelationship: Kilt.KeyRelationship.authentication,
+    keyRelationship: KeyRelationship.authentication,
   })
     .then(async (response): Promise<ISignatureEndPoint | undefined> => {
       const status = response.verified
-      const attesterFullDid = await Kilt.Did.DefaultResolver.resolveDoc(
+      const attesterFullDid = await Did.DefaultResolver.resolveDoc(
         keyID.split('#')[0]
       )
       if (attesterFullDid != null && attesterFullDid.details != undefined) {
@@ -40,7 +50,7 @@ export const getVerifiedData = async (
           urls.push(...endPoint.urls)
           types.push(...endPoint.types)
         }
-        await Kilt.disconnect()
+        await disconnect()
       }
 
       if (status) {
@@ -138,4 +148,25 @@ export const replaceFileStatus = (statusArray: boolean[]): boolean[] => {
 }
 export const isDidSignFile = (file: string) => {
   return file.split('.').pop() == 'didsign'
+}
+export const getResolvedDid = (did: string): string => {
+  const resolvedDID = Did.DidUtils.getKiltDidFromIdentifier(did, 'full')
+  return resolvedDID
+}
+export const validateRequest = async (
+  claim: IRequestForAttestation
+): Promise<boolean> => {
+  const requestAttestation = RequestForAttestation.fromRequest(claim)
+  const attestation = await Attestation.query(requestAttestation.rootHash)
+  if (attestation != null) {
+    return attestation.revoked
+  } else {
+    return false
+  }
+}
+export const validateCredential = async (
+  credentialInput: ICredential
+): Promise<boolean> => {
+  const credential = Credential.fromCredential(credentialInput)
+  return await Credential.verify(credential)
 }
