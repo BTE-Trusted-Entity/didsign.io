@@ -21,3 +21,7 @@ export interface Endpoint {
   urls: string[]
   types: string[]
 }
+export interface DidDoc {
+  contents: any
+  index: number
+}
