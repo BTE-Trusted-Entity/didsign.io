@@ -1,6 +1,6 @@
 {
   "short_name": "DID Sign",
-  "name": "DIDSign-Documents signer and verifier.",
+  "name": "DIDsign - a free, decentralized way of signing and verifying digital files",
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
