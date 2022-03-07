@@ -28,6 +28,7 @@ import {
   addJwsSign,
   selectJwsHash,
   selectJwsSign,
+  selectJwsSignStatus,
   updateSignStatus,
 } from '../../Features/Signer/VerifyJwsSlice'
 import { addHash, selectHash } from '../../Features/Signer/hashSlice'
@@ -38,21 +39,18 @@ export const ImportFiles = () => {
   const fileHash = useAppSelector(selectHash)
   const jwsHash = useAppSelector(selectJwsHash)
   const jws = useAppSelector(selectJwsSign)
+  const jwsStatus = useAppSelector(selectJwsSignStatus)
   const savedZippedFilenames = useAppSelector(selectFilename)
   const files = useAppSelector(selectFile)
   const dispatch = useAppDispatch()
 
   const handleZipCase = async (file: File) => {
-    ;(document.getElementById('dropzone') as HTMLDivElement).draggable = false
-    ;(
-      document.getElementById('dropzone') as HTMLDivElement
-    ).style.pointerEvents = 'none'
-
     const sign = await newUnzip(file)
     if (sign === undefined) {
-      dispatch(updateSignStatus(false))
+      dispatch(updateSignStatus('Invalid'))
       return
     }
+    dispatch(updateSignStatus('Verified'))
     dispatch(update(sign.signatureWithEndpoint))
     dispatch(updateAllFilesStatus(sign.fileStatus))
   }
@@ -68,7 +66,7 @@ export const ImportFiles = () => {
         const baseHash = await createHashFromHashArray(doc.hashes)
         const hashFromJWS: string = JSON.parse(atob(doc.jws.split('.')[1])).hash
         if (baseHash != hashFromJWS) {
-          dispatch(updateSignStatus(false))
+          dispatch(updateSignStatus('Corrupted'))
         }
         dispatch(addJwsSign(doc.jws))
         dispatch(addJwsHashArray(doc.hashes))
@@ -89,8 +87,8 @@ export const ImportFiles = () => {
       }
       acceptedFiles.forEach(async (file: File) => {
         setImportIcon(ImportIcon)
-        if (isDidSignFile(file.name) && jwsHash.length > 0) {
-          return
+        if (files.length === 0) {
+          dispatch(updateSignStatus('Not Checked'))
         }
 
         if (file.name.split('.').pop() === 'zip') {
@@ -103,6 +101,7 @@ export const ImportFiles = () => {
               undefined ||
             (didSignFile.length === 1 && acceptedFiles.length > 1)
           ) {
+            dispatch(updateSignStatus('Multiple Sign'))
             return
           }
 
@@ -117,7 +116,7 @@ export const ImportFiles = () => {
           files.filter((file) => isDidSignFile(file.name)).length >= 1 &&
           file.name.split('.').pop() === 'didsign'
         ) {
-          return
+          dispatch(updateSignStatus('Multiple Sign'))
         }
         await handleIndividualCase(file)
       })
@@ -125,22 +124,21 @@ export const ImportFiles = () => {
     [files]
   )
   useEffect(() => {
-    if (jwsHash.length > 0) {
+    if (jwsHash.length) {
       fileHash.filter(async (hash, index) => {
         if (jwsHash.includes(hash)) {
           dispatch(updateIndividualFileStatusOnIndex(index))
-          if (jws != 'Verified') {
+          if (jwsStatus === 'Not Checked') {
             if (index >= 1 && fileHash.length > 2) {
               return
             }
             dispatch(updateSignStatus('Validating'))
             const verifiedSignatureInstance = await getVerifiedData(jws)
             if (verifiedSignatureInstance != undefined) {
-              dispatch(updateSignStatus(true))
+              dispatch(updateSignStatus('Verified'))
               dispatch(update(verifiedSignatureInstance))
-              dispatch(addJwsSign('Verified'))
             } else {
-              dispatch(updateSignStatus(false))
+              dispatch(updateSignStatus('Invalid'))
             }
           } else {
             return
@@ -148,12 +146,9 @@ export const ImportFiles = () => {
         }
       })
     }
-  }, [fileHash, files])
+  }, [fileHash, files, jwsStatus])
   return (
-    <div
-      id="dropzone"
-      className=" background mt-3 mx-auto h-[220px] relative max-w-[766px]   flex"
-    >
+    <div className="mt-3 mx-auto h-[220px] relative max-w-[766px] flex justify-center">
       <Dropzone
         onDrop={handleDrop}
         onDragLeave={() => setImportIcon(ImportIcon)}
