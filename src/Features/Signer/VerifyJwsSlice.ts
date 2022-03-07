@@ -6,7 +6,13 @@ interface HashState {
   hashArray: string[]
   finalHash: string
   sign: string
-  signStatus: boolean | 'Not Checked' | 'Validating'
+  signStatus:
+    | 'Verified'
+    | 'Not Checked'
+    | 'Validating'
+    | 'Corrupted'
+    | 'Multiple Sign'
+    | 'Invalid'
 }
 
 // Define the initial state using that type
@@ -40,7 +46,14 @@ export const jwsHashSlice = createSlice({
     },
     updateSignStatus: (
       state,
-      action: PayloadAction<boolean | 'Not Checked' | 'Validating'>
+      action: PayloadAction<
+        | 'Verified'
+        | 'Not Checked'
+        | 'Validating'
+        | 'Corrupted'
+        | 'Multiple Sign'
+        | 'Invalid'
+      >
     ) => {
       return {
         ...state,
