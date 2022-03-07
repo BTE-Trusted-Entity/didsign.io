@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import DocIcon from '../../ImageAssets/doc_generic.svg'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import { deleteFile, selectFile } from '../../Features/Signer/FileSlice'
+import {
+  clearAll,
+  deleteFile,
+  selectFile,
+} from '../../Features/Signer/FileSlice'
 import DIDIcon from '../../ImageAssets/doc_signature_NEW.svg'
 import ImageIcon from '../../ImageAssets/doc_image.svg'
 import {
@@ -14,12 +18,17 @@ import AttentionIcon from '../../ImageAssets/icon_attention.svg'
 import OkIcon from '../../ImageAssets/icon_oK.svg'
 import DelIcon from '../../ImageAssets/icon_elete.svg'
 import { deleteItem, selectHash } from '../../Features/Signer/hashSlice'
-import { clearJWS } from '../../Features/Signer/VerifyJwsSlice'
+import {
+  clearJWS,
+  updateSignStatus,
+} from '../../Features/Signer/VerifyJwsSlice'
+import { isDidSignFile } from '../../Utils/verify-helper'
 
 export const VerifierFileList = () => {
   const files = useAppSelector(selectFile)
   const status = useAppSelector(fileStatus)
   const hash = useAppSelector(selectHash)
+  const [didSignDeleted, setDidSignDeleted] = useState<boolean>(false)
 
   const dispatch = useAppDispatch()
   const handleDelFile = (file: File) => {
@@ -28,16 +37,35 @@ export const VerifierFileList = () => {
     dispatch(deleteFile(file))
     dispatch(deleteItem(hash[index]))
     dispatch(deleteFilestatus(index))
-    if (files.length == 0) {
+    if (files.length === 1) {
       dispatch(clearJWS())
       dispatch(clearEndpoint())
+      dispatch(clearAll())
     }
     if (didSignFileDeleted) {
-      dispatch(clearJWS())
-      dispatch(replaceStatus())
+      setDidSignDeleted(true)
+    } else {
+      dispatch(updateSignStatus('Not Checked'))
       dispatch(clearEndpoint())
     }
   }
+  useEffect(() => {
+    const didFiles = files.filter((file) => isDidSignFile(file.name))
+    console.log(didFiles.length)
+    if (didFiles.length === 0) {
+      dispatch(replaceStatus())
+      dispatch(clearJWS())
+      dispatch(clearEndpoint())
+    } else if (didFiles.length === 1) {
+      dispatch(updateSignStatus('Not Checked'))
+      dispatch(clearEndpoint())
+    } else {
+      dispatch(updateSignStatus('Multiple Sign'))
+      dispatch(clearEndpoint())
+    }
+
+    setDidSignDeleted(false)
+  }, [didSignDeleted])
   if (files.length === 0) {
     return null
   }
