@@ -2,11 +2,11 @@ import React from 'react'
 import { Header } from './Header'
 import { SignerComponent } from './SignerComponent'
 import { VerifierComponent } from './VerifierComponent'
-import { SignVerifyBtn } from './SignVerifyBtn'
+import { SelectUserRoleBtns } from './SelectUserRoleBtns'
 import { Footer } from './Footer'
 import { BottomSectionSigner } from './BottomSection'
 import { useAppSelector } from '../app/hooks'
-import { selectUser } from '../Features/Signer/UserSlice'
+import { selectUserRole } from '../Features/Signer/UserSlice'
 import { BottomSectionVerifyer } from './Verifier/BottomSectionVerifyer'
 import BottomLeftBubble from '../ImageAssets/BottomLeftBubble.svg'
 
@@ -14,22 +14,22 @@ import BottomRightBubble from '../ImageAssets/BottomRightBubble.svg'
 import { selectPopup } from '../Features/Signer/PopupSlice'
 
 export const DIDSign = () => {
-  const userIsSigner = useAppSelector(selectUser)
+  const userRoleIsSigner = useAppSelector(selectUserRole)
   const popup = useAppSelector(selectPopup)
 
   return (
     <div
       className={`relative min-h-screen w-screen overflow-y-auto bg-bottom-body overflow-x-hidden flex flex-col ${
-        popup && 'overflow-y-hidden'
+        popup && 'overflow-hidden'
       }`}
     >
       {popup && (
-        <div className="bg-black opacity-70 absolute w-full h-full z-30"></div>
+        <div className="bg-black opacity-70 absolute w-full h-full z-30 overflow-y-hidden"></div>
       )}
       <Header />
-      <SignVerifyBtn />
-      {userIsSigner ? <SignerComponent /> : <VerifierComponent />}
-      {userIsSigner ? <BottomSectionSigner /> : <BottomSectionVerifyer />}
+      <SelectUserRoleBtns />
+      {userRoleIsSigner ? <SignerComponent /> : <VerifierComponent />}
+      {userRoleIsSigner ? <BottomSectionSigner /> : <BottomSectionVerifyer />}
       <Footer />
       <img
         src={BottomLeftBubble}
