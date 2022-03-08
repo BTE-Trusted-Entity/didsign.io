@@ -12,7 +12,7 @@ export const store = configureStore({
     hash: hashSlice.reducer,
     files: fileSlice.reducer,
     signature: SignatureSlice.reducer,
-    userType: UserSlice.reducer,
+    userRole: UserSlice.reducer,
     endpoint: EndpointSlice.reducer,
     jwshash: jwsHashSlice.reducer,
     popup: popupSlice.reducer,
