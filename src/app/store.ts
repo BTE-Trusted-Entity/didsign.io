@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import { EndpointSlice } from '../Features/Signer/EndpointSlice'
 import { fileSlice } from '../Features/Signer/FileSlice'
 import { hashSlice } from '../Features/Signer/hashSlice'
+import { popupSlice } from '../Features/Signer/PopupSlice'
 import { SignatureSlice } from '../Features/Signer/SignatureSlice'
 import { UserSlice } from '../Features/Signer/UserSlice'
 import { jwsHashSlice } from '../Features/Signer/VerifyJwsSlice'
@@ -14,6 +15,7 @@ export const store = configureStore({
     userType: UserSlice.reducer,
     endpoint: EndpointSlice.reducer,
     jwshash: jwsHashSlice.reducer,
+    popup: popupSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
