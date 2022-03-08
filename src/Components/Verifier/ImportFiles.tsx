@@ -34,7 +34,7 @@ import {
 import { addHash, selectHash } from '../../Features/Signer/hashSlice'
 import { SlowAnimation, FastAnimation } from '../Animations'
 import { showPopup } from '../../Features/Signer/PopupSlice'
-import { MultipleSignPopup } from './MultipleSignPopup'
+import { MultipleSignPopup } from '../Popups'
 
 export const ImportFiles = () => {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon)
