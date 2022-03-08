@@ -1,14 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="22px" height="30px" viewBox="0 0 22 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>icon/DIDsign_ZIP_doc</title>
-    <g id="icon/DIDsign_ZIP_doc" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Group-28" transform="translate(-0.000000, -0.000000)">
-            <rect id="Rectangle-Copy-4" fill="#B20230" transform="translate(11.000000, 15.000000) rotate(-360.000000) translate(-11.000000, -15.000000) " x="0" y="0" width="22" height="30"></rect>
-            <g id="ZIP" transform="translate(3.500000, 11.000000)" fill="#FFFFFF" fill-rule="nonzero">
-                <polygon id="Path" points="0 7 0 6.06 3.53860294 1.14 0.211397059 1.14 0.211397059 0 5 0 5 0.93 1.44301471 5.86 5 5.86 5 7"></polygon>
-                <polygon id="Path" points="7 7 7 0 8 0 8 7"></polygon>
-                <path d="M10,7 L10,0 L12.7661597,0 C13.5329531,0 14.0969582,0.21 14.4581749,0.63 C14.8193916,1.05 15,1.56333333 15,2.17 C15,2.74333333 14.8114702,3.25 14.4344106,3.69 C14.0573511,4.13 13.5012674,4.35 12.7661597,4.35 L11.1406844,4.35 L11.1406844,7 L10,7 Z M12.8231939,3.21 C13.1590621,3.21 13.409379,3.10666667 13.5741445,2.9 C13.73891,2.69333333 13.8212928,2.45 13.8212928,2.17 C13.8212928,1.90333333 13.7436629,1.665 13.588403,1.455 C13.4331432,1.245 13.1780735,1.14 12.8231939,1.14 L11.1406844,1.14 L11.1406844,3.21 L12.8231939,3.21 Z" id="Shape"></path>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="22" height="30" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="#B20230" d="M0 0h22v30H0z"/><g fill="#FFF" fill-rule="nonzero"><path d="M3.5 18v-.94l3.539-4.92H3.71V11H8.5v.93l-3.557 4.93H8.5V18zM10.5 18v-7h1v7zM13.5 18v-7h2.766c.767 0 1.331.21 1.692.63.361.42.542.933.542 1.54 0 .573-.189 1.08-.566 1.52-.377.44-.933.66-1.668.66h-1.625V18H13.5Zm2.823-3.79c.336 0 .586-.103.751-.31.165-.207.247-.45.247-.73 0-.267-.077-.505-.233-.715-.155-.21-.41-.315-.765-.315h-1.682v2.07h1.682Z"/></g></g></svg>
