@@ -18,10 +18,7 @@ import AttentionIcon from '../../ImageAssets/icon_attention.svg'
 import OkIcon from '../../ImageAssets/icon_oK.svg'
 import DelIcon from '../../ImageAssets/icon_elete.svg'
 import { deleteItem, selectHash } from '../../Features/Signer/hashSlice'
-import {
-  clearJWS,
-  updateSignStatus,
-} from '../../Features/Signer/VerifyJwsSlice'
+import { clearJWS } from '../../Features/Signer/VerifyJwsSlice'
 import { isDidSignFile } from '../../Utils/verify-helper'
 
 export const VerifierFileList = () => {
@@ -34,6 +31,7 @@ export const VerifierFileList = () => {
   const handleDelFile = (file: File) => {
     const index = files.indexOf(file)
     const didSignFileDeleted = files[index].name.split('.').pop() == 'didsign'
+
     dispatch(deleteFile(file))
     dispatch(deleteItem(hash[index]))
     dispatch(deleteFilestatus(index))
@@ -44,23 +42,13 @@ export const VerifierFileList = () => {
     }
     if (didSignFileDeleted) {
       setDidSignDeleted(true)
-    } else {
-      dispatch(updateSignStatus('Not Checked'))
-      dispatch(clearEndpoint())
     }
   }
   useEffect(() => {
     const didFiles = files.filter((file) => isDidSignFile(file.name))
-    console.log(didFiles.length)
     if (didFiles.length === 0) {
       dispatch(replaceStatus())
       dispatch(clearJWS())
-      dispatch(clearEndpoint())
-    } else if (didFiles.length === 1) {
-      dispatch(updateSignStatus('Not Checked'))
-      dispatch(clearEndpoint())
-    } else {
-      dispatch(updateSignStatus('Multiple Sign'))
       dispatch(clearEndpoint())
     }
 
