@@ -7,6 +7,9 @@ import AttentionIcon from '../../ImageAssets/icon_attention.svg'
 export const JWSErrorsComponent = () => {
   const jwsStatus = useAppSelector(selectJwsSignStatus)
   const fileVerificationStatus = useAppSelector(fileStatus)
+  if (jwsStatus === 'Multiple Sign') {
+    return null
+  }
 
   const showErrorMessages = () => {
     if (jwsStatus === 'Invalid') {
@@ -28,12 +31,6 @@ export const JWSErrorsComponent = () => {
         <span className="phone:w-full overflow-wrap break-words w-4/5 h-[18px] text-[#F06543] font-['Overpass'] font-bold text-[14px] leading-[22px] tracking-[0.1px]">
           The signature file is corrupted. Please make sure to import the
           correct signature file.
-        </span>
-      )
-    } else if (jwsStatus === 'Multiple Sign') {
-      return (
-        <span className="phone:w-full overflow-wrap break-words w-4/5 h-[18px] text-[#F06543] font-['Overpass'] font-bold text-[14px] leading-[22px] tracking-[0.1px]">
-          Multiple signature files found. Please verify only one file at a time.
         </span>
       )
     }
