@@ -10,6 +10,7 @@ import AttentionIcon from '../ImageAssets/iconBIG_attention.svg'
 import CenterLeftBubble from '../ImageAssets/CenterLeftBubble.svg'
 import info from '../ImageAssets/icon_info.svg'
 import { showPopup } from '../Features/Signer/PopupSlice'
+import { SignInfoPopup } from './Popups'
 
 export const SignBtn = () => {
   const [signStatus, setSignStatus] = useState<
@@ -17,6 +18,7 @@ export const SignBtn = () => {
   >('Default')
   const [popupIcon, setPopupIcon] = useState<string>(InfoIcon)
   const sporranPopup = useRef<null | HTMLDivElement>(null)
+  const [signPopup, setSignPopup] = useState<boolean>(false)
 
   const ButtonDisabled = () => {
     return (
@@ -67,6 +69,7 @@ export const SignBtn = () => {
         })
         const newFile = new File([blob], 'signature.didsign')
         dispatch(addFileTop(newFile))
+        dispatch(showPopup(false))
       })
 
       .catch(() => {
@@ -88,11 +91,19 @@ export const SignBtn = () => {
     setSignStatus('Default')
     sporranPopup.current?.classList.add('invisible')
   }
+  const showSignPopup = () => {
+    setSignPopup(true)
+    dispatch(showPopup(true))
+  }
+  const handleSignDismiss = () => {
+    dispatch(showPopup(false))
+    setSignPopup(false)
+  }
   return (
     <div>
       <div
         ref={sporranPopup}
-        className="invisible z-40 fixed max-w-[400px] phone:w-[300px] mx-auto h-[fit] bg-mid-body shadow-2xl rounded-[15px] left-1/2 top-1/4 mt-[3%] -ml-[200px] phone:-ml-[150px] phone:overflow-y-scroll"
+        className="invisible z-40 fixed max-w-[300px] mx-auto h-[fit] bg-mid-body shadow-2xl rounded-[15px] left-1/2 top-1/4 mt-[3%] -ml-[150px] phone:overflow-y-scroll"
       >
         <div className="flex relative flex-col w-full h-full items-center mt-4 space-y-5 pl-4 pr-4 pb-4 ">
           <img
@@ -102,13 +113,14 @@ export const SignBtn = () => {
           <div>
             <img src={popupIcon} />
           </div>
-          {signStatus === 'Default' ? (
-            <span className="font-['Overpass'] tracking-wide text-lg text-[#2A2231]">
+          {signStatus === 'Default' && (
+            <span className="font-['Overpass'] text-[18px] leading-[20px] tracking-[0.13px] text-[#2A2231]">
               Signature needed
             </span>
-          ) : (
+          )}
+          {signStatus === 'No Sporran' && (
             <span className="font-['Overpass'] tracking-wide text-lg text-[#2A2231]">
-              Sign Error
+              No Wallet Found
             </span>
           )}
           {signStatus === 'Default' && (
@@ -133,7 +145,7 @@ export const SignBtn = () => {
           )}
           <button
             onClick={handleDismiss}
-            className="font-['Overpass'] rounded-[8px] w-[100px] text-[12px] leading-[12px]  tracking-[0.1px] pl-4 pr-4 text-center h-[25px] bg-[#3E6E99] text-white"
+            className="font-['Overpass'] rounded-[8px] w-[130px] text-[12px] leading-[12px]  tracking-[0.1px] pl-4 pr-4 text-center h-[22px] bg-[#3E6E99] text-white"
           >
             DISMISS
           </button>
@@ -145,7 +157,10 @@ export const SignBtn = () => {
         className="bg-[#ddf0ff80] border-[#517ca240] border-[1px] space-x-2 rounded-b-[15px] mt-0  mx-auto max-w-[766px] flex items-center h-[6rem] justify-center mb-4 shadow-md"
       >
         {hashes.length == 0 ? <ButtonDisabled /> : <ButtonEnabled />}
-        <img src={info}></img>
+        <button onClick={showSignPopup}>
+          <img src={info} />
+        </button>
+        {signPopup && <SignInfoPopup dismiss={handleSignDismiss} />}
       </div>
     </div>
   )
