@@ -158,11 +158,13 @@ export const validateRequest = async (
 ): Promise<boolean> => {
   const requestAttestation = RequestForAttestation.fromRequest(claim)
   const attestation = await Attestation.query(requestAttestation.rootHash)
+  console.log(attestation)
   if (attestation != null) {
-    return attestation.revoked
-  } else {
-    return false
+    if (!attestation.revoked) {
+      return true
+    }
   }
+  return false
 }
 export const validateCredential = async (
   credentialInput: ICredential
