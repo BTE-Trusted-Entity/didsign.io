@@ -9,17 +9,17 @@ const initialState: User = {
   isSigner: true,
 }
 export const UserSlice = createSlice({
-  name: 'userType',
+  name: 'userRole',
   initialState,
   reducers: {
-    clearType: (state) => {
+    clearRole: (state) => {
       return {
         ...state,
         isSigner: initialState.isSigner,
       }
     },
     // Use the PayloadAction type to declare the contents of `action.payload`
-    updateType: (state, action: PayloadAction<boolean>) => {
+    updateRole: (state, action: PayloadAction<boolean>) => {
       return {
         ...state,
         isSigner: action.payload,
@@ -27,9 +27,9 @@ export const UserSlice = createSlice({
     },
   },
 })
-export const { clearType, updateType } = UserSlice.actions
+export const { clearRole, updateRole } = UserSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectUser = (state: RootState) => state.userType.isSigner
+export const selectUserRole = (state: RootState) => state.userRole.isSigner
 
 export default UserSlice.reducer
