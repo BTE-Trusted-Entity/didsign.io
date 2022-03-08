@@ -18,6 +18,8 @@ import {
   selectJwsSignStatus,
 } from '../../Features/Signer/VerifyJwsSlice'
 import spinner from '../../ImageAssets/puff.svg'
+import loader from '../../ImageAssets/spinning-circles.svg'
+
 import {
   getResolvedDid,
   validateCredential,
@@ -44,6 +46,7 @@ export const BottomSectionVerifyer = () => {
   const resolvedDid = getResolvedDid(did)
   const [isCredentialValid, setIsCredentialValid] = useState<boolean>(true)
   const jws = useAppSelector(selectJwsSign)
+  const [clickedIndex, setClickedIndex] = useState<number>(-1)
 
   const verificationRef = useRef<null | HTMLDivElement>(null)
   const dispatch = useAppDispatch()
@@ -51,12 +54,15 @@ export const BottomSectionVerifyer = () => {
     if (clickIndices.includes(index)) {
       setClickIndices(clickIndices.filter((item) => item !== index))
       setDidDoc(didDoc.filter((item) => item.index !== index))
+      return
     } else {
       setClickIndices([...clickIndices, index])
     }
     if (didDoc.find((doc) => doc.index == index)) {
       return
     }
+    setClickedIndex(index)
+
     const url = urls[index]
     fetch(url)
       .then((response) => response.json())
@@ -70,10 +76,12 @@ export const BottomSectionVerifyer = () => {
         }
         const didObj: DidDoc = { contents: result.claim.contents, index: index }
         setDidDoc([...didDoc, didObj])
+        setClickedIndex(-1)
       })
       .catch((error) => {
         console.log(error)
         setClickIndices(clickIndices.filter((item) => item !== index))
+        setClickedIndex(-1)
       })
   }
 
@@ -142,23 +150,19 @@ export const BottomSectionVerifyer = () => {
                       className="font-['Overpass'] flex justify-center relative items-center uppercase ml-auto text-[12px] leading-[13px]  tracking-[0.09px] text-white text-center w-[130px]  h-[22px] my-auto rounded-md 
      bg-[#3E6E99]"
                     >
-                      {clickIndices.includes(index) ? (
-                        <span>
-                          Close
-                          <img
-                            className="absolute right-4 top-2"
-                            src={ChevronUp}
-                          />
-                        </span>
-                      ) : (
-                        <span>
-                          Fetch{' '}
-                          <img
-                            className="absolute right-4 top-2"
-                            src={ChevronDown}
-                          />
-                        </span>
+                      {' '}
+                      {clickedIndex === index && (
+                        <img className={`absolute left-2 h-2/3`} src={loader} />
                       )}
+                      <span>
+                        {clickIndices.includes(index) ? 'Close' : 'Fetch'}
+                      </span>
+                      <img
+                        className="absolute right-4 top-2"
+                        src={
+                          clickIndices.includes(index) ? ChevronUp : ChevronDown
+                        }
+                      />
                     </button>
                   </div>
                   <span className="overflow-wrap break-words text-[#2A2231] font-['Overpass'] text-[14px] leading-[16px] tracking-[0.1px]">
@@ -191,7 +195,7 @@ export const BottomSectionVerifyer = () => {
         {jwsStatus === 'Validating' && (
           <img
             src={spinner}
-            className=" absolute  top-4 right-[20px] h-[60px] w-[60px]"
+            className=" absolute  top-6 right-[30px] h-[40px] w-[40px]"
           />
         )}
         {fileVerificationStatus.includes(false) && jws !== '' ? (
