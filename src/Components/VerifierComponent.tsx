@@ -8,12 +8,10 @@ import { VerifierFileList } from './Verifier/VerifierFileList'
 import CenterRightBubble from '../ImageAssets/CenterRightBubble.svg'
 import CenterLeftBubble from '../ImageAssets/CenterLeftBubble.svg'
 import { EmptyFilesList } from './EmptyFilesList'
-import { selectJwsSignStatus } from '../Features/Signer/VerifyJwsSlice'
 
 export const VerifierComponent = () => {
   const fileName = useAppSelector(selectFilename)
   const file = useAppSelector(selectFile)
-  const jwsStatus = useAppSelector(selectJwsSignStatus)
 
   return (
     <div className="bg-mid-body w-screen overflow-y-hidden overflow-x-hidden relative bottom-0 small-device:pl-[15px] small-device:pr-[15px]">
