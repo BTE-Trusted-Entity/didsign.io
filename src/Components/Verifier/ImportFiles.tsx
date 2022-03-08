@@ -33,6 +33,8 @@ import {
 } from '../../Features/Signer/VerifyJwsSlice'
 import { addHash, selectHash } from '../../Features/Signer/hashSlice'
 import { SlowAnimation, FastAnimation } from '../Animations'
+import { showPopup } from '../../Features/Signer/PopupSlice'
+import { MultipleSignPopup } from './MultipleSignPopup'
 
 export const ImportFiles = () => {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon)
@@ -55,9 +57,19 @@ export const ImportFiles = () => {
     dispatch(updateAllFilesStatus(sign.fileStatus))
   }
 
-  const handleIndividualCase = async (file: File) => {
+  const handleIndividualCase = async (file: File, acceptedFiles: File[]) => {
     let doc: SignDoc = { jws: '', hashes: [] }
+
+    if (
+      acceptedFiles.filter((file) => isDidSignFile(file.name)).length > 1 &&
+      isDidSignFile(file.name)
+    ) {
+      dispatch(updateSignStatus('Multiple Sign'))
+      dispatch(showPopup(true))
+      return
+    }
     dispatch(addFile(file))
+
     const reader = new FileReader()
     reader.readAsText(file)
     reader.onload = async function () {
@@ -82,9 +94,6 @@ export const ImportFiles = () => {
   }
   const handleDrop = useCallback(
     (acceptedFiles: File[]) => {
-      if (acceptedFiles.filter((file) => isDidSignFile(file.name)).length > 1) {
-        return
-      }
       acceptedFiles.forEach(async (file: File) => {
         setImportIcon(ImportIcon)
         if (files.length === 0) {
@@ -116,9 +125,11 @@ export const ImportFiles = () => {
           files.filter((file) => isDidSignFile(file.name)).length >= 1 &&
           file.name.split('.').pop() === 'didsign'
         ) {
+          dispatch(showPopup(true))
           dispatch(updateSignStatus('Multiple Sign'))
+          return
         }
-        await handleIndividualCase(file)
+        await handleIndividualCase(file, acceptedFiles)
       })
     },
     [files]
@@ -146,9 +157,10 @@ export const ImportFiles = () => {
         }
       })
     }
-  }, [fileHash, files, jwsStatus])
+  }, [fileHash, files, jwsStatus, jws])
   return (
     <div className="mt-3 mx-auto h-[220px] relative max-w-[766px] flex justify-center">
+      {jwsStatus === 'Multiple Sign' && <MultipleSignPopup />}
       <Dropzone
         onDrop={handleDrop}
         onDragLeave={() => setImportIcon(ImportIcon)}
@@ -166,12 +178,12 @@ export const ImportFiles = () => {
             <img className="absolute mx-auto my-auto" src={impIcon} />
             {impIcon === ImportIcon && (
               <label className="absolute top-8 pointer-events-none text-white text-center text-[16px] leading-[17px] tracking-[0.11px] font-['Overpass']">
-                Drag & Drop
+                Drag & Drop files
               </label>
             )}
             {impIcon === ImportIcon && (
               <label className="absolute top-14 pointer-events-none text-white text-center text-[14px] leading-[16px] tracking-[0.17px] font-['Overpass']">
-                your files here to Verify
+                to verify here
               </label>
             )}
             <label className=" pointer-events-none text-white text-center text-[14px] leading-[16px] font-['Overpass'] tracking-[0.17px] absolute bottom-12">
