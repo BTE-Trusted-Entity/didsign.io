@@ -7,6 +7,8 @@ import { deleteItem, selectHash } from '../Features/Signer/hashSlice'
 import { clearSign } from '../Features/Signer/SignatureSlice'
 import DIDIcon from '../ImageAssets/doc_signature_NEW.svg'
 import ImageIcon from '../ImageAssets/doc_image.svg'
+import info from '../ImageAssets/icon_info.svg'
+import { isDidSignFile } from '../Utils/verify-helper'
 
 export const FileList = () => {
   const dispatch = useAppDispatch()
@@ -17,6 +19,10 @@ export const FileList = () => {
     const index = files.indexOf(file)
     dispatch(deleteFile(file))
     dispatch(deleteItem(hash[index]))
+    const didSignFile = files.find((file) => isDidSignFile(file.name))
+    if (didSignFile !== undefined) {
+      dispatch(deleteFile(didSignFile))
+    }
     hash.length === 1 && dispatch(clearSign())
   }
   if (files.length === 0) {
