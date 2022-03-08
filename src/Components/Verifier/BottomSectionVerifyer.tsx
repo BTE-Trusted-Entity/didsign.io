@@ -61,7 +61,7 @@ export const BottomSectionVerifyer = () => {
     fetch(url)
       .then((response) => response.json())
       .then(async (result) => {
-        if (Did.DidUtils.isSameSubject(result.claim.owner, did)) {
+        if (!Did.DidUtils.isSameSubject(result.claim.owner, did)) {
           setIsCredentialValid(false)
         } else if (Credential.isICredential(result)) {
           setIsCredentialValid(await validateCredential(result))
@@ -105,7 +105,7 @@ export const BottomSectionVerifyer = () => {
             </p>
             <img src={OkIcon} />{' '}
           </div>
-          <div className="max-w-full flex w-[708px] flex-wrap space-x-[20px] phone:space-x-0 phone:space-y-[20px] phone:pt-4 ">
+          <div className="max-w-full flex flex-row w-[708px] flex-wrap space-x-[20px] phone:space-x-0 phone:space-y-[20px] phone:pt-4 ">
             <div className="flex space-x-1">
               <img src={SignatureIcon} />
               <p className="text-[#2A2231] font-['Overpass'] text-[16px] leading-[22px] tracking-[0.11px]">
@@ -186,7 +186,7 @@ export const BottomSectionVerifyer = () => {
     <div className=" bg-bottom-body w-screen relative small-device:pl-[15px] small-device:pr-[15px] ">
       <div
         ref={verificationRef}
-        className={`bg-[#ddf0ff80] border-solid relative border-[#517ca240] border-[1px] rounded-b-[15px] pl-[20px] min-h-[6rem] max-h-[fit] overscroll-y-auto  mx-auto max-w-[766px] mb-2 shadow-md`}
+        className={`bg-[#ddf0ff80] border-solid relative border-[#517ca240] border-[1px] rounded-b-[15px] pl-[20px] min-h-[6rem] max-h-[fit] overscroll-y-auto  mx-auto max-w-[766px] mb-4 shadow-md`}
       >
         {jwsStatus === 'Validating' && (
           <img
