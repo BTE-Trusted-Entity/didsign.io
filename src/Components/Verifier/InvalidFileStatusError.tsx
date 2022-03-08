@@ -1,14 +1,7 @@
 import React from 'react'
-import { useAppSelector } from '../../app/hooks'
-import { selectFile } from '../../Features/Signer/FileSlice'
-import { selectJwsSignStatus } from '../../Features/Signer/VerifyJwsSlice'
 import AttentionIcon from '../../ImageAssets/icon_attention.svg'
-import { isDidSignFile } from '../../Utils/verify-helper'
 
 export const InvalidFileStatusError = () => {
-  const files = useAppSelector(selectFile)
-  const jwsStatus = useAppSelector(selectJwsSignStatus)
-
   return (
     <div className="flex flex-col w-[90%] mx-auto ml-3  mt-10 mb-20 space-y-[40px] phone:space-y-[20px]">
       <div className="flex w-full items-center justify-start space-x-[10px]">
