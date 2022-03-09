@@ -11,6 +11,7 @@ import CenterLeftBubble from '../ImageAssets/CenterLeftBubble.svg'
 import info from '../ImageAssets/icon_info.svg'
 import { showPopup } from '../Features/Signer/PopupSlice'
 import { SignInfoPopup } from './Popups'
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
 
 export const SignBtn = () => {
   const [signStatus, setSignStatus] = useState<
@@ -19,6 +20,7 @@ export const SignBtn = () => {
   const [popupIcon, setPopupIcon] = useState<string>(InfoIcon)
   const sporranPopup = useRef<null | HTMLDivElement>(null)
   const [signPopup, setSignPopup] = useState<boolean>(false)
+  const targetElement = document.querySelector('body')
 
   const ButtonDisabled = () => {
     return (
@@ -54,6 +56,9 @@ export const SignBtn = () => {
 
     dispatch(showPopup(true))
     sporranPopup.current?.classList.remove('invisible')
+    if (targetElement !== null) {
+      disableBodyScroll(targetElement)
+    }
     openSporan(await finalHash)
       .then(async (response) => {
         dispatch(updateSign(response.signature))
@@ -70,9 +75,15 @@ export const SignBtn = () => {
         const newFile = new File([blob], 'signature.didsign')
         dispatch(addFileTop(newFile))
         dispatch(showPopup(false))
+        if (targetElement !== null) {
+          enableBodyScroll(targetElement)
+        }
       })
 
       .catch(() => {
+        if (targetElement !== null) {
+          disableBodyScroll(targetElement)
+        }
         if (window.kilt.sporran == undefined) {
           setSignStatus('No Sporran')
 
@@ -85,17 +96,25 @@ export const SignBtn = () => {
       })
   }
   const handleDismiss = () => {
-    document.body.style.overflowY = 'auto'
+    if (targetElement !== null) {
+      enableBodyScroll(targetElement)
+    }
     dispatch(showPopup(false))
     setPopupIcon(InfoIcon)
     setSignStatus('Default')
     sporranPopup.current?.classList.add('invisible')
   }
   const showSignPopup = () => {
+    if (targetElement !== null) {
+      disableBodyScroll(targetElement)
+    }
     setSignPopup(true)
     dispatch(showPopup(true))
   }
   const handleSignDismiss = () => {
+    if (targetElement !== null) {
+      enableBodyScroll(targetElement)
+    }
     dispatch(showPopup(false))
     setSignPopup(false)
   }
