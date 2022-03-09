@@ -24,6 +24,7 @@ export const fileSlice = createSlice({
       return {
         ...state,
         value: initialState.value,
+        filename: initialState.filename,
       }
     },
     // Use the PayloadAction type to declare the contents of `action.payload`

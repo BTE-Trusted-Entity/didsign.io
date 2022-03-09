@@ -14,6 +14,7 @@ export const SignatureSlice = createSlice({
       return {
         ...state,
         signature: initialState.signature,
+        keyID: initialState.keyID,
       }
     },
     // Use the PayloadAction type to declare the contents of `action.payload`
