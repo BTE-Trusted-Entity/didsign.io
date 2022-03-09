@@ -7,17 +7,28 @@ import { addHash } from '../Features/Signer/hashSlice'
 import { createHash } from '../Utils/sign-helpers'
 import { useAppDispatch } from '../app/hooks'
 import { FastAnimation, SlowAnimation } from './Animations'
+import { isDidSignFile } from '../Utils/verify-helper'
+import { SigningMultipleDidFiles } from './Popups'
+import { showPopup } from '../Features/Signer/PopupSlice'
 
 export const ImportFilesSigner = () => {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon)
-
+  const [signErrorPopup, setSignErrorPopup] = useState<boolean>(false)
   const dispatch = useAppDispatch()
 
+  const handleDismiss = () => {
+    dispatch(showPopup(false))
+    setSignErrorPopup(false)
+  }
   const handleDrop = useCallback(
     (acceptedFiles: File[]) => {
       acceptedFiles.forEach(async (file: File) => {
         setImportIcon(ImportIcon)
-
+        if (isDidSignFile(file.name)) {
+          dispatch(showPopup(true))
+          setSignErrorPopup(true)
+          return
+        }
         const reader = new FileReader()
         reader.onload = async function () {
           const newHash = await createHash(reader.result)
@@ -67,6 +78,7 @@ export const ImportFilesSigner = () => {
           </div>
         )}
       </Dropzone>
+      {signErrorPopup && <SigningMultipleDidFiles dismiss={handleDismiss} />}
     </div>
   )
 }

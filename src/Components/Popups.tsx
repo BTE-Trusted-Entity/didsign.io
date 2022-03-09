@@ -122,3 +122,32 @@ export const SignFileInfoPopup = (props: Toggle) => {
     </div>
   )
 }
+export const SigningMultipleDidFiles = (props: Toggle) => {
+  return (
+    <div className=" z-40 text-dark-purple fixed w-[300px] phone:w-[300px] mx-auto h-[fit] bg-silver-blue shadow-2xl rounded-[15px] left-1/2 top-1/4 mt-[3%] -ml-[150px] phone:-ml-[150px] phone:overflow-y-scroll">
+      <div className="flex relative flex-col w-full h-full items-center mt-4 space-y-5 pl-4 pr-4 pb-4 ">
+        <img
+          src={CenterLeftBubble}
+          className="absolute bottom-0 left-0 mt-auto pointer-events-none"
+        />
+        <div>
+          <img src={AttentionIcon} />
+        </div>
+        <span className="font-['Overpass'] tracking-wide text-lg ">
+          Sign Error
+        </span>
+
+        <span className="font-['Overpass'] -tracking-tigher  text-[16px] pl-4 pr-4 text-justify">
+          Signing of signature file is not allowed.
+        </span>
+
+        <button
+          onClick={props.dismiss}
+          className="font-['Overpass'] rounded-[8px] w-[100px] text-[12px] leading-[12px]  tracking-[0.1px] pl-4 pr-4 text-center h-[25px] bg-medium-blue text-white"
+        >
+          DISMISS
+        </button>
+      </div>
+    </div>
+  )
+}
