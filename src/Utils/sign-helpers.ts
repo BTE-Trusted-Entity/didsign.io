@@ -51,7 +51,7 @@ export const generateJWS = (
   finalHash: string
 ): string => {
   const header = {
-    alg: 'ED25519',
+    alg: 'Sr25519',
     typ: 'JWS',
     keyID: signature.keyID,
   }
