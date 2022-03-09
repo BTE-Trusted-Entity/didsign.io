@@ -73,10 +73,17 @@ export const ImportFiles = () => {
     dispatch(addFile(file))
 
     const reader = new FileReader()
-    reader.readAsText(file)
+    reader.readAsArrayBuffer(file)
     reader.onload = async function () {
+      if (typeof reader.result === 'string')
+        throw new Error(
+          'Verification: type of reader result should be arraybuffer'
+        )
+
       if (file.name.split('.').pop() === 'didsign') {
-        doc = JSON.parse(reader.result as string)
+        const decoder = new TextDecoder('utf-8')
+        const result = decoder.decode(reader.result as ArrayBuffer)
+        doc = JSON.parse(result)
         const baseHash = await createHashFromHashArray(doc.hashes)
         const hashFromJWS: string = JSON.parse(atob(doc.jws.split('.')[1])).hash
         if (baseHash != hashFromJWS) {

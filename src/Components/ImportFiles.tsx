@@ -20,10 +20,16 @@ export const ImportFilesSigner = () => {
 
         const reader = new FileReader()
         reader.onload = async function () {
+          if (typeof reader.result === 'string')
+            throw new Error(
+              'Signing: type of reader result should be arraybuffer'
+            )
+
           const newHash = await createHash(reader.result)
           dispatch(addHash(newHash))
         }
-        reader.readAsText(file)
+        // reader.readAsText(file)
+        reader.readAsArrayBuffer(file)
         dispatch(addFile(file))
       })
     },
