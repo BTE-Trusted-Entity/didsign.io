@@ -33,6 +33,7 @@ import { DidDocument } from './DidDocument'
 import ChevronDown from '../../ImageAssets/chevron_down_white.svg'
 import ChevronUp from '../../ImageAssets/chevron_up_white.svg'
 import SignatureIcon from '../../ImageAssets/icon_DID.svg'
+import { clearSign } from '../../Features/Signer/SignatureSlice'
 
 export const BottomSectionVerifyer = () => {
   const sign = useAppSelector(selectVerifiedSign)
@@ -88,6 +89,7 @@ export const BottomSectionVerifyer = () => {
   const handleStartOver = () => {
     dispatch(clearEndpoint())
     dispatch(clearAll())
+    dispatch(clearSign())
     dispatch(clearHash())
     dispatch(clearFileName())
     dispatch(clearHash())

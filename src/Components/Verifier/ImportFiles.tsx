@@ -50,6 +50,9 @@ export const ImportFiles = () => {
     dispatch(updateSignStatus('Validating'))
 
     const sign = await newUnzip(file)
+    if (files.length === 0) {
+      return
+    }
     if (sign === undefined) {
       dispatch(updateSignStatus('Invalid'))
       return
@@ -75,7 +78,7 @@ export const ImportFiles = () => {
     const reader = new FileReader()
     reader.readAsText(file)
     reader.onload = async function () {
-      if (file.name.split('.').pop() === 'didsign') {
+      if (isDidSignFile(file.name)) {
         doc = JSON.parse(reader.result as string)
         const baseHash = await createHashFromHashArray(doc.hashes)
         const hashFromJWS: string = JSON.parse(atob(doc.jws.split('.')[1])).hash
