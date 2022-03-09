@@ -103,7 +103,7 @@ export const SignBtn = () => {
     <div>
       <div
         ref={sporranPopup}
-        className="invisible z-40 fixed max-w-[300px] mx-auto h-[fit] bg-silver-blue shadow-2xl rounded-[15px] left-1/2 top-1/4 mt-[3%] -ml-[150px] phone:overflow-y-scroll"
+        className="invisible z-40 fixed max-w-[300px] mx-auto h-[fit] bg-silver-blue shadow-2xl rounded-[15px] left-1/2 top-1/4 mt-[3%] -ml-[150px] phone:overflow-y-auto"
       >
         <div className="flex relative flex-col w-full h-full items-center mt-4 space-y-5 pl-4 pr-4 pb-4 ">
           <img
