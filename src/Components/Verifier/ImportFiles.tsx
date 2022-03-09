@@ -47,6 +47,8 @@ export const ImportFiles = () => {
   const dispatch = useAppDispatch()
 
   const handleZipCase = async (file: File) => {
+    dispatch(updateSignStatus('Validating'))
+
     const sign = await newUnzip(file)
     if (sign === undefined) {
       dispatch(updateSignStatus('Invalid'))
