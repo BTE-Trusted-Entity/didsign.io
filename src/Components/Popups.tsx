@@ -14,7 +14,7 @@ interface Toggle {
 
 export const SignInfoPopup = (props: Toggle) => {
   return (
-    <div className=" z-40 text-dark-purple flex fixed max-w-[300px] mx-auto h-[hit] max-h-[360px] bg-silver-blue shadow-2xl rounded-[15px] left-1/2 phone:left-[15%] top-1/4 mt-[3%] -ml-[200px] overflow-y-auto">
+    <div className=" z-40 text-dark-purple flex fixed max-w-[300px] mx-auto h-[fit] bg-silver-blue shadow-2xl rounded-[15px] left-1/2 phone:left-[15%] top-1/4 mt-[3%] -ml-[200px] overflow-y-auto">
       <div className="flex relative flex-col w-full h-full items-center mt-4 space-y-3 pl-4 pr-4 mb-4 ">
         <img
           src={CenterLeftBubble}
