@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import DelIcon from '../ImageAssets/icon_elete.svg'
 import DocIcon from '../ImageAssets/doc_generic.svg'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
@@ -9,12 +9,25 @@ import DIDIcon from '../ImageAssets/doc_signature_NEW.svg'
 import ImageIcon from '../ImageAssets/doc_image.svg'
 import info from '../ImageAssets/icon_info.svg'
 import { isDidSignFile } from '../Utils/verify-helper'
+import { SignFileInfoPopup } from './Popups'
+import { showPopup } from '../Features/Signer/PopupSlice'
 
 export const FileList = () => {
   const dispatch = useAppDispatch()
   const files = useAppSelector(selectFile)
   const hash = useAppSelector(selectHash)
+  const [signPopup, setSignPopup] = useState<boolean>(false)
 
+  const showSignInfoPopup = () => {
+    dispatch(showPopup(true))
+    setSignPopup(true)
+    document.body.style.overflowY = 'hidden'
+  }
+  const handleDismiss = () => {
+    dispatch(showPopup(false))
+    setSignPopup(false)
+    document.body.style.overflowY = 'auto'
+  }
   const handleDelFile = (file: File) => {
     const index = files.indexOf(file)
     dispatch(deleteFile(file))
@@ -45,16 +58,16 @@ export const FileList = () => {
             )}
             <div className="mx-2 flex -space-y-1 w-3/4">
               <span
-                className={`font-['Overpass'] text-justified overflow-wrap break-words text-left text-[14px] leading-[16px] tracking-[0.1px] text-[#2A2231] ${
-                  file.name == 'signature.didsign' && 'text-[#B20230] w-3/6 '
+                className={`font-['Overpass'] text-justified overflow-wrap break-words text-left text-[14px] leading-[16px] tracking-[0.1px] text-dark-purple ${
+                  isDidSignFile(file.name) && 'text-pure-red w-3/6 '
                 }`}
               >
                 {file.name}
               </span>
             </div>
             <div className="flex space-x-2 ml-auto w-1/2 justify-end">
-              {file.name == 'signature.didsign' ? (
-                <span className="text-left text-[#B20230] text-[14px] leading-[16px] tracking-[0.1px]  font-['Overpass']">
+              {isDidSignFile(file.name) ? (
+                <span className="text-left text-pure-red text-[14px] leading-[16px] tracking-[0.1px]  font-['Overpass']">
                   added by DID sign
                 </span>
               ) : (
@@ -63,11 +76,19 @@ export const FileList = () => {
                   <img src={DelIcon} />{' '}
                 </button>
               )}
+              {isDidSignFile(file.name) && (
+                <div className="flex flex-col items-center justify-center phone:invisible phone:w-[50px]">
+                  <button onClick={showSignInfoPopup}>
+                    <img src={info} />
+                  </button>
+                </div>
+              )}
             </div>
           </div>
-          <div className=" border-b-[1px] border-b-gray-900 border-dotted w-full"></div>
+          <div className=" border-b-[1px] border-b-dark-purple border-dotted w-full"></div>
         </div>
       ))}
+      {signPopup && <SignFileInfoPopup dismiss={handleDismiss} />}
     </div>
   )
 }
