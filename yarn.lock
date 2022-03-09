@@ -2050,6 +2050,11 @@
     "@types/connect" "*"
     "@types/node" "*"
 
+"@types/body-scroll-lock@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.npmjs.org/@types/body-scroll-lock/-/body-scroll-lock-3.1.0.tgz"
+  integrity sha512-3owAC4iJub5WPqRhxd8INarF2bWeQq1yQHBgYhN0XLBJMpd5ED10RrJ3aKiAwlTyL5wK7RkBD4SZUQz2AAAMdA==
+
 "@types/bonjour@^3.5.9":
   version "3.5.10"
   resolved "https://registry.npmjs.org/@types/bonjour/-/bonjour-3.5.10.tgz"
@@ -2575,7 +2580,7 @@
 
 "@zip.js/zip.js@^2.4.4":
   version "2.4.4"
-  resolved "https://registry.yarnpkg.com/@zip.js/zip.js/-/zip.js-2.4.4.tgz#577237ce8b1844b41b9986dc1ce31cf8b8c577da"
+  resolved "https://registry.npmjs.org/@zip.js/zip.js/-/zip.js-2.4.4.tgz"
   integrity sha512-1gtG+uWsU/0GwaH/088QE0NS/9OC9rV1kmurQ8wL1zGtAjqfAaEb+IZGWpd4n6J0whZ139xbTLt858q6cJGiDA==
 
 abab@^2.0.3, abab@^2.0.5:
@@ -2904,7 +2909,7 @@ axe-core@^4.3.5:
 
 axios@^0.26.0:
   version "0.26.0"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.26.0.tgz#9a318f1c69ec108f8cd5f3c3d390366635e13928"
+  resolved "https://registry.npmjs.org/axios/-/axios-0.26.0.tgz"
   integrity sha512-lKoGLMYtHvFrPVt3r+RBMp9nh34N0M8zEfCWqdWZx6phynIEhQqAdydpyBAAG211zlhX9Rgu08cOamy6XjE5Og==
   dependencies:
     follow-redirects "^1.14.8"
@@ -3122,6 +3127,11 @@ body-parser@1.19.1:
     qs "6.9.6"
     raw-body "2.4.2"
     type-is "~1.6.18"
+
+body-scroll-lock@^4.0.0-beta.0:
+  version "4.0.0-beta.0"
+  resolved "https://registry.npmjs.org/body-scroll-lock/-/body-scroll-lock-4.0.0-beta.0.tgz"
+  integrity sha512-a7tP5+0Mw3YlUJcGAKUqIBkYYGlYxk2fnCasq/FUph1hadxlTRjF+gAcZksxANnaMnALjxEddmSi/H3OR8ugcQ==
 
 bonjour@^3.5.0:
   version "3.5.0"
@@ -5024,7 +5034,7 @@ follow-redirects@^1.0.0:
 
 follow-redirects@^1.14.8:
   version "1.14.9"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.9.tgz#dd4ea157de7bfaf9ea9b3fbd85aa16951f78d8d7"
+  resolved "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.14.9.tgz"
   integrity sha512-MQDfihBQYMcyy5dhRDJUHcw7lb2Pv/TuE6xP1vyraLukNDHKbDxDNaOE3NbCAdKQApno+GPRyo1YAp89yCjK4w==
 
 fork-ts-checker-webpack-plugin@^6.5.0:
