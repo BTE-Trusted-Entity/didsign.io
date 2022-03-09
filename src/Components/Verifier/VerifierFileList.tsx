@@ -33,7 +33,7 @@ export const VerifierFileList = () => {
   const dispatch = useAppDispatch()
   const handleDelFile = (file: File) => {
     const index = files.indexOf(file)
-    const didSignFileDeleted = files[index].name.split('.').pop() == 'didsign'
+    const didSignFileDeleted = isDidSignFile(files[index].name)
 
     dispatch(deleteFile(file))
     dispatch(deleteItem(hash[index]))
@@ -45,11 +45,13 @@ export const VerifierFileList = () => {
     if (didSignFileDeleted) {
       dispatch(replaceStatus())
       dispatch(clearJWS())
-      if (didFiles.length === 1 && files.length === 2) {
-        dispatch(updateSignStatus('Not Checked'))
-      }
-      dispatch(clearEndpoint())
     }
+    if (didFiles.length === 1 && files.length === 2) {
+      dispatch(updateSignStatus('Not Checked'))
+    }
+    dispatch(updateSignStatus('Not Checked'))
+
+    dispatch(clearEndpoint())
   }
   if (files.length === 0) {
     return null
