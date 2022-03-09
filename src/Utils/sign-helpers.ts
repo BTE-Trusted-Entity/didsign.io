@@ -12,10 +12,10 @@ export const sha56 = hasher.from({
   encode: (input) => new Uint8Array(sha256.arrayBuffer(input)),
 })
 
-export const createHash = async (
-  blob: string | string[] | ArrayBuffer | null
-): Promise<string> => {
-  const hash = await sha56.digest(json.encode(blob))
+export const createHash = async (blob: ArrayBuffer | null): Promise<string> => {
+  if (!blob) throw new Error('No File given')
+  const blobAsU8a = new Uint8Array(blob)
+  const hash = await sha56.digest(blobAsU8a)
   return base16.baseEncode(hash.bytes)
 }
 
@@ -27,7 +27,8 @@ export const createHashFromHashArray = async (
     return hashArray[0]
   }
   const sortedHash = [...hashArray].sort()
-  return await createHash(sortedHash)
+  const asJson = json.encode(sortedHash)
+  return await createHash(asJson)
 }
 
 export const generateZipFile = async (files: File[]) => {

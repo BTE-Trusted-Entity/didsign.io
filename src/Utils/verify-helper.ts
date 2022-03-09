@@ -84,13 +84,14 @@ export const newUnzip = async (
   if (files.length) {
     for (const entry of files) {
       if (entry.getData != undefined) {
-        const text = await entry.getData(new zip.TextWriter())
         const didSignFile = entry.filename.split('.').pop() == 'didsign'
         if (didSignFile) {
+          const text = await entry.getData(new zip.TextWriter())
           fileStatuses.push(true)
           doc = { hashes: JSON.parse(text).hashes, jws: JSON.parse(text).jws }
           continue
         } else {
+          const text = await entry.getData(new zip.Uint8ArrayWriter())
           const hash = await createHash(text)
           fileData.push(hash)
         }
