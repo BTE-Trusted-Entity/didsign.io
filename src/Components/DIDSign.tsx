@@ -9,7 +9,6 @@ import { useAppSelector } from '../app/hooks'
 import { selectUserRole } from '../Features/Signer/UserSlice'
 import { BottomSectionVerifyer } from './Verifier/BottomSectionVerifyer'
 import BottomLeftBubble from '../ImageAssets/BottomLeftBubble.svg'
-
 import BottomRightBubble from '../ImageAssets/BottomRightBubble.svg'
 import { selectPopup } from '../Features/Signer/PopupSlice'
 
@@ -19,7 +18,7 @@ export const DIDSign = () => {
 
   return (
     <div
-      className={`relative min-h-screen w-screen overflow-y-auto bg-light-blue overflow-x-hidden flex flex-col ${
+      className={`relative min-h-screen max-w-screen overflow-y-auto bg-light-blue overflow-x-hidden flex flex-col ${
         popup && 'overflow-hidden'
       }`}
     >
