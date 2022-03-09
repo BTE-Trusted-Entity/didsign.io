@@ -75,9 +75,6 @@ export const ImportFiles = () => {
     const reader = new FileReader()
     reader.readAsArrayBuffer(file)
     reader.onload = async function () {
-      if (isDidSignFile(file.name)) {
-        doc = JSON.parse(reader.result as string)
-      }
       if (typeof reader.result === 'string')
         throw new Error(
           'Verification: type of reader result should be arraybuffer'
