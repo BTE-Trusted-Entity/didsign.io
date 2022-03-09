@@ -50,9 +50,6 @@ export const ImportFiles = () => {
     dispatch(updateSignStatus('Validating'))
 
     const sign = await newUnzip(file)
-    if (files.length === 0) {
-      return
-    }
     if (sign === undefined) {
       dispatch(updateSignStatus('Invalid'))
       return
@@ -78,10 +75,9 @@ export const ImportFiles = () => {
     const reader = new FileReader()
     reader.readAsArrayBuffer(file)
     reader.onload = async function () {
-<<<<<<< HEAD
       if (isDidSignFile(file.name)) {
         doc = JSON.parse(reader.result as string)
-=======
+      }
       if (typeof reader.result === 'string')
         throw new Error(
           'Verification: type of reader result should be arraybuffer'
@@ -91,7 +87,6 @@ export const ImportFiles = () => {
         const decoder = new TextDecoder('utf-8')
         const result = decoder.decode(reader.result as ArrayBuffer)
         doc = JSON.parse(result)
->>>>>>> 8cc3f1b3c098b082f35c670dfc217cfa6f87cee1
         const baseHash = await createHashFromHashArray(doc.hashes)
         const hashFromJWS: string = JSON.parse(atob(doc.jws.split('.')[1])).hash
         if (baseHash != hashFromJWS) {
