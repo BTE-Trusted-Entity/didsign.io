@@ -79,7 +79,7 @@ export const VerifierFileList = () => {
               </span>
             </div>
             <div className="flex space-x-2 ml-auto w-1/2 justify-end">
-              {status[index] && isDidSignFile(file.name) && (
+              {status[index] && !isDidSignFile(file.name) && (
                 <img src={OkIcon} />
               )}
               {!status[index] && <img src={AttentionIcon} />}
