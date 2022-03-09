@@ -12,12 +12,12 @@ export const SignerComponent = () => {
   return (
     <div
       id="sign-component"
-      className="bg-mid-body w-screen relative overflow-x-hidden small-device:pr-[15px] small-device:pl-[15px]"
+      className=" bg-silver-blue w-screen relative overflow-x-hidden small-device:pr-[15px] small-device:pl-[15px]"
     >
       <ImportFilesSigner />
       <div
         className={`overflow-y-auto relative flex-col -space-y-1 mx-auto max-w-[766px] min-h-[211px] max-h-[900px]
-        bg-[#ddf0ff80] border-solid border-[#517ca240] border-t-[1px] border-l-[1px] border-r-[1px]`}
+        bg-light-blue bg-opacity-80 border-solid border-[#517ca240] border-t-[1px] border-l-[1px] border-r-[1px]`}
       >
         <span className="absolute top-4 left-8 big-phone:left-2 text-[#2a223180] font-[Overpass Regular] text-[16px] leading-[17px] tracking-[0.11px] w-[34px]">
           Files

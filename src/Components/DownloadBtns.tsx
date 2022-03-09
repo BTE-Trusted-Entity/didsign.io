@@ -51,24 +51,24 @@ export const DownloadBtns = () => {
     ).style.pointerEvents = 'auto'
   }
   return (
-    <div className="bg-[#ddf0ff80] border-solid border-[#517ca240] border-[1px] mx-auto flex flex-col items-center justify-center rounded-b-[15px] w-[766px] pt-4 pr-4 shadow-sm mb-8 space-y-4 relative">
-      <div className="flex space-x-2 justify-center items-center ">
-        <span className="w-[110px] text-right text-[14px] font-['Overpass' absolute left-[180px]">
+    <div className="bg-light-blue bg-opacity-80 border-solid border-[#517ca240] border-[1px] mx-auto flex flex-col items-center justify-center rounded-b-[15px] max-w-[766px] pt-4 pr-4 shadow-sm mb-8 space-y-4 relative">
+      <div className="flex space-x-8 justify-center items-center ">
+        <span className="w-[110px] text-right text-[14px] font-['Overpass' absolute left-[180px] phone:invisible text-dark-purple">
           now
         </span>
         <button
-          className="w-[160px] h-[30px] text-[14px] leading-[16px] tracking-[0.1px]  font-['Overpass'] bg-[#3E6E99] text-white rounded-[8px]"
+          className="w-[160px] h-[30px] text-[14px] leading-[16px] tracking-[0.1px]  font-['Overpass'] bg-medium-blue text-white rounded-[8px]"
           onClick={handleZip}
         >
           ZIP ALL FILES
         </button>
       </div>
-      <div className="flex space-x-2 justify-start items-center pb-4">
-        <span className="text-[14px] leading-[16px] tracking-[0.1px] w-[110px] font-['Overpass'] text-right absolute left-[185px]">
+      <div className="flex space-x-8 justify-start items-center pb-4">
+        <span className="text-[14px] leading-[16px] tracking-[0.1px] w-[110px] font-['Overpass'] text-right absolute left-[185px] phone:invisible text-dark-purple">
           or only download
         </span>
         <button
-          className="w-[130px] h-[22px]  font-[Overpass Regular] bg-[#3E6E99] text-white text-[12px] leading-[13px] tracking-[0.09px] rounded-[6px]"
+          className="w-[130px] h-[22px]  font-[Overpass Regular] bg-medium-blue text-white text-[12px] leading-[13px] tracking-[0.09px] rounded-[6px]"
           onClick={handleDownloadSign}
         >
           SIGNATURE

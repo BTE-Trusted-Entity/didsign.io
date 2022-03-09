@@ -24,7 +24,7 @@ export const SignBtn = () => {
     return (
       <button
         className="font-['Overpass'] text-[14px] leading-[16px] pointer-events-none  tracking-[0.1px] text-[#ffffff80] text-center w-[160px] h-[30px] mt-4 mb-4 rounded-md 
-                my-auto bg-[#718BA3] shadow-md"
+                my-auto bg-greyish-blue shadow-md"
         onClick={handleChange}
       >
         SIGN
@@ -35,7 +35,7 @@ export const SignBtn = () => {
     return (
       <button
         className="font-['Overpass'] text-[14px] leading-[16px]  tracking-[0.1px] text-white text-center w-[160px] h-[30px] mt-4 mb-4 rounded-md 
-    my-auto bg-[#3E6E99] shadow-md"
+    my-auto bg-medium-blue shadow-md"
         onClick={handleChange}
       >
         SIGN
@@ -103,7 +103,7 @@ export const SignBtn = () => {
     <div>
       <div
         ref={sporranPopup}
-        className="invisible z-40 fixed max-w-[300px] mx-auto h-[fit] bg-mid-body shadow-2xl rounded-[15px] left-1/2 top-1/4 mt-[3%] -ml-[150px] phone:overflow-y-scroll"
+        className="invisible z-40 fixed max-w-[300px] mx-auto h-[fit] bg-silver-blue shadow-2xl rounded-[15px] left-1/2 top-1/4 mt-[3%] -ml-[150px] phone:overflow-y-scroll"
       >
         <div className="flex relative flex-col w-full h-full items-center mt-4 space-y-5 pl-4 pr-4 pb-4 ">
           <img
@@ -137,15 +137,15 @@ export const SignBtn = () => {
           {signStatus === 'No Sporran' && (
             <span className="font-['Overpass'] -tracking-tigher text-[#2A2231] text-[16px] pl-4 pr-4 text-justify">
               To sign your files with DIDsign you need an on-chain DID in a
-              wallet that supports it. We recommend the Sporran, a browser
-              extension available for Google Chrome and Firefox. Any other
-              wallet supporting on-chain signing on the KILT blockchain can also
-              be used.
+              wallet that supports it. We recommend Sporran, a browser extension
+              available for Google Chrome and Firefox. Any other wallet
+              supporting on-chain signing on the KILT blockchain can also be
+              used.
             </span>
           )}
           <button
             onClick={handleDismiss}
-            className="font-['Overpass'] rounded-[8px] w-[130px] text-[12px] leading-[12px]  tracking-[0.1px] pl-4 pr-4 text-center h-[22px] bg-[#3E6E99] text-white"
+            className="font-['Overpass'] rounded-[8px] w-[130px] text-[12px] leading-[12px]  tracking-[0.1px] pl-4 pr-4 text-center h-[22px] bg-medium-blue text-white"
           >
             DISMISS
           </button>
@@ -154,7 +154,7 @@ export const SignBtn = () => {
 
       <div
         id="sign-btn"
-        className="bg-[#ddf0ff80] border-[#517ca240] border-[1px] space-x-2 rounded-b-[15px] mt-0  mx-auto max-w-[766px] flex items-center h-[6rem] justify-center mb-4 shadow-md"
+        className="bg-light-blue bg-opacity-80 border-[#517ca240] border-[1px] space-x-2 rounded-b-[15px] mt-0  mx-auto max-w-[766px] flex items-center h-[6rem] justify-center mb-4 shadow-md"
       >
         {hashes.length == 0 ? <ButtonDisabled /> : <ButtonEnabled />}
         <button onClick={showSignPopup}>

@@ -4,7 +4,7 @@ import KiltLogo from '../ImageAssets/Kilt.svg'
 
 export const Footer = () => {
   return (
-    <div className="bg-header flex items-center justify-center   h-[35px] w-screen relative mt-auto  big-phone:h-28 ">
+    <div className=" bg-dark-purple flex items-center justify-center   h-[35px] w-screen relative mt-auto  big-phone:h-28 ">
       <div className="flex items-center justify-center w-[766px] h-full relative">
         <img
           className=" h-[27px] absolute left-0 small-device:pl-[15px] phone:invisible"

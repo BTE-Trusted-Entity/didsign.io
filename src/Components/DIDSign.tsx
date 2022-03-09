@@ -1,7 +1,7 @@
 import React from 'react'
 import { Header } from './Header'
 import { SignerComponent } from './SignerComponent'
-import { VerifierComponent } from './VerifierComponent'
+import { VerifierComponent } from './Verifier/VerifierComponent'
 import { SelectUserRoleBtns } from './SelectUserRoleBtns'
 import { Footer } from './Footer'
 import { BottomSectionSigner } from './BottomSection'
@@ -19,7 +19,7 @@ export const DIDSign = () => {
 
   return (
     <div
-      className={`relative min-h-screen w-screen overflow-y-auto bg-bottom-body overflow-x-hidden flex flex-col ${
+      className={`relative min-h-screen w-screen overflow-y-auto bg-light-blue overflow-x-hidden flex flex-col ${
         popup && 'overflow-hidden'
       }`}
     >

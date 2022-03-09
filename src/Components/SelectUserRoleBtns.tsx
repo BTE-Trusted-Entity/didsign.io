@@ -24,7 +24,7 @@ export const SelectUserRoleBtns = () => {
       : dispatch(updateRole(false))
   }
   return (
-    <div className="bg-mid-body">
+    <div className="bg-silver-blue">
       <div className="flex w-screen mx-auto h-[42px]">
         <button
           onClick={handleSigner}
@@ -36,8 +36,8 @@ export const SelectUserRoleBtns = () => {
           <span
             className={` h-full mr-10 flex flex-col  justify-center items-center w-[100%]  my-auto max-w-[383px] font-normal  text-[17px] leading-[16px]  tracking-[0.16px] uppercase font-['Overpass']   ${
               !userRoleIsSigner
-                ? 'text-[#3e6e9980] text-[16px] leading-[17px] my-auto '
-                : 'text-[#2A2231]'
+                ? 'text-medium-blue text-opacity-80 text-[16px] leading-[17px] my-auto '
+                : 'text-dark-purple'
             }`}
           >
             SIGN
@@ -56,8 +56,8 @@ export const SelectUserRoleBtns = () => {
           <span
             className={`h-full flex flex-col ml-10  justify-center items-center w-[100%]  my-auto max-w-[383px] font-normal  text-[17px] leading-[16px]  tracking-[0.16px] uppercase font-['Overpass']   ${
               userRoleIsSigner
-                ? 'text-[#3e6e9980] text-[16px] leading-[17px] my-auto '
-                : 'text-[#2A2231]'
+                ? 'text-medium-blue text-opacity-80 text-[16px] leading-[17px] my-auto '
+                : 'text-dark-purple'
             }`}
           >
             Verify

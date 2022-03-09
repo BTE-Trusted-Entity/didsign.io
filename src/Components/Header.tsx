@@ -6,7 +6,7 @@ import TopLeftBubble from '../ImageAssets/TopLeftBubble.svg'
 export const Header = () => {
   return (
     <div>
-      <div className="bg-header w-screen h-[96px] flex flex-col relative ">
+      <div className=" bg-dark-purple w-screen h-[96px] flex flex-col relative ">
         <img
           src={TopLeftBubble}
           className="absolute top-0 left-0 pointer-events-none h-full"
