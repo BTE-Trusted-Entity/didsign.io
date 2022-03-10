@@ -35,22 +35,14 @@ export const createHashFromHashArray = async (
 export const generateZipFile = async (buffers: IBuffer[]) => {
   const zip = new JSZip()
   buffers.map((buffer) => zip.file(buffer.name, buffer.buffer))
-  const content = await zip.generateAsync(
-    {
-      type: 'blob',
-      compression: 'STORE',
-      streamFiles: true,
-      compressionOptions: {
-        level: 1,
-      },
+  const content = await zip.generateAsync({
+    type: 'blob',
+    compression: 'STORE',
+    streamFiles: true,
+    compressionOptions: {
+      level: 1,
     },
-    function updateCallback(metadata) {
-      console.log('progression: ' + metadata.percent.toFixed(0) + ' %')
-      if (metadata.currentFile) {
-        console.log('current file = ' + metadata.currentFile)
-      }
-    }
-  )
+  })
   saveAs(content, 'DIDsign-files.zip')
 }
 

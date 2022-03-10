@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   clearHash,
   selectFinalHash,
@@ -19,6 +19,7 @@ import {
   selectBuffer,
 } from '../Features/Signer/FileSlice'
 import BtnStartOver from '../ImageAssets/button_start_over_NEW.svg'
+import loader from '../ImageAssets/oval.svg'
 
 export const DownloadBtns = () => {
   const sign = useAppSelector(selectSign)
@@ -26,6 +27,7 @@ export const DownloadBtns = () => {
   const finalHash = useAppSelector(selectFinalHash)
   const hashes = useAppSelector(selectHash)
   const buffers = useAppSelector(selectBuffer)
+  const [showLoader, setShowLoader] = useState<boolean>(false)
 
   const signature: Signature = { keyID: did, signature: sign }
 
@@ -40,16 +42,17 @@ export const DownloadBtns = () => {
     saveAs(blob, 'signature.didsign')
   }
   const handleZip = async () => {
+    setShowLoader(true)
+    document.body.style.pointerEvents = 'none'
     await generateZipFile(buffers)
+    setShowLoader(false)
+    document.body.style.pointerEvents = 'auto'
   }
   const handleStartOver = () => {
     dispatch(clearSign())
     dispatch(clearAll())
     dispatch(clearHash())
     dispatch(clearFileName())
-    ;(
-      document.getElementById('sign-component') as HTMLDivElement
-    ).style.pointerEvents = 'auto'
   }
   return (
     <div className="bg-light-blue bg-opacity-80 border-solid border-[#517ca240] border-[1px] mx-auto flex flex-col items-center justify-center rounded-b-[15px] max-w-[766px] pt-4 pr-4 shadow-sm mb-8 space-y-4 relative">
@@ -58,10 +61,16 @@ export const DownloadBtns = () => {
           now
         </span>
         <button
-          className="w-[160px] h-[30px] text-[14px] leading-[16px] tracking-[0.1px]  font-['Overpass'] bg-medium-blue text-white rounded-[8px]"
+          className={`w-[160px] h-[30px] text-[14px] leading-[16px] relative tracking-[0.1px]  font-['Overpass'] bg-medium-blue text-white rounded-[8px] ${
+            showLoader && 'pointer-events-none'
+          }`}
           onClick={handleZip}
         >
-          ZIP ALL FILES
+          <span>{showLoader ? 'ZIPPING' : 'ZIP ALL FILES'}</span>
+
+          {showLoader && (
+            <img className={`absolute right-4 h-1/2 top-[6px]`} src={loader} />
+          )}
         </button>
       </div>
       <div className="flex space-x-8 justify-start items-center pb-4">
@@ -69,10 +78,10 @@ export const DownloadBtns = () => {
           or only download
         </span>
         <button
-          className="w-[130px] h-[22px]  font-[Overpass Regular] bg-medium-blue text-white text-[12px] leading-[13px] tracking-[0.09px] rounded-[6px]"
+          className="w-[130px] h-[22px] font-['Overpass'] bg-medium-blue text-white text-[12px] leading-[13px] tracking-[0.09px] rounded-[6px]"
           onClick={handleDownloadSign}
         >
-          SIGNATURE
+          <span>SIGNATURE</span>
         </button>
       </div>
       <button className="absolute -right-1 -bottom-1" onClick={handleStartOver}>
