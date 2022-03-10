@@ -1,11 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import DocIcon from '../../ImageAssets/doc_generic.svg'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import {
-  clearAll,
-  deleteFile,
-  selectFile,
-} from '../../Features/Signer/FileSlice'
+import { deleteFile, selectFile } from '../../Features/Signer/FileSlice'
 import DIDIcon from '../../ImageAssets/doc_signature_NEW.svg'
 import ImageIcon from '../../ImageAssets/doc_image.svg'
 import {
@@ -13,11 +9,12 @@ import {
   deleteFilestatus,
   fileStatus,
   replaceStatus,
+  selectVerifiedSign,
 } from '../../Features/Signer/EndpointSlice'
 import AttentionIcon from '../../ImageAssets/icon_attention.svg'
 import OkIcon from '../../ImageAssets/icon_oK.svg'
 import DelIcon from '../../ImageAssets/icon_elete.svg'
-import { deleteItem, selectHash } from '../../Features/Signer/hashSlice'
+import { deleteHashFromIndex } from '../../Features/Signer/hashSlice'
 import {
   clearJWS,
   updateSignStatus,
@@ -27,32 +24,42 @@ import { isDidSignFile } from '../../Utils/verify-helper'
 export const VerifierFileList = () => {
   const files = useAppSelector(selectFile)
   const status = useAppSelector(fileStatus)
-  const hash = useAppSelector(selectHash)
-  const didFiles = files.filter((file) => isDidSignFile(file.name))
+  const [deleted, setDeleted] = useState<number>(-1)
+  const [didSign, setDidSign] = useState<boolean>(true)
+  const sign = useAppSelector(selectVerifiedSign)
 
   const dispatch = useAppDispatch()
   const handleDelFile = (file: File) => {
     const index = files.indexOf(file)
-    const didSignFileDeleted = isDidSignFile(files[index].name)
-
-    dispatch(deleteFile(file))
-    dispatch(deleteItem(hash[index]))
+    setDidSign(isDidSignFile(files[index].name))
     dispatch(deleteFilestatus(index))
-    if (files.length === 1) {
+    dispatch(deleteFile(file))
+    dispatch(deleteHashFromIndex(index))
+    setDeleted(index)
+  }
+  useEffect(() => {
+    if (files.length === 0) {
       dispatch(clearJWS())
-      dispatch(clearAll())
+      dispatch(clearEndpoint())
     }
-    if (didSignFileDeleted) {
-      dispatch(replaceStatus())
-      dispatch(clearJWS())
-    }
-    if (didFiles.length === 1 && files.length === 2) {
+    if (files.length == 1 && files.find((file) => isDidSignFile(file.name))) {
+      dispatch(clearEndpoint())
       dispatch(updateSignStatus('Not Checked'))
     }
-    dispatch(updateSignStatus('Not Checked'))
-
-    dispatch(clearEndpoint())
-  }
+    if (didSign) {
+      dispatch(replaceStatus())
+      dispatch(clearJWS())
+      dispatch(clearEndpoint())
+      setDidSign(false)
+    } else if (!status.includes(false) && deleted != -1) {
+      if (sign == '') {
+        dispatch(updateSignStatus('Not Checked'))
+      } else {
+        dispatch(updateSignStatus('Verified'))
+      }
+    }
+    setDeleted(-1)
+  }, [deleted])
   if (files.length === 0) {
     return null
   }
