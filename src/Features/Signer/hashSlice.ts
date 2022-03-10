@@ -38,11 +38,19 @@ export const hashSlice = createSlice({
         value: action.payload,
       }
     },
+    deleteHashFromIndex: (state, action: PayloadAction<number>) => {
+      state.value.splice(action.payload, 1)
+    },
   },
 })
 
-export const { deleteItem, clearHash, addHash, addHashArray } =
-  hashSlice.actions
+export const {
+  deleteItem,
+  clearHash,
+  addHash,
+  addHashArray,
+  deleteHashFromIndex,
+} = hashSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectHash = (state: RootState) => state.hash.value
