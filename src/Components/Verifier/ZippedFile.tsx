@@ -13,16 +13,23 @@ import {
   clearFileStatuses,
 } from '../../Features/Signer/EndpointSlice'
 import { clearHash } from '../../Features/Signer/hashSlice'
-import { clearJWS } from '../../Features/Signer/VerifyJwsSlice'
+import {
+  clearJWS,
+  selectJwsSignStatus,
+} from '../../Features/Signer/VerifyJwsSlice'
 
 export const ZippedFile = () => {
-  const fileName = useAppSelector(selectFilename)
+  const fileNames = useAppSelector(selectFilename)
   const files = useAppSelector(selectFile)
+  const jwsStatus = useAppSelector(selectJwsSignStatus)
   const dispatch = useAppDispatch()
-  if (fileName.length == 0) {
+  if (fileNames.length == 0) {
     return null
   }
   const handleDelete = () => {
+    if (jwsStatus === 'Validating') {
+      return
+    }
     dispatch(clearEndpoint())
     dispatch(clearAll())
     dispatch(clearHash())
