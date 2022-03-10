@@ -11,6 +11,7 @@ import {
 } from '../Features/Signer/EndpointSlice'
 import SignatureIcon from '../ImageAssets/icon_DID.svg'
 import { selectFilename } from '../Features/Signer/FileSlice'
+import BTELogo from '../ImageAssets/bte_logo_black.png'
 
 interface Toggle {
   dismiss: React.MouseEventHandler<HTMLButtonElement>
@@ -185,6 +186,60 @@ export const SigningDuplicateFiles = (props: Toggle) => {
           className="font-['Overpass'] rounded-[8px] w-[100px] text-[12px] leading-[12px]  tracking-[0.1px] pl-4 pr-4 text-center h-[25px] bg-medium-blue text-white"
         >
           DISMISS
+        </button>
+      </div>
+    </div>
+  )
+}
+export const ImprintPopup = (props: Toggle) => {
+  return (
+    <div className=" z-40 text-dark-purple max-w-[500px] flex mx-auto h-[fit] bg-silver-blue shadow-2xl rounded-[15px] absolute bottom-24 overflow-y-scroll ml-[15px] mr-[15px]">
+      <div className="flex relative flex-col w-full h-full items-center mt-4 space-y-5 pl-4 pr-4 pb-4 ">
+        <img
+          src={CenterLeftBubble}
+          className="absolute bottom-0 left-0 mt-auto pointer-events-none"
+        />
+        <div>
+          <img className="w-[101px] h-[80px]" src={BTELogo} />
+        </div>
+        <div className="flex flex-col flex-wrap space-y-1 overflow-wrap break-words  pl-[10px] pr-[10px] text-justify pt-2 pb-2 font-['Overpass'] leading-[16px] tracking-[0.13px]  text-[14px]">
+          <span>Imprint</span>
+          <span>B.T.E. BOTLabs Trusted Entity GmbH</span>
+          <span>Keithstraße 2-4</span>
+          <span>10787 Berlin, Germany</span>
+          <span>
+            Germany Commercial Court: Amtsgericht Charlottenburg in Berlin
+          </span>
+          <span>Registration Number: HRB 231219B</span>
+          <span>Tax No: 29/244/31363</span>
+          <span>Managing Director: Ingo Rübe</span>
+          <span>
+            Contact:{' '}
+            <a
+              href="mailto:info@botlabs.org"
+              className="text-medium-blue font-bold hover:underline"
+            >
+              info@botlabs.org
+            </a>
+          </span>
+          <span>
+            Or go to{' '}
+            <a
+              href="https://support.kilt.io/support/home"
+              className="text-medium-blue font-bold hover:underline"
+            >
+              {' '}
+              Tech support{' '}
+            </a>{' '}
+            and click on “Contact Us”
+          </span>
+          <span>Requirements according to § 5 TMG (Germany)</span>
+        </div>
+        <button
+          onClick={props.dismiss}
+          className="font-['Overpass'] rounded-[8px] w-[160px] text-[12px] leading-[12px]  tracking-[0.1px] pl-4 pr-4 text-center h-[25px] bg-medium-blue text-white"
+        >
+          OK
         </button>
       </div>
     </div>

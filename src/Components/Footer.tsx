@@ -1,8 +1,30 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Logo from '../ImageAssets/logo_DIDsign.svg'
 import KiltLogo from '../ImageAssets/Kilt.svg'
+import { ImprintPopup } from './Popups'
+import { useAppDispatch } from '../app/hooks'
+import { showPopup } from '../Features/Signer/PopupSlice'
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
 
 export const Footer = () => {
+  const targetElement = document.querySelector('body')
+  const [showImprint, setShowImprint] = useState<boolean>(false)
+  const dispatch = useAppDispatch()
+  const handleImprint = () => {
+    dispatch(showPopup(true))
+    setShowImprint(true)
+    if (targetElement !== null) {
+      disableBodyScroll(targetElement)
+    }
+  }
+  const handleDismiss = () => {
+    if (targetElement !== null) {
+      enableBodyScroll(targetElement)
+    }
+    dispatch(showPopup(false))
+
+    setShowImprint(false)
+  }
   return (
     <div className=" bg-dark-purple flex items-center justify-center   h-[35px] w-screen relative mt-auto  big-phone:h-28 ">
       <div className="flex items-center justify-center w-[766px] h-full relative">
@@ -12,11 +34,17 @@ export const Footer = () => {
         />
 
         <div className="items-center flex flex-wrap max-w-3/4 justify-center space-x-2 text-white font-['Overpass'] text-[14px] leading-[16px] tracking-[0.1px]">
-          <span>Imprint </span>
+          <button className="hover:underline" onClick={handleImprint}>
+            <span>Imprint </span>
+          </button>
           <span>-</span>
-          <span>Terms and Conditions</span>
+          <button className="hover:underline">
+            <span>Terms and Conditions</span>
+          </button>
           <span>-</span>
-          <span>Privacy Policy </span>
+          <button className="hover:underline">
+            <span>Privacy Policy </span>
+          </button>
         </div>
 
         <img
@@ -24,6 +52,7 @@ export const Footer = () => {
           src={KiltLogo}
         />
       </div>
+      {showImprint && <ImprintPopup dismiss={handleDismiss} />}
     </div>
   )
 }
