@@ -44,6 +44,7 @@ export const ImportFiles = () => {
   const jwsStatus = useAppSelector(selectJwsSignStatus)
   const savedZippedFilenames = useAppSelector(selectFilename)
   const files = useAppSelector(selectFile)
+
   const dispatch = useAppDispatch()
 
   const handleZipCase = async (file: File) => {
@@ -92,7 +93,6 @@ export const ImportFiles = () => {
         dispatch(addJwsSign(doc.jws))
         dispatch(addJwsHashArray(doc.hashes))
         dispatch(updateIndividualFileStatus(true))
-
         dispatch(addHash('hash'))
       } else {
         const hash = await createHash(reader.result)
@@ -145,14 +145,17 @@ export const ImportFiles = () => {
   )
   useEffect(() => {
     if (jwsHash.length) {
+      let fetchStatus: 'Not Fetched' | 'Fetched' = 'Not Fetched'
+
       fileHash.filter(async (hash, index) => {
         if (jwsHash.includes(hash)) {
           dispatch(updateIndividualFileStatusOnIndex(index))
           if (jwsStatus === 'Not Checked') {
-            if (index >= 1 && fileHash.length > 2) {
+            if (fetchStatus === 'Fetched') {
               return
             }
             dispatch(updateSignStatus('Validating'))
+            fetchStatus = 'Fetched'
             const verifiedSignatureInstance = await getVerifiedData(jws)
             if (verifiedSignatureInstance != undefined) {
               dispatch(updateSignStatus('Verified'))
@@ -166,7 +169,7 @@ export const ImportFiles = () => {
         }
       })
     }
-  }, [fileHash, files, jwsStatus, jws])
+  }, [fileHash, jwsStatus, jws])
   return (
     <div className="mt-3 mx-auto h-[220px] relative max-w-[766px] flex justify-center">
       {jwsStatus === 'Multiple Sign' && <MultipleSignPopup />}
