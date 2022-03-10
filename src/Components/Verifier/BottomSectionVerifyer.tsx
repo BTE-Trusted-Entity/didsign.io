@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import {
   clearEndpoint,
+  clearFileStatuses,
   fileStatus,
   selectEndpointTypes,
   selectEndpointURL,
@@ -92,6 +93,7 @@ export const BottomSectionVerifyer = () => {
     dispatch(clearSign())
     dispatch(clearHash())
     dispatch(clearFileName())
+    dispatch(clearFileStatuses())
     dispatch(clearHash())
     dispatch(clearJWS())
   }
