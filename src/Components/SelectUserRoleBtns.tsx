@@ -1,6 +1,9 @@
 import React from 'react'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
-import { clearEndpoint } from '../Features/Signer/EndpointSlice'
+import {
+  clearEndpoint,
+  clearFileStatuses,
+} from '../Features/Signer/EndpointSlice'
 import { clearAll, clearFileName } from '../Features/Signer/FileSlice'
 import { clearHash } from '../Features/Signer/hashSlice'
 import { clearSign } from '../Features/Signer/SignatureSlice'
@@ -18,6 +21,7 @@ export const SelectUserRoleBtns = () => {
     dispatch(clearFileName())
     dispatch(clearEndpoint())
     dispatch(clearJWS())
+    dispatch(clearFileStatuses())
     const id = (event.currentTarget as HTMLButtonElement).id
     id == 'signer-btn'
       ? dispatch(updateRole(true))

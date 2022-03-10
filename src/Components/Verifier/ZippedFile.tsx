@@ -8,7 +8,10 @@ import {
 } from '../../Features/Signer/FileSlice'
 import DelIcon from '../../ImageAssets/icon_elete.svg'
 import ZipIcon from '../../ImageAssets/doc_zip_NEW.svg'
-import { clearEndpoint } from '../../Features/Signer/EndpointSlice'
+import {
+  clearEndpoint,
+  clearFileStatuses,
+} from '../../Features/Signer/EndpointSlice'
 import { clearHash } from '../../Features/Signer/hashSlice'
 import { clearJWS } from '../../Features/Signer/VerifyJwsSlice'
 
@@ -26,6 +29,7 @@ export const ZippedFile = () => {
     dispatch(clearFileName())
     dispatch(clearHash())
     dispatch(clearJWS())
+    dispatch(clearFileStatuses())
   }
   return (
     <div className="flex flex-col space-y-1 w-[96%] pl-4 pr-4 pb-2">
