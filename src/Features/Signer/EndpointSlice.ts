@@ -46,7 +46,12 @@ export const EndpointSlice = createSlice({
     deleteFilestatus: (state, action: PayloadAction<number>) => {
       state.fileStatus.splice(action.payload, 1)
     },
-
+    clearFileStatuses: (state) => {
+      return {
+        ...state,
+        fileStatus: initialState.fileStatus,
+      }
+    },
     replaceStatus: (state) => {
       return {
         ...state,
@@ -63,6 +68,7 @@ export const {
   updateIndividualFileStatusOnIndex,
   updateAllFilesStatus,
   deleteFilestatus,
+  clearFileStatuses,
   replaceStatus,
 } = EndpointSlice.actions
 
