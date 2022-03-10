@@ -16,7 +16,7 @@ import { saveAs } from 'file-saver'
 import {
   clearAll,
   clearFileName,
-  selectFile,
+  selectBuffer,
 } from '../Features/Signer/FileSlice'
 import BtnStartOver from '../ImageAssets/button_start_over_NEW.svg'
 
@@ -25,7 +25,8 @@ export const DownloadBtns = () => {
   const did = useAppSelector(selectDid)
   const finalHash = useAppSelector(selectFinalHash)
   const hashes = useAppSelector(selectHash)
-  const files = useAppSelector(selectFile)
+  const buffers = useAppSelector(selectBuffer)
+
   const signature: Signature = { keyID: did, signature: sign }
 
   const dispatch = useAppDispatch()
@@ -39,7 +40,7 @@ export const DownloadBtns = () => {
     saveAs(blob, 'signature.didsign')
   }
   const handleZip = async () => {
-    await generateZipFile(files)
+    await generateZipFile(buffers)
   }
   const handleStartOver = () => {
     dispatch(clearSign())

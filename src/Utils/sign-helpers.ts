@@ -5,6 +5,7 @@ import * as json from 'multiformats/codecs/json'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import { Signature } from './types'
+import { IBuffer } from '../Features/Signer/FileSlice'
 
 export const sha56 = hasher.from({
   name: 'sha2-256',
@@ -31,10 +32,25 @@ export const createHashFromHashArray = async (
   return await createHash(asJson)
 }
 
-export const generateZipFile = async (files: File[]) => {
+export const generateZipFile = async (buffers: IBuffer[]) => {
   const zip = new JSZip()
-  files.map((file) => zip.file(file.name, file))
-  const content = await zip.generateAsync({ type: 'blob' })
+  buffers.map((buffer) => zip.file(buffer.name, buffer.buffer))
+  const content = await zip.generateAsync(
+    {
+      type: 'blob',
+      compression: 'STORE',
+      streamFiles: true,
+      compressionOptions: {
+        level: 1,
+      },
+    },
+    function updateCallback(metadata) {
+      console.log('progression: ' + metadata.percent.toFixed(0) + ' %')
+      if (metadata.currentFile) {
+        console.log('current file = ' + metadata.currentFile)
+      }
+    }
+  )
   saveAs(content, 'DIDsign-files.zip')
 }
 

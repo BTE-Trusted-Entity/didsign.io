@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { updateSign, updateDID } from '../Features/Signer/SignatureSlice'
 import { openSporan, generateJWS } from '../Utils/sign-helpers'
 import { selectFinalHash, selectHash } from '../Features/Signer/hashSlice'
-import { addFileTop } from '../Features/Signer/FileSlice'
+import { addBufferTop, addFileTop, IBuffer } from '../Features/Signer/FileSlice'
 import { Signature, SignDoc } from '../Utils/types'
 import InfoIcon from '../ImageAssets/iconBIG_info.svg'
 import AttentionIcon from '../ImageAssets/iconBIG_attention.svg'
@@ -72,7 +72,13 @@ export const SignBtn = () => {
         const blob = new Blob([JSON.stringify(signedDoc)], {
           type: 'text/plain;charset=utf-8',
         })
+
         const newFile = new File([blob], 'signature.didsign')
+        const newBufferObj: IBuffer = {
+          buffer: await newFile.arrayBuffer(),
+          name: newFile.name,
+        }
+        dispatch(addBufferTop(newBufferObj))
         dispatch(addFileTop(newFile))
         dispatch(showPopup(false))
         if (targetElement !== null) {

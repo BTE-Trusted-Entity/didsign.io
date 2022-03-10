@@ -2,7 +2,7 @@ import Dropzone from 'react-dropzone'
 import React, { useCallback, useState } from 'react'
 import ImportIcon from '../ImageAssets/iconBIG_import_NEW.svg'
 import ReleaseIcon from '../ImageAssets/iconBIG_import_release.svg'
-import { addFile } from '../Features/Signer/FileSlice'
+import { addBuffer, addFile, IBuffer } from '../Features/Signer/FileSlice'
 import { addHash } from '../Features/Signer/hashSlice'
 import { createHash } from '../Utils/sign-helpers'
 import { useAppDispatch } from '../app/hooks'
@@ -31,17 +31,25 @@ export const ImportFilesSigner = () => {
         }
         const reader = new FileReader()
         reader.onload = async function () {
-          if (typeof reader.result === 'string')
+          if (
+            typeof reader.result === 'string' ||
+            typeof reader.result === null
+          )
             throw new Error(
               'Signing: type of reader result should be arraybuffer'
             )
-
-          const newHash = await createHash(reader.result)
-          dispatch(addHash(newHash))
+          if (reader.result != null) {
+            const bufferObj: IBuffer = {
+              buffer: reader.result,
+              name: file.name,
+            }
+            dispatch(addBuffer(bufferObj))
+            dispatch(addFile(file))
+            const newHash = await createHash(reader.result)
+            dispatch(addHash(newHash))
+          }
         }
-        // reader.readAsText(file)
         reader.readAsArrayBuffer(file)
-        dispatch(addFile(file))
       })
     },
     [ImportIcon]
