@@ -2,11 +2,15 @@ import React from 'react'
 import AttentionIcon from '../ImageAssets/iconBIG_attention.svg'
 import InfoIcon from '../ImageAssets/iconBIG_info.svg'
 import CenterLeftBubble from '../ImageAssets/CenterLeftBubble.svg'
-import { useAppDispatch } from '../app/hooks'
+import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { showPopup } from '../Features/Signer/PopupSlice'
 import { updateSignStatus } from '../Features/Signer/VerifyJwsSlice'
-import { clearEndpoint } from '../Features/Signer/EndpointSlice'
+import {
+  clearEndpoint,
+  selectVerifiedSign,
+} from '../Features/Signer/EndpointSlice'
 import SignatureIcon from '../ImageAssets/icon_DID.svg'
+import { selectFilename } from '../Features/Signer/FileSlice'
 
 interface Toggle {
   dismiss: React.MouseEventHandler<HTMLButtonElement>
@@ -48,11 +52,17 @@ export const SignInfoPopup = (props: Toggle) => {
 }
 export const MultipleSignPopup = () => {
   const dispatch = useAppDispatch()
+  const fileNames = useAppSelector(selectFilename)
+  const verifiedSign = useAppSelector(selectVerifiedSign)
 
   const handleDismiss = () => {
     dispatch(showPopup(false))
-    dispatch(clearEndpoint())
-    dispatch(updateSignStatus('Not Checked'))
+    if (fileNames.length > 0 && verifiedSign !== '') {
+      dispatch(updateSignStatus('Verified'))
+    } else {
+      dispatch(clearEndpoint())
+      dispatch(updateSignStatus('Not Checked'))
+    }
   }
   return (
     <div className=" z-40 text-dark-purple fixed max-w-[400px] phone:w-[300px] mx-auto h-[fit] bg-silver-blue shadow-2xl rounded-[15px] left-1/2 top-1/4 mt-[3%] -ml-[200px] phone:-ml-[150px] phone:overflow-y-scroll">
