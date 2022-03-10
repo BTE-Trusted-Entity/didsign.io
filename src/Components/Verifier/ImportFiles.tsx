@@ -81,7 +81,7 @@ export const ImportFiles = () => {
           'Verification: type of reader result should be arraybuffer'
         )
 
-      if (file.name.split('.').pop() === 'didsign') {
+      if (isDidSignFile(file.name)) {
         const decoder = new TextDecoder('utf-8')
         const result = decoder.decode(reader.result as ArrayBuffer)
         doc = JSON.parse(result)
@@ -114,11 +114,14 @@ export const ImportFiles = () => {
           const didSignFile = filenames.filter((file: string) =>
             isDidSignFile(file)
           )
+          console.log(savedZippedFilenames)
           if (
-            savedZippedFilenames.find((file) => isDidSignFile(file)) !=
-              undefined ||
+            savedZippedFilenames.filter((file) => isDidSignFile(file))
+              .length === 1 ||
             (didSignFile.length === 1 && acceptedFiles.length > 1)
           ) {
+            dispatch(showPopup(true))
+
             dispatch(updateSignStatus('Multiple Sign'))
             return
           }
@@ -141,7 +144,7 @@ export const ImportFiles = () => {
         await handleIndividualCase(file, acceptedFiles)
       })
     },
-    [files]
+    [files, savedZippedFilenames]
   )
   useEffect(() => {
     if (jwsHash.length) {
