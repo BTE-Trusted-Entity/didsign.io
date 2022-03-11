@@ -227,6 +227,8 @@ export const ImprintPopup = (props: Toggle) => {
             <a
               href="https://support.kilt.io/support/home"
               className="text-medium-blue font-bold hover:underline"
+              target="_blank"
+              rel="noreferrer"
             >
               {' '}
               Tech support{' '}
