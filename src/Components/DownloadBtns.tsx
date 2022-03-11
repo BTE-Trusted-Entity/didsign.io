@@ -42,9 +42,6 @@ export const DownloadBtns = () => {
         type: 'blob',
         compression: 'STORE',
         streamFiles: true,
-        compressionOptions: {
-          level: 1,
-        },
       },
       function updateCallback(metadata) {
         setProgress(metadata.percent.toFixed(0))
@@ -92,10 +89,10 @@ export const DownloadBtns = () => {
         </button>
       </div>
       {showLoader && (
-        <div className="flex flex-col space-y-1 justify-center items-end w-[190px] pb-3">
-          <div className="w-[160px] shadow-lg bg-white h-[4px] rounded-[10px]">
+        <div className="flex flex-col space-y-1 justify-center items-end w-[190px] pb-3 ml-1">
+          <div className="w-[160px] shadow-lg bg-white h-[6px] rounded-[10px] border-medium-blue border-solid border-[1px] ">
             <div
-              className=" bg-[rgba(78,137,189,0.5)] shadow-lg h-full rounded-[10px]"
+              className=" bg-medium-blue shadow-lg h-full rounded-[10px]"
               style={{ width: progress + '%' }}
             ></div>
           </div>
