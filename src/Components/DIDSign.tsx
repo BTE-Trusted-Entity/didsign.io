@@ -11,6 +11,7 @@ import { BottomSectionVerifyer } from './Verifier/BottomSectionVerifyer'
 import BottomLeftBubble from '../ImageAssets/BottomLeftBubble.svg'
 import BottomRightBubble from '../ImageAssets/BottomRightBubble.svg'
 import { selectPopup } from '../Features/Signer/PopupSlice'
+import '../Styles/App.css'
 
 export const DIDSign = () => {
   const userRoleIsSigner = useAppSelector(selectUserRole)
