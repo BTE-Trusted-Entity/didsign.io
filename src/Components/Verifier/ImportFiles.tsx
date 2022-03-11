@@ -193,16 +193,16 @@ export const ImportFiles = () => {
             <img className="absolute mx-auto my-auto" src={impIcon} />
             {impIcon === ImportIcon && (
               <label className="absolute top-8 pointer-events-none text-white text-center text-[16px] leading-[17px] tracking-[0.11px] font-['Overpass']">
-                Drag & Drop files
+                Verify Your Files
               </label>
             )}
             {impIcon === ImportIcon && (
               <label className="absolute top-14 pointer-events-none text-white text-center text-[14px] leading-[16px] tracking-[0.17px] font-['Overpass']">
-                to verify here
+                drag & drop
               </label>
             )}
             <label className=" pointer-events-none text-white text-center text-[14px] leading-[16px] font-['Overpass'] tracking-[0.17px] absolute bottom-12">
-              or click to browse your files
+              or click / tap to browse your files
             </label>
           </div>
         )}
