@@ -59,7 +59,7 @@ export const SignBtn = () => {
     if (hashes.length == 0) {
       return
     }
-
+    console.log(hashes)
     dispatch(showPopup(true))
     sporranPopup.current?.classList.remove('invisible')
     if (targetElement !== null) {
@@ -136,7 +136,7 @@ export const SignBtn = () => {
         ref={sporranPopup}
         className="invisible z-40 fixed max-w-[300px] mx-auto h-[fit] bg-silver-blue shadow-2xl rounded-[15px] left-1/2 top-1/4 mt-[3%] -ml-[150px] phone:overflow-y-auto"
       >
-        <div className="flex relative flex-col w-full h-full items-center mt-4 space-y-5 pl-4 pr-4 pb-4 ">
+        <div className="flex text-dark-purple relative flex-col w-full h-full items-center mt-4 space-y-5 pl-4 pr-4 pb-4 ">
           <img
             src={CenterLeftBubble}
             className="absolute bottom-0 left-0 mt-auto pointer-events-none"
@@ -145,34 +145,34 @@ export const SignBtn = () => {
             <img src={popupIcon} />
           </div>
           {signStatus === 'Default' && (
-            <span className="font-['Overpass'] text-[18px] leading-[20px] tracking-[0.13px] text-[#2A2231]">
+            <span className="font-['Overpass'] text-[18px] leading-[20px] tracking-[0.13px]">
               Signature needed
             </span>
           )}
           {signStatus === 'No Sporran' && (
-            <span className="font-['Overpass'] tracking-wide text-lg text-[#2A2231]">
+            <span className="font-['Overpass'] tracking-[0.13px] text-lg ">
               No Wallet Found
             </span>
           )}
           {signStatus === 'Default' && (
-            <span className="font-['Overpass'] -tracking-tigher text-[#2A2231] text-[16px] pl-4 pr-4 text-justify">
+            <p className="font-['Overpass'] tracking-[0.13px] text-[16px] pl-4 pr-4 text-left">
               Please wait for your wallet extension to open and sign the
               transaction there.
-            </span>
+            </p>
           )}{' '}
           {signStatus === false && (
-            <span className="font-['Overpass'] -tracking-tigher text-[#2A2231] text-[16px] pl-4 pr-4 text-justify">
+            <span className="font-['Overpass'] tracking-[0.13px]  text-[16px] pl-4 pr-4 text-justify">
               It looks like error occured while signing. Please try again.
             </span>
           )}
           {signStatus === 'No Sporran' && (
-            <span className="font-['Overpass'] -tracking-tigher text-[#2A2231] text-[16px] pl-4 pr-4 text-justify">
+            <p className="font-['Overpass'] tracking-[0.13px] text-[16px] pl-4 pr-4 text-left">
               To sign your files with DIDsign you need an on-chain DID in a
               wallet that supports it. We recommend Sporran, a browser extension
               available for Google Chrome and Firefox. Any other wallet
               supporting on-chain signing on the KILT blockchain can also be
               used.
-            </span>
+            </p>
           )}
           <button
             onClick={handleDismiss}

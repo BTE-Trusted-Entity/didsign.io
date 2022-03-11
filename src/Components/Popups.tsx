@@ -31,15 +31,15 @@ export const SignInfoPopup = (props: Toggle) => {
         <span className="font-['Overpass'] tracking-[0.13px] text-[18px] leading-[20px]">
           Signing
         </span>
-        <div className="flex flex-col space-y-5  pl-4 pr-4 text-justify pb-5 phone:pb-0 font-['Overpass'] leading-[16px] tracking-[0.13px] text-[14px]">
-          <span>
+        <div className="flex flex-col space-y-5  pl-4 pr-4 text-left pb-5 phone:pb-0 font-['Overpass'] leading-[16px] tracking-[0.13px] text-[14px]">
+          <p>
             In order to successfully sign your files with DIDsign, make sure to
             have a wallet installed that has an onchain DID.
-          </span>
-          <span>
+          </p>
+          <p>
             We recommend to use Sporran, which is a browser extension available
             for Google Chrome and Mozilla Firefox.
-          </span>
+          </p>
         </div>
         <button
           onClick={props.dismiss}
@@ -79,9 +79,9 @@ export const MultipleSignPopup = () => {
           Verification Error
         </span>
 
-        <span className="font-['Overpass'] -tracking-tigher  text-[16px] pl-4 pr-4 text-justify">
+        <p className="font-['Overpass'] tracking-[0.13px]  text-[16px] pl-4 pr-4 text-left">
           Multiple signature files found. Please import only one signature file.
-        </span>
+        </p>
 
         <button
           onClick={handleDismiss}
@@ -110,18 +110,18 @@ export const SignFileInfoPopup = (props: Toggle) => {
             Signature
           </span>
         </div>
-        <div className="flex flex-col space-y-5  pl-4 pr-4 text-justify pt-2 pb-2 font-['Overpass'] leading-[16px] tracking-[0.13px]  text-[14px]">
-          <span>
+        <div className="flex flex-col space-y-5  pl-4 pr-4 text-left pt-2 pb-2 font-['Overpass'] leading-[16px] tracking-[0.13px]  text-[14px]">
+          <p>
             Your files have been signed and your DIDsign signature has been
             added successfully.
-          </span>
-          <span>
+          </p>
+          <p>
             The receiver of your documents needs to get your signature together
             with the set of signed files in order to get the verfification.
-          </span>
-          <span>
+          </p>
+          <p>
             The easiest way to proceed is to zip all files into one archive.
-          </span>
+          </p>
         </div>
         <button
           onClick={props.dismiss}
@@ -148,9 +148,9 @@ export const SigningMultipleDidFiles = (props: Toggle) => {
           Sign Error
         </span>
 
-        <span className="font-['Overpass'] -tracking-tigher  text-[16px] pl-4 pr-4 text-justify">
+        <p className="font-['Overpass'] tracking-[0.13px]  text-[16px] pl-4 pr-4 text-left">
           Signing of signature file is not allowed.
-        </span>
+        </p>
 
         <button
           onClick={props.dismiss}
@@ -177,9 +177,9 @@ export const SigningDuplicateFiles = (props: Toggle) => {
           Sign Error
         </span>
 
-        <span className="font-['Overpass'] -tracking-tigher  text-[16px] pl-4 pr-4 text-justify">
+        <p className="font-['Overpass'] tracking-[0.13px]  text-[16px] pl-4 pr-4 text-left">
           Duplicate files found. Please include each file only once
-        </span>
+        </p>
 
         <button
           onClick={props.dismiss}
@@ -202,7 +202,7 @@ export const ImprintPopup = (props: Toggle) => {
         <div>
           <img className="w-[101px] h-[80px]" src={BTELogo} />
         </div>
-        <div className="flex flex-col flex-wrap space-y-1 overflow-wrap break-words  pl-[10px] pr-[10px] text-justify pt-2 pb-2 font-['Overpass'] leading-[16px] tracking-[0.13px]  text-[14px]">
+        <div className="flex flex-col flex-wrap space-y-1 overflow-wrap break-words  pl-[10px] pr-[10px] text-left pt-2 pb-2 font-['Overpass'] leading-[16px] tracking-[0.13px]  text-[14px]">
           <span>Imprint</span>
           <span>B.T.E. BOTLabs Trusted Entity GmbH</span>
           <span>Keithstraße 2-4</span>
