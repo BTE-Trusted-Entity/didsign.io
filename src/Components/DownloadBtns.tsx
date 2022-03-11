@@ -93,9 +93,9 @@ export const DownloadBtns = () => {
       </div>
       {showLoader && (
         <div className="flex flex-col space-y-1 justify-center items-end w-[190px] pb-3">
-          <div className="w-[160px] bg-white h-[4px] rounded-[10px]">
+          <div className="w-[160px] shadow-lg bg-white h-[4px] rounded-[10px]">
             <div
-              className=" bg-medium-blue h-full rounded-[10px]"
+              className=" bg-[rgba(78,137,189,0.5)] shadow-lg h-full rounded-[10px]"
               style={{ width: progress + '%' }}
             ></div>
           </div>
