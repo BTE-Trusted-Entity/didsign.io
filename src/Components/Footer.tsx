@@ -39,11 +39,23 @@ export const Footer = () => {
           </button>
           <span>-</span>
           <button className="hover:underline">
-            <span>Terms and Conditions</span>
+            <a
+              href={require('./DocsAssets/Terms.pdf')}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span>Terms and Conditions</span>
+            </a>
           </button>
           <span>-</span>
           <button className="hover:underline">
-            <span>Privacy Policy </span>
+            <a
+              href={require('./DocsAssets/Privacy.pdf')}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span>Privacy Policy </span>
+            </a>
           </button>
         </div>
 
