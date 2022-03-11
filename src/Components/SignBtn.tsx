@@ -3,7 +3,12 @@ import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { updateSign, updateDID } from '../Features/Signer/SignatureSlice'
 import { openSporan, generateJWS } from '../Utils/sign-helpers'
 import { selectFinalHash, selectHash } from '../Features/Signer/hashSlice'
-import { addBufferTop, addFileTop, IBuffer } from '../Features/Signer/FileSlice'
+import {
+  addBufferTop,
+  addFileTop,
+  IBuffer,
+  selectFile,
+} from '../Features/Signer/FileSlice'
 import { Signature, SignDoc } from '../Utils/types'
 import InfoIcon from '../ImageAssets/iconBIG_info.svg'
 import AttentionIcon from '../ImageAssets/iconBIG_attention.svg'
@@ -21,6 +26,7 @@ export const SignBtn = () => {
   const sporranPopup = useRef<null | HTMLDivElement>(null)
   const [signPopup, setSignPopup] = useState<boolean>(false)
   const targetElement = document.querySelector('body')
+  const files = useAppSelector(selectFile)
 
   const ButtonDisabled = () => {
     return (
@@ -181,7 +187,7 @@ export const SignBtn = () => {
         id="sign-btn"
         className="bg-light-blue bg-opacity-80 border-[#517ca240] border-[1px] space-x-2 rounded-b-[15px] mt-0  mx-auto max-w-[766px] flex items-center h-[6rem] justify-center mb-4 shadow-md"
       >
-        {hashes.length == 0 ? <ButtonDisabled /> : <ButtonEnabled />}
+        {files.length === 0 ? <ButtonDisabled /> : <ButtonEnabled />}
         <button onClick={showSignPopup}>
           <img src={info} />
         </button>

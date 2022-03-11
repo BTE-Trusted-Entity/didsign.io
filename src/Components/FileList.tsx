@@ -3,7 +3,7 @@ import DelIcon from '../ImageAssets/icon_elete.svg'
 import DocIcon from '../ImageAssets/doc_generic.svg'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { deleteFile, selectFile } from '../Features/Signer/FileSlice'
-import { deleteItem, selectHash } from '../Features/Signer/hashSlice'
+import { clearHash, deleteItem, selectHash } from '../Features/Signer/hashSlice'
 import { clearSign } from '../Features/Signer/SignatureSlice'
 import DIDIcon from '../ImageAssets/doc_signature_NEW.svg'
 import ImageIcon from '../ImageAssets/doc_image.svg'
@@ -32,11 +32,16 @@ export const FileList = () => {
     const index = files.indexOf(file)
     dispatch(deleteFile(file))
     dispatch(deleteItem(hash[index]))
+    dispatch(clearSign())
     const didSignFile = files.find((file) => isDidSignFile(file.name))
     if (didSignFile !== undefined) {
       dispatch(deleteFile(didSignFile))
+      dispatch(deleteItem(hash[index - 1]))
     }
     hash.length === 1 && dispatch(clearSign())
+    if (files.length === 1) {
+      dispatch(clearHash())
+    }
   }
   if (files.length === 0) {
     return null
