@@ -5,6 +5,8 @@ import { ImprintPopup } from './Popups'
 import { useAppDispatch } from '../app/hooks'
 import { showPopup } from '../Features/Signer/PopupSlice'
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
+import Terms from '../DocsAssets/Terms.pdf'
+import Privacy from '../DocsAssets/Privacy.pdf'
 
 export const Footer = () => {
   const targetElement = document.querySelector('body')
@@ -39,21 +41,13 @@ export const Footer = () => {
           </button>
           <span>-</span>
           <button className="hover:underline">
-            <a
-              href={require('./DocsAssets/Terms.pdf')}
-              target="_blank"
-              rel="noreferrer"
-            >
+            <a href={Terms} target="_blank" rel="noreferrer">
               <span>Terms and Conditions</span>
             </a>
           </button>
           <span>-</span>
           <button className="hover:underline">
-            <a
-              href={require('./DocsAssets/Privacy.pdf')}
-              target="_blank"
-              rel="noreferrer"
-            >
+            <a href={Privacy} target="_blank" rel="noreferrer">
               <span>Privacy Policy </span>
             </a>
           </button>
