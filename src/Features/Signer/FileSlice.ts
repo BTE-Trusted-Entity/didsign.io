@@ -26,6 +26,12 @@ export const fileSlice = createSlice({
       ...state,
       value: state.value.filter((element) => element !== action.payload),
     }),
+    deleteBuffer: (state, action: PayloadAction<IBuffer>) => ({
+      ...state,
+      buffer: state.buffer.filter(
+        (element) => element.name !== action.payload.name
+      ),
+    }),
     clearAll: (state) => {
       return {
         ...state,
@@ -74,6 +80,7 @@ export const {
   clearFileName,
   addBuffer,
   addBufferTop,
+  deleteBuffer,
 } = fileSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
