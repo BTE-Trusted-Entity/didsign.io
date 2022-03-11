@@ -5,6 +5,8 @@ import ReleaseIcon from '../ImageAssets/iconBIG_import_release.svg'
 import {
   addBuffer,
   addFile,
+  deleteBuffer,
+  deleteFile,
   IBuffer,
   selectFile,
 } from '../Features/Signer/FileSlice'
@@ -16,6 +18,7 @@ import { isDidSignFile } from '../Utils/verify-helper'
 import { SigningDuplicateFiles, SigningMultipleDidFiles } from './Popups'
 import { showPopup } from '../Features/Signer/PopupSlice'
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
+import { clearSign, selectSign } from '../Features/Signer/SignatureSlice'
 
 export const ImportFilesSigner = () => {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon)
@@ -24,6 +27,7 @@ export const ImportFilesSigner = () => {
   const files = useAppSelector(selectFile)
   const [isDuplicate, setIsDuplicate] = useState<boolean>(false)
   const targetElement = document.querySelector('body')
+  const sign = useAppSelector(selectSign)
 
   const handleDismiss = () => {
     dispatch(showPopup(false))
@@ -40,7 +44,18 @@ export const ImportFilesSigner = () => {
     }
   }
   const handleDrop = useCallback(
-    (acceptedFiles: File[]) => {
+    async (acceptedFiles: File[]) => {
+      if (sign !== '') {
+        const didSignFile = files.filter((file) => isDidSignFile(file.name))
+        const arrayBuffer = await didSignFile[0].arrayBuffer()
+        const bufferObj: IBuffer = {
+          buffer: arrayBuffer,
+          name: didSignFile[0].name,
+        }
+        dispatch(deleteFile(didSignFile[0]))
+        dispatch(deleteBuffer(bufferObj))
+        dispatch(clearSign())
+      }
       if ((acceptedFiles.filter((file) => files.includes(file)), length)) {
         dispatch(showPopup(true))
         setIsDuplicate(true)
@@ -108,16 +123,16 @@ export const ImportFilesSigner = () => {
             <img className="absolute mx-auto my-auto" src={impIcon} />
             {impIcon === ImportIcon && (
               <label className="absolute top-8 pointer-events-none text-white text-center text-[16px] leading-[17px] tracking-[0.11px] font-['Overpass']">
-                Drag & Drop
+                Sign Your Files
               </label>
             )}
             {impIcon === ImportIcon && (
               <label className="absolute top-14 pointer-events-none text-white text-center text-[14px] leading-[16px] tracking-[0.17px] font-['Overpass']">
-                files to sign here
+                drag & drop
               </label>
             )}
             <label className=" pointer-events-none text-white text-center text-[14px] leading-[16px] font-['Overpass'] tracking-[0.17px] absolute bottom-12">
-              or click to browse your files
+              or click / tap to browse your files
             </label>
           </div>
         )}
