@@ -59,7 +59,6 @@ export const SignBtn = () => {
     if (hashes.length == 0) {
       return
     }
-    console.log(hashes)
     dispatch(showPopup(true))
     sporranPopup.current?.classList.remove('invisible')
     if (targetElement !== null) {
