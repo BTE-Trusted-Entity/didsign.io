@@ -193,7 +193,7 @@ export const SigningDuplicateFiles = (props: Toggle) => {
 }
 export const ImprintPopup = (props: Toggle) => {
   return (
-    <div className=" z-40 text-dark-purple max-w-[500px] flex mx-auto h-[fit] bg-silver-blue shadow-2xl rounded-[15px] absolute bottom-24 overflow-y-scroll ml-[15px] mr-[15px]">
+    <div className=" z-40 text-dark-purple max-w-[500px] flex mx-auto h-[fit] bg-silver-blue shadow-2xl rounded-[15px] absolute bottom-24 overflow-y-auto ml-[15px] mr-[15px]">
       <div className="flex relative flex-col w-full h-full items-center mt-4 space-y-5 pl-4 pr-4 pb-4 ">
         <img
           src={CenterLeftBubble}
