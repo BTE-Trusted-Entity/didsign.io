@@ -44,6 +44,7 @@ export const ImportFilesSigner = () => {
       if ((acceptedFiles.filter((file) => files.includes(file)), length)) {
         dispatch(showPopup(true))
         setIsDuplicate(true)
+
         if (targetElement != null) {
           disableBodyScroll(targetElement)
         }
@@ -61,6 +62,7 @@ export const ImportFilesSigner = () => {
           }
           return
         }
+
         if (isDidSignFile(file.name)) {
           dispatch(showPopup(true))
           setSignErrorPopup(true)
@@ -69,27 +71,15 @@ export const ImportFilesSigner = () => {
           }
           return
         }
-        const reader = new FileReader()
-        reader.onload = async function () {
-          if (
-            typeof reader.result === 'string' ||
-            typeof reader.result === null
-          )
-            throw new Error(
-              'Signing: type of reader result should be arraybuffer'
-            )
-          if (reader.result != null) {
-            const bufferObj: IBuffer = {
-              buffer: reader.result,
-              name: file.name,
-            }
-            dispatch(addBuffer(bufferObj))
-            dispatch(addFile(file))
-            const newHash = await createHash(reader.result)
-            dispatch(addHash(newHash))
-          }
+        const buffer = await file.arrayBuffer()
+        const bufferObj: IBuffer = {
+          buffer: buffer,
+          name: file.name,
         }
-        reader.readAsArrayBuffer(file)
+        dispatch(addBuffer(bufferObj))
+        dispatch(addFile(file))
+        const newHash = await createHash(buffer)
+        dispatch(addHash(newHash))
       })
     },
     [files]
