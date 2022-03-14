@@ -28,33 +28,6 @@ export const SignBtn = () => {
   const targetElement = document.querySelector('body')
   const files = useAppSelector(selectFile)
 
-  const ButtonDisabled = () => {
-    return (
-      <button
-        className="font-['Overpass'] text-[14px] leading-[16px] pointer-events-none  tracking-[0.1px] text-[#ffffff80] text-center w-[160px] h-[30px] mt-4 mb-4 rounded-md 
-                my-auto bg-greyish-blue shadow-md"
-        onClick={handleChange}
-      >
-        SIGN
-      </button>
-    )
-  }
-  const ButtonEnabled = () => {
-    return (
-      <button
-        className="font-['Overpass'] text-[14px] leading-[16px]  tracking-[0.1px] text-white text-center w-[160px] h-[30px] mt-4 mb-4 rounded-md 
-    my-auto bg-medium-blue shadow-md"
-        onClick={handleChange}
-      >
-        SIGN
-      </button>
-    )
-  }
-
-  const hashes = useAppSelector(selectHash)
-  const finalHash = useAppSelector(selectFinalHash)
-
-  const dispatch = useAppDispatch()
   const handleChange = async () => {
     if (hashes.length == 0) {
       return
@@ -106,6 +79,35 @@ export const SignBtn = () => {
         }
       })
   }
+
+  const ButtonDisabled = () => {
+    return (
+      <button
+        className="font-['Overpass'] text-[14px] leading-[16px] pointer-events-none  tracking-[0.1px] text-[#ffffff80] text-center w-[160px] h-[30px] mt-4 mb-4 rounded-md 
+                my-auto bg-greyish-blue shadow-md"
+        onClick={handleChange}
+      >
+        SIGN
+      </button>
+    )
+  }
+  const ButtonEnabled = () => {
+    return (
+      <button
+        className="font-['Overpass'] text-[14px] leading-[16px]  tracking-[0.1px] text-white text-center w-[160px] h-[30px] mt-4 mb-4 rounded-md 
+    my-auto bg-medium-blue shadow-md"
+        onClick={handleChange}
+      >
+        SIGN
+      </button>
+    )
+  }
+
+  const hashes = useAppSelector(selectHash)
+  const finalHash = useAppSelector(selectFinalHash)
+
+  const dispatch = useAppDispatch()
+
   const handleDismiss = () => {
     if (targetElement !== null) {
       enableBodyScroll(targetElement)
