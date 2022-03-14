@@ -62,7 +62,6 @@ export const ImportFiles = () => {
 
   const handleIndividualCase = async (file: File, acceptedFiles: File[]) => {
     let doc: SignDoc = { jws: '', hashes: [] }
-
     if (
       acceptedFiles.filter((file) => isDidSignFile(file.name)).length > 1 &&
       isDidSignFile(file.name)
@@ -114,19 +113,23 @@ export const ImportFiles = () => {
           const didSignFile = filenames.filter((file: string) =>
             isDidSignFile(file)
           )
-          console.log(savedZippedFilenames)
+          if (didSignFile.length && acceptedFiles.length > 1) {
+            return
+          }
           if (
             savedZippedFilenames.filter((file) => isDidSignFile(file))
-              .length === 1 ||
-            (didSignFile.length === 1 && acceptedFiles.length > 1)
+              .length === 1 &&
+            didSignFile.length === 1
           ) {
             dispatch(showPopup(true))
-
             dispatch(updateSignStatus('Multiple Sign'))
             return
           }
 
           if (didSignFile.length === 1) {
+            if (files.length > 0) {
+              return
+            }
             dispatch(addFile(file))
             dispatch(addFileName(filenames))
             await handleZipCase(file)
