@@ -84,7 +84,7 @@ export const newUnzip = async (
   if (files.length) {
     for (const entry of files) {
       if (entry.getData != undefined) {
-        const didSignFile = entry.filename.split('.').pop() == 'didsign'
+        const didSignFile = isDidSignFile(entry.filename)
         if (didSignFile) {
           const text = await entry.getData(new zip.TextWriter())
           fileStatuses.push(true)
