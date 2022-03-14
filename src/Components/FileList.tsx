@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import DelIcon from '../ImageAssets/icon_elete.svg'
+import DelIcon from '../ImageAssets/icon_delete.svg'
 import DocIcon from '../ImageAssets/doc_generic.svg'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { deleteFile, selectFile } from '../Features/Signer/FileSlice'

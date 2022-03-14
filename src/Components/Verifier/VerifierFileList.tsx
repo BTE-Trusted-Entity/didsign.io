@@ -13,7 +13,7 @@ import {
 } from '../../Features/Signer/EndpointSlice'
 import AttentionIcon from '../../ImageAssets/icon_attention.svg'
 import OkIcon from '../../ImageAssets/icon_oK.svg'
-import DelIcon from '../../ImageAssets/icon_elete.svg'
+import DelIcon from '../../ImageAssets/icon_delete.svg'
 import { deleteHashFromIndex } from '../../Features/Signer/hashSlice'
 import {
   clearJWS,

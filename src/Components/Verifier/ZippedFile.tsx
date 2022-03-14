@@ -6,7 +6,7 @@ import {
   selectFile,
   selectFilename,
 } from '../../Features/Signer/FileSlice'
-import DelIcon from '../../ImageAssets/icon_elete.svg'
+import DelIcon from '../../ImageAssets/icon_delete.svg'
 import ZipIcon from '../../ImageAssets/doc_zip_NEW.svg'
 import {
   clearEndpoint,
