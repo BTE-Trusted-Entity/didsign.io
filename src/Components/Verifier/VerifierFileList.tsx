@@ -17,6 +17,7 @@ import DelIcon from '../../ImageAssets/icon_elete.svg'
 import { deleteHashFromIndex } from '../../Features/Signer/hashSlice'
 import {
   clearJWS,
+  selectJwsSignStatus,
   updateSignStatus,
 } from '../../Features/Signer/VerifyJwsSlice'
 import { isDidSignFile } from '../../Utils/verify-helper'
@@ -27,6 +28,7 @@ export const VerifierFileList = () => {
   const [deleted, setDeleted] = useState<number>(-1)
   const [didSign, setDidSign] = useState<boolean>(true)
   const sign = useAppSelector(selectVerifiedSign)
+  const jwsStatus = useAppSelector(selectJwsSignStatus)
 
   const dispatch = useAppDispatch()
   const handleDelFile = (file: File) => {
@@ -38,13 +40,15 @@ export const VerifierFileList = () => {
     setDeleted(index)
   }
   useEffect(() => {
-    if (files.length === 0) {
+    if (files.length < 1) {
       dispatch(clearJWS())
       dispatch(clearEndpoint())
     }
     if (files.length == 1 && files.find((file) => isDidSignFile(file.name))) {
       dispatch(clearEndpoint())
-      dispatch(updateSignStatus('Not Checked'))
+      if (jwsStatus !== 'Corrupted') {
+        dispatch(updateSignStatus('Not Checked'))
+      }
     }
     if (didSign) {
       dispatch(replaceStatus())
@@ -52,7 +56,9 @@ export const VerifierFileList = () => {
       dispatch(clearEndpoint())
       setDidSign(false)
     } else if (!status.includes(false) && deleted != -1) {
-      if (sign == '') {
+      if (jwsStatus === 'Corrupted') {
+        dispatch(updateSignStatus('Corrupted'))
+      } else if (sign == '') {
         dispatch(updateSignStatus('Not Checked'))
       } else {
         dispatch(updateSignStatus('Verified'))
