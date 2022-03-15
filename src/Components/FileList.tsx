@@ -73,7 +73,7 @@ export const FileList = () => {
             <div className="flex space-x-2 ml-auto w-1/2 justify-end">
               {isDidSignFile(file.name) ? (
                 <span className="text-left text-pure-red text-[14px] leading-[16px] tracking-[0.1px]  font-['Overpass']">
-                  added by DID sign
+                  added by DIDsign
                 </span>
               ) : (
                 <button onClick={() => handleDelFile(file)}>

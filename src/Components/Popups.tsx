@@ -211,7 +211,7 @@ export const ImprintPopup = (props: Toggle) => {
             Germany Commercial Court: Amtsgericht Charlottenburg in Berlin
           </span>
           <span>Registration Number: HRB 231219B</span>
-          <span>Tax No: 29/244/31363</span>
+          <span>VAT No: DE 346528612</span>
           <span>Managing Director: Ingo Rübe</span>
           <span>
             Contact:{' '}
@@ -231,7 +231,7 @@ export const ImprintPopup = (props: Toggle) => {
               rel="noreferrer"
             >
               {' '}
-              Tech support{' '}
+              Tech Support{' '}
             </a>{' '}
             and click on “Contact Us”
           </span>

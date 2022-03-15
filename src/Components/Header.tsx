@@ -22,8 +22,7 @@ export const Header = () => {
 
         <div className="mb-0 w-full h-[24px] bg-[#44374f99]  flex items-center phone:invisible">
           <span className=" small-device:pl-[15px] mx-auto pt-[1px] h-[18px] w-[766px] text-white font-['Overpass'] text-[14px] leading-[16px] tracking-[0.1px]">
-            Documents that build trust - securely signed with your decentralized
-            Identifier (DID)
+            A decentralized way to sign and verify files privately and securely
           </span>
         </div>
       </div>
