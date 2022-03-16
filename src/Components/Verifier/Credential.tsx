@@ -1,23 +1,21 @@
 import React from 'react'
-import { DidDoc } from '../../Utils/types'
 import AttentionIcon from '../../ImageAssets/icon_attention.svg'
 import OkIcon from '../../ImageAssets/icon_oK.svg'
 
 interface IDIDCredential {
-  didDoc: DidDoc[]
-  index: number
-  resolvedDid: string
+  credential: any
+  attesterDid: string
   isCredentialValid: boolean
 }
 
-export const DidDocument = (props: IDIDCredential) => {
-  const doc = props.didDoc.filter((doc) => doc.index == props.index)[0]
-  if (doc === undefined) {
-    return null
-  }
+export const Credential = ({
+  credential,
+  attesterDid,
+  isCredentialValid,
+}: IDIDCredential) => {
   return (
     <div className="flex flex-col pt-4 space-y-2">
-      {Object.keys(doc?.contents).map((key, index) => (
+      {Object.keys(credential).map((key, index) => (
         <div
           key={index}
           className={`max-w-full items-center justify-center phone:justify-start flex w-[708px] space-x-[30px] flex-wrap  phone:space-x-0 phone:space-y-[10px] phone:w-full   `}
@@ -26,7 +24,7 @@ export const DidDocument = (props: IDIDCredential) => {
             {key}
           </span>
           <span className="phone:w-full items-center flex overflow-wrap break-words w-4/5 h-[18px] text-[#2A2231] font-['Overpass'] font-bold text-[12px] leading-[13px] tracking-[0.1px]">
-            {doc?.contents[key]}
+            {credential[key]}
           </span>
         </div>
       ))}
@@ -38,7 +36,7 @@ export const DidDocument = (props: IDIDCredential) => {
         </span>
 
         <span className="phone:w-full flex flex-wrap overflow-wrap break-all w-4/5 h-[18px] text-dark-purple font-['Overpass'] font-bold text-[12px] leading-[13px] tracking-[0.1px]">
-          {props.resolvedDid}
+          {attesterDid}
         </span>
       </div>
       <div
@@ -49,7 +47,7 @@ export const DidDocument = (props: IDIDCredential) => {
         </span>
         <div className="flex w-4/5 h-[18px] mb-2 phone:mb-0">
           {' '}
-          <img src={props.isCredentialValid ? OkIcon : AttentionIcon} />
+          <img src={isCredentialValid ? OkIcon : AttentionIcon} />
         </div>
       </div>
     </div>

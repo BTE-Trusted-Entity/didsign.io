@@ -9,7 +9,6 @@ import {
   KeyRelationship,
   disconnect,
   IRequestForAttestation,
-  RequestForAttestation,
   Credential,
   ICredential,
   Attestation,
@@ -150,16 +149,17 @@ export const replaceFileStatus = (statusArray: boolean[]): boolean[] => {
 export const isDidSignFile = (file: string) => {
   return file.split('.').pop() == 'didsign'
 }
-export const getResolvedDid = (did: string): string => {
-  const resolvedDID = Did.DidUtils.getKiltDidFromIdentifier(did, 'full')
-  return resolvedDID
+export const getDidForAccount = (did: string): string => {
+  return Did.DidUtils.getKiltDidFromIdentifier(did, 'full')
 }
-export const validateRequest = async (
-  claim: IRequestForAttestation
-): Promise<boolean> => {
-  const requestAttestation = RequestForAttestation.fromRequest(claim)
-  const attestation = await Attestation.query(requestAttestation.rootHash)
-  console.log(attestation)
+
+export const getAttestationForRequest = async (
+  req4Att: IRequestForAttestation
+) => {
+  return Attestation.query(req4Att.rootHash)
+}
+
+export const validateAttestation = async (attestation: Attestation | null) => {
   if (attestation != null) {
     if (!attestation.revoked) {
       return true

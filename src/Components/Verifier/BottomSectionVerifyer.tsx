@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef } from 'react'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import {
   clearEndpoint,
@@ -19,22 +19,12 @@ import {
   selectJwsSignStatus,
 } from '../../Features/Signer/VerifyJwsSlice'
 import spinner from '../../ImageAssets/puff.svg'
-import loader from '../../ImageAssets/spinning-circles.svg'
 
-import {
-  getResolvedDid,
-  validateCredential,
-  validateRequest,
-} from '../../Utils/verify-helper'
 import { JWSErrorsComponent } from './JWSErrorsComponent'
-import { DidDoc } from '../../Utils/types'
 import { InvalidFileStatusError } from './InvalidFileStatusError'
-import { Credential, RequestForAttestation, Did } from '@kiltprotocol/sdk-js'
-import { DidDocument } from './DidDocument'
-import ChevronDown from '../../ImageAssets/chevron_down_white.svg'
-import ChevronUp from '../../ImageAssets/chevron_up_white.svg'
 import SignatureIcon from '../../ImageAssets/icon_DID.svg'
 import { clearSign } from '../../Features/Signer/SignatureSlice'
+import { CredentialContainer } from './CredentialContainer'
 
 export const BottomSectionVerifyer = () => {
   const sign = useAppSelector(selectVerifiedSign)
@@ -43,49 +33,10 @@ export const BottomSectionVerifyer = () => {
   const types = useAppSelector(selectEndpointTypes)
   const fileVerificationStatus = useAppSelector(fileStatus)
   const jwsStatus = useAppSelector(selectJwsSignStatus)
-  const [clickIndices, setClickIndices] = useState<number[]>([])
-  const [didDoc, setDidDoc] = useState<DidDoc[]>([])
-  const resolvedDid = getResolvedDid(did)
-  const [isCredentialValid, setIsCredentialValid] = useState<boolean>(true)
   const jws = useAppSelector(selectJwsSign)
-  const [clickedIndex, setClickedIndex] = useState<number>(-1)
 
   const verificationRef = useRef<null | HTMLDivElement>(null)
   const dispatch = useAppDispatch()
-  const handleFetch = (index: number) => {
-    if (clickIndices.includes(index)) {
-      setClickIndices(clickIndices.filter((item) => item !== index))
-      setDidDoc(didDoc.filter((item) => item.index !== index))
-      return
-    } else {
-      setClickIndices([...clickIndices, index])
-    }
-    if (didDoc.find((doc) => doc.index == index)) {
-      return
-    }
-    setClickedIndex(index)
-
-    const url = urls[index]
-    fetch(url)
-      .then((response) => response.json())
-      .then(async (result) => {
-        if (!Did.DidUtils.isSameSubject(result.claim.owner, did)) {
-          setIsCredentialValid(false)
-        } else if (Credential.isICredential(result)) {
-          setIsCredentialValid(await validateCredential(result))
-        } else if (RequestForAttestation.isIRequestForAttestation(result)) {
-          setIsCredentialValid(await validateRequest(result))
-        }
-        const didObj: DidDoc = { contents: result.claim.contents, index: index }
-        setDidDoc([...didDoc, didObj])
-        setClickedIndex(-1)
-      })
-      .catch((error) => {
-        console.log(error)
-        setClickIndices(clickIndices.filter((item) => item !== index))
-        setClickedIndex(-1)
-      })
-  }
 
   const handleStartOver = () => {
     dispatch(clearEndpoint())
@@ -144,44 +95,11 @@ export const BottomSectionVerifyer = () => {
 
             <div className="flex flex-col space-y-2 h-fit w-4/5 phone:w-full phone:overflow-y-scroll">
               {urls.map((url: string, index: number) => (
-                <div key={index} className="flex flex-col h-fit space-y-1 ">
-                  <div className="flex flex-wrap items-center justify-center">
-                    <span className=" overflow-wrap break-words font-['Overpass'] font-bold text-[14px] leading-[22px] tracking-[0.1px]">
-                      {types[index]}
-                    </span>
-                    <button
-                      onClick={() => handleFetch(index)}
-                      className="font-['Overpass'] flex justify-center relative items-center uppercase ml-auto text-[12px] leading-[13px]  tracking-[0.09px] text-white text-center w-[130px]  h-[22px] my-auto rounded-md 
-     bg-[#3E6E99]"
-                    >
-                      {' '}
-                      {clickedIndex === index && (
-                        <img className={`absolute left-2 h-2/3`} src={loader} />
-                      )}
-                      <span>
-                        {clickIndices.includes(index) ? 'Close' : 'Fetch'}
-                      </span>
-                      <img
-                        className="absolute right-4 top-2"
-                        src={
-                          clickIndices.includes(index) ? ChevronUp : ChevronDown
-                        }
-                      />
-                    </button>
-                  </div>
-                  <span className="overflow-wrap break-words text-[#2A2231] font-['Overpass'] text-[14px] leading-[16px] tracking-[0.1px]">
-                    {url}
-                  </span>
-                  {clickIndices.includes(index) && (
-                    <DidDocument
-                      didDoc={didDoc}
-                      resolvedDid={resolvedDid}
-                      isCredentialValid={isCredentialValid}
-                      index={index}
-                    />
-                  )}
-                  <div className=" border-b-[1px] border-b-dark-purple border-dotted w-full"></div>
-                </div>
+                <CredentialContainer
+                  url={url}
+                  endpointType={types[index]}
+                  key={url}
+                />
               ))}
             </div>
           </div>
