@@ -93,13 +93,15 @@ export const SignBtn = () => {
   }
   const ButtonEnabled = () => {
     return (
-      <button
-        className="font-['Overpass'] text-[14px] leading-[16px]  tracking-[0.1px] text-white text-center w-[160px] h-[30px] mt-4 mb-4 rounded-md 
+      <>
+        <button
+          className="font-['Overpass'] text-[14px] leading-[16px]  tracking-[0.1px] text-white text-center w-[160px] h-[30px] mt-4 mb-4 rounded-md 
     my-auto bg-medium-blue shadow-md"
-        onClick={handleChange}
-      >
-        SIGN
-      </button>
+          onClick={handleChange}
+        >
+          SIGN
+        </button>
+      </>
     )
   }
 
@@ -184,15 +186,28 @@ export const SignBtn = () => {
         </div>
       </div>
 
-      <div
-        id="sign-btn"
-        className="bg-light-blue bg-opacity-80 border-[#517ca240] border-[1px] space-x-2 rounded-b-[15px] mt-0  mx-auto max-w-[766px] flex items-center h-[6rem] justify-center mb-4 shadow-md"
-      >
-        {files.length === 0 ? <ButtonDisabled /> : <ButtonEnabled />}
-        <button onClick={showSignPopup}>
-          <img src={info} />
-        </button>
-        {signPopup && <SignInfoPopup dismiss={handleSignDismiss} />}
+      <div className="bg-light-blue bg-opacity-80 border-[#517ca240] border-[1px] rounded-b-[15px] mt-0  mx-auto max-w-[766px] flex items-center h-[6rem] justify-center mb-4 shadow-md flex-col">
+        <div
+          id="sign-btn"
+          className="flex items-center justify-center space-x-2"
+        >
+          {files.length === 0 ? <ButtonDisabled /> : <ButtonEnabled />}
+          <button onClick={showSignPopup}>
+            <img src={info} />
+          </button>
+          {signPopup && <SignInfoPopup dismiss={handleSignDismiss} />}
+        </div>
+        <div className="font-['Overpass'] text-[12px] leading-[12px]  tracking-[0.1px] mb-2">
+          Don&apos;t have an on-chain DID yet?{' '}
+          <a
+            target="_blank"
+            rel="noreferrer"
+            className="hover:underline text-medium-blue"
+            href="https://support.kilt.io/support/solutions/folders/80000689099"
+          >
+            Read here
+          </a>
+        </div>
       </div>
     </div>
   )
