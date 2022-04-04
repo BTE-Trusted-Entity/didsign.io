@@ -30,7 +30,7 @@ export const getVerifiedData = async (
   const hash = JSON.parse(payload).hash
   const urls: string[] = []
   const types: string[] = []
-  await init({ address: 'wss://sporran-testnet.kilt.io' })
+  await init({ address: 'wss://spiritnet.kilt.io' })
   let w3name = await Did.Web3Names.queryWeb3NameForDid(keyID.split('#')[0])
   if (!w3name) w3name = 'No W3name found'
   const endpoints = Did.DidUtils.verifyDidSignature({
