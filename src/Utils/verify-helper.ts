@@ -30,17 +30,17 @@ export const getVerifiedData = async (
   const hash = JSON.parse(payload).hash
   const urls: string[] = []
   const types: string[] = []
-
-  await init({ address: 'wss://spiritnet.kilt.io' })
+  await init({ address: 'wss://sporran-testnet.kilt.io' })
+  let w3name = await Did.Web3Names.queryWeb3NameForDid(keyID.split('#')[0])
+  if (!w3name) w3name = 'No W3name found'
   const endpoints = Did.DidUtils.verifyDidSignature({
     message: hash,
-    signature: sign,
-    keyId: keyID,
-    keyRelationship: KeyRelationship.authentication,
+    signature: { keyId: keyID, signature: sign },
+    expectedVerificationMethod: KeyRelationship.authentication,
   })
     .then(async (response): Promise<ISignatureEndPoint | undefined> => {
       const status = response.verified
-      const attesterFullDid = await Did.DefaultResolver.resolveDoc(
+      const attesterFullDid = await Did.DidResolver.resolveDoc(
         keyID.split('#')[0]
       )
       if (attesterFullDid != null && attesterFullDid.details != undefined) {
@@ -58,6 +58,7 @@ export const getVerifiedData = async (
           signature: sign,
           urls: urls,
           types: types,
+          w3name: w3name,
         } as ISignatureEndPoint
       } else {
         return undefined

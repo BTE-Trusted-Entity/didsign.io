@@ -12,6 +12,7 @@ export interface ISignatureEndPoint {
   did: string
   urls: string[]
   types: string[]
+  w3name: string
 }
 export interface ISignatureEndPointWithStatus {
   signatureWithEndpoint: ISignatureEndPoint

@@ -7,7 +7,13 @@ import {
 import { replaceFileStatus } from '../../Utils/verify-helper'
 
 const initialState: ISignatureEndPointWithStatus = {
-  signatureWithEndpoint: { signature: '', did: '', urls: [], types: [] },
+  signatureWithEndpoint: {
+    signature: '',
+    did: '',
+    urls: [],
+    types: [],
+    w3name: '',
+  },
   fileStatus: [],
 }
 export const EndpointSlice = createSlice({
@@ -21,6 +27,8 @@ export const EndpointSlice = createSlice({
       state.signatureWithEndpoint.urls = initialState.signatureWithEndpoint.urls
       state.signatureWithEndpoint.types =
         initialState.signatureWithEndpoint.types
+      state.signatureWithEndpoint.w3name =
+        initialState.signatureWithEndpoint.w3name
     },
     // Use the PayloadAction type to declare the contents of `action.payload`
     update: (state, action: PayloadAction<ISignatureEndPoint>) => {
@@ -30,6 +38,7 @@ export const EndpointSlice = createSlice({
       state.signatureWithEndpoint.urls =
         state.signatureWithEndpoint.urls.concat(action.payload.urls)
       state.signatureWithEndpoint.did = action.payload.did
+      state.signatureWithEndpoint.w3name = action.payload.w3name
     },
     updateAllFilesStatus: (state, action: PayloadAction<boolean[]>) => {
       state.fileStatus = state.fileStatus.concat(action.payload)
@@ -81,5 +90,7 @@ export const selectVerifiedDid = (state: RootState) =>
   state.endpoint.signatureWithEndpoint.did
 export const selectVerifiedSign = (state: RootState) =>
   state.endpoint.signatureWithEndpoint.signature
+export const selectW3Name = (state: RootState) =>
+  state.endpoint.signatureWithEndpoint.w3name
 export const fileStatus = (state: RootState) => state.endpoint.fileStatus
 export default EndpointSlice.reducer

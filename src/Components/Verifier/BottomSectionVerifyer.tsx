@@ -8,6 +8,7 @@ import {
   selectEndpointURL,
   selectVerifiedDid,
   selectVerifiedSign,
+  selectW3Name,
 } from '../../Features/Signer/EndpointSlice'
 import OkIcon from '../../ImageAssets/icon_oK.svg'
 import BtnStartOver from '../../ImageAssets/button_start_over_NEW.svg'
@@ -29,6 +30,8 @@ import { CredentialContainer } from './CredentialContainer'
 export const BottomSectionVerifyer = () => {
   const sign = useAppSelector(selectVerifiedSign)
   const did = useAppSelector(selectVerifiedDid)
+  const w3name = useAppSelector(selectW3Name)
+
   const urls = useAppSelector(selectEndpointURL)
   const types = useAppSelector(selectEndpointTypes)
   const fileVerificationStatus = useAppSelector(fileStatus)
@@ -86,6 +89,14 @@ export const BottomSectionVerifyer = () => {
             </p>
             <span className="phone:w-full overflow-wrap break-words h-[18px] w-4/5 font-['Overpass'] font-bold text-[14px] leading-[22px] tracking-[0.1px]">
               {did}
+            </span>
+          </div>
+          <div className="max-w-full  flex w-[708px] space-x-[40px] flex-wrap phone:space-x-0 phone:space-y-[20px] phone:w-full phone:pt-20 small-device:pt-4  ">
+            <p className=" font-['Overpass'] text-[16px] leading-[17px] tracking-[0.11px]">
+              W3name
+            </p>
+            <span className="phone:w-full overflow-wrap break-words h-[18px] w-4/5 font-['Overpass'] font-bold text-[14px] leading-[22px] tracking-[0.1px]">
+              {w3name}
             </span>
           </div>
           <div className="max-w-full flex w-[708px] flex-wrap space-x-[30px] pb-10 phone:pt-10 phone:space-x-0 phone:space-y-[20px]">
