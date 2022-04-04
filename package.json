@@ -4,12 +4,7 @@
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.4.3",
-    "@kiltprotocol/sdk-js": "^0.25.3",
-    "@polkadot/networks": "8.2.2",
-    "@polkadot/types": "^6.12.1",
-    "@polkadot/ui-shared": "^1.1.1",
-    "@polkadot/util": "8.2.2",
-    "@polkadot/util-crypto": "8.2.2",
+    "@kiltprotocol/sdk-js": "^0.26.1",
     "@reduxjs/toolkit": "^1.7.2",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
@@ -80,14 +75,7 @@
     "tailwind-scrollbar": "^1.3.1",
     "tailwindcss": "^3.0.18"
   },
-  "resolutions": {
-    "@polkadot/keyring": "8.2.2",
-    "@polkadot/networks": "8.2.2",
-    "@polkadot/types": "6.12.1",
-    "@polkadot/ui-shared": "1.1.1",
-    "@polkadot/util": "8.2.2",
-    "@polkadot/util-crypto": "8.2.2"
-  },
+  
   "description": "DID signing web app",
   "main": "index.js",
   "repository": "https://github.com/BTE-Trusted-Entity/didsign.git",
