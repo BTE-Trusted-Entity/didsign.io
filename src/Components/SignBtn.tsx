@@ -64,18 +64,20 @@ export const SignBtn = () => {
         }
       })
 
-      .catch(() => {
-        if (targetElement !== null) {
-          disableBodyScroll(targetElement)
-        }
-        if (window.kilt.sporran == undefined) {
-          setSignStatus('No Sporran')
+      .catch((e) => {
+        if (e.toString().includes('Rejected')) {
+          if (targetElement !== null) {
+            disableBodyScroll(targetElement)
+          }
+          if (window.kilt.sporran == undefined) {
+            setSignStatus('No Sporran')
 
-          setPopupIcon(InfoIcon)
-        } else {
-          setPopupIcon(AttentionIcon)
+            setPopupIcon(InfoIcon)
+          } else {
+            setPopupIcon(AttentionIcon)
 
-          setSignStatus(false)
+            setSignStatus(false)
+          }
         }
       })
   }
