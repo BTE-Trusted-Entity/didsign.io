@@ -20,6 +20,7 @@ interface Props {
 }
 export const CredentialContainer = ({ url, endpointType }: Props) => {
   const did = useAppSelector(selectVerifiedDid)
+  // eslint-disable-next-line
   const [credential, setCredential] = useState<any | null>(null)
   const [isCredentialValid, setIsCredentialValid] = useState<boolean>(true)
   const [attester, setAttester] = useState('')

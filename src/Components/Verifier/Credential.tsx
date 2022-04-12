@@ -3,6 +3,7 @@ import AttentionIcon from '../../ImageAssets/icon_attention.svg'
 import OkIcon from '../../ImageAssets/icon_oK.svg'
 
 interface IDIDCredential {
+  // eslint-disable-next-line
   credential: any
   attesterDid: string
   isCredentialValid: boolean
