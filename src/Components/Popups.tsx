@@ -2,15 +2,11 @@ import React from 'react'
 import AttentionIcon from '../ImageAssets/iconBIG_attention.svg'
 import InfoIcon from '../ImageAssets/iconBIG_info.svg'
 import CenterLeftBubble from '../ImageAssets/CenterLeftBubble.svg'
-import { useAppDispatch, useAppSelector } from '../app/hooks'
+import { useAppDispatch } from '../app/hooks'
 import { showPopup } from '../Features/Signer/PopupSlice'
 import { updateSignStatus } from '../Features/Signer/VerifyJwsSlice'
-import {
-  clearEndpoint,
-  selectVerifiedSign,
-} from '../Features/Signer/EndpointSlice'
+import { clearEndpoint } from '../Features/Signer/EndpointSlice'
 import SignatureIcon from '../ImageAssets/icon_DID.svg'
-import { selectFilename } from '../Features/Signer/FileSlice'
 import BTELogo from '../ImageAssets/bte_logo_black.png'
 
 interface Toggle {
@@ -53,17 +49,10 @@ export const SignInfoPopup = (props: Toggle) => {
 }
 export const MultipleSignPopup = () => {
   const dispatch = useAppDispatch()
-  const fileNames = useAppSelector(selectFilename)
-  const verifiedSign = useAppSelector(selectVerifiedSign)
-
   const handleDismiss = () => {
     dispatch(showPopup(false))
-    if (fileNames.length > 0 && verifiedSign !== '') {
-      dispatch(updateSignStatus('Verified'))
-    } else {
-      dispatch(clearEndpoint())
-      dispatch(updateSignStatus('Not Checked'))
-    }
+    dispatch(clearEndpoint())
+    dispatch(updateSignStatus('Not Checked'))
   }
   return (
     <div className=" z-40 text-dark-purple fixed max-w-[400px] phone:w-[300px] mx-auto h-[fit] bg-silver-blue shadow-2xl rounded-[15px] left-1/2 top-1/4 mt-[3%] -ml-[200px] phone:-ml-[150px] phone:overflow-y-scroll">
