@@ -16,6 +16,8 @@ import {
   newUnzip,
 } from '../../Utils/verify-helper'
 import {
+  clearEndpoint,
+  fileStatus,
   update,
   updateAllFilesStatus,
   updateIndividualFileStatus,
@@ -44,6 +46,7 @@ export const ImportFiles = () => {
   const jwsStatus = useAppSelector(selectJwsSignStatus)
   const savedZippedFilenames = useAppSelector(selectFilename)
   const files = useAppSelector(selectFile)
+  const statuses = useAppSelector(fileStatus)
 
   const dispatch = useAppDispatch()
 
@@ -70,7 +73,6 @@ export const ImportFiles = () => {
       dispatch(showPopup(true))
       return
     }
-    dispatch(addFile(file))
 
     const reader = new FileReader()
     reader.readAsArrayBuffer(file)
@@ -92,12 +94,13 @@ export const ImportFiles = () => {
         dispatch(addJwsSign(doc.jws))
         dispatch(addJwsHashArray(doc.hashes))
         dispatch(updateIndividualFileStatus(true))
-        dispatch(addHash('hash'))
+        dispatch(addHash(''))
       } else {
         const hash = await createHash(reader.result)
         dispatch(addHash(hash))
         dispatch(updateIndividualFileStatus(false))
       }
+      dispatch(addFile(file))
     }
   }
   const handleDrop = useCallback(
@@ -151,31 +154,35 @@ export const ImportFiles = () => {
   )
   useEffect(() => {
     if (jwsHash.length) {
-      let fetchStatus: 'Not Fetched' | 'Fetched' = 'Not Fetched'
-
       fileHash.filter(async (hash, index) => {
         if (jwsHash.includes(hash)) {
           dispatch(updateIndividualFileStatusOnIndex(index))
-          if (jwsStatus === 'Not Checked') {
-            if (fetchStatus === 'Fetched') {
-              return
-            }
-            dispatch(updateSignStatus('Validating'))
-            fetchStatus = 'Fetched'
-            const verifiedSignatureInstance = await getVerifiedData(jws)
-            if (verifiedSignatureInstance != undefined) {
-              dispatch(updateSignStatus('Verified'))
-              dispatch(update(verifiedSignatureInstance))
-            } else {
-              dispatch(updateSignStatus('Invalid'))
-            }
-          } else {
-            return
-          }
         }
       })
     }
-  }, [fileHash, jwsStatus, jws])
+  }, [fileHash, jwsStatus])
+
+  const fetchEndpoints = async () => {
+    dispatch(updateSignStatus('Validating'))
+    const verifiedSignatureInstance = await getVerifiedData(jws)
+    if (verifiedSignatureInstance != undefined) {
+      dispatch(updateSignStatus('Verified'))
+      dispatch(update(verifiedSignatureInstance))
+    } else {
+      dispatch(updateSignStatus('Invalid'))
+    }
+  }
+  useEffect(() => {
+    if (jwsStatus === 'Not Checked') {
+      if (statuses.length > 1) {
+        if (!statuses.includes(false)) {
+          fetchEndpoints()
+        } else {
+          dispatch(clearEndpoint())
+        }
+      }
+    }
+  }, [statuses, jwsStatus])
   return (
     <div className="mt-3 mx-auto h-[220px] relative max-w-[766px] flex justify-center">
       {jwsStatus === 'Multiple Sign' && <MultipleSignPopup />}
