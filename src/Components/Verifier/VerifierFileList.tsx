@@ -28,6 +28,7 @@ export const VerifierFileList = () => {
 
   const dispatch = useAppDispatch()
   const handleDelFile = (file: File) => {
+    if (jwsStatus === 'Validating') return
     const index = files.indexOf(file)
     const didSignFileDeleted = isDidSignFile(files[index].name)
     if (didSignFileDeleted) {
