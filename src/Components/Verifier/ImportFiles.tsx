@@ -53,11 +53,11 @@ export const ImportFiles = () => {
   const handleZipCase = async (file: File) => {
     dispatch(updateSignStatus('Validating'))
 
-    const signatureWithEndpoints = await newUnzip(file)
-    if (signatureWithEndpoints) {
+    const signatureStatus = await newUnzip(file)
+    if (signatureStatus) {
       dispatch(updateSignStatus('Verified'))
-      dispatch(update(signatureWithEndpoints.signatureWithEndpoint))
-      dispatch(updateAllFilesStatus(signatureWithEndpoints.fileStatus))
+      dispatch(update(signatureStatus.signatureWithEndpoint))
+      dispatch(updateAllFilesStatus(signatureStatus.fileStatus))
     } else {
       dispatch(updateSignStatus('Invalid'))
     }
