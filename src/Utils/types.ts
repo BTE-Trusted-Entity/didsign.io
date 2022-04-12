@@ -1,3 +1,4 @@
+import { DidServiceEndpoint } from '@kiltprotocol/sdk-js'
 export interface Signature {
   signature: string
   keyID: string
@@ -10,15 +11,10 @@ export interface SignDoc {
 export interface ISignatureEndPoint {
   signature: string
   did: string
-  urls: string[]
-  types: string[]
+  endpoints: DidServiceEndpoint[]
   w3name: string
 }
 export interface ISignatureEndPointWithStatus {
   signatureWithEndpoint: ISignatureEndPoint
   fileStatus: boolean[]
-}
-export interface Endpoint {
-  urls: string[]
-  types: string[]
 }

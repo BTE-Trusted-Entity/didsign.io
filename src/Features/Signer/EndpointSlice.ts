@@ -10,8 +10,7 @@ const initialState: ISignatureEndPointWithStatus = {
   signatureWithEndpoint: {
     signature: '',
     did: '',
-    urls: [],
-    types: [],
+    endpoints: [],
     w3name: '',
   },
   fileStatus: [],
@@ -24,19 +23,16 @@ export const EndpointSlice = createSlice({
       state.signatureWithEndpoint.signature =
         initialState.signatureWithEndpoint.signature
       state.signatureWithEndpoint.did = initialState.signatureWithEndpoint.did
-      state.signatureWithEndpoint.urls = initialState.signatureWithEndpoint.urls
-      state.signatureWithEndpoint.types =
-        initialState.signatureWithEndpoint.types
+      state.signatureWithEndpoint.endpoints =
+        initialState.signatureWithEndpoint.endpoints
       state.signatureWithEndpoint.w3name =
         initialState.signatureWithEndpoint.w3name
     },
     // Use the PayloadAction type to declare the contents of `action.payload`
     update: (state, action: PayloadAction<ISignatureEndPoint>) => {
       state.signatureWithEndpoint.signature = action.payload.signature
-      state.signatureWithEndpoint.types =
-        state.signatureWithEndpoint.types.concat(action.payload.types)
-      state.signatureWithEndpoint.urls =
-        state.signatureWithEndpoint.urls.concat(action.payload.urls)
+      state.signatureWithEndpoint.endpoints =
+        state.signatureWithEndpoint.endpoints.concat(action.payload.endpoints)
       state.signatureWithEndpoint.did = action.payload.did
       state.signatureWithEndpoint.w3name = action.payload.w3name
     },
@@ -52,7 +48,7 @@ export const EndpointSlice = createSlice({
     ) => {
       state.fileStatus[action.payload] = true
     },
-    deleteFilestatus: (state, action: PayloadAction<number>) => {
+    deleteFilestatusOnIndex: (state, action: PayloadAction<number>) => {
       state.fileStatus.splice(action.payload, 1)
     },
     clearFileStatuses: (state) => {
@@ -76,16 +72,14 @@ export const {
   updateIndividualFileStatus,
   updateIndividualFileStatusOnIndex,
   updateAllFilesStatus,
-  deleteFilestatus,
+  deleteFilestatusOnIndex,
   clearFileStatuses,
   replaceStatus,
 } = EndpointSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectEndpointURL = (state: RootState) =>
-  state.endpoint.signatureWithEndpoint.urls
-export const selectEndpointTypes = (state: RootState) =>
-  state.endpoint.signatureWithEndpoint.types
+export const selectServiceEndpoints = (state: RootState) =>
+  state.endpoint.signatureWithEndpoint.endpoints
 export const selectVerifiedDid = (state: RootState) =>
   state.endpoint.signatureWithEndpoint.did
 export const selectVerifiedSign = (state: RootState) =>
