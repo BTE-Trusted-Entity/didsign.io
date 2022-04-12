@@ -4,8 +4,7 @@ import {
   clearEndpoint,
   clearFileStatuses,
   fileStatus,
-  selectEndpointTypes,
-  selectEndpointURL,
+  selectServiceEndpoints,
   selectVerifiedDid,
   selectVerifiedSign,
   selectW3Name,
@@ -31,9 +30,7 @@ export const BottomSectionVerifyer = () => {
   const sign = useAppSelector(selectVerifiedSign)
   const did = useAppSelector(selectVerifiedDid)
   const w3name = useAppSelector(selectW3Name)
-
-  const urls = useAppSelector(selectEndpointURL)
-  const types = useAppSelector(selectEndpointTypes)
+  const seviceEndpoints = useAppSelector(selectServiceEndpoints)
   const fileVerificationStatus = useAppSelector(fileStatus)
   const jwsStatus = useAppSelector(selectJwsSignStatus)
   const jws = useAppSelector(selectJwsSign)
@@ -105,11 +102,11 @@ export const BottomSectionVerifyer = () => {
             </span>
 
             <div className="flex flex-col space-y-2 h-fit w-4/5 phone:w-full phone:overflow-y-scroll">
-              {urls.map((url: string, index: number) => (
+              {seviceEndpoints.map((endpoint) => (
                 <CredentialContainer
-                  url={url}
-                  endpointType={types[index]}
-                  key={url}
+                  url={endpoint.urls[0]}
+                  endpointType={endpoint.types[0]}
+                  key={endpoint.id}
                 />
               ))}
             </div>

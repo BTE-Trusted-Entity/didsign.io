@@ -53,14 +53,15 @@ export const ImportFiles = () => {
   const handleZipCase = async (file: File) => {
     dispatch(updateSignStatus('Validating'))
 
-    const sign = await newUnzip(file)
-    if (sign === undefined) {
+    const signatureWithEndpoints = await newUnzip(file)
+    if (signatureWithEndpoints) {
+      dispatch(updateSignStatus('Verified'))
+      dispatch(update(signatureWithEndpoints.signatureWithEndpoint))
+      dispatch(updateAllFilesStatus(signatureWithEndpoints.fileStatus))
+    } else {
       dispatch(updateSignStatus('Invalid'))
-      return
     }
-    dispatch(updateSignStatus('Verified'))
-    dispatch(update(sign.signatureWithEndpoint))
-    dispatch(updateAllFilesStatus(sign.fileStatus))
+    return
   }
 
   const handleIndividualCase = async (file: File, acceptedFiles: File[]) => {
@@ -165,7 +166,7 @@ export const ImportFiles = () => {
   const fetchEndpoints = async () => {
     dispatch(updateSignStatus('Validating'))
     const verifiedSignatureInstance = await getVerifiedData(jws)
-    if (verifiedSignatureInstance != undefined) {
+    if (verifiedSignatureInstance) {
       dispatch(updateSignStatus('Verified'))
       dispatch(update(verifiedSignatureInstance))
     } else {

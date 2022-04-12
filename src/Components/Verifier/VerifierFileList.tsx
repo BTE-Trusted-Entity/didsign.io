@@ -6,7 +6,7 @@ import DIDIcon from '../../ImageAssets/doc_signature_NEW.svg'
 import ImageIcon from '../../ImageAssets/doc_image.svg'
 import {
   clearEndpoint,
-  deleteFilestatus,
+  deleteFilestatusOnIndex,
   fileStatus,
   replaceStatus,
 } from '../../Features/Signer/EndpointSlice'
@@ -38,7 +38,7 @@ export const VerifierFileList = () => {
       dispatch(updateSignStatus('Not Checked'))
     }
     dispatch(clearEndpoint())
-    dispatch(deleteFilestatus(index))
+    dispatch(deleteFilestatusOnIndex(index))
     dispatch(deleteFile(file))
     dispatch(deleteHashFromIndex(index))
   }
