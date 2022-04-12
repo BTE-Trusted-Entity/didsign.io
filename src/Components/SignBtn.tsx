@@ -65,15 +65,14 @@ export const SignBtn = () => {
       })
 
       .catch((e) => {
-        if (e.toString().includes('Rejected')) {
-          if (targetElement !== null) {
-            disableBodyScroll(targetElement)
-          }
-          if (window.kilt.sporran == undefined) {
-            setSignStatus('No Sporran')
+        if (targetElement !== null) disableBodyScroll(targetElement)
 
-            setPopupIcon(InfoIcon)
-          } else {
+        if (window.kilt.sporran == undefined) {
+          setSignStatus('No Sporran')
+
+          setPopupIcon(InfoIcon)
+        } else {
+          if (e.toString().includes('Rejected')) {
             setPopupIcon(AttentionIcon)
 
             setSignStatus(false)
