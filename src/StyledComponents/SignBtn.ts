@@ -6,8 +6,9 @@ interface Button {
 }
 export const BtnContainer = styled.div`
   display: flex;
+  gap: 8px;
 `
-export const SignButton = styled.div`
+export const SignButton = styled.button`
   font-size: 14px;
   line-height: 16px;
   letter-spacing: 0.1px;
