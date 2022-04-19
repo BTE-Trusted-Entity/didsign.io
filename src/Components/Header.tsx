@@ -1,31 +1,74 @@
 import React from 'react'
-import logo from '../ImageAssets/logo_DIDsign.svg'
 import TopRightBubble from '../ImageAssets/TopRightBubble.svg'
 import TopLeftBubble from '../ImageAssets/TopLeftBubble.svg'
+import {
+  Container,
+  HeaderContainer,
+  HeaderLogo,
+  LogoContainer,
+  SecondaryHeaderContainer,
+  SignRoleBtn,
+  SignUnderline,
+  StyledHeader,
+  TextSpan,
+  TopLeftBubbleImg,
+  TopRightBubbleImg,
+  VerifyUnderline,
+} from '../StyledComponents/Header'
+import { useAppDispatch, useAppSelector } from '../app/hooks'
+import { selectUserRole, updateRole } from '../Features/Signer/UserSlice'
 
 export const Header = () => {
   return (
-    <div>
-      <div className=" bg-dark-purple w-screen h-[96px] flex flex-col relative ">
-        <img
-          src={TopLeftBubble}
-          className="absolute top-0 left-0 pointer-events-none h-full"
-        />
-        <img
-          src={TopRightBubble}
-          className="absolute top-0 right-0 pointer-events-none h-full"
-        />
+    <StyledHeader>
+      <PrimaryHeader />
+      <SecondaryHeader />
+    </StyledHeader>
+  )
+}
+const PrimaryHeader = () => {
+  return (
+    <HeaderContainer>
+      <TopLeftBubbleImg src={TopLeftBubble} />
+      <TopRightBubbleImg src={TopRightBubble} />
+      <LogoContainer>
+        <HeaderLogo />
+      </LogoContainer>
+    </HeaderContainer>
+  )
+}
 
-        <div className=" content-end w-[766px]  my-auto mx-auto small-device:pl-[15px] z-20 phone:pt-4">
-          <img className="w-[168.55px] h-[52px]  object-cover" src={logo} />
-        </div>
-
-        <div className="mb-0 w-full h-[24px] bg-[#44374f99]  flex items-center phone:invisible">
-          <span className=" small-device:pl-[15px] mx-auto pt-[1px] h-[18px] w-[766px] text-white font-['Overpass'] text-[14px] leading-[16px] tracking-[0.1px]">
-            A decentralized way to sign and verify files privately and securely
-          </span>
-        </div>
-      </div>
-    </div>
+const SecondaryHeader = () => {
+  const userRoleSigner = useAppSelector(selectUserRole)
+  const dispatch = useAppDispatch()
+  const handleVerifier = () => {
+    dispatch(updateRole(false))
+  }
+  const handleSigner = () => {
+    dispatch(updateRole(true))
+  }
+  return (
+    <SecondaryHeaderContainer>
+      <TextSpan>
+        Documents that build trust - securely signed with your decentralized
+        identifier (DID).
+      </TextSpan>
+      <Container>
+        <SignRoleBtn
+          isSelectedRole={userRoleSigner}
+          onClick={() => handleSigner()}
+        >
+          SIGN
+          <SignUnderline isSelectedRole={userRoleSigner} />
+        </SignRoleBtn>
+        <SignRoleBtn
+          isSelectedRole={!userRoleSigner}
+          onClick={() => handleVerifier()}
+        >
+          VERIFY
+          <VerifyUnderline isSelectedRole={!userRoleSigner} />
+        </SignRoleBtn>
+      </Container>
+    </SecondaryHeaderContainer>
   )
 }
