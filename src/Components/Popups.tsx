@@ -8,6 +8,14 @@ import { updateSignStatus } from '../Features/Signer/VerifyJwsSlice'
 import { clearEndpoint } from '../Features/Signer/EndpointSlice'
 import SignatureIcon from '../ImageAssets/icon_DID.svg'
 import BTELogo from '../ImageAssets/bte_logo_black.png'
+import {
+  Container,
+  DismissBtn,
+  Heading,
+  StyledPopup,
+  Text,
+  Wrapper,
+} from '../StyledComponents/Popup'
 
 interface Toggle {
   dismiss: React.MouseEventHandler<HTMLButtonElement>
@@ -234,5 +242,57 @@ export const ImprintPopup = (props: Toggle) => {
         </button>
       </div>
     </div>
+  )
+}
+export const SignPopup = (props: Toggle) => {
+  return (
+    <Container>
+      <StyledPopup>
+        <Wrapper>
+          <img src={InfoIcon} />
+          <Heading>Signature Needed</Heading>
+          <Text>
+            Please wait for your wallet extension to open and sign the
+            transaction there.
+          </Text>
+          <DismissBtn onClick={props.dismiss}>DISMISS</DismissBtn>
+        </Wrapper>
+      </StyledPopup>
+    </Container>
+  )
+}
+export const NoWalletPopup = (props: Toggle) => {
+  return (
+    <Container>
+      <StyledPopup>
+        <Wrapper>
+          <img src={InfoIcon} />
+          <Heading>No Wallet Found</Heading>
+          <Text>
+            To sign your files with DIDsign you need an on-chain DID in a wallet
+            that supports it. We recommend Sporran, a browser extension
+            available for Google Chrome and Firefox. Any other wallet supporting
+            on-chain signing on the KILT blockchain can also be used.
+          </Text>
+          <DismissBtn onClick={props.dismiss}>DISMISS</DismissBtn>
+        </Wrapper>
+      </StyledPopup>
+    </Container>
+  )
+}
+export const SignErrorPopup = (props: Toggle) => {
+  return (
+    <Container>
+      <StyledPopup>
+        <Wrapper>
+          <img src={AttentionIcon} />
+          <Heading>Sign Error</Heading>
+          <Text>
+            It looks like error occured while signing. Please try again.
+          </Text>
+          <DismissBtn onClick={props.dismiss}>DISMISS</DismissBtn>
+        </Wrapper>
+      </StyledPopup>
+    </Container>
   )
 }
