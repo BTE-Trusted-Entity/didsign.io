@@ -1,23 +1,27 @@
 import React from 'react'
-import '../Styles/animation.css'
+import { Circle, Container, Gradient } from '../StyledComponents/Animations'
+import { colors } from '../StyledComponents/colors'
 
-export const SlowAnimation = () => {
+interface Background {
+  color: string
+}
+export const SlowAnimation = (props: Background) => {
   return (
-    <div className="container bg-medium-blue">
-      <div className="gradient"></div>
-      <div className="circle circle1"></div>
-    </div>
+    <Container bgcolor={props.color}>
+      <Gradient></Gradient>
+      <Circle delay={'1s'}></Circle>
+    </Container>
   )
 }
 export const FastAnimation = () => {
   return (
-    <div className="container bg-light-green">
-      <div className="gradient"></div>
-      <div className="circle circle1"></div>
-      <div className="circle circle2"></div>
-      <div className="circle circle3"></div>
-      <div className="circle circle4"></div>
-      <div className="circle circle5"></div>
-    </div>
+    <Container bgcolor={colors.fastanimation}>
+      <Gradient> </Gradient>
+      <Circle delay={'1s'}></Circle>
+      <Circle delay={'2s'}></Circle>
+      <Circle delay={'3s'}></Circle>
+      <Circle delay={'4s'}></Circle>
+      <Circle delay={'5s'}></Circle>
+    </Container>
   )
 }

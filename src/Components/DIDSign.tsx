@@ -11,34 +11,28 @@ import { BottomSectionVerifyer } from './Verifier/BottomSectionVerifyer'
 import BottomLeftBubble from '../ImageAssets/BottomLeftBubble.svg'
 import BottomRightBubble from '../ImageAssets/BottomRightBubble.svg'
 import { selectPopup } from '../Features/Signer/PopupSlice'
-import '../Styles/App.css'
+import {
+  DarkOverlay,
+  LeftBubbleImage,
+  RightBubbleImage,
+  StyledBody,
+} from '../StyledComponents/DidSign'
 
 export const DIDSign = () => {
   const userRoleIsSigner = useAppSelector(selectUserRole)
   const popup = useAppSelector(selectPopup)
 
   return (
-    <div
-      className={`relative min-h-screen max-w-screen overflow-y-auto bg-light-blue overflow-x-hidden flex flex-col ${
-        popup && 'overflow-hidden'
-      }`}
-    >
-      {popup && (
-        <div className="bg-black opacity-70 absolute w-full h-full z-30 overflow-y-hidden"></div>
-      )}
+    <StyledBody>
+      {popup && <DarkOverlay></DarkOverlay>}
       <Header />
-      <SelectUserRoleBtns />
+
       {userRoleIsSigner ? <SignerComponent /> : <VerifierComponent />}
       {userRoleIsSigner ? <BottomSectionSigner /> : <BottomSectionVerifyer />}
+
       <Footer />
-      <img
-        src={BottomLeftBubble}
-        className="absolute bottom-0 left-0 h-[234px] w-[220px]  pointer-events-none"
-      />
-      <img
-        src={BottomRightBubble}
-        className=" absolute bottom-0 right-0 h-[234px] w-[220px] pointer-events-none"
-      />
-    </div>
+      <LeftBubbleImage src={BottomLeftBubble} />
+      <RightBubbleImage src={BottomRightBubble} />
+    </StyledBody>
   )
 }

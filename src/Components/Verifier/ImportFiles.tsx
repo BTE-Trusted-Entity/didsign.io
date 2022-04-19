@@ -37,6 +37,7 @@ import { addHash, selectHash } from '../../Features/Signer/hashSlice'
 import { SlowAnimation, FastAnimation } from '../Animations'
 import { showPopup } from '../../Features/Signer/PopupSlice'
 import { MultipleSignPopup } from '../Popups'
+import { colors } from '../../StyledComponents/colors'
 
 export const ImportFiles = () => {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon)
@@ -199,7 +200,11 @@ export const ImportFiles = () => {
                 'h-full w-full absolute flex justify-center items-center',
             })}
           >
-            {impIcon == ImportIcon ? <SlowAnimation /> : <FastAnimation />}
+            {impIcon == ImportIcon ? (
+              <SlowAnimation color={colors.green} />
+            ) : (
+              <FastAnimation />
+            )}
             <input {...getInputProps()} />
             <img className="absolute mx-auto my-auto" src={impIcon} />
             {impIcon === ImportIcon && (
@@ -212,9 +217,11 @@ export const ImportFiles = () => {
                 drag & drop
               </label>
             )}
-            <label className=" pointer-events-none text-white text-center text-[14px] leading-[16px] font-['Overpass'] tracking-[0.17px] absolute bottom-12">
-              or click / tap to browse your files
-            </label>
+            {impIcon === ImportIcon && (
+              <label className=" pointer-events-none text-white text-center text-[14px] leading-[16px] font-['Overpass'] tracking-[0.17px] absolute bottom-12">
+                or click / tap to browse your files
+              </label>
+            )}
           </div>
         )}
       </Dropzone>

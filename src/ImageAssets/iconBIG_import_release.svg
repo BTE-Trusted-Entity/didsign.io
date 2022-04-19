@@ -1,1 +1,23 @@
-<svg width="68" height="68" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><filter x="-4.4%" y="-4.4%" width="108.8%" height="108.8%" filterUnits="objectBoundingBox" id="a"><feOffset in="SourceAlpha" result="shadowOffsetOuter1"/><feGaussianBlur stdDeviation="1" in="shadowOffsetOuter1" result="shadowBlurOuter1"/><feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"/><feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.349764737 0" in="shadowBlurOuter1"/></filter><circle id="b" cx="34" cy="34" r="34"/></defs><g fill="none" fill-rule="evenodd"><use fill="#000" filter="url(#a)" xlink:href="#b"/><use fill-opacity=".499" fill="#FFF" xlink:href="#b"/><circle fill="#11A770" cx="34" cy="34" r="23"/><path d="M34 47a3 3 0 0 0 3-3V24a3 3 0 0 0-6 0v20a3 3 0 0 0 3 3Z" fill="#FFF"/><path d="M43.446 29.613a3 3 0 0 0-4.15.882l-7.624 11.742a3 3 0 0 0 5.032 3.268l7.624-11.742a3 3 0 0 0-.882-4.15Z" fill="#FFF"/><path d="M24.554 29.613a3 3 0 0 1 4.15.882l7.624 11.742a3 3 0 0 1-5.032 3.268l-7.624-11.742a3 3 0 0 1 .882-4.15Z" fill="#FFF"/></g></svg>
+<svg width="68" height="68" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<defs>
+		<filter x="-4.4%" y="-4.4%" width="108.8%" height="108.8%" filterUnits="objectBoundingBox" id="a">
+			<feOffset in="SourceAlpha" result="shadowOffsetOuter1" />
+			<feGaussianBlur stdDeviation="1" in="shadowOffsetOuter1" result="shadowBlurOuter1" />
+			<feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1" />
+			<feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.349764737 0" in="shadowBlurOuter1" />
+		</filter>
+		<circle id="b" cx="34" cy="34" r="34" />
+	</defs>
+	<g fill="none" fill-rule="evenodd">
+		<use fill="#000" filter="url(#a)" xlink:href="#b" />
+		<use fill-opacity=".499" fill="#FFF" xlink:href="#b" />
+		<circle fill="#9C9640" cx="34" cy="34" r="23" />
+		<path d="M34 47a3 3 0 0 0 3-3V24a3 3 0 0 0-6 0v20a3 3 0 0 0 3 3Z" fill="#FFF" />
+		<path
+			d="M43.446 29.613a3 3 0 0 0-4.15.882l-7.624 11.742a3 3 0 0 0 5.032 3.268l7.624-11.742a3 3 0 0 0-.882-4.15Z"
+			fill="#FFF" />
+		<path
+			d="M24.554 29.613a3 3 0 0 1 4.15.882l7.624 11.742a3 3 0 0 1-5.032 3.268l-7.624-11.742a3 3 0 0 1 .882-4.15Z"
+			fill="#FFF" />
+	</g>
+</svg>

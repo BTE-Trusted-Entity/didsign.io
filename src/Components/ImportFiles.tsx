@@ -19,6 +19,15 @@ import { SigningDuplicateFiles, SigningMultipleDidFiles } from './Popups'
 import { showPopup } from '../Features/Signer/PopupSlice'
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
 import { clearSign, selectSign } from '../Features/Signer/SignatureSlice'
+import {
+  BrowseFilesText,
+  Container,
+  DragDropText,
+  DropContainer,
+  ImportImage,
+  SignText,
+} from '../StyledComponents/SignImportComp'
+import { colors } from '../StyledComponents/colors'
 
 export const ImportFilesSigner = () => {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon)
@@ -101,46 +110,34 @@ export const ImportFilesSigner = () => {
   )
 
   return (
-    <div
-      id="dropzone"
-      className=" mt-3 mx-auto h-[220px] relative max-w-[766px]  flex"
-    >
+    <Container>
       <Dropzone
         onDrop={handleDrop}
         onDragLeave={() => setImportIcon(ImportIcon)}
         onDragEnter={() => setImportIcon(ReleaseIcon)}
       >
         {({ getRootProps, getInputProps }) => (
-          <div
-            {...getRootProps({
-              className:
-                'h-full w-full absolute flex justify-center items-center',
-            })}
-          >
-            {impIcon == ImportIcon ? <SlowAnimation /> : <FastAnimation />}
+          <DropContainer {...getRootProps({})}>
+            {impIcon == ImportIcon ? (
+              <SlowAnimation color={colors.pink} />
+            ) : (
+              <FastAnimation />
+            )}
 
             <input {...getInputProps()} />
-            <img className="absolute mx-auto my-auto" src={impIcon} />
-            {impIcon === ImportIcon && (
-              <label className="absolute top-8 pointer-events-none text-white text-center text-[16px] leading-[17px] tracking-[0.11px] font-['Overpass']">
-                Sign Your Files
-              </label>
-            )}
-            {impIcon === ImportIcon && (
-              <label className="absolute top-14 pointer-events-none text-white text-center text-[14px] leading-[16px] tracking-[0.17px] font-['Overpass']">
-                drag & drop
-              </label>
-            )}
-            <label className=" pointer-events-none text-white text-center text-[14px] leading-[16px] font-['Overpass'] tracking-[0.17px] absolute bottom-12">
+            <ImportImage src={impIcon} />
+            {impIcon === ImportIcon && <SignText>Sign Your Files</SignText>}
+            {impIcon === ImportIcon && <DragDropText>drag & drop</DragDropText>}
+            <BrowseFilesText>
               or click / tap to browse your files
-            </label>
-          </div>
+            </BrowseFilesText>
+          </DropContainer>
         )}
       </Dropzone>
       {signErrorPopup && <SigningMultipleDidFiles dismiss={handleDismiss} />}
       {isDuplicate && (
         <SigningDuplicateFiles dismiss={handleDuplicateDismiss} />
       )}
-    </div>
+    </Container>
   )
 }
