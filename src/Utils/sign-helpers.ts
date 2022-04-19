@@ -14,7 +14,7 @@ export const createHash = async (blob: ArrayBuffer | null): Promise<string> => {
   if (!blob) throw new Error('No File given')
   const blobAsU8a = new Uint8Array(blob)
   const hash = await sha56.digest(blobAsU8a)
-  return base16.baseEncode(hash.bytes)
+  return base16.encode(hash.bytes)
 }
 
 const sporranWindow = window.kilt || {}
