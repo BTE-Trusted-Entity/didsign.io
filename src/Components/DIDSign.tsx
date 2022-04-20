@@ -1,8 +1,6 @@
 import React from 'react'
 import { Header } from './Header'
-import { SignerComponent } from './SignerComponent'
-import { VerifierComponent } from './Verifier/VerifierComponent'
-import { SelectUserRoleBtns } from './SelectUserRoleBtns'
+import { MainComponent } from './MainComponent'
 import { Footer } from './Footer'
 import { BottomSectionSigner } from './BottomSection'
 import { useAppSelector } from '../app/hooks'
@@ -26,8 +24,7 @@ export const DIDSign = () => {
     <StyledBody>
       {popup && <DarkOverlay></DarkOverlay>}
       <Header />
-
-      {userRoleIsSigner ? <SignerComponent /> : <VerifierComponent />}
+      <MainComponent />
       {userRoleIsSigner ? <BottomSectionSigner /> : <BottomSectionVerifyer />}
 
       <Footer />

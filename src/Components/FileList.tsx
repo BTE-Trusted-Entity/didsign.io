@@ -11,6 +11,16 @@ import info from '../ImageAssets/icon_info.svg'
 import { isDidSignFile } from '../Utils/verify-helper'
 import { SignFileInfoPopup } from './Popups'
 import { showPopup } from '../Features/Signer/PopupSlice'
+import {
+  Container,
+  DidSignFileSpan,
+  FileName,
+  FileOptionsSpan,
+  FilesSeparator,
+  FileWrapper,
+  StyledList,
+} from '../StyledComponents/FilesList'
+import { FileSpan } from '../StyledComponents/SignerComp'
 
 export const FileList = () => {
   const dispatch = useAppDispatch()
@@ -47,13 +57,10 @@ export const FileList = () => {
     return null
   }
   return (
-    <div className="h-auto">
+    <StyledList>
       {files.map((file: File, index: number) => (
-        <div
-          key={index}
-          className=" pl-28 pr-4 pt-2 flex flex-col space-y-1 w-[96%]"
-        >
-          <div className="flex items-center mt-2 ">
+        <Container key={index}>
+          <FileWrapper>
             {file.type.includes('image') ? (
               <img src={ImageIcon} />
             ) : file.name == 'signature.didsign' ? (
@@ -61,39 +68,27 @@ export const FileList = () => {
             ) : (
               <img src={DocIcon} />
             )}
-            <div className="mx-2 flex -space-y-1 w-3/4">
-              <span
-                className={`font-['Overpass'] text-justified overflow-wrap break-words text-left text-[14px] leading-[16px] tracking-[0.1px] text-dark-purple ${
-                  isDidSignFile(file.name) && 'text-pure-red w-3/6 '
-                }`}
-              >
-                {file.name}
-              </span>
-            </div>
-            <div className="flex space-x-2 ml-auto w-1/2 justify-end">
+            <FileName>{file.name}</FileName>
+            <FileOptionsSpan>
               {isDidSignFile(file.name) ? (
-                <span className="text-left text-pure-red text-[14px] leading-[16px] tracking-[0.1px]  font-['Overpass']">
+                <DidSignFileSpan>
                   added by DIDsign
-                </span>
+                  <button onClick={showSignInfoPopup}>
+                    <img src={info} />
+                  </button>
+                </DidSignFileSpan>
               ) : (
                 <button onClick={() => handleDelFile(file)}>
                   {' '}
                   <img src={DelIcon} />{' '}
                 </button>
               )}
-              {isDidSignFile(file.name) && (
-                <div className="flex flex-col items-center justify-center phone:invisible phone:w-[50px]">
-                  <button onClick={showSignInfoPopup}>
-                    <img src={info} />
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-          <div className=" border-b-[1px] border-b-dark-purple border-dotted w-full"></div>
-        </div>
+            </FileOptionsSpan>
+          </FileWrapper>
+          <FilesSeparator></FilesSeparator>
+        </Container>
       ))}
       {signPopup && <SignFileInfoPopup dismiss={handleDismiss} />}
-    </div>
+    </StyledList>
   )
 }

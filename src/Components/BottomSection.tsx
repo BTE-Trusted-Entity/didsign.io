@@ -9,9 +9,7 @@ export const BottomSectionSigner = () => {
   const sign = useAppSelector(selectSign)
   return (
     <Container>
-      <BottomSection>
-        {sign == '' ? <SignBtn /> : <DownloadBtns />}
-      </BottomSection>
+      <BottomSection>{!sign ? <SignBtn /> : <DownloadBtns />}</BottomSection>
     </Container>
   )
 }

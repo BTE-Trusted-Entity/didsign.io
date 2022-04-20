@@ -38,8 +38,16 @@ import { SlowAnimation, FastAnimation } from '../Animations'
 import { showPopup } from '../../Features/Signer/PopupSlice'
 import { MultipleSignPopup } from '../Popups'
 import { colors } from '../../StyledComponents/colors'
+import {
+  BrowseFilesText,
+  Container,
+  DragDropText,
+  DropContainer,
+  ImportImage,
+  SignText,
+} from '../../StyledComponents/SignImportComp'
 
-export const ImportFiles = () => {
+export const ImportFilesVerifier = () => {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon)
   const fileHash = useAppSelector(selectHash)
   const jwsHash = useAppSelector(selectJwsHash)
@@ -186,7 +194,7 @@ export const ImportFiles = () => {
     }
   }, [statuses, jwsStatus])
   return (
-    <div className="mt-3 mx-auto h-[220px] relative max-w-[766px] flex justify-center">
+    <Container>
       {jwsStatus === 'Multiple Sign' && <MultipleSignPopup />}
       <Dropzone
         onDrop={handleDrop}
@@ -194,37 +202,23 @@ export const ImportFiles = () => {
         onDragEnter={() => setImportIcon(ReleaseIcon)}
       >
         {({ getRootProps, getInputProps }) => (
-          <div
-            {...getRootProps({
-              className:
-                'h-full w-full absolute flex justify-center items-center',
-            })}
-          >
+          <DropContainer {...getRootProps({})}>
             {impIcon == ImportIcon ? (
               <SlowAnimation color={colors.green} />
             ) : (
               <FastAnimation />
             )}
+
             <input {...getInputProps()} />
-            <img className="absolute mx-auto my-auto" src={impIcon} />
-            {impIcon === ImportIcon && (
-              <label className="absolute top-8 pointer-events-none text-white text-center text-[16px] leading-[17px] tracking-[0.11px] font-['Overpass']">
-                Verify Your Files
-              </label>
-            )}
-            {impIcon === ImportIcon && (
-              <label className="absolute top-14 pointer-events-none text-white text-center text-[14px] leading-[16px] tracking-[0.17px] font-['Overpass']">
-                drag & drop
-              </label>
-            )}
-            {impIcon === ImportIcon && (
-              <label className=" pointer-events-none text-white text-center text-[14px] leading-[16px] font-['Overpass'] tracking-[0.17px] absolute bottom-12">
-                or click / tap to browse your files
-              </label>
-            )}
-          </div>
+            <ImportImage src={impIcon} />
+            {impIcon === ImportIcon && <SignText>Verify Your Files</SignText>}
+            {impIcon === ImportIcon && <DragDropText>drag & drop</DragDropText>}
+            <BrowseFilesText>
+              or click / tap to browse your files
+            </BrowseFilesText>
+          </DropContainer>
         )}
       </Dropzone>
-    </div>
+    </Container>
   )
 }

@@ -21,6 +21,19 @@ import {
 } from '../Features/Signer/FileSlice'
 import BtnStartOver from '../ImageAssets/button_start_over_NEW.svg'
 import JSZip from 'jszip'
+import {
+  Container,
+  DownloadSignBtn,
+  DownloadSignBtnWrapper,
+  DownloadSignTextSpan,
+  ProgressBarWrapper,
+  ProgressSpan,
+  StyledProgress,
+  StyledProgressBar,
+  ZipBtn,
+  ZipBtnWrapper,
+  ZipTextSpan,
+} from '../StyledComponents/DownloadBtns'
 
 export const DownloadBtns = () => {
   const sign = useAppSelector(selectSign)
@@ -73,50 +86,30 @@ export const DownloadBtns = () => {
   }
 
   return (
-    <div className="bg-light-blue bg-opacity-80 border-solid border-[#517ca240] border-[1px] mx-auto flex flex-col items-center justify-center rounded-b-[15px] max-w-[766px] pt-4 pr-4 shadow-sm mb-8 space-y-4 relative">
-      <div className="flex space-x-8 justify-center items-center ">
-        <span className="w-[110px] text-right text-[14px] font-['Overpass' absolute left-[180px] phone:invisible text-dark-purple">
-          now
-        </span>
+    <Container>
+      <ZipBtnWrapper>
+        <ZipTextSpan>now</ZipTextSpan>
 
-        <button
-          className={`w-[160px] h-[30px] text-[14px] leading-[16px] relative tracking-[0.1px]  font-['Overpass'] bg-medium-blue text-white rounded-[8px] ${
-            showLoader && 'pointer-events-none'
-          }`}
-          onClick={handleZip}
-        >
+        <ZipBtn onClick={handleZip}>
           <span>{showLoader ? 'ZIPPING' : 'ZIP ALL FILES'}</span>
-        </button>
-      </div>
+        </ZipBtn>
+      </ZipBtnWrapper>
       {showLoader && (
-        <div className="flex flex-col space-y-1 justify-center items-end w-[190px] pb-3 ml-1">
-          <div className="w-[160px] shadow-lg bg-white h-[6px] rounded-[10px] border-medium-blue border-solid border-[1px] ">
-            <div
-              className=" bg-medium-blue shadow-lg h-full rounded-[10px]"
-              style={{ width: progress + '%' }}
-            ></div>
-          </div>
-          <span className="w-[160px] text-center text-[12px] h-[10px] leading-[16px] tracking-[0.1px] ont-['Overpass'] text-dark-purple">
-            {progress + '%'}
-          </span>
-        </div>
+        <ProgressBarWrapper>
+          <StyledProgressBar>
+            <StyledProgress style={{ width: progress + '%' }}></StyledProgress>
+          </StyledProgressBar>
+          <ProgressSpan>{progress + '%'}</ProgressSpan>
+        </ProgressBarWrapper>
       )}
       {!showLoader && (
-        <div className="flex space-x-8 justify-start items-center pb-4">
-          <span className="text-[14px] leading-[16px] tracking-[0.1px] w-[110px] font-['Overpass'] text-right absolute left-[185px] phone:invisible text-dark-purple">
-            or only download
-          </span>
-          <button
-            className="w-[130px] h-[22px] font-['Overpass'] bg-medium-blue text-white text-[12px] leading-[13px] tracking-[0.09px] rounded-[6px]"
-            onClick={handleDownloadSign}
-          >
+        <DownloadSignBtnWrapper>
+          <DownloadSignTextSpan>or only download</DownloadSignTextSpan>
+          <DownloadSignBtn onClick={handleDownloadSign}>
             <span>SIGNATURE</span>
-          </button>
-        </div>
+          </DownloadSignBtn>
+        </DownloadSignBtnWrapper>
       )}
-      <button className="absolute -right-1 -bottom-1" onClick={handleStartOver}>
-        <img className="h-12 w-12" src={BtnStartOver} />
-      </button>
-    </div>
+    </Container>
   )
 }
