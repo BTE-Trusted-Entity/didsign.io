@@ -20,6 +20,14 @@ import {
   updateSignStatus,
 } from '../../Features/Signer/VerifyJwsSlice'
 import { isDidSignFile } from '../../Utils/verify-helper'
+import {
+  Container,
+  FileName,
+  FileOptionsSpan,
+  FilesSeparator,
+  FileWrapper,
+  StyledList,
+} from '../../StyledComponents/FilesList'
 
 export const VerifierFileList = () => {
   const files = useAppSelector(selectFile)
@@ -48,13 +56,10 @@ export const VerifierFileList = () => {
     return null
   }
   return (
-    <div>
+    <StyledList>
       {files.map((file: File, index: number) => (
-        <div
-          key={index}
-          className="  pl-28 phone:pl-16 pr-4 pt-2 flex flex-col space-y-1 w-[96%]"
-        >
-          <div className="flex items-center mt-2 ">
+        <Container key={index}>
+          <FileWrapper className="flex items-center mt-2 ">
             {file.type.includes('image') ? (
               <img src={ImageIcon} />
             ) : isDidSignFile(file.name) ? (
@@ -62,16 +67,8 @@ export const VerifierFileList = () => {
             ) : (
               <img src={DocIcon} />
             )}
-            <div className="mx-2 flex -space-y-1 w-3/4">
-              <span
-                className={`font-['Overpass'] text-justified overflow-wrap break-words w-full text-left text-[14px] leading-[16px] tracking-[0.1px] text-dark-purple ${
-                  isDidSignFile(file.name) && 'text-red-700 w-3/6 '
-                }`}
-              >
-                {file.name}
-              </span>
-            </div>
-            <div className="flex space-x-2 ml-auto w-1/2 justify-end">
+            <FileName>{file.name}</FileName>
+            <FileOptionsSpan>
               {status[index] && !isDidSignFile(file.name) && (
                 <img src={OkIcon} />
               )}
@@ -80,11 +77,11 @@ export const VerifierFileList = () => {
                 {' '}
                 <img src={DelIcon} />{' '}
               </button>
-            </div>
-          </div>
-          <div className=" border-b-[1px] border-b-dark-purple border-dotted w-full"></div>
-        </div>
+            </FileOptionsSpan>
+          </FileWrapper>
+          <FilesSeparator></FilesSeparator>
+        </Container>
       ))}
-    </div>
+    </StyledList>
   )
 }
