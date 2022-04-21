@@ -167,6 +167,11 @@ export const ImportFilesVerifier = () => {
       fileHash.filter(async (hash, index) => {
         if (jwsHash.includes(hash)) {
           dispatch(updateIndividualFileStatusOnIndex(index))
+        } else {
+          if (hash !== '') {
+            dispatch(updateSignStatus('Invalid'))
+          }
+          return
         }
       })
     }
