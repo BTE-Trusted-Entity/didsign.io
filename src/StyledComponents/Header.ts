@@ -61,6 +61,9 @@ export const TextSpan = styled.span`
   font-size: 14px;
   letter-spacing: 0.1px;
   line-height: 16px;
+  @media (max-width: 600px) {
+    display: none;
+  }
 `
 export const Container = styled.div`
   max-width: 766px;

@@ -4,9 +4,7 @@ import { colors } from './colors'
 export const StyledList = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: 134px;
-  max-width: 631px;
-  min-width: 100px;
+  width: 631px;
   gap: 15px;
   margin-right: 22px;
   margin-top: 10px;
@@ -40,6 +38,7 @@ export const FileOptionsSpan = styled.span`
   width: 30%;
   align-items: flex-end;
   justify-content: flex-end;
+  gap: 5px;
   color: ${colors.purered};
 `
 export const DidSignFileSpan = styled.span`
@@ -50,4 +49,5 @@ export const FilesSeparator = styled.div`
   width: 100%;
   border: dotted 1px ${colors.darkpurple};
   margin-top: 5px;
+  opacity: 0.5;
 `
