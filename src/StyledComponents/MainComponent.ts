@@ -26,17 +26,31 @@ export const FilesContainer = styled.div`
   border-left: solid 1px;
   border-right: solid 1px;
   border-color: #517ca240;
+  position: relative;
 `
 export const FileSpan = styled.span`
   display: flex;
   justify-content: end;
-
   margin-top: 20px;
   color: #2a223180;
   font-size: 16px;
   line-height: 17px;
   letter-spacing: 0.11px;
   width: 15%;
+`
+export const FileSpanZip = styled.span`
+  position: absolute;
+  top: 50px;
+  left: 70px;
+  margin-top: 20px;
+  color: ${colors.darkpurple};
+  font-size: 16px;
+  line-height: 17px;
+  letter-spacing: 0.11px;
+  width: 15%;
+  @media (max-width: 700px) {
+    left: 20px;
+  }
 `
 export const CenterLeftBubbleImage = styled.img`
   position: absolute;
