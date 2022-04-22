@@ -20,7 +20,6 @@ import {
   FileWrapper,
   StyledList,
 } from '../StyledComponents/FilesList'
-import { FileSpan } from '../StyledComponents/SignerComp'
 
 export const FileList = () => {
   const dispatch = useAppDispatch()
