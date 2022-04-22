@@ -1,12 +1,19 @@
 import React, { useState } from 'react'
 import Logo from '../ImageAssets/logo_DIDsign.svg'
-import KiltLogo from '../ImageAssets/Kilt.svg'
+import { ReactComponent as KiltLogo } from '../ImageAssets/Kilt.svg'
 import { ImprintPopup } from './Popups'
 import { useAppDispatch } from '../app/hooks'
 import { showPopup } from '../Features/Signer/PopupSlice'
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
 import Terms from '../DocsAssets/Terms_of_Use_DIDsign_March_2022.pdf'
 import Privacy from '../DocsAssets/Privacy_Policy_DIDsign_March_2022.pdf'
+import {
+  DidSignLogoContainer,
+  LinksContainer,
+  LogoContainer,
+  StyledFooter,
+  StyledFooterLinksContainer,
+} from '../StyledComponents/Footer'
 
 export const Footer = () => {
   const targetElement = document.querySelector('body')
@@ -28,14 +35,13 @@ export const Footer = () => {
     setShowImprint(false)
   }
   return (
-    <div className=" bg-dark-purple flex items-center justify-center   h-[35px] w-screen relative mt-auto  big-phone:h-28 ">
-      <div className="flex items-center justify-center w-[766px] h-full relative">
-        <img
-          className=" h-[27px] absolute left-0 small-device:pl-[15px] phone:invisible"
-          src={Logo}
-        />
+    <StyledFooter>
+      <StyledFooterLinksContainer>
+        <DidSignLogoContainer>
+          <img src={Logo} />
+        </DidSignLogoContainer>
 
-        <div className="items-center flex flex-wrap max-w-3/4 justify-center space-x-2 text-white font-['Overpass'] text-[14px] leading-[16px] tracking-[0.1px]">
+        <LinksContainer>
           <button className="hover:underline" onClick={handleImprint}>
             <span>Imprint </span>
           </button>
@@ -51,14 +57,13 @@ export const Footer = () => {
               <span>Privacy Policy </span>
             </a>
           </button>
-        </div>
+        </LinksContainer>
 
-        <img
-          className=" h-[15px] absolute right-0 big-phone:invisible small-device:pr-[15px] phone:invisible "
-          src={KiltLogo}
-        />
-      </div>
+        <LogoContainer>
+          <KiltLogo />
+        </LogoContainer>
+      </StyledFooterLinksContainer>
       {showImprint && <ImprintPopup dismiss={handleDismiss} />}
-    </div>
+    </StyledFooter>
   )
 }
