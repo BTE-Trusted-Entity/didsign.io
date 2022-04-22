@@ -44,3 +44,8 @@ export const VerificationText = styled.span`
   line-height: 17px;
   letter-spacing: 0.11px;
 `
+export const StartOverIcon = styled.img`
+  position: absolute;
+  right: 0;
+  bottom: 0;
+`

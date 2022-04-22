@@ -49,6 +49,7 @@ export const SecondaryHeaderContainer = styled.div`
   background-color: ${colors.headerbelow};
   justify-content: center;
   align-items: center;
+  position: relative;
 `
 export const TextSpan = styled.span`
   display: flex;
@@ -87,6 +88,9 @@ export const SignRoleBtn = styled.button`
   border: none;
   border-radius: 3px 3px 0 0;
   transition: height 0.15s ease-in;
+  @media (max-width: 600px) {
+    margin-bottom: -12px;
+  }
 `
 export const SignUnderline = styled.div`
   height: ${(props: BtnType) => (props.isSelectedRole ? '4px' : '2px')};
@@ -101,4 +105,13 @@ export const VerifyUnderline = styled.div`
   background-color: ${colors.green};
   margin-top: -2px;
   transition: height 0.1s ease-in;
+`
+export const SecondaryLeftBubble = styled.img`
+  height: 113px;
+  width: 261px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  opacity: 0.5;
+  transform: scaleX(-1);
 `

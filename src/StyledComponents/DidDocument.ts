@@ -10,7 +10,7 @@ export const DidDocContainer = styled.div`
   align-items: center;
   gap: 20px;
   margin-top: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 100px;
 `
 export const TextWrapper = styled.div`
   display: flex;
