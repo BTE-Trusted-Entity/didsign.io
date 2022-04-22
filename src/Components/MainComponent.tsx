@@ -6,15 +6,14 @@ import { selectFile, selectFilename } from '../Features/Signer/FileSlice'
 import { EmptyFilesList } from './EmptyFilesList'
 import CenterRightBubble from '../ImageAssets/CenterRightBubble.svg'
 import CenterLeftBubble from '../ImageAssets/CenterLeftBubble.svg'
-import { Container } from '../StyledComponents/SignerComp'
+import { Container, FileSpanZip } from '../StyledComponents/MainComponent'
 import {
   CenterLeftBubbleImage,
   CenterRightBubbleImage,
   FilesContainer,
   FileSpan,
-} from '../StyledComponents/SignerComp'
-import { ZippedFile } from './Verifier/ZippedFile'
-import { ZippedFilesList } from './Verifier/ZippedFilesList'
+} from '../StyledComponents/MainComponent'
+import { ZipFile } from './Verifier/ZipFile'
 import { VerifierFileList } from './Verifier/VerifierFileList'
 import { selectUserRole } from '../Features/Signer/UserSlice'
 import { ImportFilesVerifier } from './Verifier/ImportFiles'
@@ -48,9 +47,12 @@ const VerifierComponent = () => {
     <Container>
       <ImportFilesVerifier />
       <FilesContainer>
-        <FileSpan>Files</FileSpan>
-        <ZippedFile />
-        {zippedFiles.length > 0 && <ZippedFilesList />}
+        {zippedFiles.length > 0 ? (
+          <FileSpanZip>Files</FileSpanZip>
+        ) : (
+          <FileSpan>Files</FileSpan>
+        )}
+        <ZipFile />
         {zippedFiles.length === 0 && files.length > 0 && <VerifierFileList />}
         {files.length === 0 && <EmptyFilesList />}
       </FilesContainer>
