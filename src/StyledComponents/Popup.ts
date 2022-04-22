@@ -33,6 +33,8 @@ export const Wrapper = styled.div`
 `
 
 export const Heading = styled.span`
+  display: flex;
+  gap: 5px;
   font-size: 18px;
   line-height: 20px;
   letter-spacing: 0.13px;
