@@ -12,12 +12,7 @@ import {
 import { Signature, SignDoc } from '../Utils/types'
 import info from '../ImageAssets/icon_info.svg'
 import { showPopup } from '../Features/Signer/PopupSlice'
-import {
-  NoWalletPopup,
-  SignErrorPopup,
-  SignInfoPopup,
-  SignPopup,
-} from './Popups'
+import { NoWalletPopup, SignErrorPopup, SignPopup } from './Popups'
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
 import { BtnContainer, SignButton } from '../StyledComponents/SignBtn'
 
@@ -60,7 +55,6 @@ export const SignBtn = () => {
           type: 'text/plain;charset=utf-8',
         })
         await generateSignatureFile(blob)
-
         dispatch(showPopup(false))
         if (targetElement !== null) enableBodyScroll(targetElement)
       })
