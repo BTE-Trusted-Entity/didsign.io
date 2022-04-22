@@ -1,9 +1,8 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import {
   clearEndpoint,
   clearFileStatuses,
-  fileStatus,
   selectServiceEndpoints,
   selectVerifiedDid,
   selectVerifiedSign,
@@ -15,19 +14,18 @@ import { clearAll, clearFileName } from '../../Features/Signer/FileSlice'
 import { clearHash } from '../../Features/Signer/hashSlice'
 import {
   clearJWS,
-  selectJwsSign,
   selectJwsSignStatus,
 } from '../../Features/Signer/VerifyJwsSlice'
 import spinner from '../../ImageAssets/puff.svg'
 
 import { JWSErrorsComponent } from './JWSErrorsComponent'
-import { InvalidFileStatusError } from './InvalidFileStatusError'
 import SignatureIcon from '../../ImageAssets/icon_DID.svg'
 import { clearSign } from '../../Features/Signer/SignatureSlice'
 import { CredentialContainer } from './CredentialContainer'
 import {
   BottomSection,
   Container,
+  StartOverIcon,
   VerificationLoader,
   VerificationText,
 } from '../../StyledComponents/BottomSection'
@@ -47,7 +45,17 @@ export const BottomSectionVerifyer = () => {
   const w3name = useAppSelector(selectW3Name)
   const seviceEndpoints = useAppSelector(selectServiceEndpoints)
   const jwsStatus = useAppSelector(selectJwsSignStatus)
+  const dispatch = useAppDispatch()
 
+  const handleDelete = () => {
+    dispatch(clearSign())
+    dispatch(clearAll())
+    dispatch(clearHash())
+    dispatch(clearFileName())
+    dispatch(clearEndpoint())
+    dispatch(clearJWS())
+    dispatch(clearFileStatuses())
+  }
   const DidDocument = () => {
     if (jwsStatus === 'Not Checked' || jwsStatus === 'Validating') return null
 
@@ -98,8 +106,10 @@ export const BottomSectionVerifyer = () => {
         {jwsStatus === 'Not Checked' && (
           <VerificationText>Verification</VerificationText>
         )}
-
         <DidDocument />
+        {jwsStatus === 'Verified' && (
+          <StartOverIcon onClick={() => handleDelete()} src={BtnStartOver} />
+        )}
       </BottomSection>
     </Container>
   )
