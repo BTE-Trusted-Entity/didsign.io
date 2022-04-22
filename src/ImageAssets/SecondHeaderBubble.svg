@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="261px" height="113px" viewBox="0 0 261 113" version="1.1" xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>3E3C7680-606E-46E8-9024-135AD8DF130C</title>
+	<defs>
+		<linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+			<stop stop-color="#3E6E99" stop-opacity="0.446219918" offset="0%"></stop>
+			<stop stop-color="#2A2231" stop-opacity="0" offset="100%"></stop>
+		</linearGradient>
+		<linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-2">
+			<stop stop-color="#3E6E99" stop-opacity="0.446219918" offset="0%"></stop>
+			<stop stop-color="#2A2231" stop-opacity="0" offset="100%"></stop>
+		</linearGradient>
+		<linearGradient x1="50%" y1="164.972052%" x2="50%" y2="-0.0108412836%" id="linearGradient-3">
+			<stop stop-color="#2A2231" stop-opacity="0" offset="0%"></stop>
+			<stop stop-color="#3E6E99" stop-opacity="0.7" offset="100%"></stop>
+		</linearGradient>
+		<linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-4">
+			<stop stop-color="#3E6E99" stop-opacity="0.446219918" offset="0%"></stop>
+			<stop stop-color="#2A2231" stop-opacity="0" offset="100%"></stop>
+		</linearGradient>
+		<linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-5">
+			<stop stop-color="#3E6E99" stop-opacity="0.446219918" offset="0%"></stop>
+			<stop stop-color="#2A2231" stop-opacity="0" offset="100%"></stop>
+		</linearGradient>
+	</defs>
+	<g id="UI-Design" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.503892444">
+		<g id="Signer_5" transform="translate(-1179.000000, -202.000000)" fill-rule="nonzero">
+			<g id="Group-5-Copy"
+				transform="translate(1309.500188, 258.500236) scale(-1, 1) translate(-1309.500188, -258.500236) translate(1179.000125, 202.000000)">
+				<circle id="Oval" fill="url(#linearGradient-1)"
+					transform="translate(97.000125, 46.000000) scale(-1, 1) translate(-97.000125, -46.000000) "
+					cx="97.0001254" cy="46" r="36"></circle>
+				<path
+					d="M56.0001254,26 C75.8823764,26 92.0001254,42.0927601 92.0001254,61.9441858 C92.0001254,70.2573659 89.1735839,77.9113955 84.4277103,84.0004714 L27.5725405,84.0004714 C22.8266669,77.9113955 20.0001254,70.2573659 20.0001254,61.9441858 C20.0001254,42.0927601 36.1178744,26 56.0001254,26 Z"
+					id="Combined-Shape" fill="url(#linearGradient-2)"></path>
+				<path
+					d="M225.000125,55 C244.882376,55 261.000125,71.0927601 261.000125,90.9441858 C261.000125,99.2573659 258.173584,106.911395 253.42771,113.000471 L196.57254,113.000471 C191.826667,106.911395 189.000125,99.2573659 189.000125,90.9441858 C189.000125,71.0927601 205.117874,55 225.000125,55 Z"
+					id="Combined-Shape-Copy-2" fill="url(#linearGradient-2)"></path>
+				<path
+					d="M85.5001254,56 C99.0311018,56 110.000125,66.9046091 110.000125,80.3561262 C110.000125,81.5946415 109.907137,82.8115658 109.727723,84.0003756 L61.2725283,84.0003756 C61.0931137,82.8115658 61.0001254,81.5946415 61.0001254,80.3561262 C61.0001254,66.9046091 71.969149,56 85.5001254,56 Z"
+					id="Combined-Shape" fill-opacity="0.5" fill="url(#linearGradient-3)"></path>
+				<path
+					d="M189.500125,75 C203.031102,75 214.000125,85.9046091 214.000125,99.3561262 C214.000125,100.594642 213.907137,101.811566 213.727723,103.000376 L165.272528,103.000376 C165.093114,101.811566 165.000125,100.594642 165.000125,99.3561262 C165.000125,85.9046091 175.969149,75 189.500125,75 Z"
+					id="Combined-Shape-Copy-3" fill-opacity="0.5" fill="url(#linearGradient-3)"></path>
+				<path
+					d="M164.500125,43 C178.031102,43 189.000125,53.9918186 189.000125,67.550914 C189.000125,73.878331 186.611437,79.6466806 182.688403,83.999845 L146.311848,83.999845 C142.388814,79.6466806 140.000125,73.878331 140.000125,67.550914 C140.000125,53.9918186 150.969149,43 164.500125,43 Z"
+					id="Combined-Shape" fill="url(#linearGradient-4)"></path>
+				<path
+					d="M7.71292699,0 C31.0675018,0 50.0001254,19.0278981 50.0001254,42.5 C50.0001254,65.9721019 31.0675018,85 7.71292699,85 C5.07875639,85 2.50084037,84.7579335 -7.34523553e-13,84.2947264 L-7.35855821e-13,0.705273624 C2.50084037,0.242066495 5.07875639,0 7.71292699,0 Z"
+					id="Combined-Shape" fill="url(#linearGradient-5)"></path>
+			</g>
+		</g>
+	</g>
+</svg>
