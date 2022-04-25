@@ -57,4 +57,5 @@ export const StartOverIcon = styled.img`
   position: absolute;
   right: 0;
   bottom: 0;
+  cursor: pointer;
 `
