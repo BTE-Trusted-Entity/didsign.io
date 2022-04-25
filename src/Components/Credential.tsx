@@ -1,12 +1,12 @@
 import React from 'react'
-import AttentionIcon from '../../ImageAssets/icon_attention.svg'
-import OkIcon from '../../ImageAssets/icon_oK.svg'
+import AttentionIcon from '../ImageAssets/icon_attention.svg'
+import OkIcon from '../ImageAssets/icon_oK.svg'
 import {
   Container,
   CredentialContainer,
   CredentialSpan,
   CredentialTitle,
-} from '../../StyledComponents/Credential'
+} from '../StyledComponents/Credential'
 
 interface IDIDCredential {
   // eslint-disable-next-line
@@ -15,7 +15,7 @@ interface IDIDCredential {
   isCredentialValid: boolean
 }
 
-export const Credential = ({
+export const CredentialComponent = ({
   credential,
   attesterDid,
   isCredentialValid,

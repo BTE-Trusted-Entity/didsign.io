@@ -1,15 +1,15 @@
 import React from 'react'
-import { useAppSelector } from '../../app/hooks'
-import { selectJwsSignStatus } from '../../Features/Signer/VerifyJwsSlice'
-import AttentionIcon from '../../ImageAssets/icon_attention.svg'
+import { useAppSelector } from '../app/hooks'
+import { selectJwsSignStatus } from '../Features/Signer/VerifyJwsSlice'
+import AttentionIcon from '../ImageAssets/icon_attention.svg'
 import {
   DidDocContainer,
   TextWrapper,
   Title,
   VerificationIcon,
   VerifiedText,
-} from '../../StyledComponents/DidDocument'
-import { Text } from '../../StyledComponents/DidDocument'
+} from '../StyledComponents/DidDocument'
+import { Text } from '../StyledComponents/DidDocument'
 
 export const JWSErrorsComponent = () => {
   const jwsStatus = useAppSelector(selectJwsSignStatus)

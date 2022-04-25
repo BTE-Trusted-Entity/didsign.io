@@ -1,18 +1,17 @@
 import React, { useState } from 'react'
-import { useAppSelector } from '../../app/hooks'
-import { selectVerifiedDid } from '../../Features/Signer/EndpointSlice'
-import loader from '../../ImageAssets/spinning-circles.svg'
+import { useAppSelector } from '../app/hooks'
+import { selectVerifiedDid } from '../Features/Signer/EndpointSlice'
+import loader from '../ImageAssets/spinning-circles.svg'
 
 import {
   getAttestationForRequest,
   getDidForAccount,
   validateAttestation,
   validateCredential,
-} from '../../Utils/verify-helper'
+} from '../Utils/verify-helper'
 import { Credential, RequestForAttestation, Did } from '@kiltprotocol/sdk-js'
-import { Credential as CredentialComponent } from './Credential'
-import ChevronDown from '../../ImageAssets/chevron_down_white.svg'
-import ChevronUp from '../../ImageAssets/chevron_up_white.svg'
+import ChevronDown from '../ImageAssets/chevron_down_white.svg'
+import ChevronUp from '../ImageAssets/chevron_up_white.svg'
 import {
   EndpointsContainer,
   EndpointSpan,
@@ -20,13 +19,13 @@ import {
   EndpointURLSpan,
   FetchBtn,
   Separator,
-} from '../../StyledComponents/DidDocument'
-
+} from '../StyledComponents/DidDocument'
+import { CredentialComponent } from './Credential'
 interface Props {
   url: string
   endpointType: string
 }
-export const CredentialContainer = ({ url, endpointType }: Props) => {
+export const DidDocumentComponent = ({ url, endpointType }: Props) => {
   const did = useAppSelector(selectVerifiedDid)
   // eslint-disable-next-line
   const [credential, setCredential] = useState<any | null>(null)

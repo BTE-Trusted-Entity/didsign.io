@@ -1,23 +1,23 @@
 import React from 'react'
-import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import { useAppDispatch, useAppSelector } from '../app/hooks'
 import {
   clearAll,
   clearFileName,
   selectFile,
   selectFilename,
-} from '../../Features/Signer/FileSlice'
-import DelIcon from '../../ImageAssets/icon_delete.svg'
-import ZipIcon from '../../ImageAssets/doc_zip_NEW.svg'
+} from '../Features/Signer/FileSlice'
+import DelIcon from '../ImageAssets/icon_delete.svg'
+import ZipIcon from '../ImageAssets/doc_zip_NEW.svg'
 import {
   clearEndpoint,
   clearFileStatuses,
   fileStatus,
-} from '../../Features/Signer/EndpointSlice'
-import { clearHash } from '../../Features/Signer/hashSlice'
+} from '../Features/Signer/EndpointSlice'
+import { clearHash } from '../Features/Signer/hashSlice'
 import {
   clearJWS,
   selectJwsSignStatus,
-} from '../../Features/Signer/VerifyJwsSlice'
+} from '../Features/Signer/VerifyJwsSlice'
 import {
   CompressedFilesList,
   CompressedFilesWrapper,
@@ -29,13 +29,13 @@ import {
   ZipContainer,
   ZipFileContainer,
   ZipFileSeparator,
-} from '../../StyledComponents/FilesList'
-import { isDidSignFile } from '../../Utils/verify-helper'
-import DocIcon from '../../ImageAssets/doc_generic.svg'
-import OkIcon from '../../ImageAssets/icon_oK.svg'
-import DIDIcon from '../../ImageAssets/doc_signature_NEW.svg'
-import ImageIcon from '../../ImageAssets/doc_image.svg'
-import AttentionIcon from '../../ImageAssets/icon_attention.svg'
+} from '../StyledComponents/FilesList'
+import { isDidSignFile } from '../Utils/verify-helper'
+import DocIcon from '../ImageAssets/doc_generic.svg'
+import OkIcon from '../ImageAssets/icon_oK.svg'
+import DIDIcon from '../ImageAssets/doc_signature_NEW.svg'
+import ImageIcon from '../ImageAssets/doc_image.svg'
+import AttentionIcon from '../ImageAssets/icon_attention.svg'
 
 const ZippedFilesList = () => {
   const zippedFiles = useAppSelector(selectFilename)

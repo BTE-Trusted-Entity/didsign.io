@@ -1,20 +1,20 @@
 import Dropzone from 'react-dropzone'
 import React, { useCallback, useEffect, useState } from 'react'
-import ImportIcon from '../../ImageAssets/iconBIG_import_NEW.svg'
-import ReleaseIcon from '../../ImageAssets/iconBIG_import_release.svg'
+import ImportIcon from '../ImageAssets/iconBIG_import_NEW.svg'
+import ReleaseIcon from '../ImageAssets/iconBIG_import_release.svg'
 import {
   addFile,
   addFileName,
   selectFile,
   selectFilename,
-} from '../../Features/Signer/FileSlice'
-import { useAppDispatch, useAppSelector } from '../../app/hooks'
+} from '../Features/Signer/FileSlice'
+import { useAppDispatch, useAppSelector } from '../app/hooks'
 import {
   getFileNames,
   getVerifiedData,
   isDidSignFile,
   newUnzip,
-} from '../../Utils/verify-helper'
+} from '../Utils/verify-helper'
 import {
   clearEndpoint,
   fileStatus,
@@ -22,9 +22,9 @@ import {
   updateAllFilesStatus,
   updateIndividualFileStatus,
   updateIndividualFileStatusOnIndex,
-} from '../../Features/Signer/EndpointSlice'
-import { createHash, createHashFromHashArray } from '../../Utils/sign-helpers'
-import { SignDoc } from '../../Utils/types'
+} from '../Features/Signer/EndpointSlice'
+import { createHash, createHashFromHashArray } from '../Utils/sign-helpers'
+import { SignDoc } from '../Utils/types'
 import {
   addJwsHashArray,
   addJwsSign,
@@ -32,12 +32,12 @@ import {
   selectJwsSign,
   selectJwsSignStatus,
   updateSignStatus,
-} from '../../Features/Signer/VerifyJwsSlice'
-import { addHash, selectHash } from '../../Features/Signer/hashSlice'
-import { SlowAnimation, FastAnimation } from '../Animations'
-import { showPopup } from '../../Features/Signer/PopupSlice'
-import { MultipleSignPopup } from '../Popups'
-import { colors } from '../../StyledComponents/colors'
+} from '../Features/Signer/VerifyJwsSlice'
+import { addHash, selectHash } from '../Features/Signer/hashSlice'
+import { SlowAnimation, FastAnimation } from './Animations'
+import { showPopup } from '../Features/Signer/PopupSlice'
+import { MultipleSignPopup } from './Popups'
+import { colors } from '../StyledComponents/colors'
 import {
   BrowseFilesText,
   Container,
@@ -45,7 +45,7 @@ import {
   DropContainer,
   ImportImage,
   SignText,
-} from '../../StyledComponents/SignImportComp'
+} from '../StyledComponents/SignImportComp'
 
 export const ImportFilesVerifier = () => {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon)
@@ -218,9 +218,11 @@ export const ImportFilesVerifier = () => {
             <ImportImage src={impIcon} />
             {impIcon === ImportIcon && <SignText>Verify Your Files</SignText>}
             {impIcon === ImportIcon && <DragDropText>drag & drop</DragDropText>}
-            <BrowseFilesText>
-              or click / tap to browse your files
-            </BrowseFilesText>
+            {impIcon === ImportIcon && (
+              <BrowseFilesText>
+                or click / tap to browse your files
+              </BrowseFilesText>
+            )}
           </DropContainer>
         )}
       </Dropzone>

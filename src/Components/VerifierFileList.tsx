@@ -1,25 +1,25 @@
 import React from 'react'
-import DocIcon from '../../ImageAssets/doc_generic.svg'
-import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import { deleteFile, selectFile } from '../../Features/Signer/FileSlice'
-import DIDIcon from '../../ImageAssets/doc_signature_NEW.svg'
-import ImageIcon from '../../ImageAssets/doc_image.svg'
+import DocIcon from '../ImageAssets/doc_generic.svg'
+import { useAppDispatch, useAppSelector } from '../app/hooks'
+import { deleteFile, selectFile } from '../Features/Signer/FileSlice'
+import DIDIcon from '../ImageAssets/doc_signature_NEW.svg'
+import ImageIcon from '../ImageAssets/doc_image.svg'
 import {
   clearEndpoint,
   deleteFilestatusOnIndex,
   fileStatus,
   replaceStatus,
-} from '../../Features/Signer/EndpointSlice'
-import AttentionIcon from '../../ImageAssets/icon_attention.svg'
-import OkIcon from '../../ImageAssets/icon_oK.svg'
-import DelIcon from '../../ImageAssets/icon_delete.svg'
-import { deleteHashFromIndex } from '../../Features/Signer/hashSlice'
+} from '../Features/Signer/EndpointSlice'
+import AttentionIcon from '../ImageAssets/icon_attention.svg'
+import OkIcon from '../ImageAssets/icon_oK.svg'
+import DelIcon from '../ImageAssets/icon_delete.svg'
+import { deleteHashFromIndex } from '../Features/Signer/hashSlice'
 import {
   clearJWS,
   selectJwsSignStatus,
   updateSignStatus,
-} from '../../Features/Signer/VerifyJwsSlice'
-import { isDidSignFile } from '../../Utils/verify-helper'
+} from '../Features/Signer/VerifyJwsSlice'
+import { isDidSignFile } from '../Utils/verify-helper'
 import {
   Container,
   FileName,
@@ -27,7 +27,7 @@ import {
   FilesSeparator,
   FileWrapper,
   StyledList,
-} from '../../StyledComponents/FilesList'
+} from '../StyledComponents/FilesList'
 
 export const VerifierFileList = () => {
   const files = useAppSelector(selectFile)

@@ -1,5 +1,15 @@
 import React from 'react'
-import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import { useAppDispatch, useAppSelector } from '../app/hooks'
+import { SignBtn } from './SignBtn'
+import { clearSign, selectSign } from '../Features/Signer/SignatureSlice'
+import { DownloadBtns } from './DownloadBtns'
+import {
+  BottomSection,
+  Container,
+  StartOverIcon,
+  VerificationLoader,
+  VerificationText,
+} from '../StyledComponents/BottomSection'
 import {
   clearEndpoint,
   clearFileStatuses,
@@ -7,28 +17,13 @@ import {
   selectVerifiedDid,
   selectVerifiedSign,
   selectW3Name,
-} from '../../Features/Signer/EndpointSlice'
-import OkIcon from '../../ImageAssets/icon_oK.svg'
-import BtnStartOver from '../../ImageAssets/button_start_over_NEW.svg'
-import { clearAll, clearFileName } from '../../Features/Signer/FileSlice'
-import { clearHash } from '../../Features/Signer/hashSlice'
+} from '../Features/Signer/EndpointSlice'
 import {
   clearJWS,
   selectJwsSignStatus,
-} from '../../Features/Signer/VerifyJwsSlice'
-import spinner from '../../ImageAssets/puff.svg'
-
-import { JWSErrorsComponent } from './JWSErrorsComponent'
-import SignatureIcon from '../../ImageAssets/icon_DID.svg'
-import { clearSign } from '../../Features/Signer/SignatureSlice'
-import { CredentialContainer } from './CredentialContainer'
-import {
-  BottomSection,
-  Container,
-  StartOverIcon,
-  VerificationLoader,
-  VerificationText,
-} from '../../StyledComponents/BottomSection'
+} from '../Features/Signer/VerifyJwsSlice'
+import { clearAll, clearFileName } from '../Features/Signer/FileSlice'
+import { clearHash } from '../Features/Signer/hashSlice'
 import {
   DidDocContainer,
   VerificationIcon,
@@ -37,9 +32,41 @@ import {
   Text,
   Title,
   EndpointsWrapper,
-} from '../../StyledComponents/DidDocument'
+} from '../StyledComponents/DidDocument'
+import { JWSErrorsComponent } from './JWSErrorsComponent'
+import OkIcon from '../ImageAssets/icon_oK.svg'
+import BtnStartOver from '../ImageAssets/button_start_over_NEW.svg'
+import spinner from '../ImageAssets/puff.svg'
+import { DidDocumentComponent } from './DidDocumentComponent'
+import { selectUserRole } from '../Features/Signer/UserSlice'
 
-export const BottomSectionVerifyer = () => {
+export const BottomSectionComponent = () => {
+  const userRoleSigner = useAppSelector(selectUserRole)
+  if (userRoleSigner) return <BottomSectionSigner />
+  else return <BottomSectionVerifyer />
+}
+
+const BottomSectionSigner = () => {
+  const dispatch = useAppDispatch()
+
+  const handleDelete = () => {
+    dispatch(clearSign())
+    dispatch(clearAll())
+    dispatch(clearHash())
+  }
+  const sign = useAppSelector(selectSign)
+  return (
+    <Container>
+      <BottomSection>
+        {!sign ? <SignBtn /> : <DownloadBtns />}
+        {sign && (
+          <StartOverIcon onClick={() => handleDelete()} src={BtnStartOver} />
+        )}
+      </BottomSection>
+    </Container>
+  )
+}
+const BottomSectionVerifyer = () => {
   const sign = useAppSelector(selectVerifiedSign)
   const did = useAppSelector(selectVerifiedDid)
   const w3name = useAppSelector(selectW3Name)
@@ -86,7 +113,7 @@ export const BottomSectionVerifyer = () => {
             <Title>Service Endpoints</Title>
             <EndpointsWrapper>
               {seviceEndpoints.map((endpoint) => (
-                <CredentialContainer
+                <DidDocumentComponent
                   url={endpoint.urls[0]}
                   endpointType={endpoint.types[0]}
                   key={endpoint.id}
@@ -104,7 +131,9 @@ export const BottomSectionVerifyer = () => {
       <BottomSection>
         {jwsStatus === 'Validating' && <VerificationLoader src={spinner} />}
         {jwsStatus === 'Not Checked' && (
-          <VerificationText>Verification</VerificationText>
+          <VerificationText>
+            Verification <div></div>
+          </VerificationText>
         )}
         <DidDocument />
         {jwsStatus === 'Verified' && (
