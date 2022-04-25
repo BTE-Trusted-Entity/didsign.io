@@ -1,25 +1,11 @@
 import React, { useState } from 'react'
-import {
-  clearHash,
-  selectFinalHash,
-  selectHash,
-} from '../Features/Signer/hashSlice'
-import { useAppDispatch, useAppSelector } from '../app/hooks'
-import {
-  clearSign,
-  selectDid,
-  selectSign,
-} from '../Features/Signer/SignatureSlice'
+import { selectFinalHash, selectHash } from '../Features/Signer/hashSlice'
+import { useAppSelector } from '../app/hooks'
+import { selectDid, selectSign } from '../Features/Signer/SignatureSlice'
 import { generateJWS } from '../Utils/sign-helpers'
 import { Signature, SignDoc } from '../Utils/types'
 import { saveAs } from 'file-saver'
-import {
-  clearAll,
-  clearFileName,
-  IBuffer,
-  selectBuffer,
-} from '../Features/Signer/FileSlice'
-import BtnStartOver from '../ImageAssets/button_start_over_NEW.svg'
+import { IBuffer, selectBuffer } from '../Features/Signer/FileSlice'
 import JSZip from 'jszip'
 import {
   Container,
@@ -46,7 +32,6 @@ export const DownloadBtns = () => {
 
   const signature: Signature = { keyID: did, signature: sign }
 
-  const dispatch = useAppDispatch()
   const generateZipFile = async (buffers: IBuffer[]) => {
     const zip = new JSZip()
     buffers.map((buffer) => zip.file(buffer.name, buffer.buffer))
@@ -78,13 +63,6 @@ export const DownloadBtns = () => {
     setShowLoader(false)
     document.body.style.pointerEvents = 'auto'
   }
-  const handleStartOver = () => {
-    dispatch(clearSign())
-    dispatch(clearAll())
-    dispatch(clearHash())
-    dispatch(clearFileName())
-  }
-
   return (
     <Container>
       <ZipBtnWrapper>
