@@ -2,10 +2,8 @@ import React from 'react'
 import { Header } from './Header'
 import { MainComponent } from './MainComponent'
 import { Footer } from './Footer'
-import { BottomSectionSigner } from './BottomSection'
+import { BottomSectionComponent } from './BottomSectionComponent'
 import { useAppSelector } from '../app/hooks'
-import { selectUserRole } from '../Features/Signer/UserSlice'
-import { BottomSectionVerifyer } from './Verifier/BottomSectionVerifyer'
 import BottomLeftBubble from '../ImageAssets/BottomLeftBubble.svg'
 import BottomRightBubble from '../ImageAssets/BottomRightBubble.svg'
 import { selectPopup } from '../Features/Signer/PopupSlice'
@@ -17,7 +15,6 @@ import {
 } from '../StyledComponents/DidSign'
 
 export const DIDSign = () => {
-  const userRoleIsSigner = useAppSelector(selectUserRole)
   const popup = useAppSelector(selectPopup)
 
   return (
@@ -25,8 +22,7 @@ export const DIDSign = () => {
       {popup && <DarkOverlay></DarkOverlay>}
       <Header />
       <MainComponent />
-      {userRoleIsSigner ? <BottomSectionSigner /> : <BottomSectionVerifyer />}
-
+      <BottomSectionComponent />
       <Footer />
       <LeftBubbleImage src={BottomLeftBubble} />
       <RightBubbleImage src={BottomRightBubble} />
