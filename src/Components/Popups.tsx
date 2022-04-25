@@ -75,6 +75,25 @@ export const SignFileInfoPopup = (props: Toggle) => {
     </Container>
   )
 }
+export const SignBtnInfoPopup = (props: Toggle) => {
+  return (
+    <Container>
+      <StyledPopup>
+        <Wrapper>
+          <img src={InfoIcon} />
+          <Heading>Signing</Heading>
+          <Text>
+            In order to successfully sign your files with DIDsign, make sure to
+            have a wallet installed that has an onchain DID.
+            <br /> We recommend to use Sporran, which is a browser extension
+            available for Google Chrome and Mozilla Firefox.
+          </Text>
+          <Dismiss onClick={props.dismiss}>OK</Dismiss>
+        </Wrapper>
+      </StyledPopup>
+    </Container>
+  )
+}
 export const SigningMultipleDidFiles = (props: Toggle) => {
   return (
     <Container>
