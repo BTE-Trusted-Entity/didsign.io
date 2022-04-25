@@ -21,7 +21,7 @@ export const FilesContainer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 20px;
-  background-color: ${colors.lightbluetransparent};
+  background-color: ${colors.filesection};
   border-top: solid 1px;
   border-left: solid 1px;
   border-right: solid 1px;

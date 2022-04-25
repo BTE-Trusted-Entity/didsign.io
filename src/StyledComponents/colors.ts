@@ -16,4 +16,5 @@ export const colors = {
   pink: '#ab547f',
   green: '#387d7a',
   fastanimation: '#9C9640',
+  filesection: 'rgba(221,240,255,0.5);',
 }
