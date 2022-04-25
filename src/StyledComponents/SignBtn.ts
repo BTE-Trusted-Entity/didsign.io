@@ -4,6 +4,25 @@ import { colors } from './colors'
 interface Button {
   isDisabled: boolean
 }
+export const SignContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+`
+export const OnchainInfoSpan = styled.span`
+  font-size: 12px;
+  line-height: 12px;
+  letter-spacing: 0.2px;
+  margin-bottom: 4px;
+  a {
+    color: ${colors.mediumblue};
+    :hover {
+      text-decoration: underline;
+    }
+  }
+`
 export const BtnContainer = styled.div`
   display: flex;
   gap: 8px;

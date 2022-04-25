@@ -13,6 +13,9 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  @media (max-width: 600px) {
+    width: 96%;
+  }
 `
 export const FileWrapper = styled.div`
   display: flex;

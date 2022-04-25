@@ -45,7 +45,7 @@ export const SecondaryHeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100vw;
-  height: 57px;
+  height: 65px;
   background-color: ${colors.headerbelow};
   justify-content: center;
   align-items: center;
@@ -60,6 +60,7 @@ export const TextSpan = styled.span`
   color: #ddf0ff;
   font-family: Overpass;
   font-size: 14px;
+  margin-bottom: 5px;
   letter-spacing: 0.1px;
   line-height: 16px;
   @media (max-width: 600px) {
@@ -89,7 +90,7 @@ export const SignRoleBtn = styled.button`
   border-radius: 3px 3px 0 0;
   transition: height 0.15s ease-in;
   @media (max-width: 600px) {
-    margin-bottom: -12px;
+    margin-bottom: -18px;
   }
 `
 export const SignUnderline = styled.div`

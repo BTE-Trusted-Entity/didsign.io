@@ -37,12 +37,21 @@ export const VerificationLoader = styled.img`
 `
 export const VerificationText = styled.span`
   position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 12px;
   top: 24px;
   left: 40px;
-  color: ${colors.darkpurple};
+  color: #2a223180;
   font-size: 16px;
   line-height: 17px;
   letter-spacing: 0.11px;
+
+  div {
+    background-color: #2a223180;
+    height: 1px;
+    width: 15px;
+  }
 `
 export const StartOverIcon = styled.img`
   position: absolute;
