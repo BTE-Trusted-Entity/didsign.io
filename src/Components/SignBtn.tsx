@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { updateSign, updateDID } from '../Features/Signer/SignatureSlice'
 import { openSporan, generateJWS } from '../Utils/sign-helpers'
@@ -12,9 +12,19 @@ import {
 import { Signature, SignDoc } from '../Utils/types'
 import info from '../ImageAssets/icon_info.svg'
 import { showPopup } from '../Features/Signer/PopupSlice'
-import { NoWalletPopup, SignErrorPopup, SignPopup } from './Popups'
+import {
+  NoWalletPopup,
+  SignErrorPopup,
+  SignPopup,
+  SignBtnInfoPopup,
+} from './Popups'
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
-import { BtnContainer, SignButton } from '../StyledComponents/SignBtn'
+import {
+  BtnContainer,
+  OnchainInfoSpan,
+  SignButton,
+  SignContainer,
+} from '../StyledComponents/SignBtn'
 
 export const SignBtn = () => {
   const [signStatus, setSignStatus] = useState<
@@ -22,6 +32,7 @@ export const SignBtn = () => {
   >(null)
   const targetElement = document.querySelector('body')
   const files = useAppSelector(selectFile)
+  const [signPopup, setSignPopup] = useState<boolean>(false)
 
   const generateSignatureFile = async (blob: Blob) => {
     const newFile = new File([blob], 'signature.didsign')
@@ -74,21 +85,53 @@ export const SignBtn = () => {
     dispatch(showPopup(false))
     setSignStatus(null)
   }
-
+  const showSignPopup = () => {
+    if (targetElement !== null) {
+      disableBodyScroll(targetElement)
+    }
+    setSignPopup(true)
+    dispatch(showPopup(true))
+  }
+  const handleSignDismiss = () => {
+    if (targetElement !== null) {
+      enableBodyScroll(targetElement)
+    }
+    dispatch(showPopup(false))
+    setSignPopup(false)
+  }
   return (
-    <BtnContainer>
-      <SignButton
-        isDisabled={files.length === 0}
-        onClick={() => handleChange()}
-      >
-        Sign
-      </SignButton>
-      <button>
-        <img src={info} />
-      </button>
-      {signStatus === 'Default' && <SignPopup dismiss={handleDismiss} />}
-      {signStatus === 'No Sporran' && <NoWalletPopup dismiss={handleDismiss} />}
-      {signStatus === 'SignError' && <SignErrorPopup dismiss={handleDismiss} />}
-    </BtnContainer>
+    <SignContainer>
+      <BtnContainer>
+        <SignButton
+          isDisabled={files.length === 0}
+          onClick={() => handleChange()}
+        >
+          Sign
+        </SignButton>
+        <button onClick={showSignPopup}>
+          <img src={info} />
+        </button>
+
+        {signPopup && <SignBtnInfoPopup dismiss={handleSignDismiss} />}
+        {signStatus === 'Default' && <SignPopup dismiss={handleDismiss} />}
+        {signStatus === 'No Sporran' && (
+          <NoWalletPopup dismiss={handleDismiss} />
+        )}
+        {signStatus === 'SignError' && (
+          <SignErrorPopup dismiss={handleDismiss} />
+        )}
+      </BtnContainer>
+      <OnchainInfoSpan>
+        Don&apos;t have an on-chain DID yet?{' '}
+        <a
+          target="_blank"
+          rel="noreferrer"
+          className="hover:underline text-medium-blue"
+          href="https://support.kilt.io/support/solutions/folders/80000689099"
+        >
+          Read here
+        </a>
+      </OnchainInfoSpan>
+    </SignContainer>
   )
 }
