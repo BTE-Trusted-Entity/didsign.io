@@ -1,5 +1,5 @@
 import React from 'react'
-import { ImportFilesSigner } from './ImportFiles'
+import { ImportFilesSigner } from './ImportFilesSigner'
 import { FileList } from './FileList'
 import { useAppSelector } from '../app/hooks'
 import { selectFile, selectFilename } from '../Features/Signer/FileSlice'
@@ -13,10 +13,10 @@ import {
   FilesContainer,
   FileSpan,
 } from '../StyledComponents/MainComponent'
-import { ZipFile } from './Verifier/ZipFile'
-import { VerifierFileList } from './Verifier/VerifierFileList'
+import { ZipFile } from './ZipFile'
+import { VerifierFileList } from './VerifierFileList'
 import { selectUserRole } from '../Features/Signer/UserSlice'
-import { ImportFilesVerifier } from './Verifier/ImportFiles'
+import { ImportFilesVerifier } from './ImportFilesVerifier'
 
 export const MainComponent = () => {
   const userRoleIsSigner = useAppSelector(selectUserRole)
