@@ -27,13 +27,13 @@ export const JWSErrorsComponent = () => {
       <TextWrapper>
         <Title error>Attention</Title>
         {jwsStatus === 'Corrupted' && (
-          <ErrorText error>
+          <ErrorText>
             The signature does not match with the imported files. Please make
             sure to import the correct files.
           </ErrorText>
         )}
         {jwsStatus === 'Invalid' && (
-          <ErrorText error>
+          <ErrorText>
             The signature does not match with the imported files. Please make
             sure to import the correct files.
           </ErrorText>
