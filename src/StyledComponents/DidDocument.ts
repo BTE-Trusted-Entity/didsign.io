@@ -50,6 +50,9 @@ export const Text = styled.span`
   word-break: break-all;
   width: 550px;
 `
+export const ErrorText = styled(Text)`
+  word-break: normal;
+`
 export const EndpointsWrapper = styled.div`
   display: flex;
   align-items: flex-start;

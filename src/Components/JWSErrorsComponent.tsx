@@ -4,12 +4,12 @@ import { selectJwsSignStatus } from '../Features/Signer/VerifyJwsSlice'
 import AttentionIcon from '../ImageAssets/icon_attention.svg'
 import {
   DidDocContainer,
+  ErrorText,
   TextWrapper,
   Title,
   VerificationIcon,
   VerifiedText,
 } from '../StyledComponents/DidDocument'
-import { Text } from '../StyledComponents/DidDocument'
 
 export const JWSErrorsComponent = () => {
   const jwsStatus = useAppSelector(selectJwsSignStatus)
@@ -27,16 +27,16 @@ export const JWSErrorsComponent = () => {
       <TextWrapper>
         <Title error>Attention</Title>
         {jwsStatus === 'Corrupted' && (
-          <Text error>
+          <ErrorText error>
             The signature does not match with the imported files. Please make
             sure to import the correct files.
-          </Text>
+          </ErrorText>
         )}
         {jwsStatus === 'Invalid' && (
-          <Text error>
+          <ErrorText error>
             The signature does not match with the imported files. Please make
             sure to import the correct files.
-          </Text>
+          </ErrorText>
         )}
       </TextWrapper>
     </DidDocContainer>
