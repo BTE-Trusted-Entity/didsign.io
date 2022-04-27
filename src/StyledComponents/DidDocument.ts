@@ -20,7 +20,7 @@ export const TextWrapper = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
 `
-export const VerifiedText = styled.span`
+export const VerificationText = styled.span`
   display: flex;
   justify-content: center;
   color: green;
@@ -29,7 +29,7 @@ export const VerifiedText = styled.span`
   letter-spacing: 0.11px;
   width: 80px;
 `
-export const VerificationErrorText = styled(VerifiedText)`
+export const VerificationErrorText = styled(VerificationText)`
   color: ${colors['attention-orange']};
 `
 export const VerificationIcon = styled.div`

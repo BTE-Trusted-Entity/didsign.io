@@ -35,7 +35,7 @@ export const VerificationLoader = styled.img`
   height: 40px;
   width: 40px;
 `
-export const VerificationText = styled.span`
+export const VerificationTextSpan = styled.span`
   position: absolute;
   display: flex;
   align-items: center;

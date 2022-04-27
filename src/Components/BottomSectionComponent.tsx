@@ -8,7 +8,7 @@ import {
   Container,
   StartOverIcon,
   VerificationLoader,
-  VerificationText,
+  VerificationTextSpan,
 } from '../StyledComponents/BottomSection'
 import {
   clearEndpoint,
@@ -28,7 +28,7 @@ import {
   DidDocContainer,
   VerificationIcon,
   TextWrapper,
-  VerifiedText,
+  VerificationText,
   Text,
   Title,
   EndpointsWrapper,
@@ -92,7 +92,7 @@ const BottomSectionVerifyer = () => {
       return (
         <DidDocContainer>
           <TextWrapper>
-            <VerifiedText>Verification</VerifiedText>
+            <VerificationText>Verification</VerificationText>
             <VerificationIcon>
               <img src={OkIcon} />{' '}
             </VerificationIcon>
@@ -131,9 +131,9 @@ const BottomSectionVerifyer = () => {
       <BottomSection>
         {jwsStatus === 'Validating' && <VerificationLoader src={spinner} />}
         {jwsStatus === 'Not Checked' && (
-          <VerificationText>
+          <VerificationTextSpan>
             Verification <div></div>
-          </VerificationText>
+          </VerificationTextSpan>
         )}
         <DidDocument />
         {jwsStatus === 'Verified' && (
