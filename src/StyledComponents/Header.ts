@@ -115,4 +115,5 @@ export const SecondaryLeftBubble = styled.img`
   bottom: 0;
   opacity: 0.5;
   transform: scaleX(-1);
+  pointer-events: none;
 `
