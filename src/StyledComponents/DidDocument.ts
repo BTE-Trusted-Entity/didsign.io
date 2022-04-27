@@ -41,14 +41,17 @@ export const VerificationIcon = styled.div`
 export const Text = styled.span`
   display: flex;
   justify-content: flex-start;
-  color: ${(props: Text) =>
-    props.error ? colors['attention-orange'] : colors.darkpurple};
+  color: ${colors.darkpurple};
   font-size: 14px;
   line-height: 22px;
   letter-spacing: 0.11px;
   font-weight: bold;
   word-break: break-all;
   width: 550px;
+`
+export const ErrorText = styled(Text)`
+  color: ${colors['attention-orange']};
+  word-break: normal;
 `
 export const EndpointsWrapper = styled.div`
   display: flex;
