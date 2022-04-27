@@ -1,37 +1,28 @@
 import styled from 'styled-components'
 import { ReactComponent as Logo } from '../ImageAssets/logo_DIDsign.svg'
+import PrimaryLeftBubbles from '../ImageAssets/PrimaryHeaderLeftBubbles.svg'
+import PrimaryRightBubbles from '../ImageAssets/PrimaryHeaderRightBubbles.svg'
+import SecondaryLeftBubbles from '../ImageAssets/SecondaryHeaderLeftBubbles.svg'
+import SecondaryRightBubbles from '../ImageAssets/SecondaryHeaderRightBubbles.svg'
 import { colors } from './colors'
 
 interface BtnType {
   isSelectedRole: boolean
 }
-export const StyledHeader = styled.div`
+export const StyledHeader = styled.header`
   display: flex;
   width: 100vw;
   flex-direction: column;
   height: 133px;
 `
-export const HeaderContainer = styled.div`
+export const PrimaryHeaderContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
   height: 76px;
-  background-color: ${colors.darkpurple};
-`
-export const TopLeftBubbleImg = styled.img`
-  position: absolute;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  height: 100%;
-`
-export const TopRightBubbleImg = styled.img`
-  position: absolute;
-  top: 0;
-  right: 0;
-  pointer-events: none;
-  height: 100%;
+  background: url(${PrimaryLeftBubbles}) no-repeat left 18px / auto 100%,
+    url(${PrimaryRightBubbles}) no-repeat right/auto 100%, ${colors.darkpurple};
 `
 export const LogoContainer = styled.div`
   max-width: 766px;
@@ -46,10 +37,12 @@ export const SecondaryHeaderContainer = styled.div`
   flex-direction: column;
   width: 100vw;
   height: 65px;
-  background-color: ${colors.headerbelow};
   justify-content: center;
   align-items: center;
   position: relative;
+  background: url(${SecondaryLeftBubbles}) no-repeat left 40px / auto 100%,
+    url(${SecondaryRightBubbles}) no-repeat right 40px / auto 100%,
+    ${colors.headerbelow};
 `
 export const TextSpan = styled.span`
   display: flex;
@@ -106,14 +99,4 @@ export const VerifyUnderline = styled.div`
   background-color: ${colors.green};
   margin-top: -2px;
   transition: height 0.1s ease-in;
-`
-export const SecondaryLeftBubble = styled.img`
-  height: 113px;
-  width: 261px;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  opacity: 0.5;
-  transform: scaleX(-1);
-  pointer-events: none;
 `
