@@ -1,9 +1,6 @@
 import styled from 'styled-components'
 import { colors } from './colors'
 
-interface Text {
-  error?: boolean
-}
 export const DidDocContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -26,12 +23,14 @@ export const TextWrapper = styled.div`
 export const VerifiedText = styled.span`
   display: flex;
   justify-content: center;
-  color: ${(props: Text) =>
-    props.error ? colors['attention-orange'] : 'green'};
+  color: green;
   font-size: 16px;
   line-height: 25px;
   letter-spacing: 0.11px;
   width: 80px;
+`
+export const VerificationErrorText = styled(VerifiedText)`
+  color: ${colors['attention-orange']};
 `
 export const VerificationIcon = styled.div`
   display: flex;
@@ -68,13 +67,15 @@ export const EndpointsWrapper = styled.div`
 export const Title = styled.span`
   display: flex;
   justify-content: start;
-  color: ${(props: Text) =>
-    props.error ? colors['attention-orange'] : colors.darkpurple};
+  color: ${colors.darkpurple};
   font-size: 16px;
   line-height: 25px;
   letter-spacing: 0.11px;
   width: 80px;
   text-align: left;
+`
+export const ErrorTitle = styled(Title)`
+  color: ${colors['attention-orange']};
 `
 export const EndpointsContainer = styled.div`
   display: flex;

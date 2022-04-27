@@ -5,10 +5,10 @@ import AttentionIcon from '../ImageAssets/icon_attention.svg'
 import {
   DidDocContainer,
   ErrorText,
+  ErrorTitle,
   TextWrapper,
-  Title,
+  VerificationErrorText,
   VerificationIcon,
-  VerifiedText,
 } from '../StyledComponents/DidDocument'
 
 export const JWSErrorsComponent = () => {
@@ -19,13 +19,13 @@ export const JWSErrorsComponent = () => {
   return (
     <DidDocContainer>
       <TextWrapper>
-        <VerifiedText error>Verification</VerifiedText>
+        <VerificationErrorText>Verification</VerificationErrorText>
         <VerificationIcon>
           <img src={AttentionIcon} />{' '}
         </VerificationIcon>
       </TextWrapper>
       <TextWrapper>
-        <Title error>Attention</Title>
+        <ErrorTitle>Attention</ErrorTitle>
         {jwsStatus === 'Corrupted' && (
           <ErrorText>
             The signature does not match with the imported files. Please make
