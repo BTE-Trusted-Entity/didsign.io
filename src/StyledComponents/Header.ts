@@ -22,7 +22,7 @@ export const PrimaryHeaderContainer = styled.div`
   position: relative;
   height: 76px;
   background: url(${PrimaryLeftBubbles}) no-repeat left 18px / auto 100%,
-    url(${PrimaryRightBubbles}) no-repeat right/auto 100%, ${colors.darkpurple};
+    url(${PrimaryRightBubbles}) no-repeat right/auto 110%, ${colors.darkpurple};
 `
 export const LogoContainer = styled.div`
   max-width: 766px;
