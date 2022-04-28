@@ -1,21 +1,15 @@
 import React from 'react'
-import TopRightBubble from '../ImageAssets/TopRightBubble.svg'
-import TopLeftBubble from '../ImageAssets/TopLeftBubble.svg'
-import SecondLeftBubble from '../ImageAssets/SecondHeaderBubble.svg'
 
 import {
   Container,
-  HeaderContainer,
   HeaderLogo,
   LogoContainer,
+  PrimaryHeaderContainer,
   SecondaryHeaderContainer,
-  SecondaryLeftBubble,
   SignRoleBtn,
   SignUnderline,
   StyledHeader,
   TextSpan,
-  TopLeftBubbleImg,
-  TopRightBubbleImg,
   VerifyUnderline,
 } from '../StyledComponents/Header'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
@@ -39,13 +33,11 @@ export const Header = () => {
 }
 const PrimaryHeader = () => {
   return (
-    <HeaderContainer>
-      <TopLeftBubbleImg src={TopLeftBubble} />
-      <TopRightBubbleImg src={TopRightBubble} />
+    <PrimaryHeaderContainer>
       <LogoContainer>
         <HeaderLogo />
       </LogoContainer>
-    </HeaderContainer>
+    </PrimaryHeaderContainer>
   )
 }
 
@@ -90,7 +82,6 @@ const SecondaryHeader = () => {
           <VerifyUnderline isSelectedRole={!userRoleSigner} />
         </SignRoleBtn>
       </Container>
-      <SecondaryLeftBubble src={SecondLeftBubble} />
     </SecondaryHeaderContainer>
   )
 }
