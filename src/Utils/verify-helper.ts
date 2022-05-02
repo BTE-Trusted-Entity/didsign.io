@@ -14,6 +14,7 @@ import {
   Attestation,
 } from '@kiltprotocol/sdk-js'
 import { createHash, createHashFromHashArray } from './sign-helpers'
+import { base16 } from 'multiformats/bases/base16'
 import * as zip from '@zip.js/zip.js'
 import JSZip from 'jszip'
 
@@ -92,6 +93,12 @@ export const newUnzip = async (
       }
     }
     await reader.close()
+
+    const addMissingPrefix = (hash: string): string =>
+      hash.startsWith(base16.prefix) ? hash : `${base16.prefix}${hash}`
+
+    doc.hashes = doc.hashes.map((hash) => addMissingPrefix(hash))
+
     fileData.map((hash) => {
       if (doc.hashes.includes(hash)) {
         fileStatuses.push(true)
@@ -101,12 +108,10 @@ export const newUnzip = async (
     })
     const baseHash = await createHashFromHashArray(doc.hashes)
 
-    const jwsBaseHash = atob(doc.jws.split('.')[1])
+    const jwsBaseJson = atob(doc.jws.split('.')[1])
+    const jwsBaseHash = addMissingPrefix(JSON.parse(jwsBaseJson).hash)
 
-    if (
-      baseHash != JSON.parse(jwsBaseHash).hash ||
-      fileStatuses.includes(false)
-    ) {
+    if (baseHash !== jwsBaseHash || fileStatuses.includes(false)) {
       return undefined
     }
 
