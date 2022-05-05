@@ -1,5 +1,6 @@
 import Dropzone from 'react-dropzone'
 import React, { useCallback, useEffect, useState } from 'react'
+import { base16 } from 'multiformats/bases/base16'
 import ImportIcon from '../ImageAssets/iconBIG_import_NEW.svg'
 import ReleaseIcon from '../ImageAssets/iconBIG_import_release.svg'
 import {
@@ -93,12 +94,16 @@ export const ImportFilesVerifier = () => {
         )
 
       if (isDidSignFile(file.name)) {
+        const addMissingPrefix = (hash: string): string =>
+          hash.startsWith(base16.prefix) ? hash : `${base16.prefix}${hash}`
+
         const decoder = new TextDecoder('utf-8')
         const result = decoder.decode(reader.result as ArrayBuffer)
         doc = JSON.parse(result)
+        doc.hashes = doc.hashes.map((hash) => addMissingPrefix(hash))
         const baseHash = await createHashFromHashArray(doc.hashes)
         const hashFromJWS: string = JSON.parse(atob(doc.jws.split('.')[1])).hash
-        if (baseHash != hashFromJWS) {
+        if (baseHash !== addMissingPrefix(hashFromJWS)) {
           dispatch(updateSignStatus('Corrupted'))
         }
         dispatch(addJwsSign(doc.jws))
