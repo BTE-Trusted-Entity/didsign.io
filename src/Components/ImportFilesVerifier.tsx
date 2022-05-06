@@ -59,6 +59,8 @@ export const ImportFilesVerifier = () => {
   const statuses = useAppSelector(fileStatus)
 
   const dispatch = useAppDispatch()
+  const filesArrayHasDidSign = (files: File[]) =>
+    files.filter((file) => isDidSignFile(file.name)).length > 0
 
   const handleZipCase = async (file: File) => {
     dispatch(updateSignStatus('Validating'))
@@ -74,17 +76,8 @@ export const ImportFilesVerifier = () => {
     return
   }
 
-  const handleIndividualCase = async (file: File, acceptedFiles: File[]) => {
+  const handleIndividualCase = async (file: File) => {
     let doc: SignDoc = { jws: '', hashes: [] }
-    if (
-      acceptedFiles.filter((file) => isDidSignFile(file.name)).length > 1 &&
-      isDidSignFile(file.name)
-    ) {
-      dispatch(updateSignStatus('Multiple Sign'))
-      dispatch(showPopup(true))
-      return
-    }
-
     const reader = new FileReader()
     reader.readAsArrayBuffer(file)
     reader.onload = async function () {
@@ -120,6 +113,11 @@ export const ImportFilesVerifier = () => {
   }
   const handleDrop = useCallback(
     (acceptedFiles: File[]) => {
+      if (filesArrayHasDidSign(files) && filesArrayHasDidSign(acceptedFiles)) {
+        dispatch(updateSignStatus('Multiple Sign'))
+        dispatch(showPopup(true))
+        return
+      }
       acceptedFiles.forEach(async (file: File) => {
         setImportIcon(ImportIcon)
         if (files.length === 0) {
@@ -154,15 +152,7 @@ export const ImportFilesVerifier = () => {
             return
           }
         }
-        if (
-          files.filter((file) => isDidSignFile(file.name)).length >= 1 &&
-          file.name.split('.').pop() === 'didsign'
-        ) {
-          dispatch(showPopup(true))
-          dispatch(updateSignStatus('Multiple Sign'))
-          return
-        }
-        await handleIndividualCase(file, acceptedFiles)
+        await handleIndividualCase(file)
       })
     },
     [files, savedZippedFilenames]
