@@ -60,7 +60,7 @@ export const ImportFilesVerifier = () => {
 
   const dispatch = useAppDispatch()
   const filesArrayHasDidSign = (files: File[]) =>
-    files.filter((file) => isDidSignFile(file.name)).length > 0
+    files.some((file) => isDidSignFile(file.name))
   const handleZipCase = async (file: File) => {
     dispatch(updateSignStatus('Validating'))
 
