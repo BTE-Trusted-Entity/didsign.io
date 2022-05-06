@@ -43,7 +43,7 @@ export const getVerifiedData = async (
     address: process.env.REACT_APP_CHAIN_ENDPOINT || 'wss://spiritnet.kilt.io',
   })
   let w3name = await Did.Web3Names.queryWeb3NameForDid(keyID.split('#')[0])
-  if (!w3name) w3name = 'No web3name found'
+  !w3name ? (w3name = 'No web3name found') : (w3name = `w3n:${w3name}`)
   const verificationResult = await Did.DidUtils.verifyDidSignature({
     message: hash,
     signature: { keyId: keyID, signature: sign },

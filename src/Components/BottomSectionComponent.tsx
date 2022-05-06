@@ -107,7 +107,7 @@ const BottomSectionVerifyer = () => {
           </TextWrapper>
           <TextWrapper>
             <Title>web3name</Title>
-            <Text>{`w3n:${w3name}`}</Text>
+            <Text>{w3name}</Text>
           </TextWrapper>
           <TextWrapper>
             <Title>Service Endpoints</Title>
