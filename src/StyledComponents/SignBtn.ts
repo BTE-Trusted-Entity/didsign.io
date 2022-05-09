@@ -26,6 +26,12 @@ export const OnchainInfoSpan = styled.span`
 export const BtnContainer = styled.div`
   display: flex;
   gap: 8px;
+  button {
+    border: none;
+  }
+`
+export const InfoBtn = styled.button`
+  background: none;
 `
 export const SignButton = styled.button`
   font-size: 14px;
@@ -34,6 +40,7 @@ export const SignButton = styled.button`
   color: white;
   opacity: ${(props: Button) => props.isDisabled && 0.6};
   max-width: 160px;
+  cursor: pointer;
   width: 60vw;
   height: 30px;
   border-radius: 8px;

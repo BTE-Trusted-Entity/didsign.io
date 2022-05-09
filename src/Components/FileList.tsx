@@ -72,12 +72,18 @@ export const FileList = () => {
               {isDidSignFile(file.name) ? (
                 <DidSignFileSpan>
                   added by DIDsign
-                  <button onClick={showSignInfoPopup}>
+                  <button
+                    aria-label="signature file information"
+                    onClick={showSignInfoPopup}
+                  >
                     <img src={info} />
                   </button>
                 </DidSignFileSpan>
               ) : (
-                <button onClick={() => handleDelFile(file)}>
+                <button
+                  aria-label="delete file"
+                  onClick={() => handleDelFile(file)}
+                >
                   {' '}
                   <img src={DelIcon} />{' '}
                 </button>
