@@ -14,7 +14,7 @@ export const Container = styled.div`
 `
 
 export const StyledPopup = styled.div`
-  max-width: 300px;
+  max-width: 320px;
   height: fit-content;
   background-color: ${colors.silverblue};
   border-radius: 15px;
