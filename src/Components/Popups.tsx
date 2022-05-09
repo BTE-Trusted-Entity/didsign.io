@@ -84,7 +84,7 @@ export const SignBtnInfoPopup = (props: Toggle) => {
           <Heading>Signing</Heading>
           <Text>
             In order to successfully sign your files with DIDsign, make sure to
-            have a wallet installed that has an onchain DID.
+            have a wallet installed that has an on-chain DID.
             <br /> We recommend to use Sporran, which is a browser extension
             available for Google Chrome and Mozilla Firefox.
           </Text>
