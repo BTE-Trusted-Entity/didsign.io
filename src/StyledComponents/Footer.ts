@@ -37,6 +37,7 @@ export const DidSignLogoContainer = styled.div`
     display: none;
   }
 `
+
 export const LinksContainer = styled.div`
   width: 80%;
   max-width: 600px;
@@ -48,6 +49,20 @@ export const LinksContainer = styled.div`
   }
   @media (max-width: 300px) {
     font-size: 12px;
+  }
+  a {
+    color: white;
+    text-decoration: none;
+    :hover {
+      text-decoration: underline;
+    }
+  }
+  span {
+    color: white;
+    text-decoration: none;
+    :hover {
+      text-decoration: underline;
+    }
   }
 `
 export const LogoContainer = styled.div`

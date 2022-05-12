@@ -42,21 +42,15 @@ export const Footer = () => {
         </DidSignLogoContainer>
 
         <LinksContainer>
-          <button className="hover:underline" onClick={handleImprint}>
-            <span>Imprint </span>
-          </button>
+          <span onClick={handleImprint}>Imprint </span>
           <span>-</span>
-          <button className="hover:underline">
-            <a href={Terms} target="_blank" rel="noreferrer">
-              <span>Terms and Conditions</span>
-            </a>
-          </button>
+          <a href={Terms} target="_blank" rel="noreferrer">
+            <span>Terms and Conditions</span>
+          </a>
           <span>-</span>
-          <button className="hover:underline">
-            <a href={Privacy} target="_blank" rel="noreferrer">
-              <span>Privacy Policy </span>
-            </a>
-          </button>
+          <a href={Privacy} target="_blank" rel="noreferrer">
+            <span>Privacy Policy</span>
+          </a>
         </LinksContainer>
 
         <LogoContainer>

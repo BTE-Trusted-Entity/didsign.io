@@ -42,6 +42,10 @@ export const FileOptionsSpan = styled.span`
   justify-content: flex-end;
   gap: 5px;
   color: ${colors.purered};
+  button {
+    background: none;
+    border: none;
+  }
 `
 export const DidSignFileSpan = styled.span`
   display: flex;

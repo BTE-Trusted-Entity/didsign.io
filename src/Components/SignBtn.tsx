@@ -21,6 +21,7 @@ import {
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
 import {
   BtnContainer,
+  InfoBtn,
   OnchainInfoSpan,
   SignButton,
   SignContainer,
@@ -108,9 +109,9 @@ export const SignBtn = () => {
         >
           Sign
         </SignButton>
-        <button onClick={showSignPopup}>
+        <InfoBtn aria-label="Sign Information" onClick={showSignPopup}>
           <img src={info} />
-        </button>
+        </InfoBtn>
 
         {signPopup && <SignBtnInfoPopup dismiss={handleSignDismiss} />}
         {signStatus === 'Default' && <SignPopup dismiss={handleDismiss} />}

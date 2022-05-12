@@ -73,7 +73,13 @@ export const SignRoleBtn = styled.button`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  font-size: ${(props: BtnType) => (props.isSelectedRole ? '18px' : '16px')};
+  letter-spacing: ${(props: BtnType) =>
+    props.isSelectedRole ? '0.16px' : '0.11px'};
+  line-height: ${(props: BtnType) => (props.isSelectedRole ? '20px' : '17px')};
   width: 374px;
+  gap: 5px;
+  border: none;
   height: ${(props: BtnType) => (props.isSelectedRole ? '35px' : '28px')};
   background-color: ${(props: BtnType) =>
     props.isSelectedRole ? colors.silverblue : '#BBCFE2'};
@@ -81,7 +87,6 @@ export const SignRoleBtn = styled.button`
     !props.isSelectedRole && 'inset 0 -1px 6px 0 rgba(0, 0, 0, 0.15);'};
   border: none;
   border-radius: 3px 3px 0 0;
-  transition: height 0.15s ease-in;
   @media (max-width: 600px) {
     margin-bottom: -18px;
   }
@@ -91,7 +96,6 @@ export const SignUnderline = styled.div`
   width: 130px;
   background-color: ${colors.pink};
   margin-top: -2px;
-  transition: height 0.1s ease-in;
 `
 export const VerifyUnderline = styled.div`
   height: ${(props: BtnType) => (props.isSelectedRole ? '4px' : '2px')};

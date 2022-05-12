@@ -73,7 +73,10 @@ export const VerifierFileList = () => {
                 <img src={OkIcon} />
               )}
               {!status[index] && <img src={AttentionIcon} />}
-              <button onClick={() => handleDelFile(file)}>
+              <button
+                aria-label="delete file"
+                onClick={() => handleDelFile(file)}
+              >
                 {' '}
                 <img src={DelIcon} />{' '}
               </button>

@@ -96,7 +96,7 @@ export const ZipFile = () => {
           <img src={ZipIcon} />
           <FileName>{files[0].name}</FileName>
           <FileOptionsSpan>
-            <button onClick={handleDelete}>
+            <button aria-label="delete file" onClick={handleDelete}>
               {' '}
               <img src={DelIcon} />{' '}
             </button>

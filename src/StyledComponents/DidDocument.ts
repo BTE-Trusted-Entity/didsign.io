@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { colors } from './colors'
+import { ReactComponent as Loader } from '../ImageAssets/spinning-circles.svg'
 
 export const DidDocContainer = styled.div`
   display: flex;
@@ -112,20 +113,30 @@ export const EndpointURLSpan = styled.span`
   max-width: 400px;
   overflow-wrap: break-word;
 `
+export const FetchLoader = styled(Loader)`
+  height: 15px;
+  width: 15px;
+  margin-right: 18px;
+`
 export const FetchBtn = styled.button`
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   position: relative;
   text-transform: uppercase;
   margin-left: auto;
   font-size: 12px;
+  border: none;
   line-height: 13px;
   width: 130px;
   height: 22px;
-  border-radius: 8px;
+  border-radius: 6px;
   color: white;
   background-color: ${colors.mediumblue};
+  img {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
 `
 export const ChevronImage = styled.img`
   position: absolute;

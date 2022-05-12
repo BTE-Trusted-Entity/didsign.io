@@ -41,6 +41,7 @@ export const ZipBtn = styled.button`
   background-color: ${colors.mediumblue};
   border-radius: 8px;
   color: white;
+  border: none;
 `
 export const ProgressBarWrapper = styled.div`
   display: flex;
@@ -89,5 +90,6 @@ export const DownloadSignBtn = styled.button`
   color: white;
   font-size: 12px;
   line-height: 14px;
+  border: none;
   letter-spacing: 0.09px;
 `

@@ -18,6 +18,7 @@ import {
   EndpointTypeContainer,
   EndpointURLSpan,
   FetchBtn,
+  FetchLoader,
   Separator,
 } from '../StyledComponents/DidDocument'
 import { CredentialComponent } from './Credential'
@@ -83,12 +84,9 @@ export const DidDocumentComponent = ({ url, endpointType }: Props) => {
         <EndpointSpan>{endpointType}</EndpointSpan>
         <FetchBtn onClick={() => handleFetch()}>
           {' '}
-          {fetching && <img className={`absolute left-2 h-2/3`} src={loader} />}
+          {fetching && <FetchLoader />}
           <span>{fetched ? 'Close' : 'Fetch'}</span>
-          <img
-            className="absolute right-4 top-2"
-            src={fetched ? ChevronUp : ChevronDown}
-          />
+          <img src={fetched ? ChevronUp : ChevronDown} />
         </FetchBtn>
       </EndpointTypeContainer>
       <EndpointURLSpan>{url}</EndpointURLSpan>

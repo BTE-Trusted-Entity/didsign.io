@@ -14,10 +14,10 @@ export const Container = styled.div`
 `
 
 export const StyledPopup = styled.div`
-  max-width: 300px;
+  max-width: 320px;
   height: fit-content;
   background-color: ${colors.silverblue};
-  border-radius: 15px;
+  border-radius: 5px;
 `
 
 export const Wrapper = styled.div`
@@ -52,14 +52,16 @@ export const Text = styled.span`
   margin-top: 20px;
 `
 export const DismissBtn = styled.button`
-  font-size: 14px;
+  font-size: 12px;
   line-height: 16px;
   letter-spacing: 0.1px;
   color: white;
   max-width: 130px;
+  border: none;
   width: 60vw;
-  height: 30px;
+  height: 22px;
   border-radius: 8px;
+  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
