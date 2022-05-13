@@ -22,10 +22,12 @@ import {
   Separator,
 } from '../StyledComponents/DidDocument'
 import { CredentialComponent } from './Credential'
+
 interface Props {
   url: string
   endpointType: string
 }
+
 export const DidDocumentComponent = ({ url, endpointType }: Props) => {
   const did = useAppSelector(selectVerifiedDid)
   // eslint-disable-next-line
@@ -36,7 +38,7 @@ export const DidDocumentComponent = ({ url, endpointType }: Props) => {
   const [fetching, setFetching] = useState(false)
   const [fetched, setFetched] = useState(false)
 
-  const handleFetch = () => {
+  const handleFetch = async () => {
     if (fetched) {
       setFetched(false)
       setCredential(null)
@@ -49,33 +51,42 @@ export const DidDocumentComponent = ({ url, endpointType }: Props) => {
     }
     setFetching(true)
 
-    fetch(url)
-      .then((response) => response.json())
-      .then(async (result) => {
-        if (!Did.DidUtils.isSameSubject(result.claim.owner, did)) {
-          setIsCredentialValid(false)
-          setAttester('Credential subject and signer DID are not the same')
-        } else if (Credential.isICredential(result)) {
-          setIsCredentialValid(await validateCredential(result))
-          setAttester(getDidForAccount(result.attestation.owner))
-        } else if (RequestForAttestation.isIRequestForAttestation(result)) {
-          const attestation = await getAttestationForRequest(result)
-          setIsCredentialValid(await validateAttestation(attestation))
-          if (attestation) {
-            setAttester(getDidForAccount(attestation.owner))
-          } else {
-            setAttester('No Attestation found')
-          }
-        }
+    try {
+      const response = await fetch(url)
+      const result = await response.json()
+      setCredential(result.claim.contents)
 
-        setCredential(result.claim.contents)
-        setFetching(false)
-      })
-      .catch((error) => {
-        console.log(error)
-        setFetched(false)
-        setFetching(false)
-      })
+      if (!Did.DidUtils.isSameSubject(result.claim.owner, did)) {
+        setIsCredentialValid(false)
+        setAttester('Credential subject and signer DID are not the same')
+        return
+      }
+
+      if (Credential.isICredential(result)) {
+        setIsCredentialValid(await validateCredential(result))
+        setAttester(getDidForAccount(result.attestation.owner))
+        return
+      }
+
+      if (!RequestForAttestation.isIRequestForAttestation(result)) {
+        setIsCredentialValid(false)
+        setAttester('Not valid Kilt Credential')
+        return
+      }
+
+      const attestation = await getAttestationForRequest(result)
+      setIsCredentialValid(await validateAttestation(attestation))
+      if (attestation) {
+        setAttester(getDidForAccount(attestation.owner))
+      } else {
+        setAttester('No Attestation found')
+      }
+    } catch (error) {
+      console.log(error)
+      setFetched(false)
+    } finally {
+      setFetching(false)
+    }
   }
 
   return (
