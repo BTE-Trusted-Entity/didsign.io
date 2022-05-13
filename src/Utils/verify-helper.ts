@@ -149,8 +149,10 @@ export const replaceFileStatus = (statusArray: boolean[]): boolean[] => {
 export const isDidSignFile = (file: string) => {
   return file.split('.').pop() == 'didsign'
 }
+
 export const getDidForAccount = (did: string): string => {
-  return Did.DidUtils.getKiltDidFromIdentifier(did, 'full')
+  const { identifier } = Did.DidUtils.parseDidUri(did)
+  return Did.DidUtils.getKiltDidFromIdentifier(identifier, 'full')
 }
 
 export const getAttestationForRequest = async (
