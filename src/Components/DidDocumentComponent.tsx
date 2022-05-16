@@ -6,6 +6,7 @@ import loader from '../ImageAssets/spinning-circles.svg'
 import {
   getAttestationForRequest,
   getDidForAccount,
+  getW3NOrDid,
   validateAttestation,
   validateCredential,
 } from '../Utils/verify-helper'
@@ -64,7 +65,8 @@ export const DidDocumentComponent = ({ url, endpointType }: Props) => {
 
       if (Credential.isICredential(result)) {
         setIsCredentialValid(await validateCredential(result))
-        setAttester(getDidForAccount(result.attestation.owner))
+        const attesterDid = getDidForAccount(result.attestation.owner)
+        setAttester(await getW3NOrDid(attesterDid))
         return
       }
 
@@ -77,7 +79,8 @@ export const DidDocumentComponent = ({ url, endpointType }: Props) => {
       const attestation = await getAttestationForRequest(result)
       setIsCredentialValid(await validateAttestation(attestation))
       if (attestation) {
-        setAttester(getDidForAccount(attestation.owner))
+        const attesterDid = getDidForAccount(attestation.owner)
+        setAttester(await getW3NOrDid(attesterDid))
       } else {
         setAttester('No Attestation found')
       }

@@ -12,6 +12,7 @@ import {
   Credential,
   ICredential,
   Attestation,
+  IDidDetails,
 } from '@kiltprotocol/sdk-js'
 import { createHash, createHashFromHashArray } from './sign-helpers'
 import { base16 } from 'multiformats/bases/base16'
@@ -153,6 +154,11 @@ export const isDidSignFile = (file: string) => {
 export const getDidForAccount = (did: string): string => {
   const { identifier } = Did.DidUtils.parseDidUri(did)
   return Did.DidUtils.getKiltDidFromIdentifier(identifier, 'full')
+}
+
+export async function getW3NOrDid(did: IDidDetails['did']): Promise<string> {
+  const web3name = await Did.Web3Names.queryWeb3NameForDid(did)
+  return web3name ? `w3n:${web3name}` : did
 }
 
 export const getAttestationForRequest = async (
