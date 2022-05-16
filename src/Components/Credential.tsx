@@ -22,12 +22,13 @@ export const CredentialComponent = ({
 }: IDIDCredential) => {
   return (
     <CredentialContainer>
-      {Object.keys(credential).map((key, index) => (
-        <Container key={index}>
-          <CredentialTitle>{key}</CredentialTitle>
-          <CredentialSpan>{credential[key]}</CredentialSpan>
-        </Container>
-      ))}
+      {isCredentialValid &&
+        Object.keys(credential).map((key, index) => (
+          <Container key={index}>
+            <CredentialTitle>{key}</CredentialTitle>
+            <CredentialSpan>{credential[key]}</CredentialSpan>
+          </Container>
+        ))}
       <Container>
         <CredentialTitle>Attester</CredentialTitle>
 
