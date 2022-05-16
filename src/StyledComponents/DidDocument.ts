@@ -43,7 +43,7 @@ export const Text = styled.span`
   justify-content: flex-start;
   color: ${colors.darkpurple};
   font-size: 14px;
-  line-height: 22px;
+  line-height: 25px;
   letter-spacing: 0.11px;
   font-weight: bold;
   word-break: break-all;

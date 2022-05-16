@@ -12,8 +12,9 @@ export interface ISignatureEndPoint {
   signature: string
   did: string
   endpoints: DidServiceEndpoint[]
-  w3name: string
+  w3name: string | null
 }
+
 export interface ISignatureEndPointWithStatus {
   signatureWithEndpoint: ISignatureEndPoint
   fileStatus: boolean[]
