@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { SignBtn } from './SignBtn'
 import { clearSign, selectSign } from '../Features/Signer/SignatureSlice'
@@ -103,11 +103,15 @@ const BottomSectionVerifyer = () => {
           </TextWrapper>
           <TextWrapper>
             <Title>Signed By</Title>
-            <Text>{did}</Text>
-          </TextWrapper>
-          <TextWrapper>
-            <Title>web3name</Title>
-            <Text>{w3name}</Text>
+            <Text>
+              {w3name && (
+                <Fragment>
+                  w3n:{w3name}
+                  <br />
+                </Fragment>
+              )}
+              {did}
+            </Text>
           </TextWrapper>
           <TextWrapper>
             <Title>Service Endpoints</Title>

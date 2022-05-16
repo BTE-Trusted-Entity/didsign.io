@@ -4,22 +4,22 @@ import {
   SignDoc,
 } from './types'
 import {
-  init,
-  Did,
-  KeyRelationship,
-  disconnect,
-  IRequestForAttestation,
-  Credential,
-  ICredential,
   Attestation,
+  Credential,
+  Did,
+  disconnect,
+  ICredential,
   IDidDetails,
+  init,
+  IRequestForAttestation,
+  KeyRelationship,
 } from '@kiltprotocol/sdk-js'
 import { createHash, createHashFromHashArray } from './sign-helpers'
 import { base16 } from 'multiformats/bases/base16'
 import * as zip from '@zip.js/zip.js'
 import JSZip from 'jszip'
 
-const resolveSeviceEndpoints = async (did: string) => {
+const resolveServiceEndpoints = async (did: string) => {
   const didDetails = await Did.DidResolver.resolveDoc(did)
   const endPoints = didDetails?.details?.getEndpoints()
   if (endPoints) {
@@ -35,36 +35,40 @@ export const getVerifiedData = async (
   if (jws === '') {
     return null
   }
-  const header = atob(jws.split('.')[0])
-  const payload = atob(jws.split('.')[1])
-  const sign = atob(jws.split('.')[2])
-  const keyID = JSON.parse(header).kid
+  const [header64, payload64, signature64] = jws.split('.')
+  const header = atob(header64)
+  const payload = atob(payload64)
+  const signature = atob(signature64)
+  const keyId = JSON.parse(header).kid
   const hash = JSON.parse(payload).hash
   await init({
     address: process.env.REACT_APP_CHAIN_ENDPOINT || 'wss://spiritnet.kilt.io',
   })
-  const w3name = await Did.Web3Names.queryWeb3NameForDid(keyID.split('#')[0])
 
-  const verificationResult = await Did.DidUtils.verifyDidSignature({
+  const { verified } = await Did.DidUtils.verifyDidSignature({
     message: hash,
-    signature: { keyId: keyID, signature: sign },
+    signature: { keyId, signature },
     expectedVerificationMethod: KeyRelationship.authentication,
   })
-  const verificationStatus = verificationResult.verified
-  const serviceEndpoints = await resolveSeviceEndpoints(keyID.split('#')[0])
-  await disconnect()
 
-  if (verificationStatus) {
-    return {
-      did: keyID.split('#')[0],
-      signature: sign,
-      endpoints: serviceEndpoints,
-      w3name: w3name ? `w3n:${w3name}` : 'No web3name found',
-    }
-  } else {
+  if (!verified) {
+    await disconnect()
     return null
   }
+
+  const { did } = Did.DidUtils.parseDidUri(keyId)
+  const endpoints = await resolveServiceEndpoints(did)
+  const w3name = await Did.Web3Names.queryWeb3NameForDid(did)
+  await disconnect()
+
+  return {
+    did,
+    signature,
+    endpoints,
+    w3name,
+  }
 }
+
 export const newUnzip = async (
   file: File
 ): Promise<ISignatureEndPointWithStatus | undefined> => {
