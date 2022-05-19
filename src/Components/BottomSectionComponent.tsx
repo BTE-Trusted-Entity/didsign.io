@@ -98,10 +98,6 @@ const BottomSectionVerifyer = () => {
             </VerificationIcon>
           </TextWrapper>
           <TextWrapper>
-            <Title>Signature</Title>
-            <Text>{sign}</Text>
-          </TextWrapper>
-          <TextWrapper>
             <Title>Signed By</Title>
             <Text>
               {w3name && (
@@ -112,6 +108,10 @@ const BottomSectionVerifyer = () => {
               )}
               {did}
             </Text>
+          </TextWrapper>
+          <TextWrapper>
+            <Title>Signature</Title>
+            <Text>{sign}</Text>
           </TextWrapper>
           <TextWrapper>
             <Title>Service Endpoints</Title>
