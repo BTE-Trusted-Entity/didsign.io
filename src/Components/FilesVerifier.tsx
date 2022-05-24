@@ -28,7 +28,7 @@ import * as Styled from '../StyledComponents/FilesVerifier'
 
 export const FilesVerifier = () => {
   const files = useAppSelector(selectFile)
-  const unzippedFiles = useAppSelector(selectFilename)
+  const unzippedFileNames = useAppSelector(selectFilename)
 
   const jwsStatus = useAppSelector(selectJwsSignStatus)
   const status = useAppSelector(fileStatus)
@@ -72,25 +72,25 @@ export const FilesVerifier = () => {
     return null
   }
 
-  const hasUnzippedFiles = unzippedFiles.length > 0
+  const hasUnzippedFiles = unzippedFileNames.length > 0
 
   return (
     <Fragment>
       {hasUnzippedFiles && (
         <Styled.ZipContainer>
-          <Styled.ZipFileContainer>
-            <Styled.ZipFile>{files[0].name}</Styled.ZipFile>
+          <Styled.ZipFile as="div">
+            <Styled.ZipFileName>{files[0].name}</Styled.ZipFileName>
 
             <Styled.DeleteButton
               aria-label="Remove all files"
               onClick={handleDeleteAll}
             />
-          </Styled.ZipFileContainer>
+          </Styled.ZipFile>
 
           <Styled.Heading>Files</Styled.Heading>
 
           <Styled.List>
-            {unzippedFiles.map((name: string, index: number) => (
+            {unzippedFileNames.map((name: string, index: number) => (
               <Styled.UnzippedFile key={index} statusOk={status[index]}>
                 {isDidSignFile(name) ? (
                   <Styled.DidFile>{name}</Styled.DidFile>

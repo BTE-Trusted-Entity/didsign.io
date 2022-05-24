@@ -26,14 +26,14 @@ export const ZipContainer = styled(Container)`
   grid-template: 'zip zip' 'heading list' / 15% auto;
 `
 
-export const ZipFileContainer = styled(Files.File)`
+export const ZipFile = styled(Files.File)`
   grid-area: zip;
   padding: 10px 16px 5px 0;
   width: 90%;
   justify-self: end;
 `
 
-export const ZipFile = styled(Files.FileName)`
+export const ZipFileName = styled(Files.FileName)`
   background-image: url(${ZipIcon});
 `
 
