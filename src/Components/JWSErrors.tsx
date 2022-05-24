@@ -2,43 +2,43 @@ import React from 'react'
 import { useAppSelector } from '../app/hooks'
 import { selectJwsSignStatus } from '../Features/Signer/VerifyJwsSlice'
 import AttentionIcon from '../ImageAssets/icon_attention.svg'
-import {
-  DidDocContainer,
-  ErrorText,
-  ErrorTitle,
-  TextWrapper,
-  VerificationErrorText,
-  VerificationIcon,
-} from '../StyledComponents/DidDocument'
 
-export const JWSErrorsComponent = () => {
+import * as Styled from '../StyledComponents/JWSErrors'
+
+export const JWSErrors = () => {
   const jwsStatus = useAppSelector(selectJwsSignStatus)
   if (jwsStatus === 'Multiple Sign') {
     return null
   }
   return (
-    <DidDocContainer>
-      <TextWrapper>
-        <VerificationErrorText>Verification</VerificationErrorText>
-        <VerificationIcon>
-          <img src={AttentionIcon} />{' '}
-        </VerificationIcon>
-      </TextWrapper>
-      <TextWrapper>
-        <ErrorTitle>Attention</ErrorTitle>
+    <Styled.Container>
+      <Styled.TextWrapper>
+        <Styled.VerificationErrorText>
+          Verification
+        </Styled.VerificationErrorText>
+
+        <Styled.VerificationIcon>
+          <img src={AttentionIcon} />
+        </Styled.VerificationIcon>
+      </Styled.TextWrapper>
+
+      <Styled.TextWrapper>
+        <Styled.ErrorTitle>Attention</Styled.ErrorTitle>
+
         {jwsStatus === 'Corrupted' && (
-          <ErrorText>
+          <Styled.ErrorText>
             The signature file is corrupted. Please make sure to import the
             correct signature file.
-          </ErrorText>
+          </Styled.ErrorText>
         )}
+
         {jwsStatus === 'Invalid' && (
-          <ErrorText>
+          <Styled.ErrorText>
             The signature does not match with the imported files. Please make
             sure to import the correct files.
-          </ErrorText>
+          </Styled.ErrorText>
         )}
-      </TextWrapper>
-    </DidDocContainer>
+      </Styled.TextWrapper>
+    </Styled.Container>
   )
 }

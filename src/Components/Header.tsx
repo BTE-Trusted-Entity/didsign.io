@@ -1,17 +1,5 @@
 import React from 'react'
 
-import {
-  Container,
-  HeaderLogo,
-  LogoContainer,
-  PrimaryHeaderContainer,
-  SecondaryHeaderContainer,
-  SignRoleBtn,
-  SignUnderline,
-  StyledHeader,
-  TextSpan,
-  VerifyUnderline,
-} from '../StyledComponents/Header'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { selectUserRole, updateRole } from '../Features/Signer/UserSlice'
 import { clearSign } from '../Features/Signer/SignatureSlice'
@@ -23,21 +11,23 @@ import {
 } from '../Features/Signer/EndpointSlice'
 import { clearJWS } from '../Features/Signer/VerifyJwsSlice'
 
+import * as Styled from '../StyledComponents/Header'
+
 export const Header = () => {
   return (
-    <StyledHeader>
+    <Styled.Header>
       <PrimaryHeader />
       <SecondaryHeader />
-    </StyledHeader>
+    </Styled.Header>
   )
 }
 const PrimaryHeader = () => {
   return (
-    <PrimaryHeaderContainer>
-      <LogoContainer>
-        <HeaderLogo />
-      </LogoContainer>
-    </PrimaryHeaderContainer>
+    <Styled.PrimaryHeader>
+      <Styled.LogoContainer>
+        <Styled.HeaderLogo />
+      </Styled.LogoContainer>
+    </Styled.PrimaryHeader>
   )
 }
 
@@ -61,27 +51,29 @@ const SecondaryHeader = () => {
     dispatch(clearFileStatuses())
   }
   return (
-    <SecondaryHeaderContainer>
-      <TextSpan>
+    <Styled.SecondaryHeader>
+      <Styled.Text>
         Documents that build trust - securely signed with your decentralized
         identifier (DID).
-      </TextSpan>
-      <Container>
-        <SignRoleBtn
+      </Styled.Text>
+
+      <Styled.Buttons>
+        <Styled.SignRoleButton
           isSelectedRole={userRoleSigner}
           onClick={() => handleSigner()}
         >
           SIGN
-          <SignUnderline isSelectedRole={userRoleSigner} />
-        </SignRoleBtn>
-        <SignRoleBtn
+          <Styled.SignUnderline isSelectedRole={userRoleSigner} />
+        </Styled.SignRoleButton>
+
+        <Styled.SignRoleButton
           isSelectedRole={!userRoleSigner}
           onClick={() => handleVerifier()}
         >
           VERIFY
-          <VerifyUnderline isSelectedRole={!userRoleSigner} />
-        </SignRoleBtn>
-      </Container>
-    </SecondaryHeaderContainer>
+          <Styled.VerifyUnderline isSelectedRole={!userRoleSigner} />
+        </Styled.SignRoleButton>
+      </Styled.Buttons>
+    </Styled.SecondaryHeader>
   )
 }

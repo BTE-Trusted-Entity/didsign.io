@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useAppSelector } from '../app/hooks'
 import { selectVerifiedDid } from '../Features/Signer/EndpointSlice'
-import loader from '../ImageAssets/spinning-circles.svg'
 
 import {
   getAttestationForRequest,
@@ -13,23 +12,16 @@ import {
 import { Credential, RequestForAttestation, Did } from '@kiltprotocol/sdk-js'
 import ChevronDown from '../ImageAssets/chevron_down_white.svg'
 import ChevronUp from '../ImageAssets/chevron_up_white.svg'
-import {
-  EndpointsContainer,
-  EndpointSpan,
-  EndpointTypeContainer,
-  EndpointURLSpan,
-  FetchBtn,
-  FetchLoader,
-  Separator,
-} from '../StyledComponents/DidDocument'
 import { CredentialComponent } from './Credential'
+
+import * as Styled from '../StyledComponents/ServiceEndpoint'
 
 interface Props {
   url: string
   endpointType: string
 }
 
-export const DidDocumentComponent = ({ url, endpointType }: Props) => {
+export const ServiceEndpoint = ({ url, endpointType }: Props) => {
   const did = useAppSelector(selectVerifiedDid)
   // eslint-disable-next-line
   const [credential, setCredential] = useState<any | null>(null)
@@ -93,17 +85,19 @@ export const DidDocumentComponent = ({ url, endpointType }: Props) => {
   }
 
   return (
-    <EndpointsContainer>
-      <EndpointTypeContainer>
-        <EndpointSpan>{endpointType}</EndpointSpan>
-        <FetchBtn onClick={() => handleFetch()}>
-          {' '}
-          {fetching && <FetchLoader />}
+    <Styled.Container>
+      <Styled.EndpointTypeContainer>
+        <Styled.EndpointSpan>{endpointType}</Styled.EndpointSpan>
+
+        <Styled.FetchButton onClick={() => handleFetch()}>
+          {fetching && <Styled.FetchLoader />}
           <span>{fetched ? 'Close' : 'Fetch'}</span>
           <img src={fetched ? ChevronUp : ChevronDown} />
-        </FetchBtn>
-      </EndpointTypeContainer>
-      <EndpointURLSpan>{url}</EndpointURLSpan>
+        </Styled.FetchButton>
+      </Styled.EndpointTypeContainer>
+
+      <Styled.EndpointURLSpan>{url}</Styled.EndpointURLSpan>
+
       {credential && (
         <CredentialComponent
           credential={credential}
@@ -111,7 +105,8 @@ export const DidDocumentComponent = ({ url, endpointType }: Props) => {
           isCredentialValid={isCredentialValid}
         />
       )}
-      <Separator className=" border-b-[1px] border-b-dark-purple border-dotted w-full"></Separator>
-    </EndpointsContainer>
+
+      <Styled.Separator />
+    </Styled.Container>
   )
 }

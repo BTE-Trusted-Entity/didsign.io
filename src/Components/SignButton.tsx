@@ -16,18 +16,13 @@ import {
   NoWalletPopup,
   SignErrorPopup,
   SignPopup,
-  SignBtnInfoPopup,
+  SignButtonInfoPopup,
 } from './Popups'
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
-import {
-  BtnContainer,
-  InfoBtn,
-  OnchainInfoSpan,
-  SignButton,
-  SignContainer,
-} from '../StyledComponents/SignBtn'
 
-export const SignBtn = () => {
+import * as Styled from '../StyledComponents/SignButton'
+
+export const SignButton = () => {
   const [signStatus, setSignStatus] = useState<
     'SignError' | 'Default' | 'No Sporran' | null
   >(null)
@@ -101,28 +96,36 @@ export const SignBtn = () => {
     setSignPopup(false)
   }
   return (
-    <SignContainer>
-      <BtnContainer>
-        <SignButton
+    <Styled.SignContainer>
+      <Styled.ButtonContainer>
+        <Styled.SignButton
           isDisabled={files.length === 0}
           onClick={() => handleChange()}
         >
           Sign
-        </SignButton>
-        <InfoBtn aria-label="Sign Information" onClick={showSignPopup}>
-          <img src={info} />
-        </InfoBtn>
+        </Styled.SignButton>
 
-        {signPopup && <SignBtnInfoPopup dismiss={handleSignDismiss} />}
+        <Styled.InfoButton
+          aria-label="Sign Information"
+          onClick={showSignPopup}
+        >
+          <img src={info} />
+        </Styled.InfoButton>
+
+        {signPopup && <SignButtonInfoPopup dismiss={handleSignDismiss} />}
+
         {signStatus === 'Default' && <SignPopup dismiss={handleDismiss} />}
+
         {signStatus === 'No Sporran' && (
           <NoWalletPopup dismiss={handleDismiss} />
         )}
+
         {signStatus === 'SignError' && (
           <SignErrorPopup dismiss={handleDismiss} />
         )}
-      </BtnContainer>
-      <OnchainInfoSpan>
+      </Styled.ButtonContainer>
+
+      <Styled.OnchainInfo>
         Don&apos;t have an on-chain DID yet?{' '}
         <a
           target="_blank"
@@ -132,7 +135,7 @@ export const SignBtn = () => {
         >
           Read here
         </a>
-      </OnchainInfoSpan>
-    </SignContainer>
+      </Styled.OnchainInfo>
+    </Styled.SignContainer>
   )
 }

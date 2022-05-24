@@ -39,14 +39,8 @@ import { SlowAnimation, FastAnimation } from './Animations'
 import { showPopup } from '../Features/Signer/PopupSlice'
 import { MultipleSignPopup } from './Popups'
 import { colors } from '../StyledComponents/colors'
-import {
-  BrowseFilesText,
-  Container,
-  DragDropText,
-  DropContainer,
-  ImportImage,
-  SignText,
-} from '../StyledComponents/SignImportComp'
+
+import * as Styled from '../StyledComponents/ImportFilesSigner'
 
 export const ImportFilesVerifier = () => {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon)
@@ -196,15 +190,16 @@ export const ImportFilesVerifier = () => {
     }
   }, [statuses, jwsStatus])
   return (
-    <Container>
+    <Styled.Container>
       {jwsStatus === 'Multiple Sign' && <MultipleSignPopup />}
+
       <Dropzone
         onDrop={handleDrop}
         onDragLeave={() => setImportIcon(ImportIcon)}
         onDragEnter={() => setImportIcon(ReleaseIcon)}
       >
         {({ getRootProps, getInputProps }) => (
-          <DropContainer {...getRootProps({})}>
+          <Styled.DropContainer {...getRootProps({})}>
             {impIcon == ImportIcon ? (
               <SlowAnimation color={colors.green} />
             ) : (
@@ -212,17 +207,21 @@ export const ImportFilesVerifier = () => {
             )}
 
             <input {...getInputProps()} />
-            <ImportImage src={impIcon} />
-            {impIcon === ImportIcon && <SignText>Verify Your Files</SignText>}
-            {impIcon === ImportIcon && <DragDropText>drag & drop</DragDropText>}
+            <Styled.ImportImage src={impIcon} />
             {impIcon === ImportIcon && (
-              <BrowseFilesText>
-                or click / tap to browse your files
-              </BrowseFilesText>
+              <Styled.SignText>Verify Your Files</Styled.SignText>
             )}
-          </DropContainer>
+            {impIcon === ImportIcon && (
+              <Styled.DragDropText>drag & drop</Styled.DragDropText>
+            )}
+            {impIcon === ImportIcon && (
+              <Styled.BrowseFilesText>
+                or click / tap to browse your files
+              </Styled.BrowseFilesText>
+            )}
+          </Styled.DropContainer>
         )}
       </Dropzone>
-    </Container>
+    </Styled.Container>
   )
 }

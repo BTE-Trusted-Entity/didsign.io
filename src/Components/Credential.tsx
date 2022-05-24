@@ -1,12 +1,8 @@
 import React from 'react'
 import AttentionIcon from '../ImageAssets/icon_attention.svg'
 import OkIcon from '../ImageAssets/icon_oK.svg'
-import {
-  Container,
-  CredentialContainer,
-  CredentialSpan,
-  CredentialTitle,
-} from '../StyledComponents/Credential'
+
+import * as Styled from '../StyledComponents/Credential'
 
 interface IDIDCredential {
   // eslint-disable-next-line
@@ -21,26 +17,26 @@ export const CredentialComponent = ({
   isCredentialValid,
 }: IDIDCredential) => {
   return (
-    <CredentialContainer>
+    <Styled.Credential>
       {isCredentialValid &&
         Object.keys(credential).map((key, index) => (
-          <Container key={index}>
-            <CredentialTitle>{key}</CredentialTitle>
-            <CredentialSpan>{credential[key]}</CredentialSpan>
-          </Container>
+          <Styled.Property key={index}>
+            <Styled.Name>{key}</Styled.Name>
+            <Styled.Value>{credential[key]}</Styled.Value>
+          </Styled.Property>
         ))}
-      <Container>
-        <CredentialTitle>Attester</CredentialTitle>
 
-        <CredentialSpan>{attesterDid}</CredentialSpan>
-      </Container>
-      <Container>
-        <CredentialTitle>Valid</CredentialTitle>
-        <CredentialSpan>
-          {' '}
+      <Styled.Property>
+        <Styled.Name>Attester</Styled.Name>
+        <Styled.Value>{attesterDid}</Styled.Value>
+      </Styled.Property>
+
+      <Styled.Property>
+        <Styled.Name>Valid</Styled.Name>
+        <Styled.Value>
           <img src={isCredentialValid ? OkIcon : AttentionIcon} />
-        </CredentialSpan>
-      </Container>
-    </CredentialContainer>
+        </Styled.Value>
+      </Styled.Property>
+    </Styled.Credential>
   )
 }

@@ -1,8 +1,8 @@
 import styled from 'styled-components'
-import { colors } from './colors'
-import { ReactComponent as Loader } from '../ImageAssets/spinning-circles.svg'
 
-export const DidDocContainer = styled.div`
+import { colors } from './colors'
+
+export const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -31,7 +31,7 @@ export const VerificationText = styled.span`
   width: 80px;
 `
 export const VerificationErrorText = styled(VerificationText)`
-  color: ${colors['attention-orange']};
+  color: ${colors.attentionOrange};
 `
 export const VerificationIcon = styled.div`
   display: flex;
@@ -41,7 +41,7 @@ export const VerificationIcon = styled.div`
 export const Text = styled.span`
   display: flex;
   justify-content: flex-start;
-  color: ${colors.darkpurple};
+  color: ${colors.darkPurple};
   font-size: 14px;
   line-height: 25px;
   letter-spacing: 0.11px;
@@ -50,14 +50,14 @@ export const Text = styled.span`
   width: 550px;
 `
 export const ErrorText = styled(Text)`
-  color: ${colors['attention-orange']};
+  color: ${colors.attentionOrange};
   word-break: normal;
 `
 export const EndpointsWrapper = styled.div`
   display: flex;
   align-items: flex-start;
   flex-direction: column;
-  color: ${colors.darkpurple};
+  color: ${colors.darkPurple};
   font-size: 14px;
   gap: 20px;
   line-height: 22px;
@@ -68,7 +68,7 @@ export const EndpointsWrapper = styled.div`
 export const Title = styled.span`
   display: flex;
   justify-content: start;
-  color: ${colors.darkpurple};
+  color: ${colors.darkPurple};
   font-size: 16px;
   line-height: 25px;
   letter-spacing: 0.11px;
@@ -76,74 +76,5 @@ export const Title = styled.span`
   text-align: left;
 `
 export const ErrorTitle = styled(Title)`
-  color: ${colors['attention-orange']};
-`
-export const EndpointsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  height: fit-content;
-  width: 100%;
-`
-export const EndpointTypeContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-`
-export const EndpointSpan = styled.span`
-  color: ${colors.darkpurple};
-  font-family: Overpass;
-  font-size: 14px;
-  letter-spacing: 0.1px;
-  line-height: 22px;
-  max-width: 400px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  font-weight: bold;
-
-  text-overflow: ellipsis;
-`
-export const EndpointURLSpan = styled.span`
-  font-family: Overpass;
-  font-size: 14px;
-  line-height: 22px;
-  letter-spacing: 0.1px;
-  max-width: 400px;
-  overflow-wrap: break-word;
-`
-export const FetchLoader = styled(Loader)`
-  height: 15px;
-  width: 15px;
-  margin-right: 18px;
-`
-export const FetchBtn = styled.button`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  position: relative;
-  text-transform: uppercase;
-  margin-left: auto;
-  font-size: 12px;
-  border: none;
-  line-height: 13px;
-  width: 130px;
-  height: 22px;
-  border-radius: 6px;
-  color: white;
-  background-color: ${colors.mediumblue};
-  img {
-    margin-left: 15px;
-    margin-right: 15px;
-  }
-`
-export const ChevronImage = styled.img`
-  position: absolute;
-  top: 8px;
-  right: 16px;
-`
-export const Separator = styled.div`
-  border: 1px dotted ${colors.darkpurple};
-  width: 100%;
+  color: ${colors.attentionOrange};
 `

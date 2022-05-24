@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+
 import { colors } from './colors'
 
 interface Button {
@@ -11,26 +12,26 @@ export const SignContainer = styled.div`
   align-items: center;
   gap: 12px;
 `
-export const OnchainInfoSpan = styled.span`
+export const OnchainInfo = styled.span`
   font-size: 12px;
   line-height: 12px;
   letter-spacing: 0.2px;
   margin-bottom: 4px;
   a {
-    color: ${colors.mediumblue};
+    color: ${colors.mediumBlue};
     :hover {
       text-decoration: underline;
     }
   }
 `
-export const BtnContainer = styled.div`
+export const ButtonContainer = styled.div`
   display: flex;
   gap: 8px;
   button {
     border: none;
   }
 `
-export const InfoBtn = styled.button`
+export const InfoButton = styled.button`
   background: none;
 `
 export const SignButton = styled.button`
@@ -47,6 +48,6 @@ export const SignButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${colors.mediumblue};
+  background-color: ${colors.mediumBlue};
   text-transform: uppercase;
 `

@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+
 import { colors } from './colors'
 
 export const Container = styled.div`
@@ -13,12 +14,13 @@ export const Container = styled.div`
   margin-bottom: 10px;
 `
 export const BottomSection = styled.div`
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   max-width: 766px;
-  background-color: ${colors.bottomsection};
+  background-color: ${colors.bottomSection};
   width: 90%;
   margin-bottom: 10px;
   min-height: 95px;
@@ -35,20 +37,20 @@ export const VerificationLoader = styled.img`
   height: 40px;
   width: 40px;
 `
-export const VerificationTextSpan = styled.span`
+export const VerificationText = styled.span`
   position: absolute;
   display: flex;
   align-items: center;
   gap: 12px;
   top: 24px;
   left: 40px;
-  color: #2a223180;
+  color: ${colors.grey};
   font-size: 16px;
   line-height: 17px;
   letter-spacing: 0.11px;
 
   div {
-    background-color: #2a223180;
+    background-color: ${colors.grey};
     height: 1px;
     width: 15px;
   }

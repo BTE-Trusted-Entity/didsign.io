@@ -1,11 +1,8 @@
 import styled from 'styled-components'
 import { colors } from './colors'
 
-interface Style {
-  setMargin?: boolean
-}
-export const StyledFooter = styled.div`
-  background-color: ${colors.darkpurple};
+export const Footer = styled.footer`
+  background-color: ${colors.darkPurple};
   height: 35px;
   min-height: fit-content;
   width: 100vw;
@@ -16,7 +13,7 @@ export const StyledFooter = styled.div`
   margin-top: auto;
 `
 
-export const StyledFooterLinksContainer = styled.div`
+export const FooterLinks = styled.div`
   display: flex;
   flex-direction: row;
   width: 90%;
@@ -28,7 +25,7 @@ export const StyledFooterLinksContainer = styled.div`
   letter-spacing: 0.1px;
   text-align: left;
 `
-export const DidSignLogoContainer = styled.div`
+export const DidSignLogo = styled.div`
   width: 93px;
   display: flex;
   justify-content: flex-start;
@@ -38,7 +35,7 @@ export const DidSignLogoContainer = styled.div`
   }
 `
 
-export const LinksContainer = styled.div`
+export const Links = styled.div`
   width: 80%;
   max-width: 600px;
   display: flex;
@@ -65,67 +62,11 @@ export const LinksContainer = styled.div`
     }
   }
 `
-export const LogoContainer = styled.div`
+export const KiltLogo = styled.div`
   width: 103px;
   display: flex;
   justify-content: flex-end;
   @media (max-width: 400px) {
     display: none;
   }
-`
-export const Imprint = styled.div`
-  display: flex;
-  width: 100vw;
-  justify-content: center;
-  align-items: center;
-  height: 480px;
-  position: fixed;
-  bottom: 113px;
-  z-index: 40;
-`
-export const ImprintContainer = styled.div`
-  display: flex;
-  padding-left: 10px;
-  padding-right: 10px;
-  background-color: ${colors.silverblue};
-  flex-direction: column;
-  word-break: break-all;
-  height: 522px;
-  max-width: 484px;
-  width: 90%;
-  justify-content: center;
-  align-items: center;
-  color: ${colors.darkpurple};
-  gap: 2px;
-  border-radius: 8px;
-`
-export const ImprintText = styled.span`
-  word-break: break-all;
-  font-size: 14px;
-  letter-spacing: 0.1px;
-  line-height: 22px;
-  margin-bottom: ${(props: Style) => props.setMargin && '15px'};
-  a {
-    color: ${colors.mediumblue};
-  }
-`
-export const Dismiss = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  letter-spacing: 0.1px;
-  line-height: 22px;
-  height: 24px;
-  width: 140px;
-  border-radius: 8px;
-  background-color: ${colors.mediumblue};
-  margin-top: 30px;
-  color: white;
-  margin-bottom: 10px;
-`
-export const BTELogo = styled.img`
-  height: 100px;
-  margin-bottom: 30px;
-  margin-top: 20px;
 `
