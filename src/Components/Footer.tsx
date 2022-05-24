@@ -7,13 +7,8 @@ import { showPopup } from '../Features/Signer/PopupSlice'
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
 import Terms from '../DocsAssets/Terms_of_Use_DIDsign_March_2022.pdf'
 import Privacy from '../DocsAssets/Privacy_Policy_DIDsign_March_2022.pdf'
-import {
-  DidSignLogoContainer,
-  LinksContainer,
-  LogoContainer,
-  StyledFooter,
-  StyledFooterLinksContainer,
-} from '../StyledComponents/Footer'
+
+import * as Styled from '../StyledComponents/Footer'
 
 export const Footer = () => {
   const targetElement = document.querySelector('body')
@@ -35,13 +30,13 @@ export const Footer = () => {
     setShowImprint(false)
   }
   return (
-    <StyledFooter>
-      <StyledFooterLinksContainer>
-        <DidSignLogoContainer>
+    <Styled.Footer>
+      <Styled.FooterLinks>
+        <Styled.DidSignLogo>
           <img src={Logo} />
-        </DidSignLogoContainer>
+        </Styled.DidSignLogo>
 
-        <LinksContainer>
+        <Styled.Links>
           <span onClick={handleImprint}>Imprint </span>
           <span>-</span>
           <a href={Terms} target="_blank" rel="noreferrer">
@@ -51,13 +46,14 @@ export const Footer = () => {
           <a href={Privacy} target="_blank" rel="noreferrer">
             <span>Privacy Policy</span>
           </a>
-        </LinksContainer>
+        </Styled.Links>
 
-        <LogoContainer>
+        <Styled.KiltLogo>
           <KiltLogo />
-        </LogoContainer>
-      </StyledFooterLinksContainer>
+        </Styled.KiltLogo>
+      </Styled.FooterLinks>
+
       {showImprint && <ImprintPopup dismiss={handleDismiss} />}
-    </StyledFooter>
+    </Styled.Footer>
   )
 }

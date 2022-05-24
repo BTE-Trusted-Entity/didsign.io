@@ -7,21 +7,10 @@ import { Signature, SignDoc } from '../Utils/types'
 import { saveAs } from 'file-saver'
 import { IBuffer, selectBuffer } from '../Features/Signer/FileSlice'
 import JSZip from 'jszip'
-import {
-  Container,
-  DownloadSignBtn,
-  DownloadSignBtnWrapper,
-  DownloadSignTextSpan,
-  ProgressBarWrapper,
-  ProgressSpan,
-  StyledProgress,
-  StyledProgressBar,
-  ZipBtn,
-  ZipBtnWrapper,
-  ZipTextSpan,
-} from '../StyledComponents/DownloadBtns'
 
-export const DownloadBtns = () => {
+import * as Styled from '../StyledComponents/DownloadButtons'
+
+export const DownloadButtons = () => {
   const sign = useAppSelector(selectSign)
   const did = useAppSelector(selectDid)
   const finalHash = useAppSelector(selectFinalHash)
@@ -64,30 +53,32 @@ export const DownloadBtns = () => {
     document.body.style.pointerEvents = 'auto'
   }
   return (
-    <Container>
-      <ZipBtnWrapper>
-        <ZipTextSpan>now</ZipTextSpan>
-
-        <ZipBtn onClick={handleZip}>
+    <Styled.Container>
+      <Styled.ZipButtonWrapper>
+        <Styled.ZipText>now</Styled.ZipText>
+        <Styled.ZipButton onClick={handleZip}>
           <span>{showLoader ? 'ZIPPING' : 'ZIP ALL FILES'}</span>
-        </ZipBtn>
-      </ZipBtnWrapper>
+        </Styled.ZipButton>
+      </Styled.ZipButtonWrapper>
+
       {showLoader && (
-        <ProgressBarWrapper>
-          <StyledProgressBar>
-            <StyledProgress style={{ width: progress + '%' }}></StyledProgress>
-          </StyledProgressBar>
-          <ProgressSpan>{progress + '%'}</ProgressSpan>
-        </ProgressBarWrapper>
+        <Styled.ProgressBarWrapper>
+          <Styled.ProgressBar>
+            <Styled.Progress style={{ width: progress + '%' }} />
+          </Styled.ProgressBar>
+
+          <Styled.ProgressInfo>{progress + '%'}</Styled.ProgressInfo>
+        </Styled.ProgressBarWrapper>
       )}
+
       {!showLoader && (
-        <DownloadSignBtnWrapper>
-          <DownloadSignTextSpan>or only download</DownloadSignTextSpan>
-          <DownloadSignBtn onClick={handleDownloadSign}>
+        <Styled.DownloadSignButtonWrapper>
+          <Styled.DownloadSignText>or only download</Styled.DownloadSignText>
+          <Styled.DownloadSignButton onClick={handleDownloadSign}>
             <span>SIGNATURE</span>
-          </DownloadSignBtn>
-        </DownloadSignBtnWrapper>
+          </Styled.DownloadSignButton>
+        </Styled.DownloadSignButtonWrapper>
       )}
-    </Container>
+    </Styled.Container>
   )
 }

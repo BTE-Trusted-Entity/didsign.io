@@ -1,7 +1,8 @@
 import styled from 'styled-components'
+
 import { colors } from './colors'
 
-export const StyledBody = styled.div`
+export const Body = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
@@ -9,7 +10,7 @@ export const StyledBody = styled.div`
   max-width: 100vw;
   font-family: 'Overpass';
   overflow-y: auto;
-  background-color: ${colors.lightblue};
+  background-color: ${colors.lightBlue};
   overflow-x: hidden;
   &::-webkit-scrollbar {
     width: 8px;

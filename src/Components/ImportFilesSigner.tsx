@@ -19,15 +19,9 @@ import { SigningDuplicateFiles, SigningMultipleDidFiles } from './Popups'
 import { showPopup } from '../Features/Signer/PopupSlice'
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
 import { clearSign, selectSign } from '../Features/Signer/SignatureSlice'
-import {
-  BrowseFilesText,
-  Container,
-  DragDropText,
-  DropContainer,
-  ImportImage,
-  SignText,
-} from '../StyledComponents/SignImportComp'
 import { colors } from '../StyledComponents/colors'
+
+import * as Styled from '../StyledComponents/ImportFilesSigner'
 
 export const ImportFilesSigner = () => {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon)
@@ -110,14 +104,14 @@ export const ImportFilesSigner = () => {
   )
 
   return (
-    <Container>
+    <Styled.Container>
       <Dropzone
         onDrop={handleDrop}
         onDragLeave={() => setImportIcon(ImportIcon)}
         onDragEnter={() => setImportIcon(ReleaseIcon)}
       >
         {({ getRootProps, getInputProps }) => (
-          <DropContainer {...getRootProps({})}>
+          <Styled.DropContainer {...getRootProps({})}>
             {impIcon == ImportIcon ? (
               <SlowAnimation color={colors.pink} />
             ) : (
@@ -125,21 +119,27 @@ export const ImportFilesSigner = () => {
             )}
 
             <input {...getInputProps()} />
-            <ImportImage src={impIcon} />
-            {impIcon === ImportIcon && <SignText>Sign Your Files</SignText>}
-            {impIcon === ImportIcon && <DragDropText>drag & drop</DragDropText>}
+            <Styled.ImportImage src={impIcon} />
             {impIcon === ImportIcon && (
-              <BrowseFilesText>
-                or click / tap to browse your files
-              </BrowseFilesText>
+              <Styled.SignText>Sign Your Files</Styled.SignText>
             )}
-          </DropContainer>
+            {impIcon === ImportIcon && (
+              <Styled.DragDropText>drag & drop</Styled.DragDropText>
+            )}
+            {impIcon === ImportIcon && (
+              <Styled.BrowseFilesText>
+                or click / tap to browse your files
+              </Styled.BrowseFilesText>
+            )}
+          </Styled.DropContainer>
         )}
       </Dropzone>
+
       {signErrorPopup && <SigningMultipleDidFiles dismiss={handleDismiss} />}
+
       {isDuplicate && (
         <SigningDuplicateFiles dismiss={handleDuplicateDismiss} />
       )}
-    </Container>
+    </Styled.Container>
   )
 }

@@ -1,27 +1,29 @@
 import React from 'react'
-import { Circle, Container, Gradient } from '../StyledComponents/Animations'
+
 import { colors } from '../StyledComponents/colors'
+
+import * as Styled from '../StyledComponents/Animations'
 
 interface Background {
   color: string
 }
 export const SlowAnimation = (props: Background) => {
   return (
-    <Container bgcolor={props.color}>
-      <Gradient></Gradient>
-      <Circle delay={'1s'}></Circle>
-    </Container>
+    <Styled.Container bgcolor={props.color}>
+      <Styled.Gradient />
+      <Styled.Circle delay={'1s'} />
+    </Styled.Container>
   )
 }
 export const FastAnimation = () => {
   return (
-    <Container bgcolor={colors.fastanimation}>
-      <Gradient> </Gradient>
-      <Circle delay={'1s'}></Circle>
-      <Circle delay={'2s'}></Circle>
-      <Circle delay={'3s'}></Circle>
-      <Circle delay={'4s'}></Circle>
-      <Circle delay={'5s'}></Circle>
-    </Container>
+    <Styled.Container bgcolor={colors.fastAnimation}>
+      <Styled.Gradient />
+      <Styled.Circle delay={'1s'} />
+      <Styled.Circle delay={'2s'} />
+      <Styled.Circle delay={'3s'} />
+      <Styled.Circle delay={'4s'} />
+      <Styled.Circle delay={'5s'} />
+    </Styled.Container>
   )
 }

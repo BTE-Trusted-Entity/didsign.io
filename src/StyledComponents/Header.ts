@@ -6,23 +6,23 @@ import SecondaryLeftBubbles from '../ImageAssets/SecondaryHeaderLeftBubbles.svg'
 import SecondaryRightBubbles from '../ImageAssets/SecondaryHeaderRightBubbles.svg'
 import { colors } from './colors'
 
-interface BtnType {
+interface ButtonType {
   isSelectedRole: boolean
 }
-export const StyledHeader = styled.header`
+export const Header = styled.header`
   display: flex;
   width: 100vw;
   flex-direction: column;
   height: 133px;
 `
-export const PrimaryHeaderContainer = styled.div`
+export const PrimaryHeader = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
   height: 76px;
   background: url(${PrimaryLeftBubbles}) no-repeat left 18px / auto 100%,
-    url(${PrimaryRightBubbles}) no-repeat right/auto 110%, ${colors.darkpurple};
+    url(${PrimaryRightBubbles}) no-repeat right/auto 110%, ${colors.darkPurple};
 `
 export const LogoContainer = styled.div`
   max-width: 766px;
@@ -32,7 +32,7 @@ export const HeaderLogo = styled(Logo)`
   width: 168.5;
   height: 52px;
 `
-export const SecondaryHeaderContainer = styled.div`
+export const SecondaryHeader = styled.div`
   display: flex;
   flex-direction: column;
   width: 100vw;
@@ -42,9 +42,9 @@ export const SecondaryHeaderContainer = styled.div`
   position: relative;
   background: url(${SecondaryLeftBubbles}) no-repeat left 40px / auto 100%,
     url(${SecondaryRightBubbles}) no-repeat right 40px / auto 100%,
-    ${colors.headerbelow};
+    ${colors.headerBelow};
 `
-export const TextSpan = styled.span`
+export const Text = styled.span`
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
@@ -60,7 +60,7 @@ export const TextSpan = styled.span`
     display: none;
   }
 `
-export const Container = styled.div`
+export const Buttons = styled.div`
   max-width: 766px;
   width: 90%;
   display: flex;
@@ -68,22 +68,23 @@ export const Container = styled.div`
   gap: 18px;
   margin-bottom: -10px;
 `
-export const SignRoleBtn = styled.button`
+export const SignRoleButton = styled.button`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: ${(props: BtnType) => (props.isSelectedRole ? '18px' : '16px')};
-  letter-spacing: ${(props: BtnType) =>
+  font-size: ${(props: ButtonType) => (props.isSelectedRole ? '18px' : '16px')};
+  letter-spacing: ${(props: ButtonType) =>
     props.isSelectedRole ? '0.16px' : '0.11px'};
-  line-height: ${(props: BtnType) => (props.isSelectedRole ? '20px' : '17px')};
+  line-height: ${(props: ButtonType) =>
+    props.isSelectedRole ? '20px' : '17px'};
   width: 374px;
   gap: 5px;
   border: none;
-  height: ${(props: BtnType) => (props.isSelectedRole ? '35px' : '28px')};
-  background-color: ${(props: BtnType) =>
-    props.isSelectedRole ? colors.silverblue : '#BBCFE2'};
-  box-shadow: ${(props: BtnType) =>
+  height: ${(props: ButtonType) => (props.isSelectedRole ? '35px' : '28px')};
+  background-color: ${(props: ButtonType) =>
+    props.isSelectedRole ? colors.silverBlue : '#BBCFE2'};
+  box-shadow: ${(props: ButtonType) =>
     !props.isSelectedRole && 'inset 0 -1px 6px 0 rgba(0, 0, 0, 0.15);'};
   border: none;
   border-radius: 3px 3px 0 0;
@@ -92,13 +93,13 @@ export const SignRoleBtn = styled.button`
   }
 `
 export const SignUnderline = styled.div`
-  height: ${(props: BtnType) => (props.isSelectedRole ? '4px' : '2px')};
+  height: ${(props: ButtonType) => (props.isSelectedRole ? '4px' : '2px')};
   width: 130px;
   background-color: ${colors.pink};
   margin-top: -2px;
 `
 export const VerifyUnderline = styled.div`
-  height: ${(props: BtnType) => (props.isSelectedRole ? '4px' : '2px')};
+  height: ${(props: ButtonType) => (props.isSelectedRole ? '4px' : '2px')};
   width: 130px;
   background-color: ${colors.green};
   margin-top: -2px;
