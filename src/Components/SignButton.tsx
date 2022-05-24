@@ -126,7 +126,7 @@ export const SignButton = () => {
       </Styled.ButtonContainer>
 
       <Styled.OnchainInfo>
-        Don&apos;t have an on-chain DID yet?
+        Don&apos;t have an on-chain DID yet?{' '}
         <a
           target="_blank"
           rel="noreferrer"
