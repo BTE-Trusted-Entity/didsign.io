@@ -105,24 +105,7 @@ export const SigningMultipleDidFiles = (props: Toggle) => {
     </Styled.Container>
   )
 }
-export const SigningDuplicateFiles = (props: Toggle) => {
-  return (
-    <Styled.Container>
-      <Styled.Popup>
-        <Styled.Wrapper>
-          <img src={AttentionIcon} />
-          <Styled.Heading>Sign Error</Styled.Heading>
 
-          <Styled.Text>
-            Duplicate files found. Please include each file only once
-          </Styled.Text>
-
-          <Styled.Dismiss onClick={props.dismiss}>DISMISS</Styled.Dismiss>
-        </Styled.Wrapper>
-      </Styled.Popup>
-    </Styled.Container>
-  )
-}
 export const ImprintPopup = (props: Toggle) => {
   return (
     <Styled.Imprint>
