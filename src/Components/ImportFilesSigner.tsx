@@ -15,7 +15,7 @@ import { createHash } from '../Utils/sign-helpers'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { FastAnimation, SlowAnimation } from './Animations'
 import { isDidSignFile } from '../Utils/verify-helper'
-import { SigningDuplicateFiles, SigningMultipleDidFiles } from './Popups'
+import { SigningMultipleDidFiles } from './Popups'
 import { showPopup } from '../Features/Signer/PopupSlice'
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
 import { clearSign, selectSign } from '../Features/Signer/SignatureSlice'
@@ -28,7 +28,6 @@ export const ImportFilesSigner = () => {
   const [signErrorPopup, setSignErrorPopup] = useState<boolean>(false)
   const dispatch = useAppDispatch()
   const files = useAppSelector(selectFile)
-  const [isDuplicate, setIsDuplicate] = useState<boolean>(false)
   const targetElement = document.querySelector('body')
   const sign = useAppSelector(selectSign)
 
@@ -39,47 +38,22 @@ export const ImportFilesSigner = () => {
       enableBodyScroll(targetElement)
     }
   }
-  const handleDuplicateDismiss = () => {
-    dispatch(showPopup(false))
-    setIsDuplicate(false)
-    if (targetElement != null) {
-      enableBodyScroll(targetElement)
-    }
-  }
   const handleDrop = useCallback(
     async (acceptedFiles: File[]) => {
-      if (sign !== '') {
-        const didSignFile = files.filter((file) => isDidSignFile(file.name))
-        const arrayBuffer = await didSignFile[0].arrayBuffer()
+      if (sign) {
+        const didSignFile = files.find((file) => isDidSignFile(file.name))
+        if (!didSignFile) return
+        const arrayBuffer = await didSignFile.arrayBuffer()
         const bufferObj: IBuffer = {
           buffer: arrayBuffer,
-          name: didSignFile[0].name,
+          name: didSignFile.name,
         }
-        dispatch(deleteFile(didSignFile[0]))
+        dispatch(deleteFile(didSignFile))
         dispatch(deleteBuffer(bufferObj))
         dispatch(clearSign())
       }
-      if ((acceptedFiles.filter((file) => files.includes(file)), length)) {
-        dispatch(showPopup(true))
-        setIsDuplicate(true)
-
-        if (targetElement != null) {
-          disableBodyScroll(targetElement)
-        }
-        return
-      }
       acceptedFiles.forEach(async (file: File) => {
         setImportIcon(ImportIcon)
-        if (
-          files.filter((fileInFiles) => fileInFiles.name === file.name).length
-        ) {
-          dispatch(showPopup(true))
-          setIsDuplicate(true)
-          if (targetElement != null) {
-            disableBodyScroll(targetElement)
-          }
-          return
-        }
 
         if (isDidSignFile(file.name)) {
           dispatch(showPopup(true))
@@ -91,7 +65,7 @@ export const ImportFilesSigner = () => {
         }
         const buffer = await file.arrayBuffer()
         const bufferObj: IBuffer = {
-          buffer: buffer,
+          buffer,
           name: file.name,
         }
         dispatch(addBuffer(bufferObj))
@@ -136,10 +110,6 @@ export const ImportFilesSigner = () => {
       </Dropzone>
 
       {signErrorPopup && <SigningMultipleDidFiles dismiss={handleDismiss} />}
-
-      {isDuplicate && (
-        <SigningDuplicateFiles dismiss={handleDuplicateDismiss} />
-      )}
     </Styled.Container>
   )
 }

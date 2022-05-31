@@ -1,25 +1,15 @@
 import React, { useState } from 'react'
-import { selectFinalHash, selectHash } from '../Features/Signer/hashSlice'
 import { useAppSelector } from '../app/hooks'
-import { selectDid, selectSign } from '../Features/Signer/SignatureSlice'
-import { generateJWS } from '../Utils/sign-helpers'
-import { Signature, SignDoc } from '../Utils/types'
 import { saveAs } from 'file-saver'
-import { IBuffer, selectBuffer } from '../Features/Signer/FileSlice'
+import { IBuffer, selectBuffer, selectFile } from '../Features/Signer/FileSlice'
 import JSZip from 'jszip'
 
 import * as Styled from '../StyledComponents/DownloadButtons'
 
 export const DownloadButtons = () => {
-  const sign = useAppSelector(selectSign)
-  const did = useAppSelector(selectDid)
-  const finalHash = useAppSelector(selectFinalHash)
-  const hashes = useAppSelector(selectHash)
   const buffers = useAppSelector(selectBuffer)
   const [showLoader, setShowLoader] = useState<boolean>(false)
   const [progress, setProgress] = useState<string>('0')
-
-  const signature: Signature = { keyID: did, signature: sign }
 
   const generateZipFile = async (buffers: IBuffer[]) => {
     const zip = new JSZip()
@@ -38,12 +28,8 @@ export const DownloadButtons = () => {
   }
 
   const handleDownloadSign = async () => {
-    const jws = generateJWS(signature, await finalHash)
-    const signedDoc: SignDoc = { hashes: hashes, jws: jws }
-    const blob = new Blob([JSON.stringify(signedDoc)], {
-      type: 'text/plain;charset=utf-8',
-    })
-    saveAs(blob, 'signature.didsign')
+    const [signatureFile] = useAppSelector(selectFile)
+    saveAs(signatureFile, 'signature.didsign')
   }
   const handleZip = async () => {
     setShowLoader(true)
