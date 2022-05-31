@@ -40,8 +40,9 @@ export const ImportFilesSigner = () => {
   }
   const handleDrop = useCallback(
     async (acceptedFiles: File[]) => {
-      if (!sign) {
-        const [didSignFile] = files.filter((file) => isDidSignFile(file.name))
+      if (sign) {
+        const didSignFile = files.find((file) => isDidSignFile(file.name))
+        if (!didSignFile) return
         const arrayBuffer = await didSignFile.arrayBuffer()
         const bufferObj: IBuffer = {
           buffer: arrayBuffer,
