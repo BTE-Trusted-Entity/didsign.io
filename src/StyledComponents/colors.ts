@@ -7,7 +7,7 @@ export const colors = {
   attentionOrange: '#F06543',
   silverBlue: '#CEE8FF',
   bottomSection: 'rgba(221, 240, 255, 0.5)',
-  pink: '#ab547f',
+  pink: '#91436A',
   green: '#387d7a',
   fastAnimation: '#9C9640',
   fileSection: 'rgba(221,240,255,0.5);',
