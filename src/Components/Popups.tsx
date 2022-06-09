@@ -217,9 +217,12 @@ export const PendingTx = () => {
           <Spinner size={58} />
           <Styled.Heading>Blockchain Transaction Pending</Styled.Heading>
 
+          <Styled.Text>
+            Your timestamp is being added to the KILT blockchain.
+          </Styled.Text>
+
           <Styled.BottomText>
-            Your timestamp is being added to the KILT blockchain. Please leave
-            this tab open until the transaction is complete.
+            Please leave this tab open until the transaction is complete.
           </Styled.BottomText>
         </Styled.Wrapper>
       </Styled.Popup>
@@ -227,17 +230,16 @@ export const PendingTx = () => {
   )
 }
 
-export const ErrorTryAgain = (props: Toggle) => {
+export const TimestampError = (props: Toggle) => {
   return (
     <Styled.Container>
       <Styled.Popup>
         <Styled.Wrapper>
           <img src={AttentionIcon} />
-          <Styled.Heading>Something went wrong!</Styled.Heading>
+          <Styled.Heading>Error: Timestamping</Styled.Heading>
 
           <Styled.Text>
-            An error occured during the timestamping process. Click “Try Again”
-            or reload the page or restart your browser.
+            Click “Try Again” or reload the page or restart your browser.
           </Styled.Text>
 
           <Styled.Dismiss onClick={props.dismiss}>TRY AGAIN</Styled.Dismiss>

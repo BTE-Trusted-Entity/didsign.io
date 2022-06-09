@@ -34,7 +34,7 @@ import { useConnect } from '../Hooks/useConnect'
 import { usePreventNavigation } from '../Hooks/usePreventNavigation'
 
 import { Spinner } from './Spinner'
-import { ErrorTryAgain, PendingTx, SignPopup } from './Popups'
+import { PendingTx, SignPopup, TimestampError } from './Popups'
 
 import * as Styled from '../StyledComponents/Timestamp'
 
@@ -305,7 +305,7 @@ export function Timestamp() {
           <Styled.Section>{timestamp}</Styled.Section>
         )}
 
-        {status === 'error' && <ErrorTryAgain dismiss={handleTryAgain} />}
+        {status === 'error' && <TimestampError dismiss={handleTryAgain} />}
       </Styled.Timestamp>
     </Styled.Container>
   )
