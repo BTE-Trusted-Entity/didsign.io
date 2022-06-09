@@ -73,6 +73,7 @@ export const Dismiss = styled.button`
   margin-top: 30px;
   color: white;
   margin-bottom: 10px;
+  text-transform: uppercase;
 `
 export const Imprint = styled.div`
   display: flex;

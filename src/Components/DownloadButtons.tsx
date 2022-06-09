@@ -13,6 +13,7 @@ import * as Styled from '../StyledComponents/DownloadButtons'
 
 export const DownloadButtons = () => {
   const buffers = useAppSelector(selectBuffers)
+  const [signatureFile] = useAppSelector(selectFiles)
   const [showLoader, setShowLoader] = useState<boolean>(false)
   const [progress, setProgress] = useState<string>('0')
 
@@ -33,7 +34,6 @@ export const DownloadButtons = () => {
   }
 
   const handleDownloadSign = async () => {
-    const [signatureFile] = useAppSelector(selectFiles)
     saveAs(signatureFile, 'signature.didsign')
   }
 

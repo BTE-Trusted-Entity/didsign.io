@@ -35,7 +35,7 @@ export const MultipleSignPopup = () => {
           </Styled.Text>
 
           <Styled.Dismiss onClick={() => handleDismiss()}>
-            DISMISS
+            Dismiss
           </Styled.Dismiss>
         </Styled.Wrapper>
       </Styled.Popup>
@@ -100,7 +100,7 @@ export const SigningMultipleDidFiles = (props: Toggle) => {
 
           <Styled.Text> Signing of signature file is not allowed.</Styled.Text>
 
-          <Styled.Dismiss onClick={props.dismiss}>DISMISS</Styled.Dismiss>
+          <Styled.Dismiss onClick={props.dismiss}>Dismiss</Styled.Dismiss>
         </Styled.Wrapper>
       </Styled.Popup>
     </Styled.Container>
@@ -145,7 +145,7 @@ export const ImprintPopup = (props: Toggle) => {
           Requirements according to § 5 TMG (Germany)
         </Styled.ImprintText>
 
-        <Styled.Dismiss onClick={props.dismiss}>DISMISS</Styled.Dismiss>
+        <Styled.Dismiss onClick={props.dismiss}>Dismiss</Styled.Dismiss>
       </Styled.ImprintContainer>
     </Styled.Imprint>
   )
@@ -163,7 +163,7 @@ export const SignPopup = (props: Toggle) => {
             transaction there.
           </Styled.Text>
 
-          <Styled.Dismiss onClick={props.dismiss}>DISMISS</Styled.Dismiss>
+          <Styled.Dismiss onClick={props.dismiss}>Dismiss</Styled.Dismiss>
         </Styled.Wrapper>
       </Styled.Popup>
     </Styled.Container>
@@ -184,7 +184,7 @@ export const NoWalletPopup = (props: Toggle) => {
             on-chain signing on the KILT blockchain can also be used.
           </Styled.Text>
 
-          <Styled.Dismiss onClick={props.dismiss}>DISMISS</Styled.Dismiss>
+          <Styled.Dismiss onClick={props.dismiss}>Dismiss</Styled.Dismiss>
         </Styled.Wrapper>
       </Styled.Popup>
     </Styled.Container>
@@ -202,7 +202,7 @@ export const SignErrorPopup = (props: Toggle) => {
             It looks like error occured while signing. Please try again.
           </Styled.Text>
 
-          <Styled.Dismiss onClick={props.dismiss}>DISMISS</Styled.Dismiss>
+          <Styled.Dismiss onClick={props.dismiss}>Dismiss</Styled.Dismiss>
         </Styled.Wrapper>
       </Styled.Popup>
     </Styled.Container>
@@ -242,7 +242,7 @@ export const TimestampError = (props: Toggle) => {
             Click “Try Again” or reload the page or restart your browser.
           </Styled.Text>
 
-          <Styled.Dismiss onClick={props.dismiss}>TRY AGAIN</Styled.Dismiss>
+          <Styled.Dismiss onClick={props.dismiss}>Try again</Styled.Dismiss>
         </Styled.Wrapper>
       </Styled.Popup>
     </Styled.Container>

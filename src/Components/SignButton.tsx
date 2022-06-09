@@ -59,7 +59,7 @@ export const SignButton = () => {
         const jws = generateJWS(signature, await finalHash)
         const signedDoc: SignDoc = { hashes: hashes, jws: jws }
         const blob = new Blob([JSON.stringify(signedDoc)], {
-          type: 'text/plain;charset=utf-8',
+          type: 'application/json;charset=utf-8',
         })
         await generateSignatureFile(blob)
         dispatch(showPopup(false))

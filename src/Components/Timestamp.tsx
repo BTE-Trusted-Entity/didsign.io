@@ -102,7 +102,7 @@ export function Timestamp() {
 
   const handleMenuClose = useCallback(() => {
     setIsAccountsMenuOpen(false)
-  }, [isAccountsMenuOpen])
+  }, [])
 
   const handleSelectClick = useCallback(
     (account: IKiltAccount) => () => {
@@ -127,37 +127,39 @@ export function Timestamp() {
     return accounts?.filter((account) => account !== selectedAccount)
   }, [selectedAccount, accounts])
 
-  async function handleFinalized(blockHash: string, txHash: string) {
-    try {
-      const { buffer } = buffers[0]
-      const decoder = new TextDecoder('utf-8')
-      const decoded = decoder.decode(buffer)
-      const didSignData = JSON.parse(decoded) as SignDoc
+  const handleFinalized = useCallback(
+    async (blockHash: string, txHash: string) => {
+      try {
+        const { buffer } = buffers[0]
+        const decoder = new TextDecoder('utf-8')
+        const decoded = decoder.decode(buffer)
+        const didSignData = JSON.parse(decoded) as SignDoc
 
-      const withRemark = { ...didSignData, remark: { txHash, blockHash } }
+        const withRemark = { ...didSignData, remark: { txHash, blockHash } }
 
-      const blob = new Blob([JSON.stringify(withRemark)], {
-        type: 'text/plain;charset=utf-8',
-      })
-      const newFile = new File([blob], 'signature.didsign')
-      const newBufferObj: IBuffer = {
-        buffer: await newFile.arrayBuffer(),
-        name: newFile.name,
+        const blob = new Blob([JSON.stringify(withRemark)], {
+          type: 'application/json;charset=utf-8',
+        })
+        const newFile = new File([blob], 'signature.didsign')
+        const newBufferObj: IBuffer = {
+          buffer: await newFile.arrayBuffer(),
+          name: newFile.name,
+        }
+
+        dispatch(updateBufferTop(newBufferObj))
+        dispatch(updateFileTop(newFile))
+
+        setTimestamp(await getTimestamp(blockHash))
+
+        setStatus('done')
+        dispatch(showPopup(false))
+      } catch (exception) {
+        setStatus('error')
+        console.error(exceptionToError(exception))
       }
-
-      dispatch(updateBufferTop(newBufferObj))
-      dispatch(updateFileTop(newFile))
-
-      setTimestamp(await getTimestamp(blockHash))
-
-      setStatus('done')
-      dispatch(showPopup(false))
-    } catch (exception) {
-      setStatus('error')
-      console.error(exceptionToError(exception))
-    }
-  }
-
+    },
+    [buffers, dispatch]
+  )
   const handleSubmit = useCallback(
     async (event) => {
       event.preventDefault()
@@ -191,21 +193,19 @@ export function Timestamp() {
               )
             }
 
-            // https://github.com/BTE-Trusted-Entity/stakeboard/blob/main/src/utils/chain.ts#L133
-            if (dispatchError) {
-              if (dispatchError.isModule) {
-                // for module errors, we have the section indexed, lookup
-                const decoded = api.registry.findMetaError(
-                  dispatchError.asModule
-                )
-                const { docs, name, section } = decoded
-
-                throw new Error(`${section}.${name}: ${docs.join(' ')}`)
-              } else {
-                // Other, CannotLookup, BadOrigin, no extra info
-                throw new Error(dispatchError.toString())
-              }
+            if (!dispatchError) {
+              return
             }
+
+            if (!dispatchError.isModule) {
+              // Other, CannotLookup, BadOrigin, no extra info
+              throw new Error(dispatchError.toString())
+            }
+
+            const decoded = api.registry.findMetaError(dispatchError.asModule)
+            const { docs, name, section } = decoded
+
+            throw new Error(`${section}.${name}: ${docs.join(' ')}`)
           }
         )
       } catch (exception) {
@@ -216,7 +216,7 @@ export function Timestamp() {
         }
       }
     },
-    [selectedAccount]
+    [selectedAccount, handleFinalized, signature, dispatch]
   )
 
   function handleDismiss() {

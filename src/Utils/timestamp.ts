@@ -15,8 +15,8 @@ export async function getKiltAccounts() {
       !account.meta.genesisHash || account.meta.genesisHash === genesisHash
   )
 
-  return kiltAccounts.map(({ address, meta }) => {
-    return { address, source: meta.source, name: meta.name }
+  return kiltAccounts.map(({ address, meta: { source, name } }) => {
+    return { address, source, name }
   })
 }
 
@@ -27,7 +27,9 @@ export async function getExtrinsic(signature: string) {
 }
 
 export async function getFee() {
-  const extrinsic = await getExtrinsic('Some remark')
+  const extrinsic = await getExtrinsic(
+    '0x68a86f57289c19e016d94eedbbcb8c6ce97753adeee6e5a97f59970de706a41a4d73c37466892a562be1c456377c3c6dca477f0cf5b5c499b4dde15495c6fb87'
+  )
 
   const fakeSeed = new Uint8Array(32)
   const keyring = new Keyring({ type: 'sr25519', ss58Format: 38 })
@@ -39,8 +41,8 @@ export async function getFee() {
 export async function getTimestamp(blockHash: string) {
   const { api } = await BlockchainApiConnection.getConnectionOrConnect()
 
-  const block = await api.at(blockHash)
-  const timestamp = (await block.query.timestamp.now()).toNumber()
+  const apiInstance = await api.at(blockHash)
+  const timestamp = (await apiInstance.query.timestamp.now()).toNumber()
 
   return new Date(timestamp).toLocaleString()
 }

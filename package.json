@@ -5,7 +5,7 @@
   "dependencies": {
     "@craco/craco": "^6.4.3",
     "@kiltprotocol/sdk-js": "^0.26.1",
-    "@polkadot/extension-dapp": "^0.43.2",
+    "@polkadot/extension-dapp": "^0.42.7",
     "@reduxjs/toolkit": "^1.7.2",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
