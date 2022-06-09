@@ -1,13 +1,13 @@
 import React, { Fragment } from 'react'
+
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import {
   clearAll,
   clearFileName,
   deleteFile,
-  selectFile,
-  selectFilename,
+  selectFiles,
+  selectFilenames,
 } from '../Features/Signer/FileSlice'
-
 import {
   clearEndpoint,
   clearFileStatuses,
@@ -15,20 +15,20 @@ import {
   fileStatus,
   replaceStatus,
 } from '../Features/Signer/EndpointSlice'
-
 import { clearHash, deleteHashFromIndex } from '../Features/Signer/hashSlice'
 import {
   clearJWS,
   selectJwsSignStatus,
   updateSignStatus,
 } from '../Features/Signer/VerifyJwsSlice'
+
 import { isDidSignFile } from '../Utils/verify-helper'
 
 import * as Styled from '../StyledComponents/FilesVerifier'
 
 export const FilesVerifier = () => {
-  const files = useAppSelector(selectFile)
-  const unzippedFileNames = useAppSelector(selectFilename)
+  const files = useAppSelector(selectFiles)
+  const unzippedFileNames = useAppSelector(selectFilenames)
 
   const jwsStatus = useAppSelector(selectJwsSignStatus)
   const status = useAppSelector(fileStatus)
@@ -78,7 +78,7 @@ export const FilesVerifier = () => {
     <Fragment>
       {hasUnzippedFiles && (
         <Styled.ZipContainer>
-          <Styled.ZipFile as="div">
+          <Styled.ZipFile>
             <Styled.ZipFileName>{files[0].name}</Styled.ZipFileName>
 
             <Styled.DeleteButton
@@ -91,9 +91,9 @@ export const FilesVerifier = () => {
 
           <Styled.List>
             {unzippedFileNames.map((name: string, index: number) => (
-              <Styled.UnzippedFile key={index} statusOk={status[index]}>
+              <Styled.UnzippedFile key={index} statusOk={status[index]} as="li">
                 {isDidSignFile(name) ? (
-                  <Styled.DidFile>{name}</Styled.DidFile>
+                  <Styled.DidSignFile>{name}</Styled.DidSignFile>
                 ) : name.includes('png') || name.includes('jpg') ? (
                   <Styled.ImageFile>{name}</Styled.ImageFile>
                 ) : (
@@ -111,9 +111,9 @@ export const FilesVerifier = () => {
 
           <Styled.List>
             {files.map((file: File, index: number) => (
-              <Styled.File key={index} statusOk={status[index]}>
+              <Styled.File key={index} statusOk={status[index]} as="li">
                 {isDidSignFile(file.name) ? (
-                  <Styled.DidFile>{file.name}</Styled.DidFile>
+                  <Styled.DidSignFile>{file.name}</Styled.DidSignFile>
                 ) : file.type.includes('image') ? (
                   <Styled.ImageFile>{file.name}</Styled.ImageFile>
                 ) : (

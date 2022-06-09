@@ -56,6 +56,9 @@ export const Text = styled.span`
   padding-right: 8px;
   margin-top: 20px;
 `
+export const BottomText = styled(Text)`
+  margin-bottom: 30px;
+`
 export const Dismiss = styled.button`
   display: flex;
   align-items: center;
@@ -70,6 +73,7 @@ export const Dismiss = styled.button`
   margin-top: 30px;
   color: white;
   margin-bottom: 10px;
+  text-transform: uppercase;
 `
 export const Imprint = styled.div`
   display: flex;

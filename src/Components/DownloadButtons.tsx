@@ -1,13 +1,19 @@
 import React, { useState } from 'react'
 import { useAppSelector } from '../app/hooks'
 import { saveAs } from 'file-saver'
-import { IBuffer, selectBuffer, selectFile } from '../Features/Signer/FileSlice'
 import JSZip from 'jszip'
+
+import {
+  IBuffer,
+  selectBuffers,
+  selectFiles,
+} from '../Features/Signer/FileSlice'
 
 import * as Styled from '../StyledComponents/DownloadButtons'
 
 export const DownloadButtons = () => {
-  const buffers = useAppSelector(selectBuffer)
+  const buffers = useAppSelector(selectBuffers)
+  const [signatureFile] = useAppSelector(selectFiles)
   const [showLoader, setShowLoader] = useState<boolean>(false)
   const [progress, setProgress] = useState<string>('0')
 
@@ -28,9 +34,9 @@ export const DownloadButtons = () => {
   }
 
   const handleDownloadSign = async () => {
-    const [signatureFile] = useAppSelector(selectFile)
     saveAs(signatureFile, 'signature.didsign')
   }
+
   const handleZip = async () => {
     setShowLoader(true)
     document.body.style.pointerEvents = 'none'
@@ -38,6 +44,7 @@ export const DownloadButtons = () => {
     setShowLoader(false)
     document.body.style.pointerEvents = 'auto'
   }
+
   return (
     <Styled.Container>
       <Styled.ZipButtonWrapper>

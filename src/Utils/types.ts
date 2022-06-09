@@ -6,6 +6,10 @@ export interface Signature {
 export interface SignDoc {
   jws: string
   hashes: string[]
+  remark?: {
+    txHash: string
+    blockHash: string
+  }
 }
 
 export interface ISignatureEndPoint {
@@ -18,4 +22,10 @@ export interface ISignatureEndPoint {
 export interface ISignatureEndPointWithStatus {
   signatureWithEndpoint: ISignatureEndPoint
   fileStatus: boolean[]
+}
+
+export interface IKiltAccount {
+  address: string
+  source: string
+  name?: string
 }

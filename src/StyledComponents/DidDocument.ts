@@ -31,7 +31,7 @@ export const VerificationText = styled.span`
   width: 80px;
 `
 export const VerificationErrorText = styled(VerificationText)`
-  color: ${colors.attentionOrange};
+  color: ${colors.orange};
 `
 export const VerificationIcon = styled.div`
   display: flex;
@@ -50,7 +50,7 @@ export const Text = styled.span`
   width: 550px;
 `
 export const ErrorText = styled(Text)`
-  color: ${colors.attentionOrange};
+  color: ${colors.orange};
   word-break: normal;
 `
 export const EndpointsWrapper = styled.div`
@@ -76,5 +76,5 @@ export const Title = styled.span`
   text-align: left;
 `
 export const ErrorTitle = styled(Title)`
-  color: ${colors.attentionOrange};
+  color: ${colors.orange};
 `

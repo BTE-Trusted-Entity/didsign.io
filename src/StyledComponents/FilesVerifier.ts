@@ -9,7 +9,7 @@ import AttentionIcon from '../ImageAssets/icon_attention.svg'
 export const Container = Files.Container
 export const Heading = Files.Heading
 export const List = Files.List
-export const DidFile = Files.DidFile
+export const DidSignFile = Files.DidSignFile
 export const ImageFile = Files.ImageFile
 export const DocFile = Files.DocFile
 export const DeleteButton = Files.DeleteButton

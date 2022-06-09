@@ -6,16 +6,16 @@ export interface IBuffer {
   name: string
 }
 interface IFileState {
-  value: File[]
-  filename: string[]
-  buffer: IBuffer[]
+  values: File[]
+  filenames: string[]
+  buffers: IBuffer[]
 }
 
 // Define the initial state using that type
 const initialState: IFileState = {
-  value: [],
-  filename: [],
-  buffer: [],
+  values: [],
+  filenames: [],
+  buffers: [],
 }
 
 export const fileSlice = createSlice({
@@ -24,48 +24,54 @@ export const fileSlice = createSlice({
   reducers: {
     deleteFile: (state, action: PayloadAction<File>) => ({
       ...state,
-      value: state.value.filter((element) => element !== action.payload),
+      values: state.values.filter((element) => element !== action.payload),
     }),
     deleteBuffer: (state, action: PayloadAction<IBuffer>) => ({
       ...state,
-      buffer: state.buffer.filter(
+      buffers: state.buffers.filter(
         (element) => element.name !== action.payload.name
       ),
     }),
     clearAll: (state) => {
       return {
         ...state,
-        value: initialState.value,
-        filename: initialState.filename,
-        buffer: initialState.buffer,
+        values: initialState.values,
+        filenames: initialState.filenames,
+        buffers: initialState.buffers,
       }
     },
     // Use the PayloadAction type to declare the contents of `action.payload`
     addFile: (state, action: PayloadAction<File>) => {
-      state.value = [...state.value, action.payload]
+      state.values = [...state.values, action.payload]
     },
     addBuffer: (state, action: PayloadAction<IBuffer>) => {
       const arraybuffer = action.payload.buffer
       const name = action.payload.name
       const newBufferObj: IBuffer = { buffer: arraybuffer, name: name }
-      state.buffer = [...state.buffer, newBufferObj]
+      state.buffers = [...state.buffers, newBufferObj]
     },
     addFileTop: (state, action: PayloadAction<File>) => {
-      state.value = [action.payload, ...state.value]
+      state.values = [action.payload, ...state.values]
+    },
+    updateFileTop: (state, action: PayloadAction<File>) => {
+      state.values[0] = action.payload
     },
     addBufferTop: (state, action: PayloadAction<IBuffer>) => {
       const arraybuffer = action.payload.buffer
       const name = action.payload.name
       const newBufferObj: IBuffer = { buffer: arraybuffer, name: name }
-      state.buffer = [newBufferObj, ...state.buffer]
+      state.buffers = [newBufferObj, ...state.buffers]
+    },
+    updateBufferTop: (state, action: PayloadAction<IBuffer>) => {
+      state.buffers[0] = action.payload
     },
     addFileName: (state, action: PayloadAction<string[]>) => {
-      state.filename = state.filename.concat(action.payload)
+      state.filenames = state.filenames.concat(action.payload)
     },
     clearFileName: (state) => {
       return {
         ...state,
-        filename: initialState.filename,
+        filenames: initialState.filenames,
       }
     },
   },
@@ -76,16 +82,18 @@ export const {
   clearAll,
   addFile,
   addFileTop,
+  updateFileTop,
   addFileName,
   clearFileName,
   addBuffer,
   addBufferTop,
+  updateBufferTop,
   deleteBuffer,
 } = fileSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectFile = (state: RootState) => state.files.value
-export const selectBuffer = (state: RootState) => state.files.buffer
+export const selectFiles = (state: RootState) => state.files.values
+export const selectBuffers = (state: RootState) => state.files.buffers
 
-export const selectFilename = (state: RootState) => state.files.filename
+export const selectFilenames = (state: RootState) => state.files.filenames
 export default fileSlice.reducer

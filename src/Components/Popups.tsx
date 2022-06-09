@@ -7,6 +7,7 @@ import { updateSignStatus } from '../Features/Signer/VerifyJwsSlice'
 import { clearEndpoint } from '../Features/Signer/EndpointSlice'
 import SignatureIcon from '../ImageAssets/icon_DID.svg'
 import BTE from '../ImageAssets/bte_logo_black.png'
+import { Spinner } from './Spinner'
 
 import * as Styled from '../StyledComponents/Popups'
 
@@ -34,7 +35,7 @@ export const MultipleSignPopup = () => {
           </Styled.Text>
 
           <Styled.Dismiss onClick={() => handleDismiss()}>
-            DISMISS
+            Dismiss
           </Styled.Dismiss>
         </Styled.Wrapper>
       </Styled.Popup>
@@ -99,7 +100,7 @@ export const SigningMultipleDidFiles = (props: Toggle) => {
 
           <Styled.Text> Signing of signature file is not allowed.</Styled.Text>
 
-          <Styled.Dismiss onClick={props.dismiss}>DISMISS</Styled.Dismiss>
+          <Styled.Dismiss onClick={props.dismiss}>Dismiss</Styled.Dismiss>
         </Styled.Wrapper>
       </Styled.Popup>
     </Styled.Container>
@@ -144,7 +145,7 @@ export const ImprintPopup = (props: Toggle) => {
           Requirements according to § 5 TMG (Germany)
         </Styled.ImprintText>
 
-        <Styled.Dismiss onClick={props.dismiss}>DISMISS</Styled.Dismiss>
+        <Styled.Dismiss onClick={props.dismiss}>Dismiss</Styled.Dismiss>
       </Styled.ImprintContainer>
     </Styled.Imprint>
   )
@@ -162,7 +163,7 @@ export const SignPopup = (props: Toggle) => {
             transaction there.
           </Styled.Text>
 
-          <Styled.Dismiss onClick={props.dismiss}>DISMISS</Styled.Dismiss>
+          <Styled.Dismiss onClick={props.dismiss}>Dismiss</Styled.Dismiss>
         </Styled.Wrapper>
       </Styled.Popup>
     </Styled.Container>
@@ -183,7 +184,7 @@ export const NoWalletPopup = (props: Toggle) => {
             on-chain signing on the KILT blockchain can also be used.
           </Styled.Text>
 
-          <Styled.Dismiss onClick={props.dismiss}>DISMISS</Styled.Dismiss>
+          <Styled.Dismiss onClick={props.dismiss}>Dismiss</Styled.Dismiss>
         </Styled.Wrapper>
       </Styled.Popup>
     </Styled.Container>
@@ -201,7 +202,47 @@ export const SignErrorPopup = (props: Toggle) => {
             It looks like error occured while signing. Please try again.
           </Styled.Text>
 
-          <Styled.Dismiss onClick={props.dismiss}>DISMISS</Styled.Dismiss>
+          <Styled.Dismiss onClick={props.dismiss}>Dismiss</Styled.Dismiss>
+        </Styled.Wrapper>
+      </Styled.Popup>
+    </Styled.Container>
+  )
+}
+
+export const PendingTx = () => {
+  return (
+    <Styled.Container>
+      <Styled.Popup>
+        <Styled.Wrapper>
+          <Spinner size={58} />
+          <Styled.Heading>Blockchain Transaction Pending</Styled.Heading>
+
+          <Styled.Text>
+            Your timestamp is being added to the KILT blockchain.
+          </Styled.Text>
+
+          <Styled.BottomText>
+            Please leave this tab open until the transaction is complete.
+          </Styled.BottomText>
+        </Styled.Wrapper>
+      </Styled.Popup>
+    </Styled.Container>
+  )
+}
+
+export const TimestampError = (props: Toggle) => {
+  return (
+    <Styled.Container>
+      <Styled.Popup>
+        <Styled.Wrapper>
+          <img src={AttentionIcon} />
+          <Styled.Heading>Error: Timestamping</Styled.Heading>
+
+          <Styled.Text>
+            Click “Try Again” or reload the page or restart your browser.
+          </Styled.Text>
+
+          <Styled.Dismiss onClick={props.dismiss}>Try again</Styled.Dismiss>
         </Styled.Wrapper>
       </Styled.Popup>
     </Styled.Container>
