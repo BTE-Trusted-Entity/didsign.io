@@ -91,7 +91,7 @@ export const FilesSigner = () => {
         ))}
       </Styled.List>
 
-      {signPopup && <SignFileInfoPopup dismiss={handleDismiss} />}
+      {signPopup && <SignFileInfoPopup onDismiss={handleDismiss} />}
     </Styled.Container>
   )
 }

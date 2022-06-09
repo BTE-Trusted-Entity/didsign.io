@@ -1,18 +1,14 @@
 import React from 'react'
-import AttentionIcon from '../ImageAssets/iconBIG_attention.svg'
-import InfoIcon from '../ImageAssets/iconBIG_info.svg'
+
 import { useAppDispatch } from '../app/hooks'
 import { showPopup } from '../Features/Signer/PopupSlice'
 import { updateSignStatus } from '../Features/Signer/VerifyJwsSlice'
 import { clearEndpoint } from '../Features/Signer/EndpointSlice'
-import SignatureIcon from '../ImageAssets/icon_DID.svg'
-import BTE from '../ImageAssets/bte_logo_black.png'
-import { Spinner } from './Spinner'
 
 import * as Styled from '../StyledComponents/Popups'
 
-interface Toggle {
-  dismiss: React.MouseEventHandler<HTMLButtonElement>
+interface Props {
+  onDismiss: React.MouseEventHandler<HTMLButtonElement>
 }
 
 export const MultipleSignPopup = () => {
@@ -25,95 +21,83 @@ export const MultipleSignPopup = () => {
   return (
     <Styled.Container>
       <Styled.Popup>
-        <Styled.Wrapper>
-          <img src={AttentionIcon} />
-          <Styled.Heading>Verification Error</Styled.Heading>
+        <Styled.AttentionHeading>Verification Error</Styled.AttentionHeading>
 
-          <Styled.Text>
-            Multiple signature files found. Please import only one signature
-            file.
-          </Styled.Text>
+        <Styled.Text>
+          Multiple signature files found. Please import only one signature file.
+        </Styled.Text>
 
-          <Styled.Dismiss onClick={() => handleDismiss()}>
-            Dismiss
-          </Styled.Dismiss>
-        </Styled.Wrapper>
+        <Styled.Dismiss onClick={() => handleDismiss()}>Dismiss</Styled.Dismiss>
       </Styled.Popup>
     </Styled.Container>
   )
 }
 
-export const SignFileInfoPopup = (props: Toggle) => {
+export const SignFileInfoPopup = ({ onDismiss }: Props) => {
   return (
     <Styled.Container>
       <Styled.Popup>
-        <Styled.Wrapper>
-          <img src={InfoIcon} />
-          <Styled.Heading>
-            <img src={SignatureIcon} />
-            Signature
-          </Styled.Heading>
+        <Styled.SignatureHeading>Signature</Styled.SignatureHeading>
 
-          <Styled.Text>
-            Your files have been signed and your DIDsign signature has been
-            added successfully.
-            <br /> The receiver of your documents needs to get your signature
-            together with the set of signed files in order to get the
-            verification. <br /> The easiest way to proceed is to zip all files
-            into one archive.
-          </Styled.Text>
+        <Styled.Text>
+          Your files have been signed and your DIDsign signature has been added
+          successfully.
+        </Styled.Text>
+        <Styled.Text>
+          The receiver of your documents needs to get your signature together
+          with the set of signed files in order to get the verification.
+        </Styled.Text>
+        <Styled.Text>
+          The easiest way to proceed is to zip all files into one archive.
+        </Styled.Text>
 
-          <Styled.Dismiss onClick={props.dismiss}>OK</Styled.Dismiss>
-        </Styled.Wrapper>
+        <Styled.Dismiss onClick={onDismiss}>OK</Styled.Dismiss>
       </Styled.Popup>
     </Styled.Container>
   )
 }
-export const SignButtonInfoPopup = (props: Toggle) => {
+
+export const SignButtonInfoPopup = ({ onDismiss }: Props) => {
   return (
     <Styled.Container>
       <Styled.Popup>
-        <Styled.Wrapper>
-          <img src={InfoIcon} />
-          <Styled.Heading>Signing</Styled.Heading>
+        <Styled.InfoHeading>Signing</Styled.InfoHeading>
 
-          <Styled.Text>
-            In order to successfully sign your files with DIDsign, make sure to
-            have a wallet installed that has an on-chain DID.
-            <br /> We recommend to use Sporran, which is a browser extension
-            available for Google Chrome and Mozilla Firefox.
-          </Styled.Text>
+        <Styled.Text>
+          In order to successfully sign your files with DIDsign, make sure to
+          have a wallet installed that has an on-chain DID.
+        </Styled.Text>
+        <Styled.Text>
+          We recommend to use Sporran, which is a browser extension available
+          for Google Chrome and Mozilla Firefox.
+        </Styled.Text>
 
-          <Styled.Dismiss onClick={props.dismiss}>OK</Styled.Dismiss>
-        </Styled.Wrapper>
+        <Styled.Dismiss onClick={onDismiss}>OK</Styled.Dismiss>
       </Styled.Popup>
     </Styled.Container>
   )
 }
-export const SigningMultipleDidFiles = (props: Toggle) => {
+
+export const SigningMultipleDidFiles = ({ onDismiss }: Props) => {
   return (
     <Styled.Container>
       <Styled.Popup>
-        <Styled.Wrapper>
-          <img src={AttentionIcon} />
-          <Styled.Heading>Sign Error</Styled.Heading>
+        <Styled.AttentionHeading>Sign Error</Styled.AttentionHeading>
 
-          <Styled.Text> Signing of signature file is not allowed.</Styled.Text>
+        <Styled.Text>Signing of signature file is not allowed.</Styled.Text>
 
-          <Styled.Dismiss onClick={props.dismiss}>Dismiss</Styled.Dismiss>
-        </Styled.Wrapper>
+        <Styled.Dismiss onClick={onDismiss}>Dismiss</Styled.Dismiss>
       </Styled.Popup>
     </Styled.Container>
   )
 }
 
-export const ImprintPopup = (props: Toggle) => {
+export const ImprintPopup = ({ onDismiss }: Props) => {
   return (
     <Styled.Imprint>
-      <Styled.ImprintContainer>
-        <Styled.BTELogo src={BTE} />
+      <Styled.ImprintPopup>
+        <Styled.ImprintHeading>Imprint</Styled.ImprintHeading>
 
-        <Styled.ImprintText setMargin>Imprint</Styled.ImprintText>
         <Styled.ImprintText>
           B.T.E. BOTLabs Trusted Entity GmbH
         </Styled.ImprintText>
@@ -130,7 +114,7 @@ export const ImprintPopup = (props: Toggle) => {
         <Styled.ImprintText>
           Contact: <a href="mailto:info@botlabs.org">info@botlabs.org</a>
         </Styled.ImprintText>
-        <Styled.ImprintText setMargin>
+        <Styled.ImprintText>
           Or go to{' '}
           <a
             href="https://support.kilt.io/support/home"
@@ -141,69 +125,63 @@ export const ImprintPopup = (props: Toggle) => {
           </a>{' '}
           and click on “Contact Us”
         </Styled.ImprintText>
-        <Styled.ImprintText>
+        <Styled.ImprintBottomText>
           Requirements according to § 5 TMG (Germany)
-        </Styled.ImprintText>
+        </Styled.ImprintBottomText>
 
-        <Styled.Dismiss onClick={props.dismiss}>Dismiss</Styled.Dismiss>
-      </Styled.ImprintContainer>
+        <Styled.Dismiss onClick={onDismiss}>Dismiss</Styled.Dismiss>
+      </Styled.ImprintPopup>
     </Styled.Imprint>
   )
 }
-export const SignPopup = (props: Toggle) => {
+
+export const SignPopup = ({ onDismiss }: Props) => {
   return (
     <Styled.Container>
       <Styled.Popup>
-        <Styled.Wrapper>
-          <img src={InfoIcon} />
-          <Styled.Heading>Signature Needed</Styled.Heading>
+        <Styled.InfoHeading>Signature Needed</Styled.InfoHeading>
 
-          <Styled.Text>
-            Please wait for your wallet extension to open and sign the
-            transaction there.
-          </Styled.Text>
+        <Styled.Text>
+          Please wait for your wallet extension to open and sign the transaction
+          there.
+        </Styled.Text>
 
-          <Styled.Dismiss onClick={props.dismiss}>Dismiss</Styled.Dismiss>
-        </Styled.Wrapper>
+        <Styled.Dismiss onClick={onDismiss}>Dismiss</Styled.Dismiss>
       </Styled.Popup>
     </Styled.Container>
   )
 }
-export const NoWalletPopup = (props: Toggle) => {
+
+export const NoWalletPopup = ({ onDismiss }: Props) => {
   return (
     <Styled.Container>
       <Styled.Popup>
-        <Styled.Wrapper>
-          <img src={InfoIcon} />
-          <Styled.Heading>No Wallet Found</Styled.Heading>
+        <Styled.InfoHeading>No Wallet Found</Styled.InfoHeading>
 
-          <Styled.Text>
-            To sign your files with DIDsign you need an on-chain DID in a wallet
-            that supports it. We recommend Sporran, a browser extension
-            available for Google Chrome and Firefox. Any other wallet supporting
-            on-chain signing on the KILT blockchain can also be used.
-          </Styled.Text>
+        <Styled.Text>
+          To sign your files with DIDsign you need an on-chain DID in a wallet
+          that supports it. We recommend Sporran, a browser extension available
+          for Google Chrome and Firefox. Any other wallet supporting on-chain
+          signing on the KILT blockchain can also be used.
+        </Styled.Text>
 
-          <Styled.Dismiss onClick={props.dismiss}>Dismiss</Styled.Dismiss>
-        </Styled.Wrapper>
+        <Styled.Dismiss onClick={onDismiss}>Dismiss</Styled.Dismiss>
       </Styled.Popup>
     </Styled.Container>
   )
 }
-export const SignErrorPopup = (props: Toggle) => {
+
+export const SignErrorPopup = ({ onDismiss }: Props) => {
   return (
     <Styled.Container>
       <Styled.Popup>
-        <Styled.Wrapper>
-          <img src={AttentionIcon} />
-          <Styled.Heading>Sign Error</Styled.Heading>
+        <Styled.AttentionHeading>Sign Error</Styled.AttentionHeading>
 
-          <Styled.Text>
-            It looks like error occured while signing. Please try again.
-          </Styled.Text>
+        <Styled.Text>
+          It looks like error occured while signing. Please try again.
+        </Styled.Text>
 
-          <Styled.Dismiss onClick={props.dismiss}>Dismiss</Styled.Dismiss>
-        </Styled.Wrapper>
+        <Styled.Dismiss onClick={onDismiss}>Dismiss</Styled.Dismiss>
       </Styled.Popup>
     </Styled.Container>
   )
@@ -213,37 +191,33 @@ export const PendingTx = () => {
   return (
     <Styled.Container>
       <Styled.Popup>
-        <Styled.Wrapper>
-          <Spinner size={58} />
-          <Styled.Heading>Blockchain Transaction Pending</Styled.Heading>
+        <Styled.SpinnerHeading>
+          Blockchain Transaction Pending
+        </Styled.SpinnerHeading>
 
-          <Styled.Text>
-            Your timestamp is being added to the KILT blockchain.
-          </Styled.Text>
+        <Styled.Text>
+          Your timestamp is being added to the KILT blockchain.
+        </Styled.Text>
 
-          <Styled.BottomText>
-            Please leave this tab open until the transaction is complete.
-          </Styled.BottomText>
-        </Styled.Wrapper>
+        <Styled.BottomText>
+          Please leave this tab open until the transaction is complete.
+        </Styled.BottomText>
       </Styled.Popup>
     </Styled.Container>
   )
 }
 
-export const TimestampError = (props: Toggle) => {
+export const TimestampError = ({ onDismiss }: Props) => {
   return (
     <Styled.Container>
       <Styled.Popup>
-        <Styled.Wrapper>
-          <img src={AttentionIcon} />
-          <Styled.Heading>Error: Timestamping</Styled.Heading>
+        <Styled.AttentionHeading>Error: Timestamping</Styled.AttentionHeading>
 
-          <Styled.Text>
-            Click “Try Again” or reload the page or restart your browser.
-          </Styled.Text>
+        <Styled.Text>
+          Click “Try Again” or reload the page or restart your browser.
+        </Styled.Text>
 
-          <Styled.Dismiss onClick={props.dismiss}>Try again</Styled.Dismiss>
-        </Styled.Wrapper>
+        <Styled.Dismiss onClick={onDismiss}>Try again</Styled.Dismiss>
       </Styled.Popup>
     </Styled.Container>
   )

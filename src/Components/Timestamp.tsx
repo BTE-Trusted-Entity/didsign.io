@@ -297,7 +297,7 @@ export function Timestamp() {
           </Styled.Section>
         )}
 
-        {status === 'signing' && <SignPopup dismiss={handleDismiss} />}
+        {status === 'signing' && <SignPopup onDismiss={handleDismiss} />}
 
         {status === 'finalizing' && <PendingTx />}
 
@@ -305,7 +305,7 @@ export function Timestamp() {
           <Styled.Section>{timestamp}</Styled.Section>
         )}
 
-        {status === 'error' && <TimestampError dismiss={handleTryAgain} />}
+        {status === 'error' && <TimestampError onDismiss={handleTryAgain} />}
       </Styled.Timestamp>
     </Styled.Container>
   )

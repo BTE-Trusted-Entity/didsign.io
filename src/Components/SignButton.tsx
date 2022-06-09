@@ -112,16 +112,16 @@ export const SignButton = () => {
           <img src={info} />
         </Styled.InfoButton>
 
-        {signPopup && <SignButtonInfoPopup dismiss={handleSignDismiss} />}
+        {signPopup && <SignButtonInfoPopup onDismiss={handleSignDismiss} />}
 
-        {signStatus === 'Default' && <SignPopup dismiss={handleDismiss} />}
+        {signStatus === 'Default' && <SignPopup onDismiss={handleDismiss} />}
 
         {signStatus === 'No Sporran' && (
-          <NoWalletPopup dismiss={handleDismiss} />
+          <NoWalletPopup onDismiss={handleDismiss} />
         )}
 
         {signStatus === 'SignError' && (
-          <SignErrorPopup dismiss={handleDismiss} />
+          <SignErrorPopup onDismiss={handleDismiss} />
         )}
       </Styled.ButtonContainer>
 

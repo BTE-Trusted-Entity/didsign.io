@@ -1,10 +1,13 @@
 import styled from 'styled-components'
 
-import { colors } from './colors'
+import InfoIcon from '../ImageAssets/iconBIG_info.svg'
+import AttentionIcon from '../ImageAssets/iconBIG_attention.svg'
+import PopupBubbles from '../ImageAssets/popup_bubbles.svg'
+import Spinner from '../ImageAssets/puff.svg'
+import BTELogo from '../ImageAssets/bte_logo_black.png'
+import SignatureIcon from '../ImageAssets/icon_DID.svg'
 
-interface Style {
-  setMargin?: boolean
-}
+import { colors } from './colors'
 
 export const Container = styled.div`
   display: flex;
@@ -19,100 +22,121 @@ export const Container = styled.div`
 `
 
 export const Popup = styled.div`
-  max-width: 320px;
+  box-sizing: border-box;
+  width: 90%;
+  max-width: 300px;
   height: fit-content;
-  background-color: ${colors.silverBlue};
-  border-radius: 5px;
-`
-
-export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  position: relative;
   align-items: center;
-  width: 100%;
-  margin-top: 20px;
-  gap: 10px;
-  padding: 0 8px 8px 8px;
+  background: url(${PopupBubbles}) no-repeat bottom left, ${colors.silverBlue};
+  border-radius: 5px;
+  padding: 15px 30px 20px 30px;
+  box-shadow: 1px 6px 9px 4px rgb(${colors.blackRGB} / 20%);
   color: ${colors.darkPurple};
 `
 
-export const Heading = styled.span`
-  display: flex;
-  gap: 5px;
+export const Heading = styled.h1`
   font-size: 18px;
   line-height: 20px;
   letter-spacing: 0.13px;
   font-family: Overpass;
-  margin-top: 10px;
+  font-weight: normal;
+  padding-top: 90px;
+  margin-top: 0;
+  margin-bottom: 24px;
+  text-align: center;
+  width: 100%;
 `
-export const Text = styled.span`
-  font-size: 16px;
+
+export const InfoHeading = styled(Heading)`
+  background: url(${InfoIcon}) no-repeat center top;
+`
+
+export const AttentionHeading = styled(Heading)`
+  background: url(${AttentionIcon}) no-repeat center top;
+`
+
+export const SpinnerHeading = styled(Heading)`
+  background: url(${Spinner}) no-repeat center top;
+  padding-top: 80px;
+`
+
+export const SignatureHeading = styled(InfoHeading)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+
+  &:before {
+    content: '';
+    display: inline-block;
+    height: 18px;
+    width: 10px;
+    background: url(${SignatureIcon}) no-repeat center/auto;
+  }
+`
+
+export const ImprintHeading = styled(Heading)`
+  background: url(${BTELogo}) no-repeat center top/auto 100px;
+  padding-top: 130px;
+  font-size: 14px;
+`
+
+export const Text = styled.p`
+  font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.13px;
   font-family: Overpass;
-  text-align: left;
-  padding-left: 8px;
-  padding-right: 8px;
-  margin-top: 20px;
+  margin-top: 0;
+  margin-bottom: 20px;
 `
+
 export const BottomText = styled(Text)`
-  margin-bottom: 30px;
+  margin: 0;
 `
+
 export const Dismiss = styled.button`
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-family: Overpass;
+  font-size: 12px;
   letter-spacing: 0.1px;
-  line-height: 22px;
-  height: 24px;
-  width: 140px;
-  border-radius: 8px;
+  height: 22px;
+  width: 130px;
+  border-radius: 6px;
   background-color: ${colors.mediumBlue};
-  margin-top: 30px;
-  color: white;
-  margin-bottom: 10px;
+  margin-top: 10px;
+  padding-top: 3px;
+  color: ${colors.white};
+  border: none;
   text-transform: uppercase;
+  cursor: pointer;
 `
-export const Imprint = styled.div`
-  display: flex;
-  width: 100vw;
-  justify-content: center;
-  align-items: center;
-  height: 480px;
-  position: fixed;
+
+export const Imprint = styled(Container)`
   bottom: 113px;
-  z-index: 40;
+  top: initial;
 `
-export const ImprintContainer = styled.div`
-  display: flex;
-  padding-left: 10px;
-  padding-right: 10px;
-  background-color: ${colors.silverBlue};
-  flex-direction: column;
-  word-break: break-all;
-  height: 522px;
+
+export const ImprintPopup = styled(Popup)`
   max-width: 484px;
-  width: 90%;
-  justify-content: center;
-  align-items: center;
   color: ${colors.darkPurple};
   gap: 2px;
   border-radius: 8px;
 `
-export const ImprintText = styled.span`
-  word-break: break-all;
-  font-size: 14px;
+
+export const ImprintText = styled(Text)`
   letter-spacing: 0.1px;
   line-height: 22px;
-  margin-bottom: ${(props: Style) => props.setMargin && '15px'};
+  text-align: center;
+  margin: 0;
   a {
     color: ${colors.mediumBlue};
   }
 `
-export const BTELogo = styled.img`
-  height: 100px;
-  margin-bottom: 30px;
-  margin-top: 20px;
+
+export const ImprintBottomText = styled(Text)`
+  margin-top: 15px;
 `

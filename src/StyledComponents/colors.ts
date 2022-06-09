@@ -15,6 +15,7 @@ export const colors = {
   grey: '#2a223180',
   white: '#FFFFFF',
   dropdown: '#CFE5FA',
+  blackRGB: '0 0 0',
   whiteRGB: '255 255 255',
   orangeRGB: '240 101 67',
   greyRGB: '42 34 49',
