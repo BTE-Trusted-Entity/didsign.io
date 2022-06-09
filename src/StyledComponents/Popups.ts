@@ -56,6 +56,9 @@ export const Text = styled.span`
   padding-right: 8px;
   margin-top: 20px;
 `
+export const BottomText = styled(Text)`
+  margin-bottom: 30px;
+`
 export const Dismiss = styled.button`
   display: flex;
   align-items: center;

@@ -42,11 +42,11 @@ export const List = styled.ul`
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 8px;
   margin: 0;
   padding: 10px 0 6px;
 `
-export const File = styled.li`
+export const File = styled.div`
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
@@ -54,7 +54,6 @@ export const File = styled.li`
   font-size: 14px;
   line-height: 16px;
   letter-spacing: 0.1px;
-  font-family: Overpass;
   border-bottom: dotted 2px ${colors.mediumBlue};
   padding: 0 16px 5px 0;
   margin: 0;
@@ -70,7 +69,7 @@ export const FileName = styled.p`
   background-repeat: no-repeat;
   background-position: top left;
 `
-export const DidFile = styled(FileName)`
+export const DidSignFile = styled(FileName)`
   background-image: url(${DIDIcon});
   color: ${colors.pureRed};
 `

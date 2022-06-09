@@ -7,7 +7,7 @@ import {
   addBufferTop,
   addFileTop,
   IBuffer,
-  selectFile,
+  selectFiles,
 } from '../Features/Signer/FileSlice'
 import { Signature, SignDoc } from '../Utils/types'
 import info from '../ImageAssets/icon_info.svg'
@@ -27,7 +27,7 @@ export const SignButton = () => {
     'SignError' | 'Default' | 'No Sporran' | null
   >(null)
   const targetElement = document.querySelector('body')
-  const files = useAppSelector(selectFile)
+  const files = useAppSelector(selectFiles)
   const [signPopup, setSignPopup] = useState<boolean>(false)
 
   const generateSignatureFile = async (blob: Blob) => {

@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import { ImportFilesSigner } from './ImportFilesSigner'
 import { FilesSigner } from './FilesSigner'
 import { useAppSelector } from '../app/hooks'
-import { selectFile } from '../Features/Signer/FileSlice'
+import { selectFiles } from '../Features/Signer/FileSlice'
 import { FilesEmpty } from './FilesEmpty'
 import CenterRightBubble from '../ImageAssets/CenterRightBubble.svg'
 import CenterLeftBubble from '../ImageAssets/CenterLeftBubble.svg'
@@ -13,7 +13,7 @@ import { ImportFilesVerifier } from './ImportFilesVerifier'
 import * as Styled from '../StyledComponents/Main'
 
 const Signer = () => {
-  const files = useAppSelector(selectFile)
+  const files = useAppSelector(selectFiles)
 
   return (
     <Fragment>
@@ -25,7 +25,7 @@ const Signer = () => {
 }
 
 const Verifier = () => {
-  const files = useAppSelector(selectFile)
+  const files = useAppSelector(selectFiles)
 
   return (
     <Fragment>

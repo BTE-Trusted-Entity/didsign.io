@@ -6,8 +6,8 @@ import ReleaseIcon from '../ImageAssets/iconBIG_import_release.svg'
 import {
   addFile,
   addFileName,
-  selectFile,
-  selectFilename,
+  selectFiles,
+  selectFilenames,
 } from '../Features/Signer/FileSlice'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import {
@@ -48,8 +48,8 @@ export const ImportFilesVerifier = () => {
   const jwsHash = useAppSelector(selectJwsHash)
   const jws = useAppSelector(selectJwsSign)
   const jwsStatus = useAppSelector(selectJwsSignStatus)
-  const savedZippedFilenames = useAppSelector(selectFilename)
-  const files = useAppSelector(selectFile)
+  const savedZippedFilenames = useAppSelector(selectFilenames)
+  const files = useAppSelector(selectFiles)
   const statuses = useAppSelector(fileStatus)
 
   const dispatch = useAppDispatch()

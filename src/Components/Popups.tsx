@@ -7,6 +7,7 @@ import { updateSignStatus } from '../Features/Signer/VerifyJwsSlice'
 import { clearEndpoint } from '../Features/Signer/EndpointSlice'
 import SignatureIcon from '../ImageAssets/icon_DID.svg'
 import BTE from '../ImageAssets/bte_logo_black.png'
+import { Spinner } from './Spinner'
 
 import * as Styled from '../StyledComponents/Popups'
 
@@ -202,6 +203,44 @@ export const SignErrorPopup = (props: Toggle) => {
           </Styled.Text>
 
           <Styled.Dismiss onClick={props.dismiss}>DISMISS</Styled.Dismiss>
+        </Styled.Wrapper>
+      </Styled.Popup>
+    </Styled.Container>
+  )
+}
+
+export const PendingTx = () => {
+  return (
+    <Styled.Container>
+      <Styled.Popup>
+        <Styled.Wrapper>
+          <Spinner size={58} />
+          <Styled.Heading>Blockchain Transaction Pending</Styled.Heading>
+
+          <Styled.BottomText>
+            Your timestamp is being added to the KILT blockchain. Please leave
+            this tab open until the transaction is complete.
+          </Styled.BottomText>
+        </Styled.Wrapper>
+      </Styled.Popup>
+    </Styled.Container>
+  )
+}
+
+export const ErrorTryAgain = (props: Toggle) => {
+  return (
+    <Styled.Container>
+      <Styled.Popup>
+        <Styled.Wrapper>
+          <img src={AttentionIcon} />
+          <Styled.Heading>Something went wrong!</Styled.Heading>
+
+          <Styled.Text>
+            An error occured during the timestamping process. Click “Try Again”
+            or reload the page or restart your browser.
+          </Styled.Text>
+
+          <Styled.Dismiss onClick={props.dismiss}>TRY AGAIN</Styled.Dismiss>
         </Styled.Wrapper>
       </Styled.Popup>
     </Styled.Container>

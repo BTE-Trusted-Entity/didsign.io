@@ -8,7 +8,7 @@ import {
   deleteBuffer,
   deleteFile,
   IBuffer,
-  selectFile,
+  selectFiles,
 } from '../Features/Signer/FileSlice'
 import { addHash } from '../Features/Signer/hashSlice'
 import { createHash } from '../Utils/sign-helpers'
@@ -27,7 +27,7 @@ export const ImportFilesSigner = () => {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon)
   const [signErrorPopup, setSignErrorPopup] = useState<boolean>(false)
   const dispatch = useAppDispatch()
-  const files = useAppSelector(selectFile)
+  const files = useAppSelector(selectFiles)
   const targetElement = document.querySelector('body')
   const sign = useAppSelector(selectSign)
 
