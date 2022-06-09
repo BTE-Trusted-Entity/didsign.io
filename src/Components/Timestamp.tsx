@@ -74,6 +74,7 @@ export function Timestamp() {
     | 'error'
   >('start')
 
+  // TODO: Allow navigation after user has downloaded the files
   usePreventNavigation(['finalizing', 'done'].includes(status))
 
   const [accounts, setAccounts] = useState<IKiltAccount[]>()
