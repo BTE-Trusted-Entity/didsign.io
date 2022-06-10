@@ -3,13 +3,15 @@ export interface Signature {
   signature: string
   keyID: string
 }
+
+export interface IRemark {
+  txHash: string
+  blockHash: string
+}
 export interface SignDoc {
   jws: string
   hashes: string[]
-  remark?: {
-    txHash: string
-    blockHash: string
-  }
+  remark?: IRemark
 }
 
 export interface ISignatureEndPoint {
@@ -17,6 +19,7 @@ export interface ISignatureEndPoint {
   did: string
   endpoints: DidServiceEndpoint[]
   w3name: string | null
+  timestamp: string | undefined
 }
 
 export interface ISignatureEndPointWithStatus {

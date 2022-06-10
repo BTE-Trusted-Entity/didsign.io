@@ -3,6 +3,7 @@ import React, { Fragment } from 'react'
 import { useAppSelector } from '../app/hooks'
 import {
   selectServiceEndpoints,
+  selectTimestamp,
   selectVerifiedDid,
   selectVerifiedSign,
   selectW3Name,
@@ -18,8 +19,8 @@ export const DidDocument = () => {
   const sign = useAppSelector(selectVerifiedSign)
   const did = useAppSelector(selectVerifiedDid)
   const w3name = useAppSelector(selectW3Name)
+  const timestamp = useAppSelector(selectTimestamp) || 'No timestamp available'
   const seviceEndpoints = useAppSelector(selectServiceEndpoints)
-
   const jwsStatus = useAppSelector(selectJwsSignStatus)
 
   if (jwsStatus === 'Not Checked' || jwsStatus === 'Validating') return null
@@ -47,6 +48,10 @@ export const DidDocument = () => {
             )}
             {did}
           </Styled.Text>
+        </Styled.TextWrapper>
+        <Styled.TextWrapper>
+          <Styled.Title>Signed At</Styled.Title>
+          <Styled.Text>{timestamp}</Styled.Text>
         </Styled.TextWrapper>
 
         <Styled.TextWrapper>
