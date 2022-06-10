@@ -53,7 +53,7 @@ export const Footer = () => {
         </Styled.KiltLogo>
       </Styled.FooterLinks>
 
-      {showImprint && <ImprintPopup dismiss={handleDismiss} />}
+      {showImprint && <ImprintPopup onDismiss={handleDismiss} />}
     </Styled.Footer>
   )
 }

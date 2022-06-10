@@ -109,7 +109,7 @@ export const ImportFilesSigner = () => {
         )}
       </Dropzone>
 
-      {signErrorPopup && <SigningMultipleDidFiles dismiss={handleDismiss} />}
+      {signErrorPopup && <SigningMultipleDidFiles onDismiss={handleDismiss} />}
     </Styled.Container>
   )
 }
