@@ -40,6 +40,7 @@ export const Links = styled.div`
   max-width: 600px;
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 4px;
   @media (max-width: 400px) {
     width: 100%;
@@ -54,12 +55,24 @@ export const Links = styled.div`
       text-decoration: underline;
     }
   }
-  span {
-    color: white;
-    text-decoration: none;
-    :hover {
-      text-decoration: underline;
-    }
+`
+
+export const Imprint = styled.button`
+  color: ${colors.white};
+  padding: 0;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: Overpass;
+  font-size: 14px;
+  line-height: 16px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 300px) {
+    font-size: 12px;
   }
 `
 export const KiltLogo = styled.div`

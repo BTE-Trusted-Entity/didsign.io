@@ -91,6 +91,7 @@ export const SignRoleButton = styled.button`
   @media (max-width: 600px) {
     margin-bottom: -18px;
   }
+  cursor: pointer;
 `
 export const SignUnderline = styled.div`
   height: ${(props: ButtonType) => (props.isSelectedRole ? '4px' : '2px')};

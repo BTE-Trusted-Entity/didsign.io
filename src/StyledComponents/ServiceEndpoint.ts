@@ -62,6 +62,7 @@ export const FetchButton = styled.button`
     margin-left: 15px;
     margin-right: 15px;
   }
+  cursor: pointer;
 `
 export const ChevronImage = styled.img`
   position: absolute;

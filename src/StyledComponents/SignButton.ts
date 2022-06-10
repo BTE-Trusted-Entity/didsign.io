@@ -33,6 +33,7 @@ export const ButtonContainer = styled.div`
 `
 export const InfoButton = styled.button`
   background: none;
+  cursor: pointer;
 `
 export const SignButton = styled.button`
   font-size: 14px;
