@@ -47,28 +47,27 @@ export async function getTimestamp(blockHash: string) {
 
   return new Date(timestamp).toLocaleString()
 }
+
 async function getSignatureFromRemark(remark: IRemark) {
   const { api } = await BlockchainApiConnection.getConnectionOrConnect()
   const { txHash, blockHash } = remark
   const signedBlock = await api.rpc.chain.getBlock(blockHash)
   const extrWithRemark = signedBlock.block.extrinsics.find(
-    (extrinsic) => extrinsic.hash.toHex() === txHash
+    ({ hash }) => hash.toHex() === txHash
   )
   if (extrWithRemark) {
-    const {
-      method: { args },
-    } = extrWithRemark
-    return args.toString()
+    return extrWithRemark.method.args.toString()
   }
 }
+
 export async function getVerifiedTimestamp(
   signature: string,
   remark?: IRemark
 ) {
-  if (remark) {
-    const signatureFromRemark = await getSignatureFromRemark(remark)
-    const { blockHash } = remark
-    if (signatureFromRemark === signature) return await getTimestamp(blockHash)
+  if (!remark) return
+  const signatureFromRemark = await getSignatureFromRemark(remark)
+  const { blockHash } = remark
+  if (signatureFromRemark === signature) {
+    return getTimestamp(blockHash)
   }
-  return 'No timestamp available'
 }

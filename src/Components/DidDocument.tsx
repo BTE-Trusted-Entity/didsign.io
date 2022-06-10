@@ -19,10 +19,8 @@ export const DidDocument = () => {
   const sign = useAppSelector(selectVerifiedSign)
   const did = useAppSelector(selectVerifiedDid)
   const w3name = useAppSelector(selectW3Name)
-  const timestamp = useAppSelector(selectTimestamp)
-
+  const timestamp = useAppSelector(selectTimestamp) || 'No timestamp available'
   const seviceEndpoints = useAppSelector(selectServiceEndpoints)
-
   const jwsStatus = useAppSelector(selectJwsSignStatus)
 
   if (jwsStatus === 'Not Checked' || jwsStatus === 'Validating') return null
@@ -53,12 +51,7 @@ export const DidDocument = () => {
         </Styled.TextWrapper>
         <Styled.TextWrapper>
           <Styled.Title>Signed At</Styled.Title>
-          <Styled.Text>
-            <Fragment>
-              {timestamp}
-              <br />
-            </Fragment>
-          </Styled.Text>
+          <Styled.Text>{timestamp}</Styled.Text>
         </Styled.TextWrapper>
 
         <Styled.TextWrapper>

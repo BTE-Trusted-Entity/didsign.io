@@ -19,7 +19,7 @@ export interface ISignatureEndPoint {
   did: string
   endpoints: DidServiceEndpoint[]
   w3name: string | null
-  timestamp: string
+  timestamp: string | undefined
 }
 
 export interface ISignatureEndPointWithStatus {

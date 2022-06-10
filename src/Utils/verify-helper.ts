@@ -72,7 +72,6 @@ export const newUnzip = async (
   let doc: SignDoc = {
     jws: '',
     hashes: [],
-    remark: { txHash: '', blockHash: '' },
   }
   const fileStatuses: boolean[] = []
   // get all entries from the zip
