@@ -25,7 +25,7 @@ import {
   updateIndividualFileStatusOnIndex,
 } from '../Features/Signer/EndpointSlice'
 import { createHash, createHashFromHashArray } from '../Utils/sign-helpers'
-import { SignDoc } from '../Utils/types'
+import { IRemark, SignDoc } from '../Utils/types'
 import {
   addJwsHashArray,
   addJwsSign,
@@ -41,6 +41,7 @@ import { MultipleSignPopup } from './Popups'
 import { colors } from '../StyledComponents/colors'
 
 import * as Styled from '../StyledComponents/ImportFilesSigner'
+import { useConnect } from '../Hooks/useConnect'
 
 export const ImportFilesVerifier = () => {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon)
@@ -51,6 +52,8 @@ export const ImportFilesVerifier = () => {
   const savedZippedFilenames = useAppSelector(selectFilenames)
   const files = useAppSelector(selectFiles)
   const statuses = useAppSelector(fileStatus)
+  const [remark, setRemark] = useState<IRemark>()
+  useConnect()
 
   const dispatch = useAppDispatch()
   const filesArrayHasDidSign = (files: File[]) =>
@@ -70,8 +73,6 @@ export const ImportFilesVerifier = () => {
   }
 
   const handleIndividualCase = async (file: File) => {
-    let doc: SignDoc = { jws: '', hashes: [] }
-
     const reader = new FileReader()
     reader.readAsArrayBuffer(file)
     reader.onload = async function () {
@@ -86,15 +87,16 @@ export const ImportFilesVerifier = () => {
 
         const decoder = new TextDecoder('utf-8')
         const result = decoder.decode(reader.result as ArrayBuffer)
-        doc = JSON.parse(result)
-        doc.hashes = doc.hashes.map((hash) => addMissingPrefix(hash))
-        const baseHash = await createHashFromHashArray(doc.hashes)
-        const hashFromJWS: string = JSON.parse(atob(doc.jws.split('.')[1])).hash
+        const { jws, hashes, remark } = JSON.parse(result) as SignDoc
+        if (remark) setRemark(remark)
+        const hashesWithPrefix = hashes.map((hash) => addMissingPrefix(hash))
+        const baseHash = await createHashFromHashArray(hashesWithPrefix)
+        const hashFromJWS: string = JSON.parse(atob(jws.split('.')[1])).hash
         if (baseHash !== addMissingPrefix(hashFromJWS)) {
           dispatch(updateSignStatus('Corrupted'))
         }
-        dispatch(addJwsSign(doc.jws))
-        dispatch(addJwsHashArray(doc.hashes))
+        dispatch(addJwsSign(jws))
+        dispatch(addJwsHashArray(hashesWithPrefix))
         dispatch(updateIndividualFileStatus(true))
         dispatch(addHash(''))
       } else {
@@ -170,7 +172,7 @@ export const ImportFilesVerifier = () => {
 
   const fetchEndpoints = async () => {
     dispatch(updateSignStatus('Validating'))
-    const verifiedSignatureInstance = await getVerifiedData(jws)
+    const verifiedSignatureInstance = await getVerifiedData(jws, remark)
     if (verifiedSignatureInstance) {
       dispatch(updateSignStatus('Verified'))
       dispatch(update(verifiedSignatureInstance))

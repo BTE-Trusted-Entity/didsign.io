@@ -1,4 +1,5 @@
 import {
+  IRemark,
   ISignatureEndPoint,
   ISignatureEndPointWithStatus,
   SignDoc,
@@ -7,10 +8,8 @@ import {
   Attestation,
   Credential,
   Did,
-  disconnect,
   ICredential,
   IDidDetails,
-  init,
   IRequestForAttestation,
   KeyRelationship,
 } from '@kiltprotocol/sdk-js'
@@ -18,6 +17,7 @@ import { createHash, createHashFromHashArray } from './sign-helpers'
 import { base16 } from 'multiformats/bases/base16'
 import * as zip from '@zip.js/zip.js'
 import JSZip from 'jszip'
+import { getVerifiedTimestamp } from './timestamp'
 
 const resolveServiceEndpoints = async (did: string) => {
   const didDetails = await Did.DidResolver.resolveDoc(did)
@@ -30,7 +30,8 @@ const resolveServiceEndpoints = async (did: string) => {
 }
 
 export const getVerifiedData = async (
-  jws: string
+  jws: string,
+  remark?: IRemark
 ): Promise<ISignatureEndPoint | null> => {
   if (jws === '') {
     return null
@@ -41,31 +42,25 @@ export const getVerifiedData = async (
   const signature = atob(signature64)
   const keyId = JSON.parse(header).kid
   const hash = JSON.parse(payload).hash
-  await init({
-    address: process.env.REACT_APP_CHAIN_ENDPOINT || 'wss://spiritnet.kilt.io',
-  })
-
   const { verified } = await Did.DidUtils.verifyDidSignature({
     message: hash,
     signature: { keyId, signature },
     expectedVerificationMethod: KeyRelationship.authentication,
   })
-
   if (!verified) {
-    await disconnect()
     return null
   }
 
   const { did } = Did.DidUtils.parseDidUri(keyId)
   const endpoints = await resolveServiceEndpoints(did)
   const w3name = await Did.Web3Names.queryWeb3NameForDid(did)
-  await disconnect()
-
+  const timestamp = await getVerifiedTimestamp(signature, remark)
   return {
     did,
     signature,
     endpoints,
     w3name,
+    timestamp,
   }
 }
 
@@ -74,7 +69,11 @@ export const newUnzip = async (
 ): Promise<ISignatureEndPointWithStatus | undefined> => {
   const reader = new zip.ZipReader(new zip.BlobReader(file))
   const fileData: string[] = []
-  let doc: SignDoc = { jws: '', hashes: [] }
+  let doc: SignDoc = {
+    jws: '',
+    hashes: [],
+    remark: { txHash: '', blockHash: '' },
+  }
   const fileStatuses: boolean[] = []
   // get all entries from the zip
   const entries = await reader.getEntries()
@@ -83,12 +82,11 @@ export const newUnzip = async (
   })
   if (files.length) {
     for (const entry of files) {
-      if (entry.getData != undefined) {
-        const didSignFile = isDidSignFile(entry.filename)
-        if (didSignFile) {
+      if (entry.getData) {
+        if (isDidSignFile(entry.filename)) {
           const text = await entry.getData(new zip.TextWriter())
           fileStatuses.push(true)
-          doc = { hashes: JSON.parse(text).hashes, jws: JSON.parse(text).jws }
+          doc = JSON.parse(text)
           continue
         } else {
           const text = await entry.getData(new zip.Uint8ArrayWriter())
@@ -101,26 +99,25 @@ export const newUnzip = async (
 
     const addMissingPrefix = (hash: string): string =>
       hash.startsWith(base16.prefix) ? hash : `${base16.prefix}${hash}`
-
-    doc.hashes = doc.hashes.map((hash) => addMissingPrefix(hash))
+    const { jws, hashes, remark } = doc
+    const hashesWithPrefix = hashes.map((hash) => addMissingPrefix(hash))
 
     fileData.map((hash) => {
-      if (doc.hashes.includes(hash)) {
+      if (hashesWithPrefix.includes(hash)) {
         fileStatuses.push(true)
       } else {
         fileStatuses.push(false)
       }
     })
-    const baseHash = await createHashFromHashArray(doc.hashes)
+    const baseHash = await createHashFromHashArray(hashesWithPrefix)
 
-    const jwsBaseJson = atob(doc.jws.split('.')[1])
+    const jwsBaseJson = atob(jws.split('.')[1])
     const jwsBaseHash = addMissingPrefix(JSON.parse(jwsBaseJson).hash)
 
     if (baseHash !== jwsBaseHash || fileStatuses.includes(false)) {
       return undefined
     }
-
-    const signatureEndpointInstance = await getVerifiedData(doc.jws)
+    const signatureEndpointInstance = await getVerifiedData(jws, remark)
     if (signatureEndpointInstance) {
       const signEndpointStatus: ISignatureEndPointWithStatus = {
         signatureWithEndpoint: signatureEndpointInstance,

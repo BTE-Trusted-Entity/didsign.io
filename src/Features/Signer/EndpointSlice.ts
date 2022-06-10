@@ -12,6 +12,7 @@ const initialState: ISignatureEndPointWithStatus = {
     did: '',
     endpoints: [],
     w3name: '',
+    timestamp: '',
   },
   fileStatus: [],
 }
@@ -27,6 +28,8 @@ export const EndpointSlice = createSlice({
         initialState.signatureWithEndpoint.endpoints
       state.signatureWithEndpoint.w3name =
         initialState.signatureWithEndpoint.w3name
+      state.signatureWithEndpoint.timestamp =
+        initialState.signatureWithEndpoint.timestamp
     },
     // Use the PayloadAction type to declare the contents of `action.payload`
     update: (state, action: PayloadAction<ISignatureEndPoint>) => {
@@ -35,6 +38,7 @@ export const EndpointSlice = createSlice({
         state.signatureWithEndpoint.endpoints.concat(action.payload.endpoints)
       state.signatureWithEndpoint.did = action.payload.did
       state.signatureWithEndpoint.w3name = action.payload.w3name
+      state.signatureWithEndpoint.timestamp = action.payload.timestamp
     },
     updateAllFilesStatus: (state, action: PayloadAction<boolean[]>) => {
       state.fileStatus = state.fileStatus.concat(action.payload)
@@ -86,5 +90,7 @@ export const selectVerifiedSign = (state: RootState) =>
   state.endpoint.signatureWithEndpoint.signature
 export const selectW3Name = (state: RootState) =>
   state.endpoint.signatureWithEndpoint.w3name
+export const selectTimestamp = (state: RootState) =>
+  state.endpoint.signatureWithEndpoint.timestamp
 export const fileStatus = (state: RootState) => state.endpoint.fileStatus
 export default EndpointSlice.reducer

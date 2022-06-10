@@ -2,6 +2,7 @@ import { BlockchainApiConnection } from '@kiltprotocol/chain-helpers'
 
 import { Keyring } from '@polkadot/keyring'
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp'
+import { IRemark } from './types'
 
 export async function getKiltAccounts() {
   const { api } = await BlockchainApiConnection.getConnectionOrConnect()
@@ -45,4 +46,29 @@ export async function getTimestamp(blockHash: string) {
   const timestamp = (await apiInstance.query.timestamp.now()).toNumber()
 
   return new Date(timestamp).toLocaleString()
+}
+async function getSignatureFromRemark(remark: IRemark) {
+  const { api } = await BlockchainApiConnection.getConnectionOrConnect()
+  const { txHash, blockHash } = remark
+  const signedBlock = await api.rpc.chain.getBlock(blockHash)
+  const extrWithRemark = signedBlock.block.extrinsics.find(
+    (extrinsic) => extrinsic.hash.toHex() === txHash
+  )
+  if (extrWithRemark) {
+    const {
+      method: { args },
+    } = extrWithRemark
+    return args.toString()
+  }
+}
+export async function getVerifiedTimestamp(
+  signature: string,
+  remark?: IRemark
+) {
+  if (remark) {
+    const signatureFromRemark = await getSignatureFromRemark(remark)
+    const { blockHash } = remark
+    if (signatureFromRemark === signature) return await getTimestamp(blockHash)
+  }
+  return 'No timestamp available'
 }
