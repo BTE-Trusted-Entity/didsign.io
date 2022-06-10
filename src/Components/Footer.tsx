@@ -37,7 +37,9 @@ export const Footer = () => {
         </Styled.DidSignLogo>
 
         <Styled.Links>
-          <span onClick={handleImprint}>Imprint </span>
+          <span>
+            <Styled.Imprint onClick={handleImprint}>Imprint </Styled.Imprint>
+          </span>
           <span>-</span>
           <a href={Terms} target="_blank" rel="noreferrer">
             <span>Terms and Conditions</span>

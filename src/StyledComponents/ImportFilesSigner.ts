@@ -15,6 +15,7 @@ export const DropContainer = styled.div`
   max-width: 100%;
   height: 100%;
   position: absolute;
+  cursor: pointer;
 `
 export const ImportImage = styled.img`
   position: absolute;

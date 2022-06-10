@@ -84,6 +84,7 @@ export const IconButton = styled.button`
   width: 18px;
   border: none;
   padding: 0;
+  cursor: pointer;
 `
 export const DeleteButton = styled(IconButton)`
   background: url(${DelIcon}) no-repeat center;

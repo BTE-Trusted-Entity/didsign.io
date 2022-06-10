@@ -43,6 +43,7 @@ export const ZipButton = styled.button`
   border-radius: 8px;
   color: white;
   border: none;
+  cursor: pointer;
 `
 export const ProgressBarWrapper = styled.div`
   display: flex;
@@ -93,4 +94,5 @@ export const DownloadSignButton = styled.button`
   line-height: 14px;
   border: none;
   letter-spacing: 0.09px;
+  cursor: pointer;
 `
