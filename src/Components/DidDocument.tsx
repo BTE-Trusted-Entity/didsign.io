@@ -58,13 +58,15 @@ export const DidDocument = () => {
           <Styled.Title>Signed At</Styled.Title>
           <Styled.Text>
             {timestamp}
-            <a
-              href={`${subscanHost}/extrinsic/${txHash}`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Subscan
-            </a>
+            {txHash && (
+              <a
+                href={`${subscanHost}/extrinsic/${txHash}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Subscan
+              </a>
+            )}
           </Styled.Text>
         </Styled.TextWrapper>
 
