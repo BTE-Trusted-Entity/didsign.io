@@ -2,6 +2,8 @@ import styled from 'styled-components'
 
 import { colors } from './colors'
 
+import LinkIcon from '../ImageAssets/icon_link.svg'
+
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -48,6 +50,12 @@ export const Text = styled.span`
   font-weight: bold;
   word-break: break-all;
   width: 550px;
+  a {
+    color: ${colors.mediumBlue};
+    padding-left: 10px;
+    padding-right: 20px;
+    background: url(${LinkIcon}) no-repeat right 40%;
+  }
 `
 export const ErrorText = styled(Text)`
   color: ${colors.orange};

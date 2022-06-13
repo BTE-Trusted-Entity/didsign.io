@@ -4,6 +4,7 @@ import { useAppSelector } from '../app/hooks'
 import {
   selectServiceEndpoints,
   selectTimestamp,
+  selectTxHash,
   selectVerifiedDid,
   selectVerifiedSign,
   selectW3Name,
@@ -14,14 +15,18 @@ import { ServiceEndpoint } from './ServiceEndpoint'
 import OkIcon from '../ImageAssets/icon_oK.svg'
 
 import * as Styled from '../StyledComponents/DidDocument'
+import { useSubscanHost } from '../Utils/useSubscanHost'
 
 export const DidDocument = () => {
   const sign = useAppSelector(selectVerifiedSign)
   const did = useAppSelector(selectVerifiedDid)
   const w3name = useAppSelector(selectW3Name)
   const timestamp = useAppSelector(selectTimestamp) || 'No timestamp available'
+  const txHash = useAppSelector(selectTxHash)
+
   const seviceEndpoints = useAppSelector(selectServiceEndpoints)
   const jwsStatus = useAppSelector(selectJwsSignStatus)
+  const subscanHost = useSubscanHost()
 
   if (jwsStatus === 'Not Checked' || jwsStatus === 'Validating') return null
 
@@ -51,7 +56,16 @@ export const DidDocument = () => {
         </Styled.TextWrapper>
         <Styled.TextWrapper>
           <Styled.Title>Signed At</Styled.Title>
-          <Styled.Text>{timestamp}</Styled.Text>
+          <Styled.Text>
+            {timestamp}
+            <a
+              href={`${subscanHost}/extrinsic/${txHash}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Subscan
+            </a>
+          </Styled.Text>
         </Styled.TextWrapper>
 
         <Styled.TextWrapper>
