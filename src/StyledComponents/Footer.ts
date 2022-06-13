@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 import { colors } from './colors'
+import Logo from '../ImageAssets/logo_DIDsign.svg'
+import KiltLogo from '../ImageAssets/Kilt.svg'
 
 export const Footer = styled.footer`
   background-color: ${colors.darkPurple};
@@ -16,6 +18,7 @@ export const Footer = styled.footer`
 export const FooterLinks = styled.div`
   display: flex;
   flex-direction: row;
+  height: 80%;
   width: 90%;
   max-width: 740px;
   align-items: center;
@@ -24,14 +27,10 @@ export const FooterLinks = styled.div`
   line-height: 16px;
   letter-spacing: 0.1px;
   text-align: left;
-`
-export const DidSignLogo = styled.div`
-  width: 93px;
-  display: flex;
-  justify-content: flex-start;
-  cursor: pointer;
+  background: url(${Logo}) no-repeat center left,
+    url(${KiltLogo}) no-repeat center right/100px;
   @media (max-width: 400px) {
-    display: none;
+    background: none;
   }
 `
 
@@ -73,13 +72,5 @@ export const Imprint = styled.button`
 
   @media (max-width: 300px) {
     font-size: 12px;
-  }
-`
-export const KiltLogo = styled.div`
-  width: 103px;
-  display: flex;
-  justify-content: flex-end;
-  @media (max-width: 400px) {
-    display: none;
   }
 `
