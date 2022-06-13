@@ -54,13 +54,15 @@ export const getVerifiedData = async (
   const { did } = Did.DidUtils.parseDidUri(keyId)
   const endpoints = await resolveServiceEndpoints(did)
   const w3name = await Did.Web3Names.queryWeb3NameForDid(did)
-  const timestamp = await getVerifiedTimestamp(signature, remark)
+  const timestampWithTxHash = await getVerifiedTimestamp(signature, remark)
+  const { txHash, timestamp } = timestampWithTxHash || {}
   return {
     did,
     signature,
     endpoints,
     w3name,
     timestamp,
+    txHash,
   }
 }
 

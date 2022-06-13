@@ -19,7 +19,8 @@ export interface ISignatureEndPoint {
   did: string
   endpoints: DidServiceEndpoint[]
   w3name: string | null
-  timestamp: string | undefined
+  timestamp?: string
+  txHash?: string
 }
 
 export interface ISignatureEndPointWithStatus {

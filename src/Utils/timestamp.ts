@@ -44,8 +44,11 @@ export async function getTimestamp(blockHash: string) {
 
   const apiInstance = await api.at(blockHash)
   const timestamp = (await apiInstance.query.timestamp.now()).toNumber()
+  const dateInstance = new Date(timestamp)
 
-  return new Date(timestamp).toLocaleString()
+  return `${dateInstance.toLocaleString()} (UTC ${dateInstance
+    .toUTCString()
+    .slice(16, -4)})`
 }
 
 async function getSignatureFromRemark(remark: IRemark) {
@@ -66,8 +69,9 @@ export async function getVerifiedTimestamp(
 ) {
   if (!remark) return
   const signatureFromRemark = await getSignatureFromRemark(remark)
-  const { blockHash } = remark
+  const { txHash, blockHash } = remark
+  const timestamp = await getTimestamp(blockHash)
   if (signatureFromRemark === signature) {
-    return getTimestamp(blockHash)
+    return { txHash, timestamp }
   }
 }
