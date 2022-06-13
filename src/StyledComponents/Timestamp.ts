@@ -19,23 +19,37 @@ export const Timestamp = styled.div`
   align-items: center;
   gap: 5px;
   border-radius: 2px;
-  padding: 0 5px 0 36px;
-  background: url(${TimestampIcon}) no-repeat center left 5px,
-    rgb(${colors.orangeRGB} / 20%);
+  padding-right: 6px;
+  background: rgb(${colors.orangeRGB} / 20%);
+
+  @media (max-width: 850px) {
+    flex-direction: column;
+    padding: 5px;
+  }
 `
 export const Heading = styled.h3`
   margin: 0;
-  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
   font-weight: normal;
+  padding-left: 36px;
+  min-height: 34px;
+  background: url(${TimestampIcon}) no-repeat center left 5px;
 `
 
 export const Section = styled.section`
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   flex: 1;
   gap: 20px;
+
+  @media (max-width: 750px) {
+    flex-direction: column;
+    gap: 5px;
+  }
 `
 export const Fee = styled.p`
   margin: 0;
@@ -66,10 +80,17 @@ export const Button = styled.button`
   }
 `
 export const Select = styled.div`
-  flex: 1;
+  width: 355px;
   position: relative;
   font-size: 14px;
   color: ${colors.darkPurple};
+
+  @media (max-width: 600px) {
+    width: 300px;
+  }
+  @media (max-width: 500px) {
+    width: 200px;
+  }
 `
 export const Open = styled.button`
   padding: 2px 30px 2px 6px;
@@ -89,6 +110,9 @@ export const Open = styled.button`
   cursor: pointer;
   color: ${({ hasSelectedAccount }: { hasSelectedAccount: boolean }) =>
     hasSelectedAccount ? 'inherit' : `rgb(${colors.greyRGB} / 75%)`};
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `
 export const Close = styled(Open)`
   background: url(${ChevronUp}) no-repeat top 8px right 9px, ${colors.dropdown};
@@ -119,5 +143,12 @@ export const Option = styled.li`
   &:hover,
   &:focus {
     background: content-box rgb(${colors.orangeRGB} / 20%);
+  }
+
+  p {
+    margin: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 `

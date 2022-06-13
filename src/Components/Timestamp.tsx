@@ -283,7 +283,7 @@ export function Timestamp() {
                         onKeyPress={handleSelectKeyPress(account)}
                         tabIndex={0}
                       >
-                        {getAccountLabel(account)}
+                        <p>{getAccountLabel(account)}</p>
                       </Styled.Option>
                     ))}
                   </Styled.Options>
