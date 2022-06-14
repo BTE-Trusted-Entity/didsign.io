@@ -115,6 +115,15 @@ export const ImportFilesVerifier = () => {
         dispatch(showPopup(true))
         return
       }
+      const signatureFiles = acceptedFiles.filter((file) =>
+        isDidSignFile(file.name)
+      )
+      if (signatureFiles.length > 1) {
+        setImportIcon(ImportIcon)
+        dispatch(updateSignStatus('Multiple Sign'))
+        dispatch(showPopup(true))
+        return
+      }
       acceptedFiles.forEach(async (file: File) => {
         setImportIcon(ImportIcon)
         if (files.length === 0) {
