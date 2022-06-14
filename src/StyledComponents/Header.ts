@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { ReactComponent as Logo } from '../ImageAssets/logo_DIDsign.svg'
+import Logo from '../ImageAssets/logo_DIDsign.svg'
 import PrimaryLeftBubbles from '../ImageAssets/PrimaryHeaderLeftBubbles.svg'
 import PrimaryRightBubbles from '../ImageAssets/PrimaryHeaderRightBubbles.svg'
 import SecondaryLeftBubbles from '../ImageAssets/SecondaryHeaderLeftBubbles.svg'
@@ -28,9 +28,12 @@ export const LogoContainer = styled.div`
   max-width: 766px;
   width: 90%;
 `
-export const HeaderLogo = styled(Logo)`
-  width: 168.5;
+export const HeaderLogoBtn = styled.button`
+  width: 168.5px;
   height: 52px;
+  border: none;
+  background: url(${Logo}) no-repeat;
+  cursor: pointer;
 `
 export const SecondaryHeader = styled.div`
   display: flex;

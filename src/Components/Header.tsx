@@ -25,7 +25,7 @@ const PrimaryHeader = () => {
   return (
     <Styled.PrimaryHeader>
       <Styled.LogoContainer>
-        <Styled.HeaderLogo />
+        <Styled.HeaderLogoBtn onClick={() => window.location.reload()} />
       </Styled.LogoContainer>
     </Styled.PrimaryHeader>
   )
