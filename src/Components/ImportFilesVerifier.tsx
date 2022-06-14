@@ -56,8 +56,16 @@ export const ImportFilesVerifier = () => {
   useConnect()
 
   const dispatch = useAppDispatch()
+
+  function showMultipleSignPopup() {
+    setImportIcon(ImportIcon)
+    dispatch(updateSignStatus('Multiple Sign'))
+    dispatch(showPopup(true))
+  }
+
   const filesArrayHasDidSign = (files: File[]) =>
     files.some((file) => isDidSignFile(file.name))
+
   const handleZipCase = async (file: File) => {
     dispatch(updateSignStatus('Validating'))
 
@@ -107,12 +115,18 @@ export const ImportFilesVerifier = () => {
       dispatch(addFile(file))
     }
   }
+
   const handleDrop = useCallback(
     (acceptedFiles: File[]) => {
       if (filesArrayHasDidSign(files) && filesArrayHasDidSign(acceptedFiles)) {
-        setImportIcon(ImportIcon)
-        dispatch(updateSignStatus('Multiple Sign'))
-        dispatch(showPopup(true))
+        showMultipleSignPopup()
+        return
+      }
+      const signatureFiles = acceptedFiles.filter((file) =>
+        isDidSignFile(file.name)
+      )
+      if (signatureFiles.length > 1) {
+        showMultipleSignPopup()
         return
       }
       acceptedFiles.forEach(async (file: File) => {
@@ -134,9 +148,7 @@ export const ImportFilesVerifier = () => {
               .length === 1 &&
             didSignFile.length === 1
           ) {
-            setImportIcon(ImportIcon)
-            dispatch(showPopup(true))
-            dispatch(updateSignStatus('Multiple Sign'))
+            showMultipleSignPopup()
             return
           }
 
