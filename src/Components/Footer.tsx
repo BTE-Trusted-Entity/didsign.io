@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-import Logo from '../ImageAssets/logo_DIDsign.svg'
-import { ReactComponent as KiltLogo } from '../ImageAssets/Kilt.svg'
 import { ImprintPopup } from './Popups'
 import { useAppDispatch } from '../app/hooks'
 import { showPopup } from '../Features/Signer/PopupSlice'
@@ -32,10 +30,6 @@ export const Footer = () => {
   return (
     <Styled.Footer>
       <Styled.FooterLinks>
-        <Styled.DidSignLogo>
-          <img src={Logo} />
-        </Styled.DidSignLogo>
-
         <Styled.Links>
           <span>
             <Styled.Imprint onClick={handleImprint}>Imprint </Styled.Imprint>
@@ -49,10 +43,6 @@ export const Footer = () => {
             <span>Privacy Policy</span>
           </a>
         </Styled.Links>
-
-        <Styled.KiltLogo>
-          <KiltLogo />
-        </Styled.KiltLogo>
       </Styled.FooterLinks>
 
       {showImprint && <ImprintPopup onDismiss={handleDismiss} />}
