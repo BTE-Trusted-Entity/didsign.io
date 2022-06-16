@@ -3,8 +3,8 @@ import { ImprintPopup } from './Popups'
 import { useAppDispatch } from '../app/hooks'
 import { showPopup } from '../Features/Signer/PopupSlice'
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
-import Terms from '../DocsAssets/Terms_of_Use_DIDsign_March_2022.pdf'
-import Privacy from '../DocsAssets/Privacy_Policy_DIDsign_March_2022.pdf'
+import Terms from '../DocsAssets/Terms_of_Use_for_DIDsign_June2022.pdf'
+import Privacy from '../DocsAssets/Privacy_Policy_DIDsign_June_2022.pdf'
 
 import * as Styled from '../StyledComponents/Footer'
 
