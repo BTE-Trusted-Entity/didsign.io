@@ -25,7 +25,10 @@ const PrimaryHeader = () => {
   return (
     <Styled.PrimaryHeader>
       <Styled.LogoContainer>
-        <Styled.HeaderLogoBtn onClick={() => window.location.reload()} />
+        <Styled.HeaderLogoBtn
+          aria-label="DID sign logo"
+          onClick={() => window.location.reload()}
+        />
       </Styled.LogoContainer>
     </Styled.PrimaryHeader>
   )
