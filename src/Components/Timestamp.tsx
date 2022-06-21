@@ -51,7 +51,7 @@ function useFee() {
     ;(async () => {
       setFee(await getFee())
     })()
-  })
+  }, [])
 
   return fee
 }
