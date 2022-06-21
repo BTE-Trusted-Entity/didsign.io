@@ -2,6 +2,7 @@ import React from 'react'
 
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { selectUserRole, updateRole } from '../Features/Signer/UserSlice'
+import { useNavigate } from 'react-router-dom'
 import { clearSign } from '../Features/Signer/SignatureSlice'
 import { clearAll, clearFileName } from '../Features/Signer/FileSlice'
 import { clearHash } from '../Features/Signer/hashSlice'
@@ -35,14 +36,18 @@ const PrimaryHeader = () => {
 }
 
 const SecondaryHeader = () => {
-  const userRoleSigner = useAppSelector(selectUserRole)
+  const userRoleIsSigner = useAppSelector(selectUserRole)
+  const navigate = useNavigate()
   const dispatch = useAppDispatch()
+
   const handleVerifier = () => {
     dispatch(updateRole(false))
     dispatch(clearSign())
     dispatch(clearAll())
     dispatch(clearHash())
+    navigate('/verifier', { replace: true })
   }
+
   const handleSigner = () => {
     dispatch(updateRole(true))
     dispatch(clearSign())
@@ -52,7 +57,9 @@ const SecondaryHeader = () => {
     dispatch(clearEndpoint())
     dispatch(clearJWS())
     dispatch(clearFileStatuses())
+    navigate('/', { replace: true })
   }
+
   return (
     <Styled.SecondaryHeader>
       <Styled.Text>
@@ -62,19 +69,19 @@ const SecondaryHeader = () => {
 
       <Styled.Buttons>
         <Styled.SignRoleButton
-          isSelectedRole={userRoleSigner}
+          isSelectedRole={userRoleIsSigner}
           onClick={() => handleSigner()}
         >
           SIGN
-          <Styled.SignUnderline isSelectedRole={userRoleSigner} />
+          <Styled.SignUnderline isSelectedRole={userRoleIsSigner} />
         </Styled.SignRoleButton>
 
         <Styled.SignRoleButton
-          isSelectedRole={!userRoleSigner}
+          isSelectedRole={!userRoleIsSigner}
           onClick={() => handleVerifier()}
         >
           VERIFY
-          <Styled.VerifyUnderline isSelectedRole={!userRoleSigner} />
+          <Styled.VerifyUnderline isSelectedRole={!userRoleIsSigner} />
         </Styled.SignRoleButton>
       </Styled.Buttons>
     </Styled.SecondaryHeader>

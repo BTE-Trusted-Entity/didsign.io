@@ -7,8 +7,8 @@ import { FilesEmpty } from './FilesEmpty'
 import CenterRightBubble from '../ImageAssets/CenterRightBubble.svg'
 import CenterLeftBubble from '../ImageAssets/CenterLeftBubble.svg'
 import { FilesVerifier } from './FilesVerifier'
-import { selectUserRole } from '../Features/Signer/UserSlice'
 import { ImportFilesVerifier } from './ImportFilesVerifier'
+import { Routes, Route, Navigate } from 'react-router-dom'
 
 import * as Styled from '../StyledComponents/Main'
 
@@ -37,12 +37,13 @@ const Verifier = () => {
 }
 
 export const Main = () => {
-  const userRoleIsSigner = useAppSelector(selectUserRole)
-
   return (
     <Styled.Container>
-      {userRoleIsSigner ? <Signer /> : <Verifier />}
-
+      <Routes>
+        <Route path="/" element={<Signer />} />
+        <Route path="/verifier" element={<Verifier />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
       <Styled.CenterLeftBubbleImage src={CenterLeftBubble} />
       <Styled.CenterRightBubbleImage src={CenterRightBubble} />
     </Styled.Container>
