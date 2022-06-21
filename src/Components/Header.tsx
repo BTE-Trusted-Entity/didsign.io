@@ -1,18 +1,7 @@
 import React from 'react'
-
-import { useAppDispatch, useAppSelector } from '../app/hooks'
-import { selectUserRole, updateRole } from '../Features/Signer/UserSlice'
-import { useNavigate } from 'react-router-dom'
-import { clearSign } from '../Features/Signer/SignatureSlice'
-import { clearAll, clearFileName } from '../Features/Signer/FileSlice'
-import { clearHash } from '../Features/Signer/hashSlice'
-import {
-  clearEndpoint,
-  clearFileStatuses,
-} from '../Features/Signer/EndpointSlice'
-import { clearJWS } from '../Features/Signer/VerifyJwsSlice'
-
+import { NavLink, useLocation } from 'react-router-dom'
 import * as Styled from '../StyledComponents/Header'
+import { paths } from '../Utils/paths'
 
 export const Header = () => {
   return (
@@ -36,29 +25,9 @@ const PrimaryHeader = () => {
 }
 
 const SecondaryHeader = () => {
-  const userRoleIsSigner = useAppSelector(selectUserRole)
-  const navigate = useNavigate()
-  const dispatch = useAppDispatch()
-
-  const handleVerifier = () => {
-    dispatch(updateRole(false))
-    dispatch(clearSign())
-    dispatch(clearAll())
-    dispatch(clearHash())
-    navigate('/verifier', { replace: true })
-  }
-
-  const handleSigner = () => {
-    dispatch(updateRole(true))
-    dispatch(clearSign())
-    dispatch(clearAll())
-    dispatch(clearHash())
-    dispatch(clearFileName())
-    dispatch(clearEndpoint())
-    dispatch(clearJWS())
-    dispatch(clearFileStatuses())
-    navigate('/', { replace: true })
-  }
+  const location = useLocation()
+  const signer = location.pathname === paths.signer
+  const veriifer = location.pathname === paths.verifier
 
   return (
     <Styled.SecondaryHeader>
@@ -66,24 +35,22 @@ const SecondaryHeader = () => {
         Documents that build trust - securely signed with your decentralized
         identifier (DID).
       </Styled.Text>
+      <Styled.LinkContainer>
+        <NavLink to={paths.signer}>
+          <Styled.Wrapper isSelectedRole={signer}>
+            <span>SIGN</span>
+            <Styled.SignUnderline isSelectedRole={signer} />
+          </Styled.Wrapper>
+        </NavLink>
 
-      <Styled.Buttons>
-        <Styled.SignRoleButton
-          isSelectedRole={userRoleIsSigner}
-          onClick={() => handleSigner()}
-        >
-          SIGN
-          <Styled.SignUnderline isSelectedRole={userRoleIsSigner} />
-        </Styled.SignRoleButton>
+        <NavLink to={'/verifier'}>
+          <Styled.Wrapper isSelectedRole={veriifer}>
+            <span>Verify</span>
 
-        <Styled.SignRoleButton
-          isSelectedRole={!userRoleIsSigner}
-          onClick={() => handleVerifier()}
-        >
-          VERIFY
-          <Styled.VerifyUnderline isSelectedRole={!userRoleIsSigner} />
-        </Styled.SignRoleButton>
-      </Styled.Buttons>
+            <Styled.VerifyUnderline isSelectedRole={veriifer} />
+          </Styled.Wrapper>
+        </NavLink>
+      </Styled.LinkContainer>
     </Styled.SecondaryHeader>
   )
 }

@@ -8,12 +8,18 @@ import CenterRightBubble from '../ImageAssets/CenterRightBubble.svg'
 import CenterLeftBubble from '../ImageAssets/CenterLeftBubble.svg'
 import { FilesVerifier } from './FilesVerifier'
 import { ImportFilesVerifier } from './ImportFilesVerifier'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 
 import * as Styled from '../StyledComponents/Main'
+import { paths } from '../Utils/paths'
+import { useRemoveData } from '../Hooks/useRemoveData'
 
 const Signer = () => {
   const files = useAppSelector(selectFiles)
+  const location = useLocation()
+  const verifier = location.pathname === paths.verifier
+
+  useRemoveData(verifier)
 
   return (
     <Fragment>
@@ -26,6 +32,10 @@ const Signer = () => {
 
 const Verifier = () => {
   const files = useAppSelector(selectFiles)
+  const location = useLocation()
+  const verifier = location.pathname === paths.verifier
+
+  useRemoveData(verifier)
 
   return (
     <Fragment>
@@ -40,9 +50,9 @@ export const Main = () => {
   return (
     <Styled.Container>
       <Routes>
-        <Route path="/" element={<Signer />} />
-        <Route path="/verifier" element={<Verifier />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path={paths.signer} element={<Signer />} />
+        <Route path={paths.verifier} element={<Verifier />} />
+        <Route path="*" element={<Navigate to={paths.signer} replace />} />
       </Routes>
       <Styled.CenterLeftBubbleImage src={CenterLeftBubble} />
       <Styled.CenterRightBubbleImage src={CenterRightBubble} />

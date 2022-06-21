@@ -46,6 +46,9 @@ export const SecondaryHeader = styled.div`
   background: url(${SecondaryLeftBubbles}) no-repeat left 40px / auto 100%,
     url(${SecondaryRightBubbles}) no-repeat right 40px / auto 100%,
     ${colors.headerBelow};
+  a {
+    text-decoration: none;
+  }
 `
 export const Text = styled.span`
   display: flex;
@@ -63,7 +66,7 @@ export const Text = styled.span`
     display: none;
   }
 `
-export const Buttons = styled.div`
+export const LinkContainer = styled.div`
   max-width: 766px;
   width: 90%;
   display: flex;
@@ -71,9 +74,11 @@ export const Buttons = styled.div`
   gap: 18px;
   margin-bottom: -10px;
 `
-export const SignRoleButton = styled.button`
+export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  color: ${colors.darkPurple};
+  text-transform: uppercase;
   align-items: center;
   justify-content: center;
   font-size: ${(props: ButtonType) => (props.isSelectedRole ? '18px' : '16px')};
@@ -83,7 +88,6 @@ export const SignRoleButton = styled.button`
     props.isSelectedRole ? '20px' : '17px'};
   width: 374px;
   gap: 5px;
-  border: none;
   height: ${(props: ButtonType) => (props.isSelectedRole ? '35px' : '28px')};
   background-color: ${(props: ButtonType) =>
     props.isSelectedRole ? colors.silverBlue : '#BBCFE2'};
