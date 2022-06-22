@@ -15,12 +15,11 @@ import { clearAll, clearFileName } from '../Features/Signer/FileSlice'
 import { clearHash } from '../Features/Signer/hashSlice'
 import ButtonStartOver from '../ImageAssets/button_start_over_NEW.svg'
 import spinner from '../ImageAssets/puff.svg'
-import { selectUserRole } from '../Features/Signer/UserSlice'
 import { DidDocument } from './DidDocument'
 
 import * as Styled from '../StyledComponents/BottomSection'
 
-const BottomSectionSigner = () => {
+export const BottomSectionSigner = () => {
   const dispatch = useAppDispatch()
 
   const handleDelete = () => {
@@ -45,7 +44,7 @@ const BottomSectionSigner = () => {
   )
 }
 
-const BottomSectionVerifier = () => {
+export const BottomSectionVerifier = () => {
   const jwsStatus = useAppSelector(selectJwsSignStatus)
   const dispatch = useAppDispatch()
 
@@ -83,10 +82,4 @@ const BottomSectionVerifier = () => {
       </Styled.BottomSection>
     </Styled.Container>
   )
-}
-
-export const BottomSection = () => {
-  const userRoleSigner = useAppSelector(selectUserRole)
-  if (userRoleSigner) return <BottomSectionSigner />
-  else return <BottomSectionVerifier />
 }
