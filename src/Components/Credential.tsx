@@ -1,6 +1,6 @@
 import React from 'react'
 import AttentionIcon from '../ImageAssets/icon_attention.svg'
-import OkIcon from '../ImageAssets/icon_oK.svg'
+import OkIcon from '../ImageAssets/icon_ok.svg'
 
 import * as Styled from '../StyledComponents/Credential'
 
