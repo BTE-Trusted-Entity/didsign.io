@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import * as Files from './Files'
 
 import ZipIcon from '../ImageAssets/doc_zip_NEW.svg'
-import OkIcon from '../ImageAssets/icon_oK.svg'
+import OkIcon from '../ImageAssets/icon_ok.svg'
 import AttentionIcon from '../ImageAssets/icon_attention.svg'
 
 export const Container = Files.Container

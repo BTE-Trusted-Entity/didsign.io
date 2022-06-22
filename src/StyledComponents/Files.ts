@@ -80,10 +80,10 @@ export const DocFile = styled(FileName)`
   background-image: url(${DocIcon});
 `
 export const IconButton = styled.button`
-  height: 18px;
-  width: 18px;
+  height: 22px;
+  width: 22px;
   border: none;
-  padding: 0;
+  padding: 2px;
   cursor: pointer;
 `
 export const DeleteButton = styled(IconButton)`

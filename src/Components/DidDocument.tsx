@@ -12,7 +12,7 @@ import {
 import { selectJwsSignStatus } from '../Features/Signer/VerifyJwsSlice'
 import { JWSErrors } from './JWSErrors'
 import { ServiceEndpoint } from './ServiceEndpoint'
-import OkIcon from '../ImageAssets/icon_oK.svg'
+import OkIcon from '../ImageAssets/icon_ok.svg'
 
 import * as Styled from '../StyledComponents/DidDocument'
 import { useSubscanHost } from '../Utils/useSubscanHost'
