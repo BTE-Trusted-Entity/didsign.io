@@ -4,7 +4,6 @@ import { fileSlice } from '../Features/Signer/FileSlice'
 import { hashSlice } from '../Features/Signer/hashSlice'
 import { popupSlice } from '../Features/Signer/PopupSlice'
 import { SignatureSlice } from '../Features/Signer/SignatureSlice'
-import { UserSlice } from '../Features/Signer/UserSlice'
 import { jwsHashSlice } from '../Features/Signer/VerifyJwsSlice'
 
 export const store = configureStore({
@@ -12,7 +11,6 @@ export const store = configureStore({
     hash: hashSlice.reducer,
     files: fileSlice.reducer,
     signature: SignatureSlice.reducer,
-    userRole: UserSlice.reducer,
     endpoint: EndpointSlice.reducer,
     jwshash: jwsHashSlice.reducer,
     popup: popupSlice.reducer,

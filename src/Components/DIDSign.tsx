@@ -2,7 +2,6 @@ import React from 'react'
 import { Header } from './Header'
 import { Main } from './Main'
 import { Footer } from './Footer'
-import { BottomSection } from './BottomSection'
 import { useAppSelector } from '../app/hooks'
 import BottomLeftBubble from '../ImageAssets/BottomLeftBubble.svg'
 import BottomRightBubble from '../ImageAssets/BottomRightBubble.svg'
@@ -19,7 +18,6 @@ export const DIDSign = () => {
 
       <Header />
       <Main />
-      <BottomSection />
       <Footer />
 
       <Styled.LeftBubbleImage src={BottomLeftBubble} />

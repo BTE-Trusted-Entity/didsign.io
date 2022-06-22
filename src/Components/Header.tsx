@@ -1,5 +1,4 @@
 import React from 'react'
-import { NavLink, useLocation } from 'react-router-dom'
 import * as Styled from '../StyledComponents/Header'
 import { paths } from '../Utils/paths'
 
@@ -25,10 +24,6 @@ const PrimaryHeader = () => {
 }
 
 const SecondaryHeader = () => {
-  const location = useLocation()
-  const signer = location.pathname === paths.signer
-  const veriifer = location.pathname === paths.verifier
-
   return (
     <Styled.SecondaryHeader>
       <Styled.Text>
@@ -36,20 +31,19 @@ const SecondaryHeader = () => {
         identifier (DID).
       </Styled.Text>
       <Styled.LinkContainer>
-        <NavLink to={paths.signer}>
-          <Styled.Wrapper isSelectedRole={signer}>
+        <Styled.NavigationLink to={paths.signer}>
+          <Styled.Wrapper>
             <span>SIGN</span>
-            <Styled.SignUnderline isSelectedRole={signer} />
+            <Styled.SignUnderline />
           </Styled.Wrapper>
-        </NavLink>
-
-        <NavLink to={'/verifier'}>
-          <Styled.Wrapper isSelectedRole={veriifer}>
+        </Styled.NavigationLink>
+        <Styled.NavigationLink to={paths.verifier}>
+          <Styled.Wrapper>
             <span>Verify</span>
 
-            <Styled.VerifyUnderline isSelectedRole={veriifer} />
+            <Styled.VerifyUnderline />
           </Styled.Wrapper>
-        </NavLink>
+        </Styled.NavigationLink>
       </Styled.LinkContainer>
     </Styled.SecondaryHeader>
   )

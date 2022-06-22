@@ -1,47 +1,64 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { ImportFilesSigner } from './ImportFilesSigner'
 import { FilesSigner } from './FilesSigner'
-import { useAppSelector } from '../app/hooks'
-import { selectFiles } from '../Features/Signer/FileSlice'
+import { useAppDispatch, useAppSelector } from '../app/hooks'
+import { clearAll, selectFiles } from '../Features/Signer/FileSlice'
 import { FilesEmpty } from './FilesEmpty'
 import CenterRightBubble from '../ImageAssets/CenterRightBubble.svg'
 import CenterLeftBubble from '../ImageAssets/CenterLeftBubble.svg'
 import { FilesVerifier } from './FilesVerifier'
 import { ImportFilesVerifier } from './ImportFilesVerifier'
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 
 import * as Styled from '../StyledComponents/Main'
 import { paths } from '../Utils/paths'
-import { useRemoveData } from '../Hooks/useRemoveData'
+import { BottomSectionSigner, BottomSectionVerifier } from './BottomSection'
+import { clearHash } from '../Features/Signer/hashSlice'
+import { clearSign } from '../Features/Signer/SignatureSlice'
+import {
+  clearEndpoint,
+  clearFileStatuses,
+} from '../Features/Signer/EndpointSlice'
+import { clearJWS } from '../Features/Signer/VerifyJwsSlice'
 
 const Signer = () => {
   const files = useAppSelector(selectFiles)
-  const location = useLocation()
-  const verifier = location.pathname === paths.verifier
+  const dispatch = useAppDispatch()
 
-  useRemoveData(verifier)
+  useEffect(() => {
+    dispatch(clearEndpoint())
+    dispatch(clearJWS())
+    dispatch(clearFileStatuses())
+    dispatch(clearAll())
+    dispatch(clearHash())
+    dispatch(clearSign())
+  }, [dispatch])
 
   return (
     <Fragment>
       <ImportFilesSigner />
-
       {files.length === 0 ? <FilesEmpty /> : <FilesSigner />}
+      <BottomSectionSigner />
     </Fragment>
   )
 }
 
 const Verifier = () => {
   const files = useAppSelector(selectFiles)
-  const location = useLocation()
-  const verifier = location.pathname === paths.verifier
+  const dispatch = useAppDispatch()
 
-  useRemoveData(verifier)
+  useEffect(() => {
+    dispatch(clearAll())
+    dispatch(clearHash())
+    dispatch(clearSign())
+  }, [dispatch])
 
   return (
     <Fragment>
       <ImportFilesVerifier />
 
       {files.length === 0 ? <FilesEmpty /> : <FilesVerifier />}
+      <BottomSectionVerifier />
     </Fragment>
   )
 }

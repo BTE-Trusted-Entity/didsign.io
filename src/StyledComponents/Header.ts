@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 import Logo from '../ImageAssets/logo_DIDsign.svg'
 import PrimaryLeftBubbles from '../ImageAssets/PrimaryHeaderLeftBubbles.svg'
@@ -6,9 +7,6 @@ import SecondaryLeftBubbles from '../ImageAssets/SecondaryHeaderLeftBubbles.svg'
 import SecondaryRightBubbles from '../ImageAssets/SecondaryHeaderRightBubbles.svg'
 import { colors } from './colors'
 
-interface ButtonType {
-  isSelectedRole: boolean
-}
 export const Header = styled.header`
   display: flex;
   width: 100vw;
@@ -40,19 +38,16 @@ export const SecondaryHeader = styled.div`
   flex-direction: column;
   width: 100vw;
   height: 65px;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   position: relative;
   background: url(${SecondaryLeftBubbles}) no-repeat left 40px / auto 100%,
     url(${SecondaryRightBubbles}) no-repeat right 40px / auto 100%,
     ${colors.headerBelow};
-  a {
-    text-decoration: none;
-  }
 `
 export const Text = styled.span`
   display: flex;
-  align-items: flex-start;
+  align-items: flex-end;
   justify-content: flex-start;
   max-width: 766px;
   width: 90%;
@@ -63,16 +58,19 @@ export const Text = styled.span`
   letter-spacing: 0.1px;
   line-height: 16px;
   @media (max-width: 600px) {
-    display: none;
+    visibility: hidden;
   }
 `
-export const LinkContainer = styled.div`
+export const LinkContainer = styled.nav`
   max-width: 766px;
   width: 90%;
   display: flex;
   align-items: flex-end;
   gap: 18px;
-  margin-bottom: -10px;
+`
+export const NavigationLink = styled(NavLink)`
+  text-decoration: none;
+  width: 374px;
 `
 export const Wrapper = styled.div`
   display: flex;
@@ -80,36 +78,40 @@ export const Wrapper = styled.div`
   color: ${colors.darkPurple};
   text-transform: uppercase;
   align-items: center;
-  justify-content: center;
-  font-size: ${(props: ButtonType) => (props.isSelectedRole ? '18px' : '16px')};
-  letter-spacing: ${(props: ButtonType) =>
-    props.isSelectedRole ? '0.16px' : '0.11px'};
-  line-height: ${(props: ButtonType) =>
-    props.isSelectedRole ? '20px' : '17px'};
-  width: 374px;
-  gap: 5px;
-  height: ${(props: ButtonType) => (props.isSelectedRole ? '35px' : '28px')};
-  background-color: ${(props: ButtonType) =>
-    props.isSelectedRole ? colors.silverBlue : '#BBCFE2'};
-  box-shadow: ${(props: ButtonType) =>
-    !props.isSelectedRole && 'inset 0 -1px 6px 0 rgba(0, 0, 0, 0.15);'};
+  justify-content: flex-end;
+  font-size: 16px;
+  letter-spacing: 0.11px;
+  line-height: 17px;
+  height: 28px;
+  background-color: #bbcfe2;
+  box-shadow: inset 0 -1px 6px 0 rgba(0, 0, 0, 0.15);
   border: none;
   border-radius: 3px 3px 0 0;
-  @media (max-width: 600px) {
-    margin-bottom: -18px;
-  }
   cursor: pointer;
+  .active & {
+    font-size: 18px;
+    letter-spacing: 0.16px;
+    line-height: 20px;
+    height: 35px;
+    background-color: ${colors.silverBlue};
+  }
 `
 export const SignUnderline = styled.div`
-  height: ${(props: ButtonType) => (props.isSelectedRole ? '4px' : '2px')};
+  height: 2px;
   width: 130px;
   background-color: ${colors.pink};
-  margin-top: -2px;
+  .active & {
+    height: 4px;
+  }
+  margin-bottom: 1px;
 `
 export const VerifyUnderline = styled.div`
-  height: ${(props: ButtonType) => (props.isSelectedRole ? '4px' : '2px')};
+  height: 2px;
   width: 130px;
   background-color: ${colors.green};
-  margin-top: -2px;
   transition: height 0.1s ease-in;
+  .active & {
+    height: 4px;
+  }
+  margin-bottom: 1px;
 `
