@@ -1,0 +1,44 @@
+.container {
+  composes: container from '../FilesEmpty/Files.module.css';
+}
+
+.heading {
+  composes: heading from '../FilesEmpty/Files.module.css';
+}
+
+.list {
+  composes: list from '../FilesEmpty/Files.module.css';
+}
+
+.file {
+  composes: file from '../FilesEmpty/Files.module.css';
+}
+
+.docFile {
+  composes: docFile from '../FilesEmpty/Files.module.css';
+}
+
+.imageFile {
+  composes: imageFile from '../FilesEmpty/Files.module.css';
+}
+
+.didsignFile {
+  composes: didsignFile from '../FilesEmpty/Files.module.css';
+}
+
+.deleteBtn {
+  composes: deleteBtn from '../FilesEmpty/Files.module.css';
+}
+
+.infoBtn {
+  composes: iconBtn from '../FilesEmpty/Files.module.css';
+  background: url('../../ImageAssets/icon_info.svg') no-repeat center right;
+}
+
+.didsignInfo {
+  margin: 0;
+  color: var(--color-pure-red);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}

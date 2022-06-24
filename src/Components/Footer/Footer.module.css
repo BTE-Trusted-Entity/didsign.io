@@ -1,0 +1,84 @@
+.footer {
+  background-color: var(--color-dark-purple);
+  height: 35px;
+  min-height: fit-content;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  margin-top: auto;
+}
+
+.footerLinks {
+  display: flex;
+  flex-direction: row;
+  width: 90%;
+  height: 80%;
+  max-width: 740px;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: 0.1px;
+  text-align: left;
+  background:
+    url('../../ImageAssets/logo_DIDsign.svg') no-repeat center left,
+    url('../../ImageAssets/Kilt.svg') no-repeat center right/100px;
+}
+
+@media (max-width: 400px) {
+  .footerLinks {
+    background: none;
+  }
+}
+
+.links {
+  width: 80%;
+  max-width: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+@media (max-width: 400px) {
+  .links {
+    width: 100%;
+  }
+}
+
+@media (max-width: 300px) {
+  .links {
+    font-size: 12px;
+  }
+}
+
+.links a {
+  color: white;
+  text-decoration: none;
+}
+
+.links a:hover {
+  text-decoration: underline;
+}
+
+.imprint {
+  color: var(--color-white);
+  padding: 0;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+@media (max-width: 300px) {
+  .imprint {
+    font-size: 12px;
+  }
+}
+
+.imprint:hover {
+  text-decoration: underline;
+}

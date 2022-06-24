@@ -1,0 +1,92 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: fit-content;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 10px;
+  margin-bottom: 100px;
+}
+
+.textWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  width: 90%;
+  gap: 20px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.verificationText {
+  display: flex;
+  justify-content: center;
+  color: green;
+  font-size: 16px;
+  line-height: 25px;
+  letter-spacing: 0.11px;
+  width: 80px;
+  padding-right: 35px;
+  background: url('../../ImageAssets/icon_oK.svg') no-repeat right 30%;
+}
+
+.verificationIcon {
+  display: flex;
+  justify-content: flex-start;
+  width: 70%;
+}
+
+.text {
+  display: flex;
+  justify-content: flex-start;
+  color: var(--color-dark-purple);
+  font-size: 14px;
+  line-height: 25px;
+  letter-spacing: 0.11px;
+  font-weight: bold;
+  word-break: break-all;
+  width: 550px;
+}
+
+.text a {
+  color: var(--color-medium-blue);
+  padding-left: 10px;
+  padding-right: 20px;
+  background: url('../../ImageAssets/icon_link.svg') no-repeat right 40%;
+}
+
+.errorText {
+  composes: text;
+  color: var(--color-orange);
+  word-break: normal;
+}
+
+.endpointsWrapper {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  color: var(--color-dark-purple);
+  font-size: 14px;
+  gap: 20px;
+  line-height: 22px;
+  letter-spacing: 0.11px;
+  word-break: break-all;
+  width: 550px;
+}
+
+.title {
+  display: flex;
+  justify-content: flex-start;
+  color: var(--color-dark-purple);
+  font-size: 16px;
+  line-height: 25px;
+  letter-spacing: 0.11px;
+  width: 80px;
+  text-align: left;
+}
+
+.errorTitle {
+  composes: title;
+  color: var(--color-orange);
+}

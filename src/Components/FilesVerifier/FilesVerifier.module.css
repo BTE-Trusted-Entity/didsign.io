@@ -1,0 +1,77 @@
+.container {
+  composes: container from '../FilesEmpty/Files.module.css';
+}
+
+.heading {
+  composes: heading from '../FilesEmpty/Files.module.css';
+}
+
+.list {
+  composes: list from '../FilesEmpty/Files.module.css';
+}
+
+.file {
+  composes: file from '../FilesEmpty/Files.module.css';
+}
+
+.docFile {
+  composes: docFile from '../FilesEmpty/Files.module.css';
+}
+
+.imageFile {
+  composes: imageFile from '../FilesEmpty/Files.module.css';
+}
+
+.didsignFile {
+  composes: didsignFile from '../FilesEmpty/Files.module.css';
+}
+
+.deleteBtn {
+  composes: deleteBtn from '../FilesEmpty/Files.module.css';
+}
+
+.fileOk {
+  composes: file;
+  background:
+    url('../../ImageAssets/icon_oK.svg') content-box no-repeat center
+    right 32px;
+}
+
+.fileInvalid {
+  composes: file;
+  background:
+    url('../../ImageAssets/icon_attention.svg') content-box no-repeat
+    center right 32px;
+}
+
+.zipContainer {
+  composes: container;
+  grid-template: 'zip zip' 'heading list' / 15% auto;
+}
+
+.zipFile {
+  composes: file;
+  grid-area: zip;
+  padding: 10px 16px 5px 0;
+  width: 90%;
+  justify-self: end;
+}
+
+.zipFilename {
+  composes: fileName from '../FilesEmpty/Files.module.css';
+  background-image: url('../../ImageAssets/doc_zip_NEW.svg');
+}
+
+.unzippedFileOk {
+  composes: file;
+  background:
+    url('../../ImageAssets/icon_oK.svg') content-box no-repeat center
+    right;
+}
+
+.unzippedFileInvalid {
+  composes: file;
+  background:
+    url('../../ImageAssets/icon_attention.svg') content-box no-repeat
+    center right;
+}

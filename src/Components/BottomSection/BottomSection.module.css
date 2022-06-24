@@ -1,0 +1,69 @@
+.container {
+  width: 100vw;
+  position: relative;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  display: flex;
+  min-height: 95px;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: var(--color-light-blue);
+}
+
+.bottomSection {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 766px;
+  background-color: var(--color-bottom-section);
+  width: 90%;
+  margin-bottom: 10px;
+  min-height: 95px;
+  border-radius: 0 0 15px 15px;
+  border: solid 1px;
+  border-color: rgb(81 124 162 / 25%);
+  box-shadow: 0 2px 4px 0 rgb(0 0 0 / 10%);
+  position: relative;
+}
+
+.verificationLoader {
+  position: absolute;
+  top: 24px;
+  right: 30px;
+  display: inline-block;
+  height: 40px;
+  width: 38px;
+  background: url('../../ImageAssets/puff.svg') no-repeat center/100%;
+}
+
+.verificationText {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  top: 24px;
+  left: 40px;
+  color: var(--color-grey);
+  font-size: 16px;
+  line-height: 17px;
+  letter-spacing: 0.11px;
+}
+
+div.verificationText {
+  background-color: var(--colors-bottom-section);
+  height: 1px;
+  width: 15px;
+}
+
+.startOverBtn {
+  position: absolute;
+  background: url('../../ImageAssets/button_start_over_NEW.svg') no-repeat center/100%;
+  right: 0;
+  bottom: 0;
+  cursor: pointer;
+  border: none;
+  width: 40px;
+  height: 40px;
+}

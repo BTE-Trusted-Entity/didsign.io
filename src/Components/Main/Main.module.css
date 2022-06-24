@@ -1,0 +1,15 @@
+.container {
+  background:
+    url('../../ImageAssets/CenterLeftBubble.svg') no-repeat
+    bottom left/ auto 20%,
+    url('../../ImageAssets/CenterRightBubble.svg') no-repeat bottom right/auto
+    20%,
+    var(--color-silver-blue);
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+  overflow-x: hidden;
+}

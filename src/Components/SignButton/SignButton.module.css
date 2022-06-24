@@ -1,0 +1,52 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.onchainInfo {
+  font-size: 12px;
+  line-height: 12px;
+  letter-spacing: 0.2px;
+  margin-bottom: 4px;
+}
+
+.onchainInfo a {
+  color: var(--color-medium-blue);
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 8px;
+}
+
+.infoBtn {
+  cursor: pointer;
+  width: 18px;
+  border: none;
+  background: url('../../ImageAssets/icon_info.svg') no-repeat right/100%;
+}
+
+.signBtn {
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: 0.1px;
+  color: white;
+  max-width: 160px;
+  cursor: pointer;
+  width: 60vw;
+  height: 30px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-medium-blue);
+  text-transform: uppercase;
+  border: none;
+}
+
+.signBtn:disabled {
+  opacity: 0.6;
+}

@@ -4,5 +4,5 @@
  * https://devblogs.microsoft.com/typescript/announcing-typescript-4-4/#use-unknown-catch-variables
  * */
 export function exceptionToError(exception: unknown): Error {
-  return exception instanceof Error ? exception : new Error(String(exception))
+  return exception instanceof Error ? exception : new Error(String(exception));
 }

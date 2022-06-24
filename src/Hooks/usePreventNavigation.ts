@@ -1,24 +1,24 @@
-import { useEffect } from 'react'
+import { useEffect } from 'react';
 
 function handleBeforeUnload(event: Event): void {
-  event.preventDefault()
-  event.returnValue = false
+  event.preventDefault();
+  event.returnValue = false;
 }
 
 function addUnloadListener(): void {
-  window.addEventListener('beforeunload', handleBeforeUnload)
+  window.addEventListener('beforeunload', handleBeforeUnload);
 }
 
 function removeUnloadListener(): void {
-  window.removeEventListener('beforeunload', handleBeforeUnload)
+  window.removeEventListener('beforeunload', handleBeforeUnload);
 }
 
 export function usePreventNavigation(active: boolean): void {
   useEffect(() => {
     if (active) {
-      addUnloadListener()
+      addUnloadListener();
     } else {
-      removeUnloadListener()
+      removeUnloadListener();
     }
-  }, [active])
+  }, [active]);
 }

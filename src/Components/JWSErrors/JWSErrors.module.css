@@ -1,0 +1,28 @@
+.container {
+  composes: container from '../DidDocument/DidDocument.module.css';
+  margin-bottom: 30px;
+}
+
+.textWrapper {
+  composes: textWrapper from '../DidDocument/DidDocument.module.css';
+}
+
+.verificationErrorText {
+  display: flex;
+  justify-content: center;
+  font-size: 16px;
+  line-height: 25px;
+  letter-spacing: 0.11px;
+  width: 80px;
+  padding-right: 35px;
+  background: url('../../ImageAssets/icon_attention.svg') no-repeat right 30%;
+  color: var(--color-orange);
+}
+
+.errorTitle {
+  composes: errorTitle from '../DidDocument/DidDocument.module.css';
+}
+
+.errorText {
+  composes: errorText from '../DidDocument/DidDocument.module.css';
+}
