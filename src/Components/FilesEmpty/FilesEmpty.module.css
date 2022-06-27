@@ -1,0 +1,21 @@
+.container {
+  composes: container from './Files.module.css';
+}
+
+.heading {
+  composes: heading from './Files.module.css';
+  color: var(--color-grey);
+}
+
+.list {
+  grid-area: list;
+  display: flex;
+  flex-direction: column;
+  gap: 45px;
+  padding-top: 40px;
+}
+
+.emptyLines {
+  border: dotted 0.2px #4d6b85;
+  opacity: 0.8;
+}

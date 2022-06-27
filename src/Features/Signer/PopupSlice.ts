@@ -1,14 +1,15 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import type { RootState } from '../../app/store'
+import type { RootState } from '../../app/store';
+
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface Popup {
-  show: boolean
+  show: boolean;
 }
 
 // Define the initial state using that type
 const initialState: Popup = {
   show: false,
-}
+};
 export const popupSlice = createSlice({
   name: 'popup',
   initialState,
@@ -17,14 +18,14 @@ export const popupSlice = createSlice({
       return {
         ...state,
         show: action.payload,
-      }
+      };
     },
   },
-})
+});
 
-export const { showPopup } = popupSlice.actions
+export const { showPopup } = popupSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectPopup = (state: RootState) => state.popup.show
+export const selectPopup = (state: RootState) => state.popup.show;
 
-export default popupSlice.reducer
+export default popupSlice.reducer;

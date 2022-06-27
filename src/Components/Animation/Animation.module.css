@@ -1,0 +1,97 @@
+.container {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  width: 766px;
+  height: 220px;
+  display: flex;
+  background-color: #fff;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  box-shadow:
+    inset 0 -1px 6px 0 rgb(0 0 0 / 15%),
+    inset 0 3px 8px 0 rgb(0 0 0 / 15%);
+}
+
+.containerVerifier {
+  composes: container;
+  background-color: var(--color-green);
+}
+
+.containerFast {
+  composes: container;
+  background-color: var(--color-fast-animation);
+}
+
+.containerSlow {
+  composes: container;
+  background-color: var(--color-pink);
+}
+
+.circle {
+  border: 50px solid rgb(255 255 255 / 0%);
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+  animation: 5s infinite animation;
+  margin-top: -100px;
+  margin-left: -100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  box-sizing: border-box;
+}
+
+.gradient {
+  background:
+    radial-gradient(
+      circle at center,
+      rgb(0 0 0 / 20%) 0,
+      rgb(137 137 137 / 10%) 50%,
+      rgb(255 255 255 / 10%)
+    );
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.circle2 {
+  composes: circle;
+  animation-delay: 1s;
+}
+
+.circle3 {
+  composes: circle;
+  animation-delay: 2s;
+}
+
+.circle4 {
+  composes: circle;
+  animation-delay: 3s;
+}
+
+.circle5 {
+  composes: circle;
+  animation-delay: 4s;
+}
+
+@keyframes animation {
+  from {
+    border-width: 200px;
+    border-color: rgb(255 255 255 / 0%);
+    width: 1500px;
+    height: 1500px;
+    margin-left: -750px;
+    margin-top: -750px;
+  }
+
+  to {
+    border-width: 5px;
+    width: 10px;
+    height: 10px;
+    margin-left: -5px;
+    margin-top: -5px;
+    border-color: rgb(255 255 255 / 15%);
+  }
+}
