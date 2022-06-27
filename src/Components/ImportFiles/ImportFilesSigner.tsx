@@ -18,7 +18,7 @@ import {
 import { addHash } from '../../Features/Signer/hashSlice';
 import { createHash } from '../../Utils/sign-helpers';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { FastAnimation, SlowAnimation } from '../AnimationViews/Animations';
+import { FastAnimation, SlowAnimation } from '../Animation/Animation';
 import { isDidSignFile } from '../../Utils/verify-helper';
 import { SigningMultipleDidFiles } from '../Popups/Popups';
 import { showPopup } from '../../Features/Signer/PopupSlice';

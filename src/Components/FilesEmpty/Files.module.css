@@ -11,9 +11,9 @@
   padding-right: 20px;
   overflow-x: hidden;
   overflow-y: auto;
-  background-color: var(--color-file-section);
+  background-color: rgb(var(--color-dark-grey-rgb / 50%));
   border-style: solid;
-  border-color: #517ca240;
+  border-color: rgb(var(--color-pale-blue-rgb) / 25%);
   border-width: 1px 1px 0;
 }
 

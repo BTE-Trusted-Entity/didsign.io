@@ -17,14 +17,14 @@
   align-items: center;
   justify-content: center;
   max-width: 766px;
-  background-color: var(--color-bottom-section);
+  background-color: rgb(var(--color-dark-grey-rgb) / 50%);
   width: 90%;
   margin-bottom: 10px;
   min-height: 95px;
   border-radius: 0 0 15px 15px;
   border: solid 1px;
-  border-color: rgb(81 124 162 / 25%);
-  box-shadow: 0 2px 4px 0 rgb(0 0 0 / 10%);
+  border-color: rgb(var(--color-pale-blue-rgb) / 25%);
+  box-shadow: 0 2px 4px 0 rgb(var(--color-pale-blue-rgb) / 10%);
   position: relative;
 }
 
@@ -52,7 +52,7 @@
 }
 
 div.verificationText {
-  background-color: var(--colors-bottom-section);
+  background-color: rgb(var(--color-dark-grey-rgb / 50%));
   height: 1px;
   width: 15px;
 }

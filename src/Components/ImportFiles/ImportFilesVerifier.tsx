@@ -38,10 +38,7 @@ import {
   updateSignStatus,
 } from '../../Features/Signer/VerifyJwsSlice';
 import { addHash, selectHash } from '../../Features/Signer/hashSlice';
-import {
-  FastAnimation,
-  SlowAnimationVerifier,
-} from '../AnimationViews/Animations';
+import { FastAnimation, SlowAnimationVerifier } from '../Animation/Animation';
 import { showPopup } from '../../Features/Signer/PopupSlice';
 import { MultipleSignPopup } from '../Popups/Popups';
 

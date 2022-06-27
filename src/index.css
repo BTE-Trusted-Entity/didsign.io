@@ -1,4 +1,27 @@
-@import 'Styles/Theme.module.css';
+:root {
+  --color-pure-red: #b20230;
+  --color-dark-purple: #2a2231;
+  --color-light-blue: #ddf0ff;
+  --color-medium-blue: #3e6e99;
+  --color-header-below: 42 34 49;
+  --color-orange: #f06543;
+  --color-orange-secondary: #f4937b;
+  --color-silver-blue: #cee8ff;
+  --color-darkgrey-rgb: 221 240 255;
+  --color-pink: #91436a;
+  --color-green: #387d7a;
+  --color-fast-animation: #9c9640;
+  --color-grey: #2a223180;
+  --color-white: #fff;
+  --color-dropdown: #cfe5fa;
+  --color-black-rgb: 0 0 0;
+  --color-white-rgb: 255 255 255;
+  --color-orange-rgb: 240 101 67;
+  --color-grey-rgb: 42 34 49;
+  --color-pale-blue-rgb: 81 124 162;
+  --color-blue-navlink: #bbcfe2;
+  --body-font: 'Overpass';
+}
 
 body {
   margin: 0;
