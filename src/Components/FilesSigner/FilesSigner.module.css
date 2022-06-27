@@ -1,37 +1,37 @@
 .container {
-  composes: container from '../FilesEmpty/Files.module.css';
+  composes: container from '../Files/Files.module.css';
 }
 
 .heading {
-  composes: heading from '../FilesEmpty/Files.module.css';
+  composes: heading from '../Files/Files.module.css';
 }
 
 .list {
-  composes: list from '../FilesEmpty/Files.module.css';
+  composes: list from '../Files/Files.module.css';
 }
 
 .file {
-  composes: file from '../FilesEmpty/Files.module.css';
+  composes: file from '../Files/Files.module.css';
 }
 
 .docFile {
-  composes: docFile from '../FilesEmpty/Files.module.css';
+  composes: docFile from '../Files/Files.module.css';
 }
 
 .imageFile {
-  composes: imageFile from '../FilesEmpty/Files.module.css';
+  composes: imageFile from '../Files/Files.module.css';
 }
 
 .didsignFile {
-  composes: didsignFile from '../FilesEmpty/Files.module.css';
+  composes: didsignFile from '../Files/Files.module.css';
 }
 
 .deleteBtn {
-  composes: deleteBtn from '../FilesEmpty/Files.module.css';
+  composes: deleteBtn from '../Files/Files.module.css';
 }
 
 .infoBtn {
-  composes: iconBtn from '../FilesEmpty/Files.module.css';
+  composes: iconBtn from '../Files/Files.module.css';
   background: url('../../ImageAssets/icon_info.svg') no-repeat center right;
 }
 

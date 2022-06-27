@@ -1,9 +1,9 @@
 .container {
-  composes: container from './Files.module.css';
+  composes: container from '../Files/Files.module.css';
 }
 
 .heading {
-  composes: heading from './Files.module.css';
+  composes: heading from '../Files/Files.module.css';
   color: var(--color-grey);
 }
 
