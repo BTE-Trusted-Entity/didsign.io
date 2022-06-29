@@ -7,11 +7,10 @@ import classnames from 'classnames';
 import styles from './ServiceEndpoint.module.css';
 
 import { useAppSelector } from '../../app/hooks';
-import { selectVerifiedDid } from '../../Features/Signer/EndpointSlice';
+import { selectVerifiedDidUri } from '../../Features/Signer/EndpointSlice';
 
 import {
   getAttestationForRequest,
-  getDidForAccount,
   getW3NOrDid,
   validateAttestation,
   validateCredential,
@@ -24,7 +23,7 @@ interface Props {
 }
 
 export const ServiceEndpoint = ({ url, endpointType }: Props) => {
-  const did = useAppSelector(selectVerifiedDid);
+  const didUri = useAppSelector(selectVerifiedDidUri);
   // eslint-disable-next-line
   const [credential, setCredential] = useState<any | null>(null);
   const [isCredentialValid, setIsCredentialValid] = useState<boolean>(true);
@@ -51,7 +50,11 @@ export const ServiceEndpoint = ({ url, endpointType }: Props) => {
       const result = await response.json();
       setCredential(result.claim.contents);
 
-      if (!Did.DidUtils.isSameSubject(result.claim.owner, did)) {
+      if (!didUri) {
+        throw new Error('No DID URI');
+      }
+
+      if (!Did.Utils.isSameSubject(result.claim.owner, didUri)) {
         setIsCredentialValid(false);
         setAttester('Credential subject and signer DID are not the same');
         return;
@@ -59,7 +62,7 @@ export const ServiceEndpoint = ({ url, endpointType }: Props) => {
 
       if (Credential.isICredential(result)) {
         setIsCredentialValid(await validateCredential(result));
-        const attesterDid = getDidForAccount(result.attestation.owner);
+        const attesterDid = result.attestation.owner;
         setAttester(await getW3NOrDid(attesterDid));
         return;
       }
@@ -73,8 +76,7 @@ export const ServiceEndpoint = ({ url, endpointType }: Props) => {
       const attestation = await getAttestationForRequest(result);
       setIsCredentialValid(await validateAttestation(attestation));
       if (attestation) {
-        const attesterDid = getDidForAccount(attestation.owner);
-        setAttester(await getW3NOrDid(attesterDid));
+        setAttester(await getW3NOrDid(attestation.owner));
       } else {
         setAttester('No Attestation found');
       }

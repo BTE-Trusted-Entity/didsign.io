@@ -5,7 +5,7 @@ import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import styles from './SignButton.module.css';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { updateSign, updateDID } from '../../Features/Signer/SignatureSlice';
+import { updateSign } from '../../Features/Signer/SignatureSlice';
 import { openSporan, generateJWS } from '../../Utils/sign-helpers';
 import { selectFinalHash, selectHash } from '../../Features/Signer/hashSlice';
 import {
@@ -52,9 +52,8 @@ export const SignButton = () => {
     openSporan(await finalHash)
       .then(async (response) => {
         dispatch(updateSign(response.signature));
-        dispatch(updateDID(response.keyID));
         const signature: Signature = {
-          keyID: response.keyID,
+          keyUri: response.keyUri,
           signature: response.signature,
         };
         const jws = generateJWS(signature, await finalHash);

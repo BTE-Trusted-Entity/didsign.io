@@ -11,7 +11,7 @@ import { replaceFileStatus } from '../../Utils/verify-helper';
 const initialState: ISignatureEndPointWithStatus = {
   signatureWithEndpoint: {
     signature: '',
-    did: '',
+    didUri: undefined,
     endpoints: [],
     w3name: '',
     timestamp: '',
@@ -26,7 +26,8 @@ export const EndpointSlice = createSlice({
     clearEndpoint: (state) => {
       state.signatureWithEndpoint.signature =
         initialState.signatureWithEndpoint.signature;
-      state.signatureWithEndpoint.did = initialState.signatureWithEndpoint.did;
+      state.signatureWithEndpoint.didUri =
+        initialState.signatureWithEndpoint.didUri;
       state.signatureWithEndpoint.endpoints =
         initialState.signatureWithEndpoint.endpoints;
       state.signatureWithEndpoint.w3name =
@@ -41,7 +42,7 @@ export const EndpointSlice = createSlice({
       state.signatureWithEndpoint.signature = action.payload.signature;
       state.signatureWithEndpoint.endpoints =
         state.signatureWithEndpoint.endpoints.concat(action.payload.endpoints);
-      state.signatureWithEndpoint.did = action.payload.did;
+      state.signatureWithEndpoint.didUri = action.payload.didUri;
       state.signatureWithEndpoint.w3name = action.payload.w3name;
       state.signatureWithEndpoint.timestamp = action.payload.timestamp;
       state.signatureWithEndpoint.txHash = action.payload.txHash;
@@ -90,8 +91,8 @@ export const {
 // Other code such as selectors can use the imported `RootState` type
 export const selectServiceEndpoints = (state: RootState) =>
   state.endpoint.signatureWithEndpoint.endpoints;
-export const selectVerifiedDid = (state: RootState) =>
-  state.endpoint.signatureWithEndpoint.did;
+export const selectVerifiedDidUri = (state: RootState) =>
+  state.endpoint.signatureWithEndpoint.didUri;
 export const selectVerifiedSign = (state: RootState) =>
   state.endpoint.signatureWithEndpoint.signature;
 export const selectW3Name = (state: RootState) =>

@@ -33,7 +33,7 @@ export const createHashFromHashArray = async (
 export const openSporan = async (finalHash: string): Promise<Signature> => {
   const signObj = await sporranWindow.sporran.signWithDid(finalHash);
   const sign: Signature = {
-    keyID: signObj.didKeyUri,
+    keyUri: signObj.didKeyUri,
     signature: signObj.signature,
   };
   return sign;
@@ -46,7 +46,7 @@ export const generateJWS = (
   const header = {
     alg: 'Sr25519',
     typ: 'JWS',
-    kid: signature.keyID,
+    keyUri: signature.keyUri,
   };
   const encodedHeaders = btoa(JSON.stringify(header)).replaceAll('=', '');
   const claim = {
