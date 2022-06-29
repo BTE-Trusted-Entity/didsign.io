@@ -11,7 +11,6 @@ import { selectVerifiedDid } from '../../Features/Signer/EndpointSlice';
 
 import {
   getAttestationForRequest,
-  getDidForAccount,
   getW3NOrDid,
   validateAttestation,
   validateCredential,
@@ -51,7 +50,11 @@ export const ServiceEndpoint = ({ url, endpointType }: Props) => {
       const result = await response.json();
       setCredential(result.claim.contents);
 
-      if (!Did.DidUtils.isSameSubject(result.claim.owner, did)) {
+      if (!did) {
+        throw new Error('No DID');
+      }
+
+      if (!Did.Utils.isSameSubject(result.claim.owner, did)) {
         setIsCredentialValid(false);
         setAttester('Credential subject and signer DID are not the same');
         return;
@@ -59,7 +62,7 @@ export const ServiceEndpoint = ({ url, endpointType }: Props) => {
 
       if (Credential.isICredential(result)) {
         setIsCredentialValid(await validateCredential(result));
-        const attesterDid = getDidForAccount(result.attestation.owner);
+        const attesterDid = result.attestation.owner;
         setAttester(await getW3NOrDid(attesterDid));
         return;
       }
@@ -73,8 +76,7 @@ export const ServiceEndpoint = ({ url, endpointType }: Props) => {
       const attestation = await getAttestationForRequest(result);
       setIsCredentialValid(await validateAttestation(attestation));
       if (attestation) {
-        const attesterDid = getDidForAccount(attestation.owner);
-        setAttester(await getW3NOrDid(attesterDid));
+        setAttester(await getW3NOrDid(attestation.owner));
       } else {
         setAttester('No Attestation found');
       }

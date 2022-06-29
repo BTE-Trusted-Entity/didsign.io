@@ -2,11 +2,8 @@ import type { RootState } from '../../app/store';
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { Signature } from '../../Utils/types';
-
-const initialState: Signature = {
+const initialState = {
   signature: '',
-  keyID: '',
 };
 export const SignatureSlice = createSlice({
   name: 'signature',
@@ -16,7 +13,6 @@ export const SignatureSlice = createSlice({
       return {
         ...state,
         signature: initialState.signature,
-        keyID: initialState.keyID,
       };
     },
     // Use the PayloadAction type to declare the contents of `action.payload`
@@ -26,19 +22,12 @@ export const SignatureSlice = createSlice({
         signature: action.payload,
       };
     },
-    updateDID: (state, action: PayloadAction<string>) => {
-      return {
-        ...state,
-        keyID: action.payload,
-      };
-    },
   },
 });
 
-export const { clearSign, updateSign, updateDID } = SignatureSlice.actions;
+export const { clearSign, updateSign } = SignatureSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectSign = (state: RootState) => state.signature.signature;
-export const selectDid = (state: RootState) => state.signature.keyID;
 
 export default SignatureSlice.reducer;

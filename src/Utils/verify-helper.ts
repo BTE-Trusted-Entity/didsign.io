@@ -2,8 +2,8 @@ import {
   Attestation,
   Credential,
   Did,
+  DidUri,
   ICredential,
-  IDidDetails,
   IRequestForAttestation,
   KeyRelationship,
 } from '@kiltprotocol/sdk-js';
@@ -21,7 +21,7 @@ import {
 } from './types';
 import { getVerifiedTimestamp } from './timestamp';
 
-const resolveServiceEndpoints = async (did: string) => {
+const resolveServiceEndpoints = async (did: DidUri) => {
   const didDetails = await Did.DidResolver.resolveDoc(did);
   const endPoints = didDetails?.details?.getEndpoints();
   if (endPoints) {
@@ -42,18 +42,18 @@ export const getVerifiedData = async (
   const header = atob(header64);
   const payload = atob(payload64);
   const signature = atob(signature64);
-  const keyId = JSON.parse(header).kid;
+  const keyUri = JSON.parse(header).kid;
   const hash = JSON.parse(payload).hash;
-  const { verified } = await Did.DidUtils.verifyDidSignature({
+  const { verified } = await Did.verifyDidSignature({
     message: hash,
-    signature: { keyId, signature },
+    signature: { keyUri, signature },
     expectedVerificationMethod: KeyRelationship.authentication,
   });
   if (!verified) {
     return null;
   }
 
-  const { did } = Did.DidUtils.parseDidUri(keyId);
+  const { did } = Did.Utils.parseDidUri(keyUri);
   const endpoints = await resolveServiceEndpoints(did);
   const w3name = await Did.Web3Names.queryWeb3NameForDid(did);
   const timestampWithTxHash = await getVerifiedTimestamp(signature, remark);
@@ -155,12 +155,7 @@ export const isDidSignFile = (file: string) => {
   return file.split('.').pop() == 'didsign';
 };
 
-export const getDidForAccount = (did: string): string => {
-  const { identifier } = Did.DidUtils.parseDidUri(did);
-  return Did.DidUtils.getKiltDidFromIdentifier(identifier, 'full');
-};
-
-export async function getW3NOrDid(did: IDidDetails['did']): Promise<string> {
+export async function getW3NOrDid(did: DidUri): Promise<string> {
   const web3name = await Did.Web3Names.queryWeb3NameForDid(did);
   return web3name ? `w3n:${web3name}` : did;
 }

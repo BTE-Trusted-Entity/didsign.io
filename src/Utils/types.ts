@@ -1,7 +1,11 @@
-import { DidServiceEndpoint } from '@kiltprotocol/sdk-js';
+import {
+  DidResourceUri,
+  DidServiceEndpoint,
+  DidUri,
+} from '@kiltprotocol/sdk-js';
 export interface Signature {
   signature: string;
-  keyID: string;
+  keyUri: DidResourceUri;
 }
 
 export interface IRemark {
@@ -16,7 +20,7 @@ export interface SignDoc {
 
 export interface ISignatureEndPoint {
   signature: string;
-  did: string;
+  did: DidUri | undefined;
   endpoints: DidServiceEndpoint[];
   w3name: string | null;
   timestamp?: string;

@@ -4,8 +4,8 @@
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.4.3",
-    "@kiltprotocol/sdk-js": "^0.26.1",
-    "@polkadot/extension-dapp": "^0.42.7",
+    "@kiltprotocol/sdk-js": "0.28.0",
+    "@polkadot/extension-dapp": "^0.44.1",
     "@reduxjs/toolkit": "^1.7.2",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
@@ -48,8 +48,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
     "prettify": "prettier --write \"src/**/*.ts*\"",
-    "style-lint":"stylelint \"**/*.css\""
-
+    "style-lint": "stylelint \"**/*.css\""
   },
   "eslintConfig": {
     "extends": [

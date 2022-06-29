@@ -11,7 +11,7 @@ import { replaceFileStatus } from '../../Utils/verify-helper';
 const initialState: ISignatureEndPointWithStatus = {
   signatureWithEndpoint: {
     signature: '',
-    did: '',
+    did: undefined,
     endpoints: [],
     w3name: '',
     timestamp: '',
