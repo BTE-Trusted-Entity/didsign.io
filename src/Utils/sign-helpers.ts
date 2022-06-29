@@ -46,7 +46,7 @@ export const generateJWS = (
   const header = {
     alg: 'Sr25519',
     typ: 'JWS',
-    keyUri: signature.keyUri,
+    kid: signature.keyUri,
   };
   const encodedHeaders = btoa(JSON.stringify(header)).replaceAll('=', '');
   const claim = {

@@ -42,7 +42,7 @@ export const getVerifiedData = async (
   const header = atob(header64);
   const payload = atob(payload64);
   const signature = atob(signature64);
-  const keyUri = JSON.parse(header).keyUri;
+  const keyUri = JSON.parse(header).kid;
   const hash = JSON.parse(payload).hash;
   const { verified } = await Did.verifyDidSignature({
     message: hash,
@@ -53,13 +53,13 @@ export const getVerifiedData = async (
     return null;
   }
 
-  const { did: didUri } = Did.Utils.parseDidUri(keyUri);
-  const endpoints = await resolveServiceEndpoints(didUri);
-  const w3name = await Did.Web3Names.queryWeb3NameForDid(didUri);
+  const { did } = Did.Utils.parseDidUri(keyUri);
+  const endpoints = await resolveServiceEndpoints(did);
+  const w3name = await Did.Web3Names.queryWeb3NameForDid(did);
   const timestampWithTxHash = await getVerifiedTimestamp(signature, remark);
   const { txHash, timestamp } = timestampWithTxHash || {};
   return {
-    didUri,
+    did,
     signature,
     endpoints,
     w3name,

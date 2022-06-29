@@ -7,7 +7,7 @@ import {
   selectServiceEndpoints,
   selectTimestamp,
   selectTxHash,
-  selectVerifiedDidUri,
+  selectVerifiedDid,
   selectVerifiedSign,
   selectW3Name,
 } from '../../Features/Signer/EndpointSlice';
@@ -18,7 +18,7 @@ import { ServiceEndpoint } from '../ServiceEndpoints/ServiceEndpoint';
 import { useSubscanHost } from '../../Utils/useSubscanHost';
 
 export const DidDocument = () => {
-  const didUri = useAppSelector(selectVerifiedDidUri);
+  const did = useAppSelector(selectVerifiedDid);
   const w3name = useAppSelector(selectW3Name);
   const timestamp = useAppSelector(selectTimestamp) || 'No timestamp available';
   const txHash = useAppSelector(selectTxHash);
@@ -48,7 +48,7 @@ export const DidDocument = () => {
                 <br />
               </Fragment>
             )}
-            {didUri}
+            {did}
           </span>
         </div>
         <div className={styles.textWrapper}>

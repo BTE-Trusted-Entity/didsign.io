@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import styles from './ServiceEndpoint.module.css';
 
 import { useAppSelector } from '../../app/hooks';
-import { selectVerifiedDidUri } from '../../Features/Signer/EndpointSlice';
+import { selectVerifiedDid } from '../../Features/Signer/EndpointSlice';
 
 import {
   getAttestationForRequest,
@@ -23,7 +23,7 @@ interface Props {
 }
 
 export const ServiceEndpoint = ({ url, endpointType }: Props) => {
-  const didUri = useAppSelector(selectVerifiedDidUri);
+  const did = useAppSelector(selectVerifiedDid);
   // eslint-disable-next-line
   const [credential, setCredential] = useState<any | null>(null);
   const [isCredentialValid, setIsCredentialValid] = useState<boolean>(true);
@@ -50,11 +50,11 @@ export const ServiceEndpoint = ({ url, endpointType }: Props) => {
       const result = await response.json();
       setCredential(result.claim.contents);
 
-      if (!didUri) {
-        throw new Error('No DID URI');
+      if (!did) {
+        throw new Error('No DID');
       }
 
-      if (!Did.Utils.isSameSubject(result.claim.owner, didUri)) {
+      if (!Did.Utils.isSameSubject(result.claim.owner, did)) {
         setIsCredentialValid(false);
         setAttester('Credential subject and signer DID are not the same');
         return;

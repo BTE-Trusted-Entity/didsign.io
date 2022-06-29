@@ -20,7 +20,7 @@ export interface SignDoc {
 
 export interface ISignatureEndPoint {
   signature: string;
-  didUri: DidUri | undefined;
+  did: DidUri | undefined;
   endpoints: DidServiceEndpoint[];
   w3name: string | null;
   timestamp?: string;
