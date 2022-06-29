@@ -33,7 +33,7 @@
 .fileOk {
   composes: file;
   background:
-    url('../../ImageAssets/icon_oK.svg') content-box no-repeat center
+    url('../../ImageAssets/icon_ok.svg') content-box no-repeat center
     right 32px;
 }
 
@@ -65,7 +65,7 @@
 .unzippedFileOk {
   composes: file;
   background:
-    url('../../ImageAssets/icon_oK.svg') content-box no-repeat center
+    url('../../ImageAssets/icon_ok.svg') content-box no-repeat center
     right;
 }
 
