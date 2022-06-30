@@ -17,10 +17,10 @@ import { JWSErrors } from '../JWSErrors/JWSErrors';
 import { ServiceEndpoint } from '../ServiceEndpoints/ServiceEndpoint';
 
 import { useSubscanHost } from '../../Utils/useSubscanHost';
-import { CredentialComponent } from '../Credential/Credential';
+import { CredentialVerifier } from '../Credential/Credential';
 
 export const DidDocument = () => {
-  const didUri = useAppSelector(selectVerifiedDid);
+  const did = useAppSelector(selectVerifiedDid);
   const w3name = useAppSelector(selectW3Name);
   const timestamp = useAppSelector(selectTimestamp) || 'No timestamp available';
   const txHash = useAppSelector(selectTxHash);
@@ -50,7 +50,7 @@ export const DidDocument = () => {
                 <br />
               </Fragment>
             )}
-            {didUri}
+            {did}
           </span>
         </div>
         <div className={styles.textWrapper}>
@@ -84,8 +84,8 @@ export const DidDocument = () => {
                   className={styles.credentialsWrapper}
                 >
                   <span className={styles.text}>{credentialItem.name}</span>
-                  <CredentialComponent
-                    didUri={didUri}
+                  <CredentialVerifier
+                    did={did}
                     credential={credentialItem.credential}
                   />
                 </div>

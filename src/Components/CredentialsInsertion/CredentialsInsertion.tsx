@@ -25,6 +25,68 @@ interface Props {
   credentials: CredentialInteface[];
   rowIndex: number;
 }
+interface Edit {
+  error?: boolean;
+  onBlur?: React.FocusEventHandler<HTMLInputElement>;
+  onKeyPress?: React.KeyboardEventHandler<HTMLInputElement>;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  onDelete?: React.MouseEventHandler<HTMLButtonElement>;
+  credentialName: string;
+  onEditClick?: React.MouseEventHandler<HTMLButtonElement>;
+}
+function ShowEditing({
+  onBlur,
+  onChange,
+  onKeyPress,
+  onDelete,
+  error,
+  credentialName,
+}: Edit) {
+  return (
+    <Fragment>
+      <div className={styles.inputContainer}>
+        <input
+          type="text"
+          aria-label="input credential name"
+          className={styles.input}
+          onBlur={onBlur}
+          onKeyPress={onKeyPress}
+          defaultValue={credentialName}
+          onChange={onChange}
+          autoFocus
+        />
+        {error && (
+          <span className={styles.inputError}>
+            Credential name should have 1 to 32 characters
+          </span>
+        )}
+      </div>
+      <div className={styles.editContainer}>
+        <span className={styles.editingInfo}>rename or delete</span>
+        <button
+          className={styles.deleteBtn}
+          aria-label="delete credential"
+          onMouseDown={onDelete}
+        />
+      </div>
+    </Fragment>
+  );
+}
+
+function ShowContents({ onEditClick, credentialName }: Edit) {
+  return (
+    <Fragment>
+      <span className={styles.name}>{credentialName}</span>
+      <div className={styles.editContainer}>
+        <button
+          className={styles.editBtn}
+          aria-label="edit name"
+          onClick={onEditClick}
+        />
+      </div>
+    </Fragment>
+  );
+}
 
 function CredentialRow({ credentials, rowIndex }: Props) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -63,8 +125,8 @@ function CredentialRow({ credentials, rowIndex }: Props) {
   );
 
   const handleChange = useCallback(
-    (e: React.FocusEvent<HTMLInputElement>) => {
-      const input = e.currentTarget.value;
+    (event: React.FocusEvent<HTMLInputElement>) => {
+      const input = event.currentTarget.value;
 
       if (input.length < 1 || input.length > 32) {
         setError(true);
@@ -88,8 +150,8 @@ function CredentialRow({ credentials, rowIndex }: Props) {
     [credentials, updateSignatureFile, dispatch, error, rowIndex],
   );
 
-  const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
+  const handleKeyPress = useCallback((event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === 'Escape') {
       setIsEditing(false);
     }
   }, []);
@@ -97,6 +159,7 @@ function CredentialRow({ credentials, rowIndex }: Props) {
   const handleShowPopup = useCallback(() => {
     dispatch(showPopup(true));
     setShowDeletePopup(true);
+
     if (targetElement !== null) {
       disableBodyScroll(targetElement);
     }
@@ -106,14 +169,14 @@ function CredentialRow({ credentials, rowIndex }: Props) {
     if (targetElement !== null) {
       enableBodyScroll(targetElement);
     }
+
     dispatch(showPopup(false));
     setShowDeletePopup(false);
   }, [dispatch, targetElement]);
 
   const handleDelete = useCallback(() => {
-    const credentialsCopy = credentials.filter(
-      (credential) => credentials[rowIndex] !== credential,
-    );
+    const credentialsCopy = [...credentials];
+    credentialsCopy.splice(rowIndex, 1);
 
     dispatch(updateCredentials(credentialsCopy));
     updateSignatureFile(credentialsCopy);
@@ -125,54 +188,33 @@ function CredentialRow({ credentials, rowIndex }: Props) {
     setIsEditing(false);
   }, []);
 
+  const handleEdit = useCallback(() => {
+    setIsEditing(true);
+  }, []);
+
   return (
     <div
-      className={classnames(
-        styles.credentialContainer,
-        isEditing && styles.editing,
-        error && styles.error,
-      )}
+      className={classnames({
+        [styles.credentialContainer]: true,
+        [styles.editing]: isEditing,
+        [styles.error]: error,
+      })}
     >
       <label className={styles.credentialLabel}>Credential</label>
       {isEditing ? (
-        <Fragment>
-          <div className={styles.inputContainer}>
-            <input
-              type="text"
-              aria-label="input credential name"
-              className={styles.input}
-              onBlur={handleBlur}
-              onKeyPress={handleKeyPress}
-              defaultValue={credentialName}
-              onChange={handleChange}
-              autoFocus
-            />
-            {error && (
-              <span className={styles.inputError}>
-                Credential name should have 1 to 32 characters
-              </span>
-            )}
-          </div>
-          <div className={styles.editContainer}>
-            <span className={styles.editingInfo}>rename or delete</span>
-            <button
-              className={styles.deleteBtn}
-              aria-label="delete credential"
-              onMouseDown={handleShowPopup}
-            />
-          </div>
-        </Fragment>
+        <ShowEditing
+          onBlur={handleBlur}
+          onChange={handleChange}
+          onKeyPress={handleKeyPress}
+          onDelete={handleShowPopup}
+          error={error}
+          credentialName={credentialName}
+        />
       ) : (
-        <Fragment>
-          <span className={styles.name}>{credentialName}</span>
-          <div className={styles.editContainer}>
-            <button
-              className={styles.editBtn}
-              aria-label="edit name"
-              onClick={() => setIsEditing(true)}
-            />
-          </div>
-        </Fragment>
+        <ShowContents
+          credentialName={credentialName}
+          onEditClick={handleEdit}
+        />
       )}
       {showDeletePopup && (
         <DeleteCredential onDismiss={handleDismiss} onOkay={handleDelete} />

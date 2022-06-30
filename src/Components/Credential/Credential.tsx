@@ -21,10 +21,10 @@ import {
 
 interface IDIDCredential {
   credential: RequestForAttestation;
-  didUri: DidUri | undefined;
+  did?: DidUri;
 }
 
-export function CredentialComponent({ credential, didUri }: IDIDCredential) {
+export function CredentialVerifier({ credential, did }: IDIDCredential) {
   const [claimContents, setClaimContents] = useState<IClaimContents | null>(
     null,
   );
@@ -33,9 +33,9 @@ export function CredentialComponent({ credential, didUri }: IDIDCredential) {
   const [error, setError] = useState<string>();
 
   const verifyCredentialContents = useCallback(
-    async (credential: RequestForAttestation, didUri: DidUri) => {
+    async (credential: RequestForAttestation, did: DidUri) => {
       setClaimContents(credential.claim.contents);
-      if (!Did.Utils.isSameSubject(credential.claim.owner, didUri)) {
+      if (!Did.Utils.isSameSubject(credential.claim.owner, did)) {
         setIsCredentialValid(false);
         setError('Credential subject and signer DID are not the same');
         return;
@@ -67,10 +67,10 @@ export function CredentialComponent({ credential, didUri }: IDIDCredential) {
   );
 
   useEffect(() => {
-    if (credential && didUri) {
-      verifyCredentialContents(credential, didUri);
+    if (credential && did) {
+      verifyCredentialContents(credential, did);
     }
-  }, [credential, didUri, verifyCredentialContents]);
+  }, [credential, did, verifyCredentialContents]);
   return (
     <div className={styles.credential}>
       {isCredentialValid &&

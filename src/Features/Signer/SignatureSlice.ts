@@ -18,6 +18,7 @@ export const SignatureSlice = createSlice({
       return {
         ...state,
         signature: initialState.signature,
+        credentials: initialState.credentials,
       };
     },
 

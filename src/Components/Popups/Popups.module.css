@@ -97,19 +97,11 @@
 
 .btnWrapper {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   height: 22px;
   gap: 20px;
   margin-bottom: 20px;
-}
-
-.btnWrapper :first-child {
-  justify-self: flex-start;
-}
-
-.btnWrapper :last-child {
-  justify-self: flex-end;
 }
 
 .dismissBtn {

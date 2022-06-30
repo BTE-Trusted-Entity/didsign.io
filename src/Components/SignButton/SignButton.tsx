@@ -51,9 +51,10 @@ export const SignButton = () => {
       disableBodyScroll(targetElement);
       setSignStatus('Default');
     }
-    const signingData = await finalHash;
 
     try {
+      const signingData = await finalHash;
+
       const {
         credentials = undefined,
         didKeyUri,

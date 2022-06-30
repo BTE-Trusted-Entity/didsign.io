@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { RequestForAttestation } from '@kiltprotocol/sdk-js';
-
 import classnames from 'classnames';
 
 import styles from './ServiceEndpoint.module.css';
@@ -9,7 +7,7 @@ import styles from './ServiceEndpoint.module.css';
 import { useAppSelector } from '../../app/hooks';
 import { selectVerifiedDid } from '../../Features/Signer/VerifiedSignatureSlice';
 
-import { CredentialComponent } from '../Credential/Credential';
+import { CredentialVerifier } from '../Credential/Credential';
 
 interface Props {
   url: string;
@@ -17,11 +15,9 @@ interface Props {
 }
 
 export const ServiceEndpoint = ({ url, endpointType }: Props) => {
-  const didUri = useAppSelector(selectVerifiedDid);
+  const did = useAppSelector(selectVerifiedDid);
 
-  const [credential, setCredential] = useState<RequestForAttestation | null>(
-    null,
-  );
+  const [credential, setCredential] = useState();
 
   const [fetching, setFetching] = useState(false);
   const [fetched, setFetched] = useState(false);
@@ -29,7 +25,7 @@ export const ServiceEndpoint = ({ url, endpointType }: Props) => {
   const handleFetch = async () => {
     if (fetched) {
       setFetched(false);
-      setCredential(null);
+      setCredential(undefined);
       return;
     } else {
       setFetched(true);
@@ -44,7 +40,7 @@ export const ServiceEndpoint = ({ url, endpointType }: Props) => {
       const result = await response.json();
       setCredential(result);
 
-      if (!didUri) {
+      if (!did) {
         throw new Error('No DID');
       }
     } catch (error) {
@@ -73,9 +69,7 @@ export const ServiceEndpoint = ({ url, endpointType }: Props) => {
 
       <span className={styles.endpoint}>{url}</span>
 
-      {credential && (
-        <CredentialComponent credential={credential} didUri={didUri} />
-      )}
+      {credential && <CredentialVerifier credential={credential} did={did} />}
     </div>
   );
 };
