@@ -23,7 +23,6 @@ import { showPopup } from '../../Features/Signer/PopupSlice';
 
 interface Props {
   credentials: CredentialInteface[];
-  credentialName: string;
   rowIndex: number;
 }
 
@@ -194,11 +193,7 @@ export function CredentialsInsertion() {
               className={styles.listItem}
               key={credential.credential.rootHash}
             >
-              <CredentialRow
-                credentials={credentials}
-                credentialName={credential.name}
-                rowIndex={index}
-              />
+              <CredentialRow credentials={credentials} rowIndex={index} />
             </li>
           ))}
         </ul>
