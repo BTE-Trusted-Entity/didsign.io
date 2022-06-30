@@ -42,11 +42,32 @@
   justify-content: flex-start;
   color: var(--color-dark-purple);
   font-size: 14px;
-  line-height: 25px;
-  letter-spacing: 0.11px;
+  line-height: 22px;
+  letter-spacing: 0.1px;
   font-weight: bold;
   word-break: break-all;
   width: 550px;
+}
+
+.credentialContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  max-width: 550px;
+  width: 95%;
+}
+
+.credentialsWrapper {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: var(--color-dark-purple);
+  word-break: normal;
+  margin-top: 2px;
+  width: 100%;
+  border-bottom: dotted 2px #4d6b85;
 }
 
 .text a {
@@ -71,8 +92,9 @@
   gap: 20px;
   line-height: 22px;
   letter-spacing: 0.11px;
-  word-break: break-all;
-  width: 550px;
+  word-break: normal;
+  max-width: 550px;
+  width: 100%;
 }
 
 .title {

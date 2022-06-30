@@ -5,10 +5,11 @@ import styles from './Popups.module.css';
 import { useAppDispatch } from '../../app/hooks';
 import { showPopup } from '../../Features/Signer/PopupSlice';
 import { updateSignStatus } from '../../Features/Signer/VerifyJwsSlice';
-import { clearEndpoint } from '../../Features/Signer/EndpointSlice';
+import { clearEndpoint } from '../../Features/Signer/VerifiedSignatureSlice';
 
 interface Props {
   onDismiss: React.MouseEventHandler<HTMLButtonElement>;
+  onOkay?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export const MultipleSignPopup = () => {
@@ -241,6 +242,27 @@ export const TimestampError = ({ onDismiss }: Props) => {
         <button className={styles.dismissBtn} onClick={onDismiss}>
           Dismiss
         </button>
+      </div>
+    </div>
+  );
+};
+export const DeleteCredential = ({ onDismiss, onOkay }: Props) => {
+  return (
+    <div className={styles.container}>
+      <div className={styles.popup}>
+        <h1 className={styles.infoHeading}>Delete Credential</h1>
+
+        <span className={styles.text}>
+          Do you want to delete this credential from your signature file?
+        </span>
+        <div className={styles.btnWrapper}>
+          <button className={styles.cancelBtn} onClick={onDismiss}>
+            Cancel
+          </button>
+          <button className={styles.okayBtn} onClick={onOkay}>
+            Ok
+          </button>
+        </div>
       </div>
     </div>
   );

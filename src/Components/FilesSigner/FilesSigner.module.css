@@ -32,13 +32,15 @@
 
 .infoBtn {
   composes: iconBtn from '../Files/Files.module.css';
-  background: url('../../ImageAssets/icon_info.svg') no-repeat center right;
+  background: url('../../ImageAssets/icon_info.svg') no-repeat center right/110%;
 }
 
 .didsignInfo {
   margin: 0;
   color: var(--color-pure-red);
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 10px;
+  font-size: 12px;
+  line-height: 13px;
 }

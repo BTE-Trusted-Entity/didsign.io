@@ -5,8 +5,11 @@ import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import styles from './SignButton.module.css';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { updateSign } from '../../Features/Signer/SignatureSlice';
-import { openSporan, generateJWS } from '../../Utils/sign-helpers';
+import {
+  updateCredentials,
+  updateSign,
+} from '../../Features/Signer/SignatureSlice';
+import { getSignatureContents, generateJWS } from '../../Utils/sign-helpers';
 import { selectFinalHash, selectHash } from '../../Features/Signer/hashSlice';
 import {
   addBufferTop,
@@ -14,7 +17,6 @@ import {
   IBuffer,
   selectFiles,
 } from '../../Features/Signer/FileSlice';
-import { Signature, SignDoc } from '../../Utils/types';
 import { showPopup } from '../../Features/Signer/PopupSlice';
 import {
   NoWalletPopup,
@@ -49,28 +51,42 @@ export const SignButton = () => {
       disableBodyScroll(targetElement);
       setSignStatus('Default');
     }
-    openSporan(await finalHash)
-      .then(async (response) => {
-        dispatch(updateSign(response.signature));
-        const signature: Signature = {
-          keyUri: response.keyUri,
-          signature: response.signature,
-        };
-        const jws = generateJWS(signature, await finalHash);
-        const signedDoc: SignDoc = { hashes: hashes, jws: jws };
-        const blob = new Blob([JSON.stringify(signedDoc)], {
-          type: 'application/json;charset=utf-8',
-        });
-        await generateSignatureFile(blob);
-        dispatch(showPopup(false));
-        if (targetElement !== null) enableBodyScroll(targetElement);
-      })
-      .catch((e) => {
-        targetElement !== null && disableBodyScroll(targetElement);
-        if (window.kilt.sporran == undefined) setSignStatus('No Sporran');
-        else e.toString().includes('Rejected') && setSignStatus('SignError');
+    const signingData = await finalHash;
+
+    try {
+      const {
+        credentials = undefined,
+        didKeyUri,
+        signature,
+      } = await getSignatureContents(signingData);
+
+      const jws = generateJWS({ signature, didKeyUri }, signingData);
+      const signedDoc = { hashes, jws, credentials };
+      const blob = new Blob([JSON.stringify(signedDoc)], {
+        type: 'application/json;charset=utf-8',
       });
+
+      await generateSignatureFile(blob);
+      dispatch(updateSign(signature));
+      dispatch(updateCredentials(credentials));
+      dispatch(showPopup(false));
+
+      if (targetElement !== null) {
+        enableBodyScroll(targetElement);
+      }
+    } catch (e: unknown) {
+      targetElement !== null && disableBodyScroll(targetElement);
+
+      if (!window.kilt.sporran) {
+        setSignStatus('No Sporran');
+      } else {
+        if (e instanceof Error && e.toString().includes('Rejected')) {
+          setSignStatus('SignError');
+        }
+      }
+    }
   };
+
   const hashes = useAppSelector(selectHash);
   const finalHash = useAppSelector(selectFinalHash);
   const dispatch = useAppDispatch();

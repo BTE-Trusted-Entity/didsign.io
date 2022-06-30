@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
   clearEndpoint,
   clearFileStatuses,
-} from '../../Features/Signer/EndpointSlice';
+} from '../../Features/Signer/VerifiedSignatureSlice';
 import { clearAll, clearFileName } from '../../Features/Signer/FileSlice';
 import { clearSign, selectSign } from '../../Features/Signer/SignatureSlice';
 import {

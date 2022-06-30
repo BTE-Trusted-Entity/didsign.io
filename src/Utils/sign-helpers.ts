@@ -3,8 +3,6 @@ import { sha256 } from 'js-sha256';
 import { base16 } from 'multiformats/bases/base16';
 import * as json from 'multiformats/codecs/json';
 
-import { Signature } from './types';
-
 export const sha56 = hasher.from({
   name: 'sha2-256',
   code: 0x12,
@@ -30,23 +28,19 @@ export const createHashFromHashArray = async (
   return await createHash(asJson);
 };
 
-export const openSporan = async (finalHash: string): Promise<Signature> => {
-  const signObj = await sporranWindow.sporran.signWithDid(finalHash);
-  const sign: Signature = {
-    keyUri: signObj.didKeyUri,
-    signature: signObj.signature,
-  };
-  return sign;
+export const getSignatureContents = async (finalHash: string) => {
+  const signatureContents = await sporranWindow.sporran.signWithDid(finalHash);
+  return signatureContents;
 };
 
 export const generateJWS = (
-  signature: Signature,
+  signature: { signature: string; didKeyUri: string },
   finalHash: string,
 ): string => {
   const header = {
     alg: 'Sr25519',
     typ: 'JWS',
-    kid: signature.keyUri,
+    kid: signature.didKeyUri,
   };
   const encodedHeaders = btoa(JSON.stringify(header)).replaceAll('=', '');
   const claim = {

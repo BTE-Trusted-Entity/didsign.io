@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import { EndpointSlice } from '../Features/Signer/EndpointSlice';
+import { VerifiedSignatureSlice } from '../Features/Signer/VerifiedSignatureSlice';
 import { fileSlice } from '../Features/Signer/FileSlice';
 import { hashSlice } from '../Features/Signer/hashSlice';
 import { popupSlice } from '../Features/Signer/PopupSlice';
@@ -12,7 +12,7 @@ export const store = configureStore({
     hash: hashSlice.reducer,
     files: fileSlice.reducer,
     signature: SignatureSlice.reducer,
-    endpoint: EndpointSlice.reducer,
+    contents: VerifiedSignatureSlice.reducer,
     jwshash: jwsHashSlice.reducer,
     popup: popupSlice.reducer,
   },

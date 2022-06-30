@@ -4,26 +4,28 @@ import styles from './DidDocument.module.css';
 
 import { useAppSelector } from '../../app/hooks';
 import {
+  selectAttachedCredentials,
   selectServiceEndpoints,
   selectTimestamp,
   selectTxHash,
   selectVerifiedDid,
   selectVerifiedSign,
   selectW3Name,
-} from '../../Features/Signer/EndpointSlice';
+} from '../../Features/Signer/VerifiedSignatureSlice';
 import { selectJwsSignStatus } from '../../Features/Signer/VerifyJwsSlice';
 import { JWSErrors } from '../JWSErrors/JWSErrors';
 import { ServiceEndpoint } from '../ServiceEndpoints/ServiceEndpoint';
 
 import { useSubscanHost } from '../../Utils/useSubscanHost';
+import { CredentialComponent } from '../Credential/Credential';
 
 export const DidDocument = () => {
-  const did = useAppSelector(selectVerifiedDid);
+  const didUri = useAppSelector(selectVerifiedDid);
   const w3name = useAppSelector(selectW3Name);
   const timestamp = useAppSelector(selectTimestamp) || 'No timestamp available';
   const txHash = useAppSelector(selectTxHash);
   const signature = useAppSelector(selectVerifiedSign);
-
+  const attachedCredentials = useAppSelector(selectAttachedCredentials);
   const seviceEndpoints = useAppSelector(selectServiceEndpoints);
   const jwsStatus = useAppSelector(selectJwsSignStatus);
   const subscanHost = useSubscanHost();
@@ -48,7 +50,7 @@ export const DidDocument = () => {
                 <br />
               </Fragment>
             )}
-            {did}
+            {didUri}
           </span>
         </div>
         <div className={styles.textWrapper}>
@@ -72,6 +74,27 @@ export const DidDocument = () => {
           <span className={styles.text}>{signature}</span>
         </div>
 
+        <div className={styles.textWrapper}>
+          <span className={styles.title}>Attached Credentidals</span>
+          {attachedCredentials ? (
+            <div className={styles.credentialContainer}>
+              {attachedCredentials.map((credentialItem) => (
+                <div
+                  key={credentialItem.credential.rootHash}
+                  className={styles.credentialsWrapper}
+                >
+                  <span className={styles.text}>{credentialItem.name}</span>
+                  <CredentialComponent
+                    didUri={didUri}
+                    credential={credentialItem.credential}
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <span className={styles.text}>No credentials attached</span>
+          )}
+        </div>
         <div className={styles.textWrapper}>
           <span className={styles.title}>Service Endpoints</span>
           <div className={styles.endpointsWrapper}>
