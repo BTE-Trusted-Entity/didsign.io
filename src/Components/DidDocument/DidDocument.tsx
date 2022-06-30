@@ -73,10 +73,10 @@ export const DidDocument = () => {
           <span className={styles.title}>Signature</span>
           <span className={styles.text}>{signature}</span>
         </div>
+        {attachedCredentials && (
+          <div className={styles.textWrapper}>
+            <span className={styles.title}>Attached Credentidals</span>
 
-        <div className={styles.textWrapper}>
-          <span className={styles.title}>Attached Credentidals</span>
-          {attachedCredentials ? (
             <div className={styles.credentialContainer}>
               {attachedCredentials.map((credentialItem) => (
                 <div
@@ -91,10 +91,8 @@ export const DidDocument = () => {
                 </div>
               ))}
             </div>
-          ) : (
-            <span className={styles.text}>No credentials attached</span>
-          )}
-        </div>
+          </div>
+        )}
         <div className={styles.textWrapper}>
           <span className={styles.title}>Service Endpoints</span>
           <div className={styles.endpointsWrapper}>

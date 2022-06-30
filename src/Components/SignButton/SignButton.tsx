@@ -68,7 +68,7 @@ export const SignButton = () => {
 
       await generateSignatureFile(blob);
       dispatch(updateSign(signature));
-      dispatch(updateCredentials(credentials));
+      credentials && dispatch(updateCredentials(credentials));
       dispatch(showPopup(false));
 
       if (targetElement !== null) {
