@@ -98,11 +98,8 @@ export const newUnzip = async (
     const hashesWithPrefix = hashes.map((hash) => addMissingPrefix(hash));
 
     fileData.map((hash) => {
-      if (hashesWithPrefix.includes(hash)) {
-        filesStatus.push(true);
-      } else {
-        filesStatus.push(false);
-      }
+      const status = hashesWithPrefix.includes(hash);
+      filesStatus.push(status);
     });
 
     const baseHash = await createHashFromHashArray(hashesWithPrefix);
