@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import classnames from 'classnames';
 
@@ -25,52 +25,45 @@ interface IDIDCredential {
 }
 
 export function CredentialVerifier({ credential, did }: IDIDCredential) {
-  const [claimContents, setClaimContents] = useState<IClaimContents | null>(
-    null,
-  );
-  const [isCredentialValid, setIsCredentialValid] = useState<boolean>(true);
-  const [attester, setAttester] = useState<string>('');
+  const [claimContents, setClaimContents] = useState<IClaimContents>();
+  const [isCredentialValid, setIsCredentialValid] = useState(true);
+  const [attester, setAttester] = useState('');
   const [error, setError] = useState<string>();
 
-  const verifyCredentialContents = useCallback(
-    async (credential: RequestForAttestation, did: DidUri) => {
-      setClaimContents(credential.claim.contents);
-      if (!Did.Utils.isSameSubject(credential.claim.owner, did)) {
-        setIsCredentialValid(false);
-        setError('Credential subject and signer DID are not the same');
-        return;
-      }
-
-      if (Credential.isICredential(credential)) {
-        setIsCredentialValid(await validateCredential(credential));
-        const attesterDid = credential.attestation.owner;
-        setAttester(await getW3NOrDid(attesterDid));
-        return;
-      }
-
-      if (!RequestForAttestation.isIRequestForAttestation(credential)) {
-        setIsCredentialValid(false);
-        setError('Not valid Kilt Credential');
-        return;
-      }
-
-      const attestation = await getAttestationForRequest(credential);
-      setIsCredentialValid(await validateAttestation(attestation));
-
-      if (attestation) {
-        setAttester(await getW3NOrDid(attestation.owner));
-      } else {
-        setError('No Attestation found');
-      }
-    },
-    [],
-  );
-
   useEffect(() => {
-    if (credential && did) {
-      verifyCredentialContents(credential, did);
-    }
-  }, [credential, did, verifyCredentialContents]);
+    async () => {
+      if (credential && did) {
+        setClaimContents(credential.claim.contents);
+        if (!Did.Utils.isSameSubject(credential.claim.owner, did)) {
+          setIsCredentialValid(false);
+          setError('Credential subject and signer DID are not the same');
+          return;
+        }
+
+        if (Credential.isICredential(credential)) {
+          setIsCredentialValid(await validateCredential(credential));
+          const attesterDid = credential.attestation.owner;
+          setAttester(await getW3NOrDid(attesterDid));
+          return;
+        }
+
+        if (!RequestForAttestation.isIRequestForAttestation(credential)) {
+          setIsCredentialValid(false);
+          setError('Not valid Kilt Credential');
+          return;
+        }
+
+        const attestation = await getAttestationForRequest(credential);
+        setIsCredentialValid(await validateAttestation(attestation));
+
+        if (attestation) {
+          setAttester(await getW3NOrDid(attestation.owner));
+        } else {
+          setError('No Attestation found');
+        }
+      }
+    };
+  }, [credential, did]);
   return (
     <div className={styles.credential}>
       {isCredentialValid &&

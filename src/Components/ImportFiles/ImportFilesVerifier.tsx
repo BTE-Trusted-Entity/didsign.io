@@ -28,7 +28,7 @@ import {
   updateIndividualFileStatusOnIndex,
 } from '../../Features/Signer/VerifiedSignatureSlice';
 import { createHash, createHashFromHashArray } from '../../Utils/sign-helpers';
-import { CredentialInteface, IRemark, SignDoc } from '../../Utils/types';
+import { NamedCredential, IRemark, SignDoc } from '../../Utils/types';
 import {
   addJwsHashArray,
   addJwsSign,
@@ -54,7 +54,7 @@ export const ImportFilesVerifier = () => {
   const files = useAppSelector(selectFiles);
   const statuses = useAppSelector(fileStatus);
   const [remark, setRemark] = useState<IRemark>();
-  const [credentials, setCredentials] = useState<CredentialInteface[]>();
+  const [credentials, setCredentials] = useState<NamedCredential[]>();
 
   useConnect();
 

@@ -28,10 +28,8 @@ export const createHashFromHashArray = async (
   return await createHash(asJson);
 };
 
-export const getSignatureContents = async (finalHash: string) => {
-  const signatureContents = await sporranWindow.sporran.signWithDid(finalHash);
-  return signatureContents;
-};
+export const getSignatureContents = async (finalHash: string) =>
+  sporranWindow.sporran.signWithDid(finalHash);
 
 export const generateJWS = (
   signature: { signature: string; didKeyUri: string },

@@ -24,6 +24,7 @@ import {
   SignPopup,
   SignButtonInfoPopup,
 } from '../Popups/Popups';
+import { exceptionToError } from '../../Utils/exceptionToError';
 
 export const SignButton = () => {
   const [signStatus, setSignStatus] = useState<
@@ -75,13 +76,15 @@ export const SignButton = () => {
       if (targetElement !== null) {
         enableBodyScroll(targetElement);
       }
-    } catch (e: unknown) {
-      targetElement !== null && disableBodyScroll(targetElement);
+    } catch (error: unknown) {
+      if (targetElement) disableBodyScroll(targetElement);
 
       if (!window.kilt.sporran) {
         setSignStatus('No Sporran');
       } else {
-        if (e instanceof Error && e.toString().includes('Rejected')) {
+        const { message } = exceptionToError(error);
+
+        if (message.includes('Rejected')) {
           setSignStatus('SignError');
         }
       }

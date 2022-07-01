@@ -2,8 +2,6 @@ import React, { Fragment, useCallback, useState } from 'react';
 
 import classnames from 'classnames';
 
-import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-
 import styles from './CredentialsInsertion.module.css';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -11,7 +9,7 @@ import {
   selectCredentials,
   updateCredentials,
 } from '../../Features/Signer/SignatureSlice';
-import { CredentialInteface } from '../../Utils/types';
+import { NamedCredential, SignDoc } from '../../Utils/types';
 import {
   IBuffer,
   selectBuffers,
@@ -22,28 +20,139 @@ import { DeleteCredential } from '../Popups/Popups';
 import { showPopup } from '../../Features/Signer/PopupSlice';
 
 interface Props {
-  credentials: CredentialInteface[];
-  rowIndex: number;
+  currentCredential: NamedCredential;
 }
-interface Edit {
-  error?: boolean;
-  onBlur?: React.FocusEventHandler<HTMLInputElement>;
-  onKeyPress?: React.KeyboardEventHandler<HTMLInputElement>;
-  onChange?: React.ChangeEventHandler<HTMLInputElement>;
-  onDelete?: React.MouseEventHandler<HTMLButtonElement>;
-  credentialName: string;
-  onEditClick?: React.MouseEventHandler<HTMLButtonElement>;
+interface EditingProps {
+  onBlur: React.FocusEventHandler<HTMLInputElement>;
+  onKeyPress: React.KeyboardEventHandler<HTMLInputElement>;
+  currentCredential: NamedCredential;
+  isEditing: boolean;
 }
-function ShowEditing({
+function EditContents({
   onBlur,
-  onChange,
   onKeyPress,
-  onDelete,
-  error,
-  credentialName,
-}: Edit) {
+  currentCredential,
+  isEditing,
+}: EditingProps) {
+  const [error, setError] = useState(false);
+  const buffers = useAppSelector(selectBuffers);
+  const [showDeletePopup, setShowDeletePopup] = useState(false);
+  const dispatch = useAppDispatch();
+  const storedCredentials = useAppSelector(selectCredentials);
+  const credentialName = currentCredential.name;
+
+  const getSignatureData = useCallback(() => {
+    const { buffer } = buffers[0];
+    const decoder = new TextDecoder('utf-8');
+    const decoded = decoder.decode(buffer);
+    return JSON.parse(decoded) as SignDoc;
+  }, [buffers]);
+
+  const updateSignatureFile = useCallback(
+    async (newContents: SignDoc) => {
+      const blob = new Blob([JSON.stringify(newContents)], {
+        type: 'application/json;charset=utf-8',
+      });
+
+      const newFile = new File([blob], 'signature.didsign');
+      const newBufferObj: IBuffer = {
+        buffer: await newFile.arrayBuffer(),
+        name: newFile.name,
+      };
+
+      dispatch(updateBufferTop(newBufferObj));
+      dispatch(updateFileTop(newFile));
+    },
+    [dispatch],
+  );
+
+  const handleChange = useCallback(
+    (event: React.FocusEvent<HTMLInputElement>) => {
+      const input = event.currentTarget.value;
+
+      if (input.length < 1 || input.length > 32) {
+        setError(true);
+        return;
+      }
+
+      if (error) setError(false);
+
+      const { hashes, jws } = getSignatureData();
+
+      if (!storedCredentials) throw new Error('No credentials');
+
+      const updatedCredentials = [...storedCredentials];
+      const credentialCopy = { ...currentCredential, name: input };
+
+      updatedCredentials.splice(
+        updatedCredentials.indexOf(currentCredential),
+        1,
+        credentialCopy,
+      );
+
+      const updatedContents = {
+        hashes,
+        jws,
+        credentials: updatedCredentials,
+      };
+      dispatch(updateCredentials(updatedCredentials));
+      updateSignatureFile(updatedContents);
+    },
+    [
+      currentCredential,
+      dispatch,
+      error,
+      getSignatureData,
+      storedCredentials,
+      updateSignatureFile,
+    ],
+  );
+  const handleShowPopup = useCallback(() => {
+    setShowDeletePopup(true);
+    dispatch(showPopup(true));
+  }, [dispatch]);
+
+  const handleDismiss = useCallback(() => {
+    setShowDeletePopup(false);
+    dispatch(showPopup(false));
+  }, [dispatch]);
+
+  const handleDelete = useCallback(async () => {
+    handleDismiss();
+    const { hashes, jws } = getSignatureData();
+
+    if (!storedCredentials) throw new Error('No credentials');
+
+    const credentialsCopy = [...storedCredentials];
+    credentialsCopy.splice(credentialsCopy.indexOf(currentCredential), 1);
+
+    const updatedContents = {
+      hashes,
+      jws,
+      credentials: credentialsCopy.length > 0 ? credentialsCopy : undefined,
+    };
+
+    dispatch(updateCredentials(credentialsCopy));
+    updateSignatureFile(updatedContents);
+  }, [
+    currentCredential,
+    dispatch,
+    getSignatureData,
+    handleDismiss,
+    storedCredentials,
+    updateSignatureFile,
+  ]);
+
   return (
-    <Fragment>
+    <div
+      className={classnames({
+        [styles.credentialContainer]: true,
+        [styles.editing]: isEditing,
+        [styles.error]: error,
+      })}
+    >
+      <label className={styles.credentialLabel}>Credential</label>
+
       <div className={styles.inputContainer}>
         <input
           type="text"
@@ -52,7 +161,7 @@ function ShowEditing({
           onBlur={onBlur}
           onKeyPress={onKeyPress}
           defaultValue={credentialName}
-          onChange={onChange}
+          onChange={handleChange}
           autoFocus
         />
         {error && (
@@ -66,89 +175,21 @@ function ShowEditing({
         <button
           className={styles.deleteBtn}
           aria-label="delete credential"
-          onMouseDown={onDelete}
+          onMouseDown={(event) => event.preventDefault()}
+          onClick={handleShowPopup}
         />
       </div>
-    </Fragment>
+      {showDeletePopup && (
+        <DeleteCredential onDismiss={handleDismiss} onOkay={handleDelete} />
+      )}
+    </div>
   );
 }
 
-function ShowContents({ onEditClick, credentialName }: Edit) {
-  return (
-    <Fragment>
-      <span className={styles.name}>{credentialName}</span>
-      <div className={styles.editContainer}>
-        <button
-          className={styles.editBtn}
-          aria-label="edit name"
-          onClick={onEditClick}
-        />
-      </div>
-    </Fragment>
-  );
-}
-
-function CredentialRow({ credentials, rowIndex }: Props) {
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
-  const buffers = useAppSelector(selectBuffers);
-  const [showDeletePopup, setShowDeletePopup] = useState<boolean>(false);
+function CredentialRow({ currentCredential }: Props) {
+  const [isEditing, setIsEditing] = useState(false);
+  const credentialName = currentCredential.name;
   const dispatch = useAppDispatch();
-  const targetElement = document.querySelector('body');
-  const credentialName = credentials[rowIndex].name;
-
-  const updateSignatureFile = useCallback(
-    async (credentials: CredentialInteface[]) => {
-      const { buffer } = buffers[0];
-      const decoder = new TextDecoder('utf-8');
-      const decoded = decoder.decode(buffer);
-      const { hashes, jws } = JSON.parse(decoded);
-      const updatedSignaturerContents =
-        credentials.length !== 0
-          ? { hashes, jws, credentials }
-          : { hashes, jws };
-
-      const blob = new Blob([JSON.stringify(updatedSignaturerContents)], {
-        type: 'application/json;charset=utf-8',
-      });
-
-      const newFile = new File([blob], 'signature.didsign');
-      const newBufferObj: IBuffer = {
-        buffer: await newFile.arrayBuffer(),
-        name: newFile.name,
-      };
-
-      dispatch(updateBufferTop(newBufferObj));
-      dispatch(updateFileTop(newFile));
-    },
-    [buffers, dispatch],
-  );
-
-  const handleChange = useCallback(
-    (event: React.FocusEvent<HTMLInputElement>) => {
-      const input = event.currentTarget.value;
-
-      if (input.length < 1 || input.length > 32) {
-        setError(true);
-        return;
-      } else {
-        if (error) setError(false);
-      }
-
-      const updatedCredentials = credentials.map((credential, index) => {
-        if (index === rowIndex) {
-          const credentialCopy = { ...credential, name: input };
-          return credentialCopy;
-        }
-
-        return credential;
-      });
-
-      updateSignatureFile(updatedCredentials);
-      dispatch(updateCredentials(updatedCredentials));
-    },
-    [credentials, updateSignatureFile, dispatch, error, rowIndex],
-  );
 
   const handleKeyPress = useCallback((event: React.KeyboardEvent) => {
     if (event.key === 'Enter' || event.key === 'Escape') {
@@ -156,70 +197,33 @@ function CredentialRow({ credentials, rowIndex }: Props) {
     }
   }, []);
 
-  const handleShowPopup = useCallback(() => {
-    dispatch(showPopup(true));
-    setShowDeletePopup(true);
-
-    if (targetElement !== null) {
-      disableBodyScroll(targetElement);
-    }
-  }, [dispatch, targetElement]);
-
-  const handleDismiss = useCallback(() => {
-    if (targetElement !== null) {
-      enableBodyScroll(targetElement);
-    }
-
-    dispatch(showPopup(false));
-    setShowDeletePopup(false);
-  }, [dispatch, targetElement]);
-
-  const handleDelete = useCallback(() => {
-    const credentialsCopy = [...credentials];
-    credentialsCopy.splice(rowIndex, 1);
-
-    dispatch(updateCredentials(credentialsCopy));
-    updateSignatureFile(credentialsCopy);
-    handleDismiss();
-  }, [credentials, dispatch, handleDismiss, rowIndex, updateSignatureFile]);
-
   const handleBlur = useCallback(() => {
-    setError(false);
     setIsEditing(false);
-  }, []);
-
-  const handleEdit = useCallback(() => {
-    setIsEditing(true);
-  }, []);
-
+    dispatch(showPopup(false));
+  }, [dispatch]);
   return (
-    <div
-      className={classnames({
-        [styles.credentialContainer]: true,
-        [styles.editing]: isEditing,
-        [styles.error]: error,
-      })}
-    >
-      <label className={styles.credentialLabel}>Credential</label>
+    <Fragment>
       {isEditing ? (
-        <ShowEditing
+        <EditContents
           onBlur={handleBlur}
-          onChange={handleChange}
           onKeyPress={handleKeyPress}
-          onDelete={handleShowPopup}
-          error={error}
-          credentialName={credentialName}
+          currentCredential={currentCredential}
+          isEditing={isEditing}
         />
       ) : (
-        <ShowContents
-          credentialName={credentialName}
-          onEditClick={handleEdit}
-        />
+        <div className={styles.credentialContainer}>
+          <label className={styles.credentialLabel}>Credential</label>
+          <span className={styles.name}>{credentialName}</span>
+          <div className={styles.editContainer}>
+            <button
+              className={styles.editBtn}
+              aria-label="edit name"
+              onClick={() => setIsEditing(true)}
+            />
+          </div>
+        </div>
       )}
-      {showDeletePopup && (
-        <DeleteCredential onDismiss={handleDismiss} onOkay={handleDelete} />
-      )}
-    </div>
+    </Fragment>
   );
 }
 
@@ -230,12 +234,12 @@ export function CredentialsInsertion() {
       <div className={styles.arrowIcon} />
       {credentials && (
         <ul className={styles.list}>
-          {credentials.map((credential, index) => (
+          {credentials.map((credential) => (
             <li
               className={styles.listItem}
               key={credential.credential.rootHash}
             >
-              <CredentialRow credentials={credentials} rowIndex={index} />
+              <CredentialRow currentCredential={credential} />
             </li>
           ))}
         </ul>

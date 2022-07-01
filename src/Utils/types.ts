@@ -1,15 +1,14 @@
 import {
   DidServiceEndpoint,
   DidUri,
-  IClaimContents,
   RequestForAttestation,
 } from '@kiltprotocol/sdk-js';
 export interface Signature {
-  credentials?: CredentialInteface[];
+  credentials?: NamedCredential[];
   signature: string;
 }
 
-export interface CredentialInteface {
+export interface NamedCredential {
   name: string;
   credential: RequestForAttestation;
 }
@@ -21,7 +20,7 @@ export interface SignDoc {
   jws: string;
   hashes: string[];
   remark?: IRemark;
-  credentials?: CredentialInteface[];
+  credentials?: NamedCredential[];
 }
 
 export interface IVerifiedSignatureContents {
@@ -31,13 +30,8 @@ export interface IVerifiedSignatureContents {
   w3name: string | null;
   timestamp?: string;
   txHash?: string;
-  credentials?: CredentialInteface[];
+  credentials?: NamedCredential[];
   filesStatus: boolean[];
-}
-
-export interface ICredentialContents {
-  claimContents: IClaimContents;
-  status: 'valid' | 'mismatch did' | 'invalid' | 'not attested' | 'not kilt';
 }
 
 export interface IKiltAccount {
