@@ -32,7 +32,7 @@ export function CredentialVerifier({ credential, did }: IDIDCredential) {
 
   useEffect(() => {
     async () => {
-      if (credential && did) {
+      if (did) {
         setClaimContents(credential.claim.contents);
         if (!Did.Utils.isSameSubject(credential.claim.owner, did)) {
           setIsCredentialValid(false);
