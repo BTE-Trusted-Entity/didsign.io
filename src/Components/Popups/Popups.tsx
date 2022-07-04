@@ -256,18 +256,10 @@ export const DeleteCredential = ({ onDismiss, onOkay }: Props) => {
           Do you want to delete this credential from your signature file?
         </span>
         <div className={styles.btnWrapper}>
-          <button
-            className={styles.cancelBtn}
-            onClick={onDismiss}
-            onMouseDown={(event) => event.preventDefault()}
-          >
+          <button className={styles.cancelBtn} onClick={onDismiss}>
             Cancel
           </button>
-          <button
-            className={styles.okayBtn}
-            onClick={onOkay}
-            onMouseDown={(event) => event.preventDefault()}
-          >
+          <button className={styles.okayBtn} onClick={onOkay}>
             Ok
           </button>
         </div>

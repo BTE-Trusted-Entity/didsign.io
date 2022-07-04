@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 
 import classnames from 'classnames';
 
@@ -18,28 +18,34 @@ import {
 } from '../../Features/Signer/FileSlice';
 import { DeleteCredential } from '../Popups/Popups';
 import { showPopup } from '../../Features/Signer/PopupSlice';
-
-interface Props {
-  currentCredential: NamedCredential;
-}
+import { useHandleOutsideClick } from '../../Hooks/useHandleOutsideClick';
 interface EditingProps {
-  onBlur: React.FocusEventHandler<HTMLInputElement>;
   onKeyPress: React.KeyboardEventHandler<HTMLInputElement>;
-  currentCredential: NamedCredential;
+  onDismiss: React.MouseEventHandler<HTMLButtonElement>;
+  onShowPopup: React.MouseEventHandler<HTMLButtonElement>;
+  stopEditing: () => void;
+  showDeletePopup: boolean;
+  credential: NamedCredential;
   isEditing: boolean;
 }
+
 function EditContents({
-  onBlur,
   onKeyPress,
-  currentCredential,
+  credential,
   isEditing,
+  onDismiss,
+  onShowPopup,
+  showDeletePopup,
+  stopEditing,
 }: EditingProps) {
   const [error, setError] = useState(false);
   const buffers = useAppSelector(selectBuffers);
-  const [showDeletePopup, setShowDeletePopup] = useState(false);
   const dispatch = useAppDispatch();
   const storedCredentials = useAppSelector(selectCredentials);
-  const credentialName = currentCredential.name;
+  const credentialName = credential.name;
+  const credentialRowRef = useRef(null);
+
+  useHandleOutsideClick(credentialRowRef, stopEditing);
 
   const getSignatureData = useCallback(() => {
     const { buffer } = buffers[0];
@@ -74,21 +80,20 @@ function EditContents({
         setError(true);
         return;
       }
-
-      if (error) setError(false);
+      if (error) {
+        setError(false);
+        return;
+      }
 
       const { hashes, jws } = getSignatureData();
 
       if (!storedCredentials) throw new Error('No credentials');
 
       const updatedCredentials = [...storedCredentials];
-      const credentialCopy = { ...currentCredential, name: input };
+      const credentialCopy = { ...credential, name: input };
 
-      updatedCredentials.splice(
-        updatedCredentials.indexOf(currentCredential),
-        1,
-        credentialCopy,
-      );
+      updatedCredentials[updatedCredentials.indexOf(credential)] =
+        credentialCopy;
 
       const updatedContents = {
         hashes,
@@ -99,7 +104,7 @@ function EditContents({
       updateSignatureFile(updatedContents);
     },
     [
-      currentCredential,
+      credential,
       dispatch,
       error,
       getSignatureData,
@@ -107,44 +112,39 @@ function EditContents({
       updateSignatureFile,
     ],
   );
-  const handleShowPopup = useCallback(() => {
-    setShowDeletePopup(true);
-    dispatch(showPopup(true));
-  }, [dispatch]);
 
-  const handleDismiss = useCallback(() => {
-    setShowDeletePopup(false);
-    dispatch(showPopup(false));
-  }, [dispatch]);
+  const handleDelete = useCallback(
+    async (event: React.MouseEvent<HTMLButtonElement>) => {
+      onDismiss(event);
+      const { hashes, jws } = getSignatureData();
 
-  const handleDelete = useCallback(async () => {
-    handleDismiss();
-    const { hashes, jws } = getSignatureData();
+      if (!storedCredentials) throw new Error('No credentials');
 
-    if (!storedCredentials) throw new Error('No credentials');
+      const credentialsCopy = [...storedCredentials];
+      credentialsCopy.splice(credentialsCopy.indexOf(credential), 1);
 
-    const credentialsCopy = [...storedCredentials];
-    credentialsCopy.splice(credentialsCopy.indexOf(currentCredential), 1);
+      const updatedContents = {
+        hashes,
+        jws,
+        credentials: credentialsCopy.length > 0 ? credentialsCopy : undefined,
+      };
 
-    const updatedContents = {
-      hashes,
-      jws,
-      credentials: credentialsCopy.length > 0 ? credentialsCopy : undefined,
-    };
-
-    dispatch(updateCredentials(credentialsCopy));
-    updateSignatureFile(updatedContents);
-  }, [
-    currentCredential,
-    dispatch,
-    getSignatureData,
-    handleDismiss,
-    storedCredentials,
-    updateSignatureFile,
-  ]);
+      dispatch(updateCredentials(credentialsCopy));
+      updateSignatureFile(updatedContents);
+    },
+    [
+      credential,
+      dispatch,
+      getSignatureData,
+      onDismiss,
+      storedCredentials,
+      updateSignatureFile,
+    ],
+  );
 
   return (
     <div
+      ref={credentialRowRef}
       className={classnames({
         [styles.credentialContainer]: true,
         [styles.editing]: isEditing,
@@ -158,7 +158,6 @@ function EditContents({
           type="text"
           aria-label="input credential name"
           className={styles.input}
-          onBlur={onBlur}
           onKeyPress={onKeyPress}
           defaultValue={credentialName}
           onChange={handleChange}
@@ -175,60 +174,85 @@ function EditContents({
         <button
           className={styles.deleteBtn}
           aria-label="delete credential"
-          onMouseDown={(event) => event.preventDefault()}
-          onClick={handleShowPopup}
+          onClick={onShowPopup}
         />
       </div>
       {showDeletePopup && (
-        <DeleteCredential onDismiss={handleDismiss} onOkay={handleDelete} />
+        <DeleteCredential onDismiss={onDismiss} onOkay={handleDelete} />
       )}
     </div>
   );
 }
 
-function CredentialRow({ currentCredential }: Props) {
+interface Props {
+  credential: NamedCredential;
+}
+
+function CredentialRow({ credential }: Props) {
   const [isEditing, setIsEditing] = useState(false);
-  const credentialName = currentCredential.name;
+  const [showDeletePopup, setShowDeletePopup] = useState(false);
+  const credentialName = credential.name;
   const dispatch = useAppDispatch();
 
-  const handleKeyPress = useCallback((event: React.KeyboardEvent) => {
-    if (event.key === 'Enter' || event.key === 'Escape') {
-      setIsEditing(false);
+  const stopEditing = useCallback(() => {
+    if (showDeletePopup) {
+      return;
     }
-  }, []);
 
-  const handleBlur = useCallback(() => {
     setIsEditing(false);
+  }, [showDeletePopup]);
+
+  const handleKeyPress = useCallback(
+    (event: React.KeyboardEvent) => {
+      if (event.key === 'Enter' || event.key === 'Escape') {
+        stopEditing();
+      }
+    },
+    [stopEditing],
+  );
+
+  const handleShowPopup = useCallback(() => {
+    dispatch(showPopup(true));
+    setShowDeletePopup(true);
+  }, [dispatch]);
+
+  const handleDismiss = useCallback(() => {
+    setShowDeletePopup(false);
     dispatch(showPopup(false));
   }, [dispatch]);
+
+  if (isEditing) {
+    return (
+      <EditContents
+        onKeyPress={handleKeyPress}
+        credential={credential}
+        isEditing={isEditing}
+        onDismiss={handleDismiss}
+        onShowPopup={handleShowPopup}
+        showDeletePopup={showDeletePopup}
+        stopEditing={stopEditing}
+      />
+    );
+  }
+
   return (
-    <Fragment>
-      {isEditing ? (
-        <EditContents
-          onBlur={handleBlur}
-          onKeyPress={handleKeyPress}
-          currentCredential={currentCredential}
-          isEditing={isEditing}
+    <div className={styles.credentialContainer}>
+      <label className={styles.credentialLabel}>Credential</label>
+      <span className={styles.name}>{credentialName}</span>
+      <div className={styles.editContainer}>
+        <button
+          className={styles.editBtn}
+          aria-label="edit name"
+          onClick={() => setIsEditing(true)}
         />
-      ) : (
-        <div className={styles.credentialContainer}>
-          <label className={styles.credentialLabel}>Credential</label>
-          <span className={styles.name}>{credentialName}</span>
-          <div className={styles.editContainer}>
-            <button
-              className={styles.editBtn}
-              aria-label="edit name"
-              onClick={() => setIsEditing(true)}
-            />
-          </div>
-        </div>
-      )}
-    </Fragment>
+      </div>
+    </div>
   );
 }
 
 export function CredentialsInsertion() {
   const credentials = useAppSelector(selectCredentials);
+
   return (
     <div className={styles.grid}>
       <div className={styles.arrowIcon} />
@@ -239,7 +263,7 @@ export function CredentialsInsertion() {
               className={styles.listItem}
               key={credential.credential.rootHash}
             >
-              <CredentialRow currentCredential={credential} />
+              <CredentialRow credential={credential} />
             </li>
           ))}
         </ul>

@@ -31,38 +31,38 @@ export function CredentialVerifier({ credential, did }: IDIDCredential) {
   const [error, setError] = useState<string>();
 
   useEffect(() => {
-    async () => {
-      if (did) {
-        setClaimContents(credential.claim.contents);
-        if (!Did.Utils.isSameSubject(credential.claim.owner, did)) {
-          setIsCredentialValid(false);
-          setError('Credential subject and signer DID are not the same');
-          return;
-        }
+    (async () => {
+      if (!did) return;
 
-        if (Credential.isICredential(credential)) {
-          setIsCredentialValid(await validateCredential(credential));
-          const attesterDid = credential.attestation.owner;
-          setAttester(await getW3NOrDid(attesterDid));
-          return;
-        }
-
-        if (!RequestForAttestation.isIRequestForAttestation(credential)) {
-          setIsCredentialValid(false);
-          setError('Not valid Kilt Credential');
-          return;
-        }
-
-        const attestation = await getAttestationForRequest(credential);
-        setIsCredentialValid(await validateAttestation(attestation));
-
-        if (attestation) {
-          setAttester(await getW3NOrDid(attestation.owner));
-        } else {
-          setError('No Attestation found');
-        }
+      setClaimContents(credential.claim.contents);
+      if (!Did.Utils.isSameSubject(credential.claim.owner, did)) {
+        setIsCredentialValid(false);
+        setError('Credential subject and signer DID are not the same');
+        return;
       }
-    };
+
+      if (Credential.isICredential(credential)) {
+        setIsCredentialValid(await validateCredential(credential));
+        const attesterDid = credential.attestation.owner;
+        setAttester(await getW3NOrDid(attesterDid));
+        return;
+      }
+
+      if (!RequestForAttestation.isIRequestForAttestation(credential)) {
+        setIsCredentialValid(false);
+        setError('Not valid Kilt Credential');
+        return;
+      }
+
+      const attestation = await getAttestationForRequest(credential);
+      setIsCredentialValid(await validateAttestation(attestation));
+
+      if (attestation) {
+        setAttester(await getW3NOrDid(attestation.owner));
+      } else {
+        setError('No Attestation found');
+      }
+    })();
   }, [credential, did]);
   return (
     <div className={styles.credential}>
