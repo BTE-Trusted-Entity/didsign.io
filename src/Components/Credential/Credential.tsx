@@ -20,7 +20,7 @@ import {
 } from '../../Utils/verify-helper';
 
 interface IDIDCredential {
-  credential: RequestForAttestation;
+  credential: unknown;
   did?: DidUri;
 }
 
@@ -34,14 +34,8 @@ export function CredentialVerifier({ credential, did }: IDIDCredential) {
     (async () => {
       if (!did) return;
 
-      setClaimContents(credential.claim.contents);
-      if (!Did.Utils.isSameSubject(credential.claim.owner, did)) {
-        setIsCredentialValid(false);
-        setError('Credential subject and signer DID are not the same');
-        return;
-      }
-
       if (Credential.isICredential(credential)) {
+        setClaimContents(credential.request.claim.contents);
         setIsCredentialValid(await validateCredential(credential));
         const attesterDid = credential.attestation.owner;
         setAttester(await getW3NOrDid(attesterDid));
@@ -51,6 +45,13 @@ export function CredentialVerifier({ credential, did }: IDIDCredential) {
       if (!RequestForAttestation.isIRequestForAttestation(credential)) {
         setIsCredentialValid(false);
         setError('Not valid Kilt Credential');
+        return;
+      }
+
+      setClaimContents(credential.claim.contents);
+      if (!Did.Utils.isSameSubject(credential.claim.owner, did)) {
+        setIsCredentialValid(false);
+        setError('Credential subject and signer DID are not the same');
         return;
       }
 

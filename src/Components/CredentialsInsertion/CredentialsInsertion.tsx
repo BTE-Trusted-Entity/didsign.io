@@ -1,4 +1,10 @@
-import React, { useCallback, useRef, useState } from 'react';
+import {
+  useCallback,
+  useRef,
+  useState,
+  KeyboardEvent,
+  ChangeEvent,
+} from 'react';
 
 import classnames from 'classnames';
 
@@ -61,13 +67,13 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
 
   const handleStopEditing = useCallback(() => {
     if (showDeletePopup) return;
-    stopEditing;
+    stopEditing();
   }, [showDeletePopup, stopEditing]);
 
   useHandleOutsideClick(credentialRowRef, handleStopEditing);
 
   const handleKeyPress = useCallback(
-    (event: React.KeyboardEvent) => {
+    (event: KeyboardEvent) => {
       if (event.key === 'Enter' || event.key === 'Escape') {
         stopEditing();
       }
@@ -76,7 +82,7 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
   );
 
   const handleChange = useCallback(
-    (event: React.FocusEvent<HTMLInputElement>) => {
+    (event: ChangeEvent<HTMLInputElement>) => {
       const input = event.currentTarget.value;
 
       if (input.length < 1 || input.length > 32) {
