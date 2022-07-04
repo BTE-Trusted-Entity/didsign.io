@@ -21,8 +21,8 @@ import { showPopup } from '../../Features/Signer/PopupSlice';
 import { useHandleOutsideClick } from '../../Hooks/useHandleOutsideClick';
 interface EditingProps {
   onKeyPress: React.KeyboardEventHandler<HTMLInputElement>;
-  onDismiss: React.MouseEventHandler<HTMLButtonElement>;
   onShowPopup: React.MouseEventHandler<HTMLButtonElement>;
+  onDismiss: () => void;
   stopEditing: () => void;
   showDeletePopup: boolean;
   credential: NamedCredential;
@@ -113,34 +113,31 @@ function EditContents({
     ],
   );
 
-  const handleDelete = useCallback(
-    async (event: React.MouseEvent<HTMLButtonElement>) => {
-      onDismiss(event);
-      const { hashes, jws } = getSignatureData();
+  const handleDelete = useCallback(async () => {
+    onDismiss();
+    const { hashes, jws } = getSignatureData();
 
-      if (!storedCredentials) throw new Error('No credentials');
+    if (!storedCredentials) throw new Error('No credentials');
 
-      const credentialsCopy = [...storedCredentials];
-      credentialsCopy.splice(credentialsCopy.indexOf(credential), 1);
+    const credentialsCopy = [...storedCredentials];
+    credentialsCopy.splice(credentialsCopy.indexOf(credential), 1);
 
-      const updatedContents = {
-        hashes,
-        jws,
-        credentials: credentialsCopy.length > 0 ? credentialsCopy : undefined,
-      };
+    const updatedContents = {
+      hashes,
+      jws,
+      credentials: credentialsCopy.length > 0 ? credentialsCopy : undefined,
+    };
 
-      dispatch(updateCredentials(credentialsCopy));
-      updateSignatureFile(updatedContents);
-    },
-    [
-      credential,
-      dispatch,
-      getSignatureData,
-      onDismiss,
-      storedCredentials,
-      updateSignatureFile,
-    ],
-  );
+    dispatch(updateCredentials(credentialsCopy));
+    updateSignatureFile(updatedContents);
+  }, [
+    credential,
+    dispatch,
+    getSignatureData,
+    onDismiss,
+    storedCredentials,
+    updateSignatureFile,
+  ]);
 
   return (
     <div
@@ -178,7 +175,7 @@ function EditContents({
         />
       </div>
       {showDeletePopup && (
-        <DeleteCredential onDismiss={onDismiss} onOkay={handleDelete} />
+        <DeleteCredential onDismiss={() => onDismiss()} onOkay={handleDelete} />
       )}
     </div>
   );
