@@ -1,24 +1,30 @@
 .container {
-  display: flex;
-  /* flex-direction: column; */
-  justify-content: center;
-  align-items: center;
-  /* align-items: flex-start; */
-  gap: 6px;
-
+  position: relative;
   width: 100vw;
-  margin: 4px 0;
+  margin: 0.1rem 0;
   overflow-y: hidden;
   overflow-x: hidden;
-  background-color: var(--color-light-blue);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: rgb(var(--color-dark-grey-rgb) / 50%);
 }
 
-.onchainInfo {
+.section {
+  width: 90%;
+  max-width: 766px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.infoItem {
   font-size: 12px;
   line-height: 12px;
   letter-spacing: 0.2px;
 }
 
-.onchainInfo a {
+.infoItem a {
   color: var(--color-medium-blue);
 }
