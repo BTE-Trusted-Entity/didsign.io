@@ -253,7 +253,7 @@ export const ImportFilesVerifier = () => {
             <input {...getInputProps()} />
             <img className={styles.importIcon} src={impIcon} />
             {impIcon === ImportIcon && (
-              <span className={styles.signText}>Sign Your Files</span>
+              <span className={styles.signText}>Verify Your Files</span>
             )}
             {impIcon === ImportIcon && (
               <span className={styles.dragDropText}>drag & drop</span>

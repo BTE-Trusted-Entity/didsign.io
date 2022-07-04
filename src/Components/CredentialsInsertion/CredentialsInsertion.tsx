@@ -20,32 +20,19 @@ import { DeleteCredential } from '../Popups/Popups';
 import { showPopup } from '../../Features/Signer/PopupSlice';
 import { useHandleOutsideClick } from '../../Hooks/useHandleOutsideClick';
 interface EditingProps {
-  onKeyPress: React.KeyboardEventHandler<HTMLInputElement>;
-  onShowPopup: React.MouseEventHandler<HTMLButtonElement>;
-  onDismiss: () => void;
   stopEditing: () => void;
-  showDeletePopup: boolean;
   credential: NamedCredential;
   isEditing: boolean;
 }
 
-function EditContents({
-  onKeyPress,
-  credential,
-  isEditing,
-  onDismiss,
-  onShowPopup,
-  showDeletePopup,
-  stopEditing,
-}: EditingProps) {
+function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
   const [error, setError] = useState(false);
   const buffers = useAppSelector(selectBuffers);
   const dispatch = useAppDispatch();
   const storedCredentials = useAppSelector(selectCredentials);
   const credentialName = credential.name;
   const credentialRowRef = useRef(null);
-
-  useHandleOutsideClick(credentialRowRef, stopEditing);
+  const [showDeletePopup, setShowDeletePopup] = useState(false);
 
   const getSignatureData = useCallback(() => {
     const { buffer } = buffers[0];
@@ -70,6 +57,22 @@ function EditContents({
       dispatch(updateFileTop(newFile));
     },
     [dispatch],
+  );
+
+  const handleStopEditing = useCallback(() => {
+    if (showDeletePopup) return;
+    stopEditing;
+  }, [showDeletePopup, stopEditing]);
+
+  useHandleOutsideClick(credentialRowRef, handleStopEditing);
+
+  const handleKeyPress = useCallback(
+    (event: React.KeyboardEvent) => {
+      if (event.key === 'Enter' || event.key === 'Escape') {
+        stopEditing();
+      }
+    },
+    [stopEditing],
   );
 
   const handleChange = useCallback(
@@ -113,8 +116,18 @@ function EditContents({
     ],
   );
 
+  const handleShowPopup = useCallback(() => {
+    dispatch(showPopup(true));
+    setShowDeletePopup(true);
+  }, [dispatch]);
+
+  const handleDismiss = useCallback(() => {
+    setShowDeletePopup(false);
+    dispatch(showPopup(false));
+  }, [dispatch]);
+
   const handleDelete = useCallback(async () => {
-    onDismiss();
+    handleDismiss();
     const { hashes, jws } = getSignatureData();
 
     if (!storedCredentials) throw new Error('No credentials');
@@ -134,7 +147,7 @@ function EditContents({
     credential,
     dispatch,
     getSignatureData,
-    onDismiss,
+    handleDismiss,
     storedCredentials,
     updateSignatureFile,
   ]);
@@ -155,7 +168,7 @@ function EditContents({
           type="text"
           aria-label="input credential name"
           className={styles.input}
-          onKeyPress={onKeyPress}
+          onKeyDown={handleKeyPress}
           defaultValue={credentialName}
           onChange={handleChange}
           autoFocus
@@ -171,11 +184,11 @@ function EditContents({
         <button
           className={styles.deleteBtn}
           aria-label="delete credential"
-          onClick={onShowPopup}
+          onClick={handleShowPopup}
         />
       </div>
       {showDeletePopup && (
-        <DeleteCredential onDismiss={() => onDismiss()} onOkay={handleDelete} />
+        <DeleteCredential onDismiss={handleDismiss} onOkay={handleDelete} />
       )}
     </div>
   );
@@ -187,46 +200,17 @@ interface Props {
 
 function CredentialRow({ credential }: Props) {
   const [isEditing, setIsEditing] = useState(false);
-  const [showDeletePopup, setShowDeletePopup] = useState(false);
   const credentialName = credential.name;
-  const dispatch = useAppDispatch();
 
   const stopEditing = useCallback(() => {
-    if (showDeletePopup) {
-      return;
-    }
-
     setIsEditing(false);
-  }, [showDeletePopup]);
-
-  const handleKeyPress = useCallback(
-    (event: React.KeyboardEvent) => {
-      if (event.key === 'Enter' || event.key === 'Escape') {
-        stopEditing();
-      }
-    },
-    [stopEditing],
-  );
-
-  const handleShowPopup = useCallback(() => {
-    dispatch(showPopup(true));
-    setShowDeletePopup(true);
-  }, [dispatch]);
-
-  const handleDismiss = useCallback(() => {
-    setShowDeletePopup(false);
-    dispatch(showPopup(false));
-  }, [dispatch]);
+  }, []);
 
   if (isEditing) {
     return (
       <EditContents
-        onKeyPress={handleKeyPress}
         credential={credential}
         isEditing={isEditing}
-        onDismiss={handleDismiss}
-        onShowPopup={handleShowPopup}
-        showDeletePopup={showDeletePopup}
         stopEditing={stopEditing}
       />
     );
