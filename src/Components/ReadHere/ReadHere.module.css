@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: center;
+  align-items: center;
+  /* align-items: flex-start; */
+  gap: 6px;
+
+  width: 100vw;
+  margin: 4px 0;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  background-color: var(--color-light-blue);
+}
+
+.onchainInfo {
+  font-size: 12px;
+  line-height: 12px;
+  letter-spacing: 0.2px;
+}
+
+.onchainInfo a {
+  color: var(--color-medium-blue);
+}

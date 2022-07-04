@@ -6,17 +6,6 @@
   gap: 12px;
 }
 
-.onchainInfo {
-  font-size: 12px;
-  line-height: 12px;
-  letter-spacing: 0.2px;
-  margin-bottom: 4px;
-}
-
-.onchainInfo a {
-  color: var(--color-medium-blue);
-}
-
 .buttonContainer {
   display: flex;
   gap: 8px;
