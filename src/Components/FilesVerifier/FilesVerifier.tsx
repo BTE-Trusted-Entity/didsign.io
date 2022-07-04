@@ -18,7 +18,7 @@ import {
   deleteFilestatusOnIndex,
   fileStatus,
   replaceStatus,
-} from '../../Features/Signer/EndpointSlice';
+} from '../../Features/Signer/VerifiedSignatureSlice';
 import {
   clearHash,
   deleteHashFromIndex,
@@ -36,7 +36,7 @@ export const FilesVerifier = () => {
   const unzippedFileNames = useAppSelector(selectFilenames);
 
   const jwsStatus = useAppSelector(selectJwsSignStatus);
-  const status = useAppSelector(fileStatus);
+  const filesStatus = useAppSelector(fileStatus);
 
   const dispatch = useAppDispatch();
 
@@ -99,7 +99,7 @@ export const FilesVerifier = () => {
             {unzippedFileNames.map((name: string, index: number) => (
               <li
                 className={classnames(
-                  status[index]
+                  filesStatus[index]
                     ? styles.unzippedFileOk
                     : styles.unzippedFileInvalid,
                 )}
@@ -126,7 +126,7 @@ export const FilesVerifier = () => {
             {files.map((file: File, index: number) => (
               <li
                 className={classnames(
-                  status[index] ? styles.fileOk : styles.fileInvalid,
+                  filesStatus[index] ? styles.fileOk : styles.fileInvalid,
                 )}
                 key={index}
               >

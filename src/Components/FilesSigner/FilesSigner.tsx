@@ -10,18 +10,23 @@ import {
   deleteItem,
   selectHash,
 } from '../../Features/Signer/hashSlice';
-import { clearSign } from '../../Features/Signer/SignatureSlice';
+import {
+  clearSign,
+  selectCredentials,
+} from '../../Features/Signer/SignatureSlice';
 import { showPopup } from '../../Features/Signer/PopupSlice';
 
 import { isDidSignFile } from '../../Utils/verify-helper';
 
 import { SignFileInfoPopup } from '../Popups/Popups';
 import { Timestamp } from '../Timestamp/Timestamp';
+import { CredentialsInsertion } from '../CredentialsInsertion/CredentialsInsertion';
 
 export const FilesSigner = () => {
   const dispatch = useAppDispatch();
   const files = useAppSelector(selectFiles);
   const hash = useAppSelector(selectHash);
+  const credentials = useAppSelector(selectCredentials);
   const [signPopup, setSignPopup] = useState<boolean>(false);
 
   const showSignInfoPopup = () => {
@@ -73,7 +78,7 @@ export const FilesSigner = () => {
                     />
                   </p>
                 </div>
-
+                {credentials && <CredentialsInsertion />}
                 <Timestamp />
               </Fragment>
             )}

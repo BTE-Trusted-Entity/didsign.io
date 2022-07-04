@@ -95,6 +95,15 @@
   margin: 0;
 }
 
+.btnWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 22px;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
 .dismissBtn {
   display: inline-flex;
   align-items: center;
@@ -111,6 +120,16 @@
   border: none;
   text-transform: uppercase;
   cursor: pointer;
+}
+
+.okayBtn {
+  composes: dismissBtn;
+  width: 100px;
+}
+
+.cancelBtn {
+  composes: dismissBtn;
+  width: 100px;
 }
 
 .imprint {

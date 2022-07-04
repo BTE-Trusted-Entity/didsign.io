@@ -26,9 +26,9 @@ import {
   updateAllFilesStatus,
   updateIndividualFileStatus,
   updateIndividualFileStatusOnIndex,
-} from '../../Features/Signer/EndpointSlice';
+} from '../../Features/Signer/VerifiedSignatureSlice';
 import { createHash, createHashFromHashArray } from '../../Utils/sign-helpers';
-import { IRemark, SignDoc } from '../../Utils/types';
+import { NamedCredential, IRemark, SignDoc } from '../../Utils/types';
 import {
   addJwsHashArray,
   addJwsSign,
@@ -54,6 +54,8 @@ export const ImportFilesVerifier = () => {
   const files = useAppSelector(selectFiles);
   const statuses = useAppSelector(fileStatus);
   const [remark, setRemark] = useState<IRemark>();
+  const [credentials, setCredentials] = useState<NamedCredential[]>();
+
   useConnect();
 
   const dispatch = useAppDispatch();
@@ -71,11 +73,12 @@ export const ImportFilesVerifier = () => {
     async (file: File) => {
       dispatch(updateSignStatus('Validating'));
 
-      const signatureStatus = await newUnzip(file);
-      if (signatureStatus) {
+      const verifiedSignatureContents = await newUnzip(file);
+
+      if (verifiedSignatureContents) {
         dispatch(updateSignStatus('Verified'));
-        dispatch(update(signatureStatus.signatureWithEndpoint));
-        dispatch(updateAllFilesStatus(signatureStatus.fileStatus));
+        dispatch(update(verifiedSignatureContents));
+        dispatch(updateAllFilesStatus(verifiedSignatureContents.filesStatus));
       } else {
         dispatch(updateSignStatus('Invalid'));
       }
@@ -100,8 +103,14 @@ export const ImportFilesVerifier = () => {
 
           const decoder = new TextDecoder('utf-8');
           const result = decoder.decode(reader.result as ArrayBuffer);
-          const { jws, hashes, remark } = JSON.parse(result) as SignDoc;
+          const { jws, hashes, remark, credentials } = JSON.parse(
+            result,
+          ) as SignDoc;
+
           if (remark) setRemark(remark);
+
+          if (credentials) setCredentials(credentials);
+
           const hashesWithPrefix = hashes.map((hash) => addMissingPrefix(hash));
           const baseHash = await createHashFromHashArray(hashesWithPrefix);
           const hashFromJWS: string = JSON.parse(atob(jws.split('.')[1])).hash;
@@ -196,28 +205,34 @@ export const ImportFilesVerifier = () => {
     }
   }, [dispatch, fileHash, jwsHash, jwsStatus]);
 
-  const fetchEndpoints = useCallback(async () => {
+  const fetchDidDocument = useCallback(async () => {
     dispatch(updateSignStatus('Validating'));
     const verifiedSignatureInstance = await getVerifiedData(jws, remark);
     if (verifiedSignatureInstance) {
       dispatch(updateSignStatus('Verified'));
-      dispatch(update(verifiedSignatureInstance));
+      dispatch(
+        update({
+          ...verifiedSignatureInstance,
+          filesStatus: statuses,
+          credentials,
+        }),
+      );
     } else {
       dispatch(updateSignStatus('Invalid'));
     }
-  }, [dispatch, jws, remark]);
+  }, [credentials, dispatch, jws, remark, statuses]);
 
   useEffect(() => {
     if (jwsStatus === 'Not Checked') {
-      if (statuses.length > 1) {
+      if (statuses && statuses.length > 1) {
         if (!statuses.includes(false)) {
-          fetchEndpoints();
+          fetchDidDocument();
         } else {
           dispatch(clearEndpoint());
         }
       }
     }
-  }, [statuses, jwsStatus, fetchEndpoints, dispatch]);
+  }, [statuses, jwsStatus, dispatch, fetchDidDocument]);
   return (
     <div className={styles.container}>
       {jwsStatus === 'Multiple Sign' && <MultipleSignPopup />}
@@ -238,7 +253,7 @@ export const ImportFilesVerifier = () => {
             <input {...getInputProps()} />
             <img className={styles.importIcon} src={impIcon} />
             {impIcon === ImportIcon && (
-              <span className={styles.signText}>Sign Your Files</span>
+              <span className={styles.signText}>Verify Your Files</span>
             )}
             {impIcon === ImportIcon && (
               <span className={styles.dragDropText}>drag & drop</span>

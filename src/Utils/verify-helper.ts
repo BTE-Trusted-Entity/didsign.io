@@ -13,12 +13,7 @@ import * as zip from '@zip.js/zip.js';
 import JSZip from 'jszip';
 
 import { createHash, createHashFromHashArray } from './sign-helpers';
-import {
-  IRemark,
-  ISignatureEndPoint,
-  ISignatureEndPointWithStatus,
-  SignDoc,
-} from './types';
+import { IRemark, IVerifiedSignatureContents, SignDoc } from './types';
 import { getVerifiedTimestamp } from './timestamp';
 
 const resolveServiceEndpoints = async (did: DidUri) => {
@@ -31,10 +26,7 @@ const resolveServiceEndpoints = async (did: DidUri) => {
   }
 };
 
-export const getVerifiedData = async (
-  jws: string,
-  remark?: IRemark,
-): Promise<ISignatureEndPoint | null> => {
+export const getVerifiedData = async (jws: string, remark?: IRemark) => {
   if (jws === '') {
     return null;
   }
@@ -70,14 +62,14 @@ export const getVerifiedData = async (
 
 export const newUnzip = async (
   file: File,
-): Promise<ISignatureEndPointWithStatus | undefined> => {
+): Promise<IVerifiedSignatureContents | undefined> => {
   const reader = new zip.ZipReader(new zip.BlobReader(file));
   const fileData: string[] = [];
   let doc: SignDoc = {
     jws: '',
     hashes: [],
   };
-  const fileStatuses: boolean[] = [];
+  const filesStatus: boolean[] = [];
   // get all entries from the zip
   const entries = await reader.getEntries();
   const files = entries.filter((key: zip.Entry) => {
@@ -88,7 +80,7 @@ export const newUnzip = async (
       if (entry.getData) {
         if (isDidSignFile(entry.filename)) {
           const text = await entry.getData(new zip.TextWriter());
-          fileStatuses.push(true);
+          filesStatus.push(true);
           doc = JSON.parse(text);
           continue;
         } else {
@@ -102,31 +94,30 @@ export const newUnzip = async (
 
     const addMissingPrefix = (hash: string): string =>
       hash.startsWith(base16.prefix) ? hash : `${base16.prefix}${hash}`;
-    const { jws, hashes, remark } = doc;
+    const { jws, hashes, remark, credentials } = doc;
     const hashesWithPrefix = hashes.map((hash) => addMissingPrefix(hash));
 
     fileData.map((hash) => {
-      if (hashesWithPrefix.includes(hash)) {
-        fileStatuses.push(true);
-      } else {
-        fileStatuses.push(false);
-      }
+      const status = hashesWithPrefix.includes(hash);
+      filesStatus.push(status);
     });
-    const baseHash = await createHashFromHashArray(hashesWithPrefix);
 
+    const baseHash = await createHashFromHashArray(hashesWithPrefix);
     const jwsBaseJson = atob(jws.split('.')[1]);
     const jwsBaseHash = addMissingPrefix(JSON.parse(jwsBaseJson).hash);
 
-    if (baseHash !== jwsBaseHash || fileStatuses.includes(false)) {
+    if (baseHash !== jwsBaseHash || filesStatus.includes(false)) {
       return undefined;
     }
-    const signatureEndpointInstance = await getVerifiedData(jws, remark);
-    if (signatureEndpointInstance) {
-      const signEndpointStatus: ISignatureEndPointWithStatus = {
-        signatureWithEndpoint: signatureEndpointInstance,
-        fileStatus: fileStatuses,
-      };
 
+    const verifiedContents = await getVerifiedData(jws, remark);
+
+    if (verifiedContents) {
+      const signEndpointStatus: IVerifiedSignatureContents = {
+        ...verifiedContents,
+        credentials,
+        filesStatus,
+      };
       return signEndpointStatus;
     } else {
       return undefined;
@@ -142,6 +133,7 @@ export const getFileNames = async (file: File): Promise<string[]> => {
   });
   return filenames;
 };
+
 export const replaceFileStatus = (statusArray: boolean[]): boolean[] => {
   statusArray = statusArray.map((element) => {
     if (element === true) {
@@ -174,6 +166,7 @@ export const validateAttestation = async (attestation: Attestation | null) => {
   }
   return false;
 };
+
 export const validateCredential = async (
   credentialInput: ICredential,
 ): Promise<boolean> => {

@@ -22,7 +22,7 @@ import { clearSign } from '../../Features/Signer/SignatureSlice';
 import {
   clearEndpoint,
   clearFileStatuses,
-} from '../../Features/Signer/EndpointSlice';
+} from '../../Features/Signer/VerifiedSignatureSlice';
 import { clearJWS } from '../../Features/Signer/VerifyJwsSlice';
 
 const Signer = () => {
