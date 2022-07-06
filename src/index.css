@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'Overpass';
+  src: url('./Fonts/Overpass-Regular.woff2') format('woff2');
+}
+
 :root {
   --color-pure-red: #b20230;
   --color-dark-purple: #2a2231;
@@ -22,34 +27,10 @@
   --color-blue-navlink: #bbcfe2;
   --color-blue-focus-rgb: 62 110 153;
   --color-pink-rgb: 178 2 48;
-  --body-font: 'Overpass';
-}
 
-body {
-  margin: 0;
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    'Fira Sans',
-    'Droid Sans',
-    'Helvetica Neue',
-    Overpass,
+  font-family: Overpass, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family:
-    source-code-pro,
-    Menlo,
-    Monaco,
-    Consolas,
-    'Courier New',
-    monospace;
 }
