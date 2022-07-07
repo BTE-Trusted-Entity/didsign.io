@@ -17,7 +17,6 @@ import {
   BottomSectionSigner,
   BottomSectionVerifier,
 } from '../BottomSection/BottomSection';
-import { ReadHere } from '../ReadHere/ReadHere';
 import { clearHash } from '../../Features/Signer/hashSlice';
 import { clearSign } from '../../Features/Signer/SignatureSlice';
 import {
@@ -46,7 +45,6 @@ const Signer = () => {
         {files.length === 0 ? <FilesEmpty /> : <FilesSigner />}
       </div>
       <BottomSectionSigner />
-      <ReadHere />
     </Fragment>
   );
 };
