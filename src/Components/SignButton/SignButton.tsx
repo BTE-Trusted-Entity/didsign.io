@@ -146,18 +146,6 @@ export const SignButton = () => {
           <SignErrorPopup onDismiss={handleDismiss} />
         )}
       </div>
-
-      <span className={styles.onchainInfo}>
-        Don&apos;t have an on-chain DID yet?{' '}
-        <a
-          target="_blank"
-          rel="noreferrer"
-          className="hover:underline text-medium-blue"
-          href="https://support.kilt.io/support/solutions/folders/80000689099"
-        >
-          Read here
-        </a>
-      </span>
     </div>
   );
 };

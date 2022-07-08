@@ -18,6 +18,33 @@ import { DownloadButtons } from '../DownloadButtons/DownloadButtons';
 import { SignButton } from '../SignButton/SignButton';
 import { DidDocument } from '../DidDocument/DidDocument';
 
+const InfoLink = () => {
+  return (
+    <div className={styles.infoLink}>
+      <span className={styles.infoItem}>
+        Don&apos;t have an on-chain DID yet?{' '}
+        <a
+          target="_blank"
+          rel="noreferrer"
+          href="https://www.trusted-entity.io/assets/pdf/Upgrading-to-on-chain-DID.pdf"
+        >
+          Read here
+        </a>
+      </span>
+      <span className={styles.infoItem}>
+        Don&apos;t have a web3name yet?{' '}
+        <a
+          target="_blank"
+          rel="noreferrer"
+          href="https://www.trusted-entity.io/assets/pdf/How_To_Guide_web3name_link_address_Full_May22.pdf"
+        >
+          Read here
+        </a>
+      </span>
+    </div>
+  );
+};
+
 export const BottomSectionSigner = () => {
   const dispatch = useAppDispatch();
 
@@ -39,6 +66,7 @@ export const BottomSectionSigner = () => {
           />
         )}
       </div>
+      <InfoLink />
     </section>
   );
 };

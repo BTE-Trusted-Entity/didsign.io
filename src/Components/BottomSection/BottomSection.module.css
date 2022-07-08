@@ -4,9 +4,10 @@
   overflow-y: hidden;
   overflow-x: hidden;
   display: flex;
+  flex-direction: column;
   min-height: 95px;
-  justify-content: center;
-  align-items: flex-start;
+  justify-content: flex-start;
+  align-items: center;
   background-color: var(--color-light-blue);
 }
 
@@ -26,6 +27,30 @@
   border-color: rgb(var(--color-pale-blue-rgb) / 25%);
   box-shadow: 0 2px 4px 0 rgb(var(--color-pale-blue-rgb) / 10%);
   position: relative;
+}
+
+.infoLink {
+  width: 90%;
+  max-width: 766px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.infoItem {
+  font-size: 12px;
+  line-height: 12px;
+  letter-spacing: 0.2px;
+  padding: 0 0.2rem;
+}
+
+.infoItem a {
+  color: var(--color-medium-blue);
+}
+
+.infoItem:first-child::after {
+  content: '|';
+  padding-left: 0.5rem;
 }
 
 .verificationLoader {
@@ -59,7 +84,8 @@ div.verificationText {
 
 .startOverBtn {
   position: absolute;
-  background: url('../../ImageAssets/button_start_over_NEW.svg') no-repeat center/100%;
+  background: url('../../ImageAssets/button_start_over_NEW.svg') no-repeat
+    center/100%;
   right: 0;
   bottom: 0;
   cursor: pointer;
