@@ -1,15 +1,16 @@
-import React, { Fragment, useState } from 'react';
+import { Fragment, useState } from 'react';
 
 import styles from './FilesSigner.module.css';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
-import { deleteFile, selectFiles } from '../../Features/Signer/FileSlice';
 import {
-  clearHash,
-  deleteItem,
-  selectHash,
-} from '../../Features/Signer/hashSlice';
+  deleteBuffer,
+  deleteFile,
+  selectBuffers,
+  selectFiles,
+} from '../../Features/Signer/FileSlice';
+import { deleteHashFromIndex } from '../../Features/Signer/hashSlice';
 import {
   clearSign,
   selectCredentials,
@@ -25,7 +26,7 @@ import { CredentialsInsertion } from '../CredentialsInsertion/CredentialsInserti
 export const FilesSigner = () => {
   const dispatch = useAppDispatch();
   const files = useAppSelector(selectFiles);
-  const hash = useAppSelector(selectHash);
+  const buffers = useAppSelector(selectBuffers);
   const credentials = useAppSelector(selectCredentials);
   const [signPopup, setSignPopup] = useState<boolean>(false);
 
@@ -41,22 +42,17 @@ export const FilesSigner = () => {
   };
   const handleDeleteFile = (file: File) => {
     const index = files.indexOf(file);
+    dispatch(deleteHashFromIndex(index));
+    dispatch(deleteBuffer(buffers[index]));
     dispatch(deleteFile(file));
-    dispatch(deleteItem(hash[index]));
-    dispatch(clearSign());
     const didSignFile = files.find((file) => isDidSignFile(file.name));
-    if (didSignFile !== undefined) {
-      dispatch(deleteFile(didSignFile));
-      dispatch(deleteItem(hash[index - 1]));
-    }
-    hash.length === 1 && dispatch(clearSign());
-    if (files.length === 1) {
-      dispatch(clearHash());
-    }
+
+    if (!didSignFile) return;
+
+    dispatch(deleteBuffer(buffers[files.indexOf(didSignFile)]));
+    dispatch(deleteFile(didSignFile));
+    dispatch(clearSign());
   };
-  if (files.length === 0) {
-    return null;
-  }
   return (
     <div className={styles.container}>
       <h2 className={styles.heading}>Files</h2>
