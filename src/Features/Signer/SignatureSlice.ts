@@ -8,6 +8,8 @@ import { Signature } from '../../Utils/types';
 const initialState: Signature = {
   signature: '',
   credentials: undefined,
+  downloaded: false,
+  timestamped: false,
 };
 
 export const SignatureSlice = createSlice({
@@ -19,6 +21,8 @@ export const SignatureSlice = createSlice({
         ...state,
         signature: initialState.signature,
         credentials: initialState.credentials,
+        downloaded: initialState.downloaded,
+        timestamped: initialState.timestamped,
       };
     },
 
@@ -40,14 +44,35 @@ export const SignatureSlice = createSlice({
           ? [...action.payload]
           : initialState.credentials;
     },
+    updateDownloadStatus: (state, action: PayloadAction<boolean>) => {
+      return {
+        ...state,
+        downloaded: action.payload,
+      };
+    },
+    updateTimestampStatus: (state, action: PayloadAction<boolean>) => {
+      return {
+        ...state,
+        timestamped: action.payload,
+      };
+    },
   },
 });
 
-export const { clearSign, updateSign, updateCredentials } =
-  SignatureSlice.actions;
+export const {
+  clearSign,
+  updateSign,
+  updateCredentials,
+  updateDownloadStatus,
+  updateTimestampStatus,
+} = SignatureSlice.actions;
 
 export const selectSign = (state: RootState) => state.signature.signature;
 export const selectCredentials = (state: RootState) =>
   state.signature.credentials;
+export const selectDownloadStatus = (state: RootState) =>
+  state.signature.downloaded;
+export const selectTimestampStatus = (state: RootState) =>
+  state.signature.timestamped;
 
 export default SignatureSlice.reducer;

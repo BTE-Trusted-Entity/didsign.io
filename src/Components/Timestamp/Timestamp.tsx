@@ -15,7 +15,11 @@ import classnames from 'classnames';
 import styles from './Timestamp.module.css';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectSign } from '../../Features/Signer/SignatureSlice';
+import {
+  selectDownloadStatus,
+  selectSign,
+  updateTimestampStatus,
+} from '../../Features/Signer/SignatureSlice';
 import {
   IBuffer,
   selectBuffers,
@@ -63,6 +67,7 @@ export function Timestamp() {
 
   const signature = useAppSelector(selectSign);
   const buffers = useAppSelector(selectBuffers);
+  const signatureDownloaded = useAppSelector(selectDownloadStatus);
 
   const dispatch = useAppDispatch();
 
@@ -76,8 +81,9 @@ export function Timestamp() {
     | 'error'
   >('start');
 
-  // TODO: Allow navigation after user has downloaded the files
-  usePreventNavigation(['finalizing', 'done'].includes(status));
+  usePreventNavigation(
+    ['finalizing', 'done'].includes(status) && !signatureDownloaded,
+  );
 
   const [accounts, setAccounts] = useState<IKiltAccount[]>();
   const [selectedAccount, setSelectedAccount] = useState<IKiltAccount>();
@@ -154,6 +160,7 @@ export function Timestamp() {
         setTimestamp(await getTimestamp(blockHash));
 
         setStatus('done');
+        dispatch(updateTimestampStatus(true));
         dispatch(showPopup(false));
       } catch (exception) {
         setStatus('error');

@@ -11,13 +11,15 @@ import {
   selectFiles,
 } from '../../Features/Signer/FileSlice';
 
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { updateDownloadStatus } from '../../Features/Signer/SignatureSlice';
 
 export const DownloadButtons = () => {
   const buffers = useAppSelector(selectBuffers);
   const [signatureFile] = useAppSelector(selectFiles);
   const [showLoader, setShowLoader] = useState<boolean>(false);
   const [progress, setProgress] = useState<string>('0');
+  const dispatch = useAppDispatch();
 
   const generateZipFile = async (buffers: IBuffer[]) => {
     const zip = new JSZip();
@@ -37,6 +39,7 @@ export const DownloadButtons = () => {
 
   const handleDownloadSign = async () => {
     saveAs(signatureFile, 'signature.didsign');
+    dispatch(updateDownloadStatus(true));
   };
 
   const handleZip = async () => {
@@ -45,6 +48,7 @@ export const DownloadButtons = () => {
     await generateZipFile(buffers);
     setShowLoader(false);
     document.body.style.pointerEvents = 'auto';
+    dispatch(updateDownloadStatus(true));
   };
 
   return (
