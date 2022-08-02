@@ -267,3 +267,27 @@ export const DeleteCredential = ({ onDismiss, onOkay }: Props) => {
     </div>
   );
 };
+
+export const TimestampWarning = ({ onDismiss, onOkay }: Props) => {
+  return (
+    <div className={styles.container}>
+      <div className={styles.popup}>
+        <h1 className={styles.attentionHeading}>Save Your File!</h1>
+
+        <span className={styles.text}>
+          Your data belongs to you – DIDsign doesn’t keep a copy of it. Make
+          sure you have saved your timestamped file before switching to the
+          verifier tab.
+        </span>
+        <div className={styles.btnWrapper}>
+          <button className={styles.cancelBtn} onClick={onDismiss}>
+            Cancel
+          </button>
+          <button className={styles.okayBtn} onClick={onOkay}>
+            Ok
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};

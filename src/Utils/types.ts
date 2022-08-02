@@ -6,6 +6,8 @@ import {
 export interface Signature {
   credentials?: NamedCredential[];
   signature: string;
+  downloaded: boolean;
+  timestamped: boolean;
 }
 
 export interface NamedCredential {

@@ -24,6 +24,7 @@ import {
   clearFileStatuses,
 } from '../../Features/Signer/VerifiedSignatureSlice';
 import { clearJWS } from '../../Features/Signer/VerifyJwsSlice';
+import { usePreventNavigation } from '../../Hooks/usePreventNavigation';
 
 const Signer = () => {
   const files = useAppSelector(selectFiles);
@@ -52,6 +53,9 @@ const Signer = () => {
 const Verifier = () => {
   const files = useAppSelector(selectFiles);
   const dispatch = useAppDispatch();
+
+  //allows navigation prevented by time stamping
+  usePreventNavigation(false);
 
   useEffect(() => {
     dispatch(clearAll());
