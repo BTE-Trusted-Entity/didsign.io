@@ -17,8 +17,6 @@ export const DIDSign = () => {
       <Header />
       <Main />
       <Footer />
-      <div className={styles.leftBubble} />
-      <div className={styles.rightBubble} />
     </div>
   );
 };

@@ -106,51 +106,6 @@ export const SigningMultipleDidFiles = ({ onDismiss }: Props) => {
   );
 };
 
-export const ImprintPopup = ({ onDismiss }: Props) => {
-  return (
-    <div className={styles.imprint}>
-      <div className={styles.imprintPopup}>
-        <h1 className={styles.imprintHeading}>Imprint</h1>
-
-        <span className={styles.imprintText}>
-          B.T.E. BOTLabs Trusted Entity GmbH
-        </span>
-        <span className={styles.imprintText}>Keithstraße 2-4</span>
-        <span className={styles.imprintText}>10787 Berlin, Germany</span>
-        <span className={styles.imprintText}>
-          Germany Commercial Court: Amtsgericht Charlottenburg in Berlin
-        </span>
-        <span className={styles.imprintText}>
-          Registration Number: HRB 231219B
-        </span>
-        <span className={styles.imprintText}>VAT No: DE 346528612</span>
-        <span className={styles.imprintText}>Managing Director: Ingo Rübe</span>
-        <span className={styles.imprintText}>
-          Contact: <a href="mailto:info@botlabs.org">info@botlabs.org</a>
-        </span>
-        <span className={styles.imprintText}>
-          Or go to{' '}
-          <a
-            href="https://support.kilt.io/support/home"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Tech Support
-          </a>{' '}
-          and click on “Contact Us”
-        </span>
-        <span className={styles.imprintBottomText}>
-          Requirements according to § 5 TMG (Germany)
-        </span>
-
-        <button className={styles.dismissBtn} onClick={onDismiss}>
-          Dismiss
-        </button>
-      </div>
-    </div>
-  );
-};
-
 export const SignPopup = ({ onDismiss }: Props) => {
   return (
     <div className={styles.container}>
