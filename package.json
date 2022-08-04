@@ -48,7 +48,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
     "prettify": "prettier --write \"src/**/*.ts*\"",
-    "style-lint": "stylelint \"**/*.css\""
+    "style-lint": "stylelint \"src/**/*.css\""
   },
   "eslintConfig": {
     "extends": [

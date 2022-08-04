@@ -9,24 +9,6 @@
   overflow-x: hidden;
 }
 
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  box-shadow: #cee8ff;
-  border-radius: 12px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgb(62 110 153 / 50%);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgb(62 110 153 / 50%);
-}
-
 .darkOverlay {
   background-color: black;
   opacity: 0.7;
@@ -35,24 +17,4 @@
   height: 100%;
   z-index: 20;
   overflow-y: hidden;
-}
-
-.leftBubble {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 230px;
-  width: 240px;
-  pointer-events: none;
-  background: url('../../ImageAssets/BottomLeftBubble.svg') no-repeat bottom left/100%;
-}
-
-.rightBubble {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  height: 230px;
-  width: 240px;
-  pointer-events: none;
-  background: url('../../ImageAssets/BottomRightBubble.svg') no-repeat bottom right/100%;
 }

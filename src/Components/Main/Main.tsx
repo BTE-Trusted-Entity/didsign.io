@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import { Routes, Route, Navigate } from 'react-router-dom';
 
@@ -25,6 +25,10 @@ import {
 } from '../../Features/Signer/VerifiedSignatureSlice';
 import { clearJWS } from '../../Features/Signer/VerifyJwsSlice';
 import { usePreventNavigation } from '../../Hooks/usePreventNavigation';
+import { Terms } from '../Terms/Terms';
+import { Privacy } from '../Privacy/Privacy';
+import { Imprint } from '../Imprint/Imprint';
+import { Navigation } from '../Navigation/Navigation';
 
 const Signer = () => {
   const files = useAppSelector(selectFiles);
@@ -40,13 +44,14 @@ const Signer = () => {
   }, [dispatch]);
 
   return (
-    <Fragment>
-      <div className={styles.container}>
+    <main className={styles.container}>
+      <Navigation />
+      <div className={styles.middleSection}>
         <ImportFilesSigner />
         {files.length === 0 ? <FilesEmpty /> : <FilesSigner />}
       </div>
       <BottomSectionSigner />
-    </Fragment>
+    </main>
   );
 };
 
@@ -64,15 +69,16 @@ const Verifier = () => {
   }, [dispatch]);
 
   return (
-    <Fragment>
-      <div className={styles.container}>
+    <main className={styles.container}>
+      <Navigation />
+      <div className={styles.middleSection}>
         <ImportFilesVerifier />
 
         {files.length === 0 ? <FilesEmpty /> : <FilesVerifier />}
       </div>
 
       <BottomSectionVerifier />
-    </Fragment>
+    </main>
   );
 };
 
@@ -81,6 +87,9 @@ export const Main = () => {
     <Routes>
       <Route path={paths.signer} element={<Signer />} />
       <Route path={paths.verifier} element={<Verifier />} />
+      <Route path={paths.terms} element={<Terms />} />
+      <Route path={paths.privacy} element={<Privacy />} />
+      <Route path={paths.imprint} element={<Imprint />} />
       <Route path="*" element={<Navigate to={paths.signer} replace />} />
     </Routes>
   );

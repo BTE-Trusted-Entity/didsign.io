@@ -1,0 +1,29 @@
+.container {
+  width: 100%;
+  display: flex;
+  place-content: center;
+  background: var(--color-silver-blue);
+  flex: 1;
+}
+
+.content {
+  max-width: 766px;
+  width: 90%;
+  letter-spacing: 0.1px;
+  line-height: 22px;
+  color: var(--colors-dark-purple);
+  font-size: 14px;
+  padding: 36px 0 100px;
+}
+
+.heading {
+  font-size: 18px;
+  font-weight: normal;
+  letter-spacing: 0.13px;
+  margin: 0 0 27px;
+}
+
+.sectionHeading {
+  font-size: 14px;
+  margin: 16px 0;
+}

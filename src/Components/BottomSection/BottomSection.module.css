@@ -8,7 +8,7 @@
   min-height: 95px;
   justify-content: flex-start;
   align-items: center;
-  background-color: var(--color-light-blue);
+  background: transparent;
 }
 
 .bottomSection {
@@ -84,8 +84,7 @@ div.verificationText {
 
 .startOverBtn {
   position: absolute;
-  background: url('../../ImageAssets/button_start_over_NEW.svg') no-repeat
-    center/100%;
+  background: url('../../ImageAssets/button_start_over_NEW.svg') no-repeat center/100%;
   right: 0;
   bottom: 0;
   cursor: pointer;
