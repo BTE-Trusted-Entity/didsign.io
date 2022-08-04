@@ -14,6 +14,8 @@ export const Footer = () => {
               isActive ? styles.navLinkActive : styles.navLink
             }
             to={paths.imprint}
+            target="_blank"
+            rel="noreferrer"
           >
             Imprint
           </NavLink>
@@ -23,6 +25,8 @@ export const Footer = () => {
               isActive ? styles.navLinkActive : styles.navLink
             }
             to={paths.terms}
+            target="_blank"
+            rel="noreferrer"
           >
             Terms
           </NavLink>
@@ -32,6 +36,8 @@ export const Footer = () => {
               isActive ? styles.navLinkActive : styles.navLink
             }
             to={paths.privacy}
+            target="_blank"
+            rel="noreferrer"
           >
             Privacy
           </NavLink>
