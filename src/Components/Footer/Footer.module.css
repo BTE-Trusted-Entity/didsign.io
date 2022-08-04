@@ -5,8 +5,6 @@
   min-height: 34px;
   background: var(--color-dark-purple);
   border-top: 1px solid var(--color-silver-blue);
-  position: fixed;
-  bottom: 0;
 }
 
 .content {

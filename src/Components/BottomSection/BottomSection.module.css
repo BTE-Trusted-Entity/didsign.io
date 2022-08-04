@@ -84,8 +84,7 @@ div.verificationText {
 
 .startOverBtn {
   position: absolute;
-  background: url('../../ImageAssets/button_start_over_NEW.svg') no-repeat
-    center/100%;
+  background: url('../../ImageAssets/button_start_over_NEW.svg') no-repeat center/100%;
   right: 0;
   bottom: 0;
   cursor: pointer;

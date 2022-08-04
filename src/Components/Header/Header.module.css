@@ -11,10 +11,8 @@
   position: relative;
   height: 76px;
   background:
-    url('../../ImageAssets/PrimaryHeaderLeftBubbles.svg') no-repeat
-    left 18px / auto 100%,
-    url('../../ImageAssets/PrimaryHeaderRightBubbles.svg') no-repeat right/auto
-      110%,
+    url('../../ImageAssets/PrimaryHeaderLeftBubbles.svg') no-repeat left 18px / auto 100%,
+    url('../../ImageAssets/PrimaryHeaderRightBubbles.svg') no-repeat right/auto 110%,
     var(--color-dark-purple);
 }
 

@@ -9,24 +9,6 @@
   overflow-x: hidden;
 }
 
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  box-shadow: #cee8ff;
-  border-radius: 12px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgb(62 110 153 / 50%);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgb(62 110 153 / 50%);
-}
-
 .darkOverlay {
   background-color: black;
   opacity: 0.7;
