@@ -1,9 +1,11 @@
-import { DidResourceUri } from '@kiltprotocol/sdk-js';
+import { DidResourceUri, RequestForAttestation } from '@kiltprotocol/sdk-js';
 
 interface InjectedWindowProvider {
-  signWithDid: (
-    plaintext: string,
-  ) => Promise<{ signature: string; didKeyUri: DidResourceUri }>;
+  signWithDid: (plaintext: string) => Promise<{
+    signature: string;
+    didKeyUri: DidResourceUri;
+    credentials?: { name: string; credential: RequestForAttestation }[];
+  }>;
 }
 
 export {};
