@@ -8,7 +8,7 @@
   "license": "BSD-4-Clause",
   "type": "module",
   "scripts": {
-    "dev": "yarn parcel --open",
+    "dev": "parcel --open",
     "build": "parcel build",
     "lint-js": "eslint --max-warnings 0 --config ./.eslintrc.json \"src/**/*.ts*\"",
     "lint-css": "stylelint \"src/**/*.css\"",
