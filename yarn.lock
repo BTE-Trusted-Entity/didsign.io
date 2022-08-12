@@ -3544,11 +3544,6 @@ jest-get-type@^27.5.1:
   resolved "https://registry.npmjs.org/jest-get-type/-/jest-get-type-27.5.1.tgz"
   integrity sha512-2KY95ksYSaK7DMBWQn6dQz3kqAf3BB64y2udeG+hv4KfSOb9qwcYQstTJc1KCbsix+wLZWZYN8t7nwX3GOBLRw==
 
-js-sha256@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.npmjs.org/js-sha256/-/js-sha256-0.9.0.tgz"
-  integrity sha512-sga3MHh9sgQN2+pJ9VYZ+1LPwXOxuBJBA5nrR5/ofPfuiJBE2hnjsaN8se8JznOmGLN2p49Pe5U/ttafcs/apA==
-
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npmjs.org/js-tokens/-/js-tokens-4.0.0.tgz"
