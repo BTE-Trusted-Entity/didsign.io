@@ -9,7 +9,7 @@
   "type": "module",
   "scripts": {
     "dev": "yarn parcel --open",
-    "build": "parcel build --reporter @parcel/reporter-bundle-buddy",
+    "build": "parcel build",
     "lint-js": "eslint --max-warnings 0 --config ./.eslintrc.json \"src/**/*.ts*\"",
     "lint-css": "stylelint \"src/**/*.css\"",
     "lint": "yarn run lint-css && yarn run lint-js",
@@ -37,7 +37,6 @@
   },
   "devDependencies": {
     "@parcel/packager-raw-url": "2.7.0",
-    "@parcel/reporter-bundle-buddy": "^2.7.0",
     "@parcel/transformer-svg-react": "^2.7.0",
     "@parcel/transformer-webmanifest": "2.7.0",
     "@types/body-scroll-lock": "^3.1.0",
