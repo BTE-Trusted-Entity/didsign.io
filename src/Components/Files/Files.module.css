@@ -1,6 +1,5 @@
 .container {
   display: grid;
-  grid-template: 'heading list' / 15% auto;
   column-gap: 20px;
   box-sizing: border-box;
   align-content: start;
@@ -11,14 +10,13 @@
   padding-right: 20px;
   overflow-x: hidden;
   overflow-y: auto;
-  background-color: rgb(var(--color-dark-grey-rgb / 50%));
+  background-color: rgb(var(--color-dark-grey-rgb) / 50%);
   border-style: solid;
   border-color: rgb(var(--color-pale-blue-rgb) / 25%);
   border-width: 1px 1px 0;
 }
 
 .heading {
-  grid-area: heading;
   display: flex;
   justify-content: flex-end;
   margin: 0;
@@ -31,7 +29,6 @@
 }
 
 .list {
-  grid-area: list;
   list-style: none;
   display: flex;
   flex-direction: column;

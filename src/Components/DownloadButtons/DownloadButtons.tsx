@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
 
-import styles from './DownloadButtons.module.css';
+import * as styles from './DownloadButtons.module.css';
 
 import {
   IBuffer,

@@ -1,12 +1,12 @@
+import { sha256AsU8a } from '@polkadot/util-crypto';
 import * as hasher from 'multiformats/hashes/hasher';
-import { sha256 } from 'js-sha256';
 import { base16 } from 'multiformats/bases/base16';
 import * as json from 'multiformats/codecs/json';
 
 export const sha56 = hasher.from({
   name: 'sha2-256',
   code: 0x12,
-  encode: (input) => new Uint8Array(sha256.arrayBuffer(input)),
+  encode: sha256AsU8a,
 });
 
 export const createHash = async (blob: ArrayBuffer | null): Promise<string> => {

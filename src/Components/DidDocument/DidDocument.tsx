@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-import styles from './DidDocument.module.css';
+import * as styles from './DidDocument.module.css';
 
 import { useAppSelector } from '../../app/hooks';
 import {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './BottomSection.module.css';
+import * as styles from './BottomSection.module.css';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {

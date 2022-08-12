@@ -1,2 +1,1 @@
-declare module '*.pdf';
-declare module '*.module.css';
+declare module '*.svg';

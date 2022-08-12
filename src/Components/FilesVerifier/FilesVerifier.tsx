@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 
 import classnames from 'classnames';
 
-import styles from './FilesVerifier.module.css';
+import * as styles from './FilesVerifier.module.css';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {

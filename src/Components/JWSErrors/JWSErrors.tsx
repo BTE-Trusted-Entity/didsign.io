@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './JWSErrors.module.css';
+import * as styles from './JWSErrors.module.css';
 
 import { useAppSelector } from '../../app/hooks';
 import { selectJwsSignStatus } from '../../Features/Signer/VerifyJwsSlice';

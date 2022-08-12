@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './FilesEmpty.module.css';
+import * as styles from './FilesEmpty.module.css';
 
 export const FilesEmpty = () => {
   const list = [1, 2, 3, 4];

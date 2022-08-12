@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 
-import styles from './Footer.module.css';
+import * as styles from './Footer.module.css';
 
 import { paths } from '../../Utils/paths';
 

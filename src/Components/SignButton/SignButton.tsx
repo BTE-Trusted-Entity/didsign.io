@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 
-import styles from './SignButton.module.css';
+import * as styles from './SignButton.module.css';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {

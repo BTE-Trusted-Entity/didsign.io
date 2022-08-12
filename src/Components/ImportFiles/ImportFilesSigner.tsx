@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react';
 
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 
-import styles from './ImportFiles.module.css';
+import * as styles from './ImportFiles.module.css';
 
 import ImportIcon from '../../ImageAssets/iconBIG_import_NEW.svg';
 import ReleaseIcon from '../../ImageAssets/iconBIG_import_release.svg';

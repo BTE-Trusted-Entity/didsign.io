@@ -77,7 +77,7 @@
 }
 
 div.verificationText {
-  background-color: rgb(var(--color-dark-grey-rgb / 50%));
+  background-color: rgb(var(--color-dark-grey-rgb) / 50%);
   height: 1px;
   width: 15px;
 }

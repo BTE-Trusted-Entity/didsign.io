@@ -157,7 +157,8 @@
   cursor: pointer;
 }
 
-.option:hover:focus {
+.option:hover,
+.option:focus {
   background: content-box rgb(var(--color-orange-rgb) / 20%);
 }
 
