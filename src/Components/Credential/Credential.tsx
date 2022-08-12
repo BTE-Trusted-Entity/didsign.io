@@ -10,7 +10,7 @@ import {
   RequestForAttestation,
 } from '@kiltprotocol/sdk-js';
 
-import styles from './Credential.module.css';
+import * as styles from './Credential.module.css';
 
 import {
   getAttestationForRequest,

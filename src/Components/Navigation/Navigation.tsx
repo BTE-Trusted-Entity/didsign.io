@@ -3,7 +3,7 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
 import classnames from 'classnames';
 
-import styles from './Navigation.module.css';
+import * as styles from './Navigation.module.css';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { showPopup } from '../../Features/Signer/PopupSlice';

@@ -1,4 +1,4 @@
-import styles from './Imprint.module.css';
+import * as styles from './Imprint.module.css';
 
 export const Imprint = () => {
   return (

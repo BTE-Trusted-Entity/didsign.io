@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './Popups.module.css';
+import * as styles from './Popups.module.css';
 
 import { useAppDispatch } from '../../app/hooks';
 import { showPopup } from '../../Features/Signer/PopupSlice';

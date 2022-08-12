@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './DidSign.module.css';
+import * as styles from './DidSign.module.css';
 
 import { Header } from '../Header/Header';
 import { Main } from '../Main/Main';

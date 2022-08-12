@@ -2,60 +2,70 @@
   "name": "did-signing",
   "version": "0.1.0",
   "private": true,
+  "description": "DID signing web app",
+  "repository": "https://github.com/BTE-Trusted-Entity/didsign.git",
+  "author": "usmangeek <usman@galaniprojects.de>",
+  "license": "BSD-4-Clause",
+  "type": "module",
+  "scripts": {
+    "dev": "yarn parcel --open",
+    "build": "parcel build --reporter @parcel/reporter-bundle-buddy",
+    "lint-js": "eslint --max-warnings 0 --config ./.eslintrc.json \"src/**/*.ts*\"",
+    "lint-css": "stylelint \"src/**/*.css\"",
+    "lint": "yarn run lint-css && yarn run lint-js",
+    "check": "tsc --noEmit",
+    "prettify": "prettier --write \"src/**/*.ts*\"",
+    "css": "tcm --namedExports --pattern 'src/**/*.module.css' && eslint --fix --config ./.eslintrc.json \"src/**/*.css.d.ts\""
+  },
   "dependencies": {
-    "@craco/craco": "^6.4.3",
-    "@kiltprotocol/sdk-js": "0.28.0",
-    "@polkadot/extension-dapp": "^0.44.1",
+    "@kiltprotocol/sdk-js": "^0.28.1",
+    "@polkadot/extension-dapp": "^0.44.4",
     "@reduxjs/toolkit": "^1.7.2",
-    "@testing-library/jest-dom": "^5.16.1",
-    "@testing-library/react": "^12.1.2",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.4.0",
-    "@types/react": "^17.0.38",
-    "@types/react-dom": "^17.0.11",
-    "@types/react-redux": "^7.1.22",
-    "@types/styled-components": "^5.1.25",
     "@zip.js/zip.js": "^2.4.4",
-    "axios": "^0.26.0",
     "body-scroll-lock": "^4.0.0-beta.0",
     "buffer": "^6.0.3",
     "classnames": "^2.3.1",
-    "crypto-browserify": "^3.12.0",
-    "dotenv": "^16.0.0",
     "file-saver": "^2.0.5",
     "js-sha256": "^0.9.0",
     "jszip": "^3.7.1",
     "multiformats": "^9.6.4",
-    "postcss-lit": "^0.4.3",
-    "process": "^0.11.10",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-dropzone": "^11.5.1",
     "react-redux": "^7.2.6",
-    "react-router-dom": "^6.3.0",
-    "react-scripts": "5.0.0",
-    "reactstrap": "^9.0.1",
+    "react-router-dom": "^6.3.0"
+  },
+  "devDependencies": {
+    "@parcel/packager-raw-url": "2.7.0",
+    "@parcel/reporter-bundle-buddy": "^2.7.0",
+    "@parcel/transformer-svg-react": "^2.7.0",
+    "@parcel/transformer-webmanifest": "2.7.0",
+    "@types/body-scroll-lock": "^3.1.0",
+    "@types/file-saver": "^2.0.5",
+    "@types/jest": "^27.4.0",
+    "@types/node": "^17.0.17",
+    "@types/react": "^17.0.38",
+    "@types/react-dom": "^17.0.11",
+    "@types/react-redux": "^7.1.22",
+    "@typescript-eslint/eslint-plugin": "^5.33.0",
+    "@typescript-eslint/parser": "^5.33.0",
+    "eslint": "^8.21.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "events": "^3.3.0",
+    "parcel": "^2.7.0",
+    "postcss": "8.4.16",
+    "prettier": "2.5.1",
+    "process": "^0.11.10",
     "stream-browserify": "^3.0.0",
     "stylelint": "^14.9.1",
+    "stylelint-config-css-modules": "^4.1.0",
     "stylelint-config-standard": "^26.0.0",
-    "typescript": "^4.5.5",
-    "web-vitals": "^2.1.4"
-  },
-  "scripts": {
-    "start": "craco start",
-    "build": "craco build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "lint-js": "eslint --max-warnings 0 --config ./.eslintrc.json \"src/**/*.ts*\"",
-    "lint-css": "stylelint \"src/**/*.css\"",
-    "lint": "yarn run lint-css && yarn run lint-js",
-    "prettify": "prettier --write \"src/**/*.ts*\""
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "typed-css-modules": "^0.7.2",
+    "typescript": "^4.7.4"
   },
   "browserslist": {
     "production": [
@@ -69,24 +79,11 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "@types/body-scroll-lock": "^3.1.0",
-    "@types/file-saver": "^2.0.5",
-    "@types/node": "^17.0.17",
-    "@typescript-eslint/eslint-plugin": "^5.10.1",
-    "@typescript-eslint/parser": "^5.10.1",
-    "autoprefixer": "^10.4.2",
-    "eslint": "^8.7.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-react": "^7.28.0",
-    "postcss": "^8.4.5",
-    "prettier": "2.5.1",
-    "stylelint-config-css-modules": "^4.1.0"
-  },
-  "description": "DID signing web app",
-  "main": "index.js",
-  "repository": "https://github.com/BTE-Trusted-Entity/didsign.git",
-  "author": "usmangeek <usman@galaniprojects.de>",
-  "license": "BSD-4-Clause"
+  "targets": {
+    "default": {
+      "source": "src/index.html",
+      "distDir": "build",
+      "context": "browser"
+    }
+  }
 }

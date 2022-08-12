@@ -12,7 +12,7 @@ import { BlockchainApiConnection } from '@kiltprotocol/chain-helpers';
 
 import classnames from 'classnames';
 
-import styles from './Timestamp.module.css';
+import * as styles from './Timestamp.module.css';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {

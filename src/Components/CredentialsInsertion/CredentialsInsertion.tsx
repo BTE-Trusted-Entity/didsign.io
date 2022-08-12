@@ -8,7 +8,7 @@ import {
 
 import classnames from 'classnames';
 
-import styles from './CredentialsInsertion.module.css';
+import * as styles from './CredentialsInsertion.module.css';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {

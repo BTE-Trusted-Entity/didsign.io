@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import classnames from 'classnames';
 
-import styles from './ServiceEndpoint.module.css';
+import * as styles from './ServiceEndpoint.module.css';
 
 import { useAppSelector } from '../../app/hooks';
 import { selectVerifiedDid } from '../../Features/Signer/VerifiedSignatureSlice';

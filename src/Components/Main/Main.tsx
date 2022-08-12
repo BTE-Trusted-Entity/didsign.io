@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import { Routes, Route, Navigate } from 'react-router-dom';
 
-import styles from './Main.module.css';
+import * as styles from './Main.module.css';
 
 import { ImportFilesSigner } from '../ImportFiles/ImportFilesSigner';
 import { FilesSigner } from '../FilesSigner/FilesSigner';

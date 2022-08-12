@@ -2,7 +2,7 @@ import React from 'react';
 
 import { NavLink } from 'react-router-dom';
 
-import styles from './Header.module.css';
+import * as styles from './Header.module.css';
 
 import { paths } from '../../Utils/paths';
 

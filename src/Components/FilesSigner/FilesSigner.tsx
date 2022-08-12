@@ -1,6 +1,6 @@
 import { Fragment, useState } from 'react';
 
-import styles from './FilesSigner.module.css';
+import * as styles from './FilesSigner.module.css';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
