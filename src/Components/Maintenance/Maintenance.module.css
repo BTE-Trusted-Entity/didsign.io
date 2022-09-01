@@ -1,0 +1,34 @@
+.container {
+  width: 100%;
+  height: calc(100vh - 140px);
+  display: flex;
+  justify-content: center;
+  background:
+    url('../../ImageAssets/BottomLeftBubble.svg') no-repeat bottom left / auto 40%,
+    url('../../ImageAssets/BottomRightBubble.svg') no-repeat bottom right / auto 40%,
+    var(--color-silver-blue);
+}
+
+.contents {
+  max-width: 740px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  color: var(--color-dark-purple);
+  margin-top: 100px;
+}
+
+.heading {
+  font-size: 50px;
+  letter-spacing: 0.1;
+}
+
+.anchor {
+  color: var(--color-dark-purple);
+  font-size: 20px;
+}
+
+.text {
+  font-size: 20px;
+}
