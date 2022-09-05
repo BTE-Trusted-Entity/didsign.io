@@ -14,6 +14,7 @@
     "lint-css": "stylelint \"src/**/*.css\"",
     "lint": "yarn run lint-css && yarn run lint-js",
     "check": "tsc --noEmit",
+    "test-size": "bundlewatch --config bundlewatch.config.json",
     "prettify": "prettier --write \"src/**/*.ts*\"",
     "css": "tcm --namedExports --pattern 'src/**/*.module.css' && eslint --fix --config ./.eslintrc.json \"src/**/*.css.d.ts\""
   },
@@ -47,6 +48,7 @@
     "@types/react-redux": "^7.1.22",
     "@typescript-eslint/eslint-plugin": "^5.33.0",
     "@typescript-eslint/parser": "^5.33.0",
+    "bundlewatch": "^0.3.3",
     "eslint": "^8.21.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.26.0",

@@ -1,0 +1,14 @@
+{
+  "files": [
+    {
+      "path": "build/**/*.{html,css,js,svg,png,ico,woff2}",
+      "maxSize": "1.7MB"
+    }
+  ],
+  "ci": {
+    "trackBranches": [
+      "main"
+    ]
+  },
+  "defaultCompression": "none"
+}
