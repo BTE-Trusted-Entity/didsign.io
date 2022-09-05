@@ -16,7 +16,7 @@ jobs:
           node-version: '16'
           cache: 'yarn'
 
-           - name: Install dependencies
+      - name: Install dependencies
         run: yarn install --frozen-lockfile
 
       - name: Build code
