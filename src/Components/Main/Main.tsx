@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 
 import { Routes, Route, Navigate } from 'react-router-dom';
 
@@ -29,6 +29,7 @@ import { Terms } from '../Terms/Terms';
 import { Privacy } from '../Privacy/Privacy';
 import { Imprint } from '../Imprint/Imprint';
 import { Navigation } from '../Navigation/Navigation';
+import { Maintenance } from '../Maintenance/Maintenance';
 
 const Signer = () => {
   const files = useAppSelector(selectFiles);
@@ -85,12 +86,19 @@ const Verifier = () => {
 export const Main = () => {
   return (
     <Routes>
-      <Route path={paths.signer} element={<Signer />} />
-      <Route path={paths.verifier} element={<Verifier />} />
+      {process.env.REACT_APP_MAINTENANCE === 'true' ? (
+        <Route path="*" element={<Maintenance />} />
+      ) : (
+        <Fragment>
+          <Route path={paths.signer} element={<Signer />} />
+          <Route path={paths.verifier} element={<Verifier />} />
+          <Route path="*" element={<Navigate to={paths.signer} replace />} />
+        </Fragment>
+      )}
+
       <Route path={paths.terms} element={<Terms />} />
       <Route path={paths.privacy} element={<Privacy />} />
       <Route path={paths.imprint} element={<Imprint />} />
-      <Route path="*" element={<Navigate to={paths.signer} replace />} />
     </Routes>
   );
 };
