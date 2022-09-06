@@ -4,20 +4,19 @@ export function Maintenance() {
   return (
     <div className={styles.container}>
       <div className={styles.contents}>
-        <h1 className={styles.heading}>
-          DIDsign is currently under maintenance, as KILT migrates from Kusama
-          to Polkadot.
-        </h1>
+        <h1 className={styles.heading}>Currently under maintenance</h1>
         <p className={styles.text}>
-          <a
-            className={styles.anchor}
-            href="https://status.kilt.io/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Please check our status page for updates.
-          </a>
+          DIDsign is under maintenance for a short time, as KILT migrates from
+          Kusama to Polkadot.
         </p>
+        <a
+          className={styles.anchor}
+          href="https://status.kilt.io/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Please check our status page for updates.
+        </a>
       </div>
     </div>
   );
