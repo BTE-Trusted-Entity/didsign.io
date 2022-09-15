@@ -28,7 +28,7 @@ const SecondaryHeader = () => {
   return (
     <div className={styles.secondaryHeader}>
       <span className={styles.text}>
-        Documents that build trust - securely signed with your decentralized
+        Documents that build trust - securely signed with your decentralised
         identifier (DID).
       </span>
     </div>
