@@ -25,7 +25,7 @@
     "@zip.js/zip.js": "^2.4.4",
     "body-scroll-lock": "^4.0.0-beta.0",
     "buffer": "^6.0.3",
-    "classnames": "^2.3.1",
+    "classnames": "^2.3.2",
     "file-saver": "^2.0.5",
     "jszip": "^3.7.1",
     "multiformats": "^9.6.4",
