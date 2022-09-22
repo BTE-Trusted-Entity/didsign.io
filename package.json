@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@kiltprotocol/sdk-js": "^0.28.2",
-    "@polkadot/extension-dapp": "^0.44.4",
+    "@polkadot/extension-dapp": "^0.44.6",
     "@reduxjs/toolkit": "^1.7.2",
     "@zip.js/zip.js": "^2.4.4",
     "body-scroll-lock": "^4.0.0-beta.0",
