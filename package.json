@@ -19,7 +19,7 @@
     "css": "tcm --namedExports --pattern 'src/**/*.module.css' && eslint --fix --config ./.eslintrc.json \"src/**/*.css.d.ts\""
   },
   "dependencies": {
-    "@kiltprotocol/sdk-js": "^0.28.1",
+    "@kiltprotocol/sdk-js": "^0.28.2",
     "@polkadot/extension-dapp": "^0.44.4",
     "@reduxjs/toolkit": "^1.7.2",
     "@zip.js/zip.js": "^2.4.4",
