@@ -31,7 +31,7 @@ import { showPopup } from '../../Features/Signer/PopupSlice';
 import {
   getExtrinsic,
   getFee,
-  getKiltAccounts,
+  getKiltAccountsWithEnoughBalance,
   getTimestamp,
 } from '../../Utils/timestamp';
 import { IKiltAccount, SignDoc } from '../../Utils/types';
@@ -96,7 +96,7 @@ export function Timestamp() {
   const handleStartClick = useCallback(async () => {
     try {
       setStatus('getting-accounts');
-      setAccounts(await getKiltAccounts());
+      setAccounts(await getKiltAccountsWithEnoughBalance());
       setStatus('accounts-ready');
     } catch (exception) {
       setStatus('error');
@@ -247,7 +247,7 @@ export function Timestamp() {
           <section className={styles.section}>
             <p className={styles.fee}>
               Add a definite timestamp{' '}
-              {fee ? `(${asKiltCoins(fee)} KILT)` : <Spinner />}
+              {fee ? `≈ (${asKiltCoins(fee)} KILT)` : <Spinner />}
             </p>
             <button
               className={styles.btn}
