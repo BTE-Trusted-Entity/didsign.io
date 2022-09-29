@@ -5,7 +5,7 @@ import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 
 import { IRemark } from './types';
 
-export async function getKiltAccounts() {
+export async function getKiltAccountsWithEnoughBalance() {
   const { api } = await BlockchainApiConnection.getConnectionOrConnect();
   const genesisHash = api.genesisHash.toHex();
 
@@ -17,7 +17,19 @@ export async function getKiltAccounts() {
       !account.meta.genesisHash || account.meta.genesisHash === genesisHash,
   );
 
-  return kiltAccounts.map(({ address, meta: { source, name } }) => {
+  const enoughBalanceAccounts = [];
+  const timeStampingFee = await getFee();
+
+  for (const account of kiltAccounts) {
+    if (
+      (await api.query.system.account(account.address)).data.free.gte(
+        timeStampingFee,
+      )
+    )
+      enoughBalanceAccounts.push(account);
+  }
+
+  return enoughBalanceAccounts.map(({ address, meta: { source, name } }) => {
     return { address, source, name };
   });
 }

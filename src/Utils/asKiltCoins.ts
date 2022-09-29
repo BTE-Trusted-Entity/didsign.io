@@ -16,8 +16,5 @@ export function asKiltCoins(amount: BN): string {
 
   const numberWithFractions = parseFloat(`${whole}.${visible}`);
 
-  return ` ≈ ${numberWithFractions.toLocaleString(
-    window.navigator.language,
-    FORMAT,
-  )}`;
+  return numberWithFractions.toLocaleString(window.navigator.language, FORMAT);
 }
