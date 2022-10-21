@@ -19,10 +19,7 @@ import {
   fileStatus,
   replaceStatus,
 } from '../../Features/Signer/VerifiedSignatureSlice';
-import {
-  clearHash,
-  deleteHashFromIndex,
-} from '../../Features/Signer/hashSlice';
+import { useHashes } from '../Hashes/Hashes';
 import {
   clearJWS,
   selectJwsSignStatus,
@@ -39,6 +36,7 @@ export const FilesVerifier = () => {
   const filesStatus = useAppSelector(fileStatus);
 
   const dispatch = useAppDispatch();
+  const { hashes, set: setHashes } = useHashes();
 
   const handleDeleteAll = () => {
     if (jwsStatus === 'Validating') {
@@ -47,7 +45,7 @@ export const FilesVerifier = () => {
 
     dispatch(clearEndpoint());
     dispatch(clearAll());
-    dispatch(clearHash());
+    setHashes([]);
     dispatch(clearFileName());
     dispatch(clearJWS());
     dispatch(clearFileStatuses());
@@ -70,7 +68,7 @@ export const FilesVerifier = () => {
     dispatch(clearEndpoint());
     dispatch(deleteFilestatusOnIndex(index));
     dispatch(deleteFile(file));
-    dispatch(deleteHashFromIndex(index));
+    setHashes([...hashes].splice(index, 1));
   };
 
   if (files.length === 0) {

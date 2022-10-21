@@ -9,8 +9,12 @@ import {
   updateCredentials,
   updateSign,
 } from '../../Features/Signer/SignatureSlice';
-import { getSignatureContents, generateJWS } from '../../Utils/sign-helpers';
-import { selectFinalHash, selectHash } from '../../Features/Signer/hashSlice';
+import {
+  getSignatureContents,
+  generateJWS,
+  createHashFromHashArray,
+} from '../../Utils/sign-helpers';
+import { useHashes } from '../Hashes/Hashes';
 import {
   addBufferTop,
   addFileTop,
@@ -55,7 +59,7 @@ export const SignButton = () => {
     }
 
     try {
-      const signingData = await finalHash;
+      const signingData = await createHashFromHashArray(hashes);
 
       const {
         credentials = undefined,
@@ -94,8 +98,7 @@ export const SignButton = () => {
     }
   };
 
-  const hashes = useAppSelector(selectHash);
-  const finalHash = useAppSelector(selectFinalHash);
+  const { hashes } = useHashes();
   const dispatch = useAppDispatch();
   const handleDismiss = () => {
     if (targetElement !== null) {

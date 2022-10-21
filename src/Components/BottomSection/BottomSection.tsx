@@ -13,7 +13,7 @@ import {
   clearJWS,
   selectJwsSignStatus,
 } from '../../Features/Signer/VerifyJwsSlice';
-import { clearHash } from '../../Features/Signer/hashSlice';
+import { useHashes } from '../Hashes/Hashes';
 import { DownloadButtons } from '../DownloadButtons/DownloadButtons';
 import { SignButton } from '../SignButton/SignButton';
 import { DidDocument } from '../DidDocument/DidDocument';
@@ -47,11 +47,12 @@ const InfoLink = () => {
 
 export const BottomSectionSigner = () => {
   const dispatch = useAppDispatch();
+  const setHashes = useHashes().set;
 
   const handleDelete = () => {
     dispatch(clearSign());
     dispatch(clearAll());
-    dispatch(clearHash());
+    setHashes([]);
   };
   const sign = useAppSelector(selectSign);
   return (
@@ -74,11 +75,12 @@ export const BottomSectionSigner = () => {
 export const BottomSectionVerifier = () => {
   const jwsStatus = useAppSelector(selectJwsSignStatus);
   const dispatch = useAppDispatch();
+  const setHashes = useHashes().set;
 
   const handleDelete = () => {
     dispatch(clearSign());
     dispatch(clearAll());
-    dispatch(clearHash());
+    setHashes([]);
     dispatch(clearFileName());
     dispatch(clearEndpoint());
     dispatch(clearJWS());

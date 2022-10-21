@@ -10,7 +10,7 @@ import {
   selectBuffers,
   selectFiles,
 } from '../../Features/Signer/FileSlice';
-import { deleteHashFromIndex } from '../../Features/Signer/hashSlice';
+import { useHashes } from '../Hashes/Hashes';
 import {
   clearSign,
   selectCredentials,
@@ -29,6 +29,7 @@ export const FilesSigner = () => {
   const credentials = useAppSelector(selectCredentials);
   const [signPopup, setSignPopup] = useState<boolean>(false);
   const showPopup = useShowPopup().set;
+  const { hashes, set: setHashes } = useHashes();
 
   const showSignInfoPopup = () => {
     showPopup(true);
@@ -42,7 +43,7 @@ export const FilesSigner = () => {
   };
   const handleDeleteFile = (file: File) => {
     const index = files.indexOf(file);
-    dispatch(deleteHashFromIndex(index));
+    setHashes([...hashes].splice(index, 1));
     dispatch(deleteBuffer(buffers[index]));
     dispatch(deleteFile(file));
     const didSignFile = files.find((file) => isDidSignFile(file.name));

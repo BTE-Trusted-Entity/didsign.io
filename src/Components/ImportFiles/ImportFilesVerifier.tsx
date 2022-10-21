@@ -37,7 +37,7 @@ import {
   selectJwsSignStatus,
   updateSignStatus,
 } from '../../Features/Signer/VerifyJwsSlice';
-import { addHash, selectHash } from '../../Features/Signer/hashSlice';
+import { useHashes } from '../Hashes/Hashes';
 import { FastAnimation, SlowAnimationVerifier } from '../Animation/Animation';
 import { MultipleSignPopup, useShowPopup } from '../Popups/Popups';
 
@@ -45,7 +45,7 @@ import { useConnect } from '../../Hooks/useConnect';
 
 export const ImportFilesVerifier = () => {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon);
-  const fileHash = useAppSelector(selectHash);
+  const { hashes, set: setHashes } = useHashes();
   const jwsHash = useAppSelector(selectJwsHash);
   const jws = useAppSelector(selectJwsSign);
   const jwsStatus = useAppSelector(selectJwsSignStatus);
@@ -120,16 +120,16 @@ export const ImportFilesVerifier = () => {
           dispatch(addJwsSign(jws));
           dispatch(addJwsHashArray(hashesWithPrefix));
           dispatch(updateIndividualFileStatus(true));
-          dispatch(addHash(''));
+          setHashes([...hashes, '']);
         } else {
           const hash = await createHash(reader.result);
-          dispatch(addHash(hash));
+          setHashes([...hashes, hash]);
           dispatch(updateIndividualFileStatus(false));
         }
         dispatch(addFile(file));
       };
     },
-    [dispatch],
+    [dispatch, hashes, setHashes],
   );
 
   const handleDrop = useCallback(
@@ -192,7 +192,7 @@ export const ImportFilesVerifier = () => {
   );
   useEffect(() => {
     if (jwsHash.length) {
-      fileHash.filter(async (hash, index) => {
+      hashes.filter(async (hash, index) => {
         if (jwsHash.includes(hash)) {
           dispatch(updateIndividualFileStatusOnIndex(index));
         } else {
@@ -203,7 +203,7 @@ export const ImportFilesVerifier = () => {
         }
       });
     }
-  }, [dispatch, fileHash, jwsHash, jwsStatus]);
+  }, [dispatch, hashes, jwsHash, jwsStatus]);
 
   const fetchDidDocument = useCallback(async () => {
     dispatch(updateSignStatus('Validating'));

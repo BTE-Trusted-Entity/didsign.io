@@ -15,7 +15,7 @@ import {
   IBuffer,
   selectFiles,
 } from '../../Features/Signer/FileSlice';
-import { addHash } from '../../Features/Signer/hashSlice';
+import { useHashes } from '../Hashes/Hashes';
 import { createHash } from '../../Utils/sign-helpers';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { FastAnimation, SlowAnimation } from '../Animation/Animation';
@@ -31,6 +31,7 @@ export const ImportFilesSigner = () => {
   const targetElement = document.querySelector('body');
   const sign = useAppSelector(selectSign);
   const showPopup = useShowPopup().set;
+  const { hashes, set: setHashes } = useHashes();
 
   const handleDismiss = () => {
     showPopup(false);
@@ -72,10 +73,10 @@ export const ImportFilesSigner = () => {
         dispatch(addBuffer(bufferObj));
         dispatch(addFile(file));
         const newHash = await createHash(buffer);
-        dispatch(addHash(newHash));
+        setHashes([...hashes, newHash]);
       });
     },
-    [dispatch, files, showPopup, sign, targetElement],
+    [dispatch, files, hashes, setHashes, showPopup, sign, targetElement],
   );
 
   return (

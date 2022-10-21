@@ -17,7 +17,7 @@ import {
   BottomSectionSigner,
   BottomSectionVerifier,
 } from '../BottomSection/BottomSection';
-import { clearHash } from '../../Features/Signer/hashSlice';
+import { useHashes } from '../Hashes/Hashes';
 import { clearSign } from '../../Features/Signer/SignatureSlice';
 import {
   clearEndpoint,
@@ -34,15 +34,16 @@ import { Maintenance } from '../Maintenance/Maintenance';
 const Signer = () => {
   const files = useAppSelector(selectFiles);
   const dispatch = useAppDispatch();
+  const setHashes = useHashes().set;
 
   useEffect(() => {
     dispatch(clearEndpoint());
     dispatch(clearJWS());
     dispatch(clearFileStatuses());
     dispatch(clearAll());
-    dispatch(clearHash());
+    setHashes([]);
     dispatch(clearSign());
-  }, [dispatch]);
+  }, [dispatch, setHashes]);
 
   return (
     <main className={styles.container}>
@@ -59,15 +60,16 @@ const Signer = () => {
 const Verifier = () => {
   const files = useAppSelector(selectFiles);
   const dispatch = useAppDispatch();
+  const setHashes = useHashes().set;
 
   //allows navigation prevented by time stamping
   usePreventNavigation(false);
 
   useEffect(() => {
     dispatch(clearAll());
-    dispatch(clearHash());
+    setHashes([]);
     dispatch(clearSign());
-  }, [dispatch]);
+  }, [dispatch, setHashes]);
 
   return (
     <main className={styles.container}>

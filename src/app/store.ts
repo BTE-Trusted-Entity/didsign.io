@@ -2,13 +2,11 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import { VerifiedSignatureSlice } from '../Features/Signer/VerifiedSignatureSlice';
 import { fileSlice } from '../Features/Signer/FileSlice';
-import { hashSlice } from '../Features/Signer/hashSlice';
 import { SignatureSlice } from '../Features/Signer/SignatureSlice';
 import { jwsHashSlice } from '../Features/Signer/VerifyJwsSlice';
 
 export const store = configureStore({
   reducer: {
-    hash: hashSlice.reducer,
     files: fileSlice.reducer,
     signature: SignatureSlice.reducer,
     contents: VerifiedSignatureSlice.reducer,
