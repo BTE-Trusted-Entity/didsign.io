@@ -1,13 +1,13 @@
 import React, { Fragment, useEffect } from 'react';
 
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import * as styles from './Main.module.css';
 
 import { ImportFilesSigner } from '../ImportFiles/ImportFilesSigner';
 import { FilesSigner } from '../FilesSigner/FilesSigner';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { clearAll, selectFiles } from '../../Features/Signer/FileSlice';
+import { useAppDispatch } from '../../app/hooks';
+import { useFiles } from '../Files/Files';
 import { FilesEmpty } from '../FilesEmpty/FilesEmpty';
 import { FilesVerifier } from '../FilesVerifier/FilesVerifier';
 import { ImportFilesVerifier } from '../ImportFiles/ImportFilesVerifier';
@@ -32,7 +32,7 @@ import { Navigation } from '../Navigation/Navigation';
 import { Maintenance } from '../Maintenance/Maintenance';
 
 const Signer = () => {
-  const files = useAppSelector(selectFiles);
+  const { files, setFiles, setZip } = useFiles();
   const dispatch = useAppDispatch();
   const setHashes = useHashes().set;
 
@@ -40,10 +40,11 @@ const Signer = () => {
     dispatch(clearEndpoint());
     dispatch(clearJWS());
     dispatch(clearFileStatuses());
-    dispatch(clearAll());
+    setFiles([]);
+    setZip();
     setHashes([]);
     dispatch(clearSign());
-  }, [dispatch, setHashes]);
+  }, [dispatch, setFiles, setHashes, setZip]);
 
   return (
     <main className={styles.container}>
@@ -58,7 +59,7 @@ const Signer = () => {
 };
 
 const Verifier = () => {
-  const files = useAppSelector(selectFiles);
+  const { files, setFiles, setZip } = useFiles();
   const dispatch = useAppDispatch();
   const setHashes = useHashes().set;
 
@@ -66,10 +67,11 @@ const Verifier = () => {
   usePreventNavigation(false);
 
   useEffect(() => {
-    dispatch(clearAll());
+    setFiles([]);
+    setZip();
     setHashes([]);
     dispatch(clearSign());
-  }, [dispatch, setHashes]);
+  }, [dispatch, setFiles, setHashes, setZip]);
 
   return (
     <main className={styles.container}>

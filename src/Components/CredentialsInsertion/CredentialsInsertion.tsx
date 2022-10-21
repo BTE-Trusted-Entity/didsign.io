@@ -1,9 +1,9 @@
 import {
+  ChangeEvent,
+  KeyboardEvent,
   useCallback,
   useRef,
   useState,
-  KeyboardEvent,
-  ChangeEvent,
 } from 'react';
 
 import classnames from 'classnames';
@@ -16,12 +16,7 @@ import {
   updateCredentials,
 } from '../../Features/Signer/SignatureSlice';
 import { NamedCredential, SignDoc } from '../../Utils/types';
-import {
-  IBuffer,
-  selectBuffers,
-  updateBufferTop,
-  updateFileTop,
-} from '../../Features/Signer/FileSlice';
+import { useFiles } from '../Files/Files';
 import { DeleteCredential, useShowPopup } from '../Popups/Popups';
 import { useHandleOutsideClick } from '../../Hooks/useHandleOutsideClick';
 
@@ -33,7 +28,7 @@ interface EditingProps {
 
 function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
   const [error, setError] = useState(false);
-  const buffers = useAppSelector(selectBuffers);
+  const { files, setFiles } = useFiles();
   const dispatch = useAppDispatch();
   const storedCredentials = useAppSelector(selectCredentials);
   const credentialName = credential.name;
@@ -42,11 +37,11 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
   const showPopup = useShowPopup().set;
 
   const getSignatureData = useCallback(() => {
-    const { buffer } = buffers[0];
+    const { buffer } = files[0];
     const decoder = new TextDecoder('utf-8');
     const decoded = decoder.decode(buffer);
     return JSON.parse(decoded) as SignDoc;
-  }, [buffers]);
+  }, [files]);
 
   const updateSignatureFile = useCallback(
     async (newContents: SignDoc) => {
@@ -54,16 +49,12 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
         type: 'application/json;charset=utf-8',
       });
 
-      const newFile = new File([blob], 'signature.didsign');
-      const newBufferObj: IBuffer = {
-        buffer: await newFile.arrayBuffer(),
-        name: newFile.name,
-      };
-
-      dispatch(updateBufferTop(newBufferObj));
-      dispatch(updateFileTop(newFile));
+      const name = 'signature.didsign';
+      const file = new File([blob], name);
+      const buffer = await file.arrayBuffer();
+      setFiles((files) => [{ file, buffer, name }, ...files.slice(1)]);
     },
-    [dispatch],
+    [setFiles],
   );
 
   const handleStopEditing = useCallback(() => {

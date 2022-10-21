@@ -4,28 +4,23 @@ import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 
 import * as styles from './SignButton.module.css';
 
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useAppDispatch } from '../../app/hooks';
 import {
   updateCredentials,
   updateSign,
 } from '../../Features/Signer/SignatureSlice';
 import {
-  getSignatureContents,
-  generateJWS,
   createHashFromHashArray,
+  generateJWS,
+  getSignatureContents,
 } from '../../Utils/sign-helpers';
 import { useHashes } from '../Hashes/Hashes';
-import {
-  addBufferTop,
-  addFileTop,
-  IBuffer,
-  selectFiles,
-} from '../../Features/Signer/FileSlice';
+import { useFiles } from '../Files/Files';
 import {
   NoWalletPopup,
+  SignButtonInfoPopup,
   SignErrorPopup,
   SignPopup,
-  SignButtonInfoPopup,
   useShowPopup,
 } from '../Popups/Popups';
 import { exceptionToError } from '../../Utils/exceptionToError';
@@ -35,18 +30,15 @@ export const SignButton = () => {
     'SignError' | 'Default' | 'No Sporran' | null
   >(null);
   const targetElement = document.querySelector('body');
-  const files = useAppSelector(selectFiles);
+  const { files, setFiles } = useFiles();
   const [signPopup, setSignPopup] = useState<boolean>(false);
   const showPopup = useShowPopup().set;
 
   const generateSignatureFile = async (blob: Blob) => {
-    const newFile = new File([blob], 'signature.didsign');
-    const newBufferObj: IBuffer = {
-      buffer: await newFile.arrayBuffer(),
-      name: newFile.name,
-    };
-    dispatch(addBufferTop(newBufferObj));
-    dispatch(addFileTop(newFile));
+    const name = 'signature.didsign';
+    const file = new File([blob], name);
+    const buffer = await file.arrayBuffer();
+    setFiles((files) => [{ file, buffer, name }, ...files]);
   };
   const handleChange = async () => {
     if (hashes.length == 0) {

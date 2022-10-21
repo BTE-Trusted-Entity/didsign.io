@@ -5,13 +5,7 @@ import classnames from 'classnames';
 import * as styles from './FilesVerifier.module.css';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import {
-  clearAll,
-  clearFileName,
-  deleteFile,
-  selectFiles,
-  selectFilenames,
-} from '../../Features/Signer/FileSlice';
+import { useFiles } from '../Files/Files';
 import {
   clearEndpoint,
   clearFileStatuses,
@@ -29,8 +23,7 @@ import {
 import { isDidSignFile } from '../../Utils/verify-helper';
 
 export const FilesVerifier = () => {
-  const files = useAppSelector(selectFiles);
-  const unzippedFileNames = useAppSelector(selectFilenames);
+  const { files, zip, setFiles, setZip } = useFiles();
 
   const jwsStatus = useAppSelector(selectJwsSignStatus);
   const filesStatus = useAppSelector(fileStatus);
@@ -44,9 +37,9 @@ export const FilesVerifier = () => {
     }
 
     dispatch(clearEndpoint());
-    dispatch(clearAll());
+    setFiles([]);
+    setZip();
     setHashes([]);
-    dispatch(clearFileName());
     dispatch(clearJWS());
     dispatch(clearFileStatuses());
   };
@@ -54,7 +47,7 @@ export const FilesVerifier = () => {
   const handleDeleteFile = (file: File) => {
     if (jwsStatus === 'Validating') return;
 
-    const index = files.indexOf(file);
+    const index = files.findIndex((entry) => entry.file === file);
     const didSignFileDeleted = isDidSignFile(files[index].name);
     if (didSignFileDeleted) {
       dispatch(replaceStatus());
@@ -67,7 +60,7 @@ export const FilesVerifier = () => {
 
     dispatch(clearEndpoint());
     dispatch(deleteFilestatusOnIndex(index));
-    dispatch(deleteFile(file));
+    setFiles((files) => [...files].splice(index, 1));
     setHashes([...hashes].splice(index, 1));
   };
 
@@ -75,14 +68,12 @@ export const FilesVerifier = () => {
     return null;
   }
 
-  const hasUnzippedFiles = unzippedFileNames.length > 0;
-
   return (
     <Fragment>
-      {hasUnzippedFiles && (
+      {zip && (
         <div className={styles.zipContainer}>
           <div className={styles.zipFile}>
-            <p className={styles.zipFilename}>{files[0].name}</p>
+            <p className={styles.zipFilename}>{zip}</p>
 
             <button
               className={styles.deleteBtn}
@@ -94,7 +85,7 @@ export const FilesVerifier = () => {
           <h2 className={styles.heading}>Files</h2>
 
           <ul className={styles.list}>
-            {unzippedFileNames.map((name: string, index: number) => (
+            {files.map(({ name }, index) => (
               <li
                 className={classnames(
                   filesStatus[index]
@@ -116,12 +107,12 @@ export const FilesVerifier = () => {
         </div>
       )}
 
-      {!hasUnzippedFiles && (
+      {!zip && (
         <div className={styles.container}>
           <h2 className={styles.heading}>Files</h2>
 
           <ul className={styles.list}>
-            {files.map((file: File, index: number) => (
+            {files.map(({ file }, index) => (
               <li
                 className={classnames(
                   filesStatus[index] ? styles.fileOk : styles.fileInvalid,

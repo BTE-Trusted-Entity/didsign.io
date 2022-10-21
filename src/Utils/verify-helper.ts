@@ -9,7 +9,6 @@ import {
 } from '@kiltprotocol/sdk-js';
 
 import { base16 } from 'multiformats/bases/base16';
-import * as zip from '@zip.js/zip.js';
 import JSZip from 'jszip';
 
 import { createHash, createHashFromHashArray } from './sign-helpers';
@@ -60,68 +59,55 @@ export const getVerifiedData = async (jws: string, remark?: IRemark) => {
   };
 };
 
-export const newUnzip = async (
-  file: File,
+export const handleFilesFromZip = async (
+  files: Array<{ file: File; buffer: ArrayBuffer; name: string }>,
 ): Promise<IVerifiedSignatureContents | undefined> => {
-  const reader = new zip.ZipReader(new zip.BlobReader(file));
   const fileData: string[] = [];
+  const filesStatus: boolean[] = [];
   let doc: SignDoc = {
     jws: '',
     hashes: [],
   };
-  const filesStatus: boolean[] = [];
-  // get all entries from the zip
-  const entries = await reader.getEntries();
-  const files = entries.filter((key: zip.Entry) => {
-    return !key.filename.match(/^__MACOSX\//);
-  });
-  if (files.length) {
-    for (const entry of files) {
-      if (entry.getData) {
-        if (isDidSignFile(entry.filename)) {
-          const text = await entry.getData(new zip.TextWriter());
-          filesStatus.push(true);
-          doc = JSON.parse(text);
-          continue;
-        } else {
-          const text = await entry.getData(new zip.Uint8ArrayWriter());
-          const hash = await createHash(text);
-          fileData.push(hash);
-        }
-      }
-    }
-    await reader.close();
-
-    const addMissingPrefix = (hash: string): string =>
-      hash.startsWith(base16.prefix) ? hash : `${base16.prefix}${hash}`;
-    const { jws, hashes, remark, credentials } = doc;
-    const hashesWithPrefix = hashes.map((hash) => addMissingPrefix(hash));
-
-    fileData.map((hash) => {
-      const status = hashesWithPrefix.includes(hash);
-      filesStatus.push(status);
-    });
-
-    const baseHash = await createHashFromHashArray(hashesWithPrefix);
-    const jwsBaseJson = atob(jws.split('.')[1]);
-    const jwsBaseHash = addMissingPrefix(JSON.parse(jwsBaseJson).hash);
-
-    if (baseHash !== jwsBaseHash || filesStatus.includes(false)) {
-      return undefined;
-    }
-
-    const verifiedContents = await getVerifiedData(jws, remark);
-
-    if (verifiedContents) {
-      const signEndpointStatus: IVerifiedSignatureContents = {
-        ...verifiedContents,
-        credentials,
-        filesStatus,
-      };
-      return signEndpointStatus;
+  for (const entry of files) {
+    if (isDidSignFile(entry.name)) {
+      const text = await entry.file.text();
+      filesStatus.push(true);
+      doc = JSON.parse(text);
     } else {
-      return undefined;
+      const hash = await createHash(entry.buffer);
+      fileData.push(hash);
     }
+  }
+
+  const addMissingPrefix = (hash: string): string =>
+    hash.startsWith(base16.prefix) ? hash : `${base16.prefix}${hash}`;
+  const { jws, hashes, remark, credentials } = doc;
+  const hashesWithPrefix = hashes.map((hash) => addMissingPrefix(hash));
+
+  fileData.map((hash) => {
+    const status = hashesWithPrefix.includes(hash);
+    filesStatus.push(status);
+  });
+
+  const baseHash = await createHashFromHashArray(hashesWithPrefix);
+  const jwsBaseJson = atob(jws.split('.')[1]);
+  const jwsBaseHash = addMissingPrefix(JSON.parse(jwsBaseJson).hash);
+
+  if (baseHash !== jwsBaseHash || filesStatus.includes(false)) {
+    return undefined;
+  }
+
+  const verifiedContents = await getVerifiedData(jws, remark);
+
+  if (verifiedContents) {
+    const signEndpointStatus: IVerifiedSignatureContents = {
+      ...verifiedContents,
+      credentials,
+      filesStatus,
+    };
+    return signEndpointStatus;
+  } else {
+    return undefined;
   }
 };
 

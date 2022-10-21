@@ -4,12 +4,7 @@ import * as styles from './FilesSigner.module.css';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
-import {
-  deleteBuffer,
-  deleteFile,
-  selectBuffers,
-  selectFiles,
-} from '../../Features/Signer/FileSlice';
+import { useFiles } from '../Files/Files';
 import { useHashes } from '../Hashes/Hashes';
 import {
   clearSign,
@@ -24,8 +19,7 @@ import { CredentialsInsertion } from '../CredentialsInsertion/CredentialsInserti
 
 export const FilesSigner = () => {
   const dispatch = useAppDispatch();
-  const files = useAppSelector(selectFiles);
-  const buffers = useAppSelector(selectBuffers);
+  const { files, setFiles } = useFiles();
   const credentials = useAppSelector(selectCredentials);
   const [signPopup, setSignPopup] = useState<boolean>(false);
   const showPopup = useShowPopup().set;
@@ -42,16 +36,17 @@ export const FilesSigner = () => {
     document.body.style.overflowY = 'auto';
   };
   const handleDeleteFile = (file: File) => {
-    const index = files.indexOf(file);
+    const index = files.findIndex((entry) => entry.file === file);
     setHashes([...hashes].splice(index, 1));
-    dispatch(deleteBuffer(buffers[index]));
-    dispatch(deleteFile(file));
-    const didSignFile = files.find((file) => isDidSignFile(file.name));
+    setFiles((files) => [...files].splice(index, 1));
 
-    if (!didSignFile) return;
+    const didSignFileIndex = files.findIndex((file) =>
+      isDidSignFile(file.name),
+    );
 
-    dispatch(deleteBuffer(buffers[files.indexOf(didSignFile)]));
-    dispatch(deleteFile(didSignFile));
+    if (didSignFileIndex < 0) return;
+
+    setFiles((files) => [...files].splice(didSignFileIndex, 1));
     dispatch(clearSign());
   };
   return (
@@ -59,7 +54,7 @@ export const FilesSigner = () => {
       <h2 className={styles.heading}>Files</h2>
 
       <ul className={styles.list}>
-        {files.map((file: File, index: number) => (
+        {files.map(({ file }, index) => (
           <li key={index}>
             {isDidSignFile(file.name) && (
               <Fragment>

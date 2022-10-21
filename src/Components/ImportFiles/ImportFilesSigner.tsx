@@ -7,14 +7,7 @@ import * as styles from './ImportFiles.module.css';
 
 import ImportIcon from '../../ImageAssets/iconBIG_import_NEW.svg';
 import ReleaseIcon from '../../ImageAssets/iconBIG_import_release.svg';
-import {
-  addBuffer,
-  addFile,
-  deleteBuffer,
-  deleteFile,
-  IBuffer,
-  selectFiles,
-} from '../../Features/Signer/FileSlice';
+import { useFiles } from '../Files/Files';
 import { useHashes } from '../Hashes/Hashes';
 import { createHash } from '../../Utils/sign-helpers';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -27,7 +20,7 @@ export const ImportFilesSigner = () => {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon);
   const [signErrorPopup, setSignErrorPopup] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-  const files = useAppSelector(selectFiles);
+  const { files, setFiles } = useFiles();
   const targetElement = document.querySelector('body');
   const sign = useAppSelector(selectSign);
   const showPopup = useShowPopup().set;
@@ -43,15 +36,11 @@ export const ImportFilesSigner = () => {
   const handleDrop = useCallback(
     async (acceptedFiles: File[]) => {
       if (sign) {
-        const didSignFile = files.find((file) => isDidSignFile(file.name));
-        if (!didSignFile) return;
-        const arrayBuffer = await didSignFile.arrayBuffer();
-        const bufferObj: IBuffer = {
-          buffer: arrayBuffer,
-          name: didSignFile.name,
-        };
-        dispatch(deleteFile(didSignFile));
-        dispatch(deleteBuffer(bufferObj));
+        const didSignFileIndex = files.findIndex((file) =>
+          isDidSignFile(file.name),
+        );
+        if (didSignFileIndex < 0) return;
+        setFiles((files) => [...files].splice(didSignFileIndex, 1));
         dispatch(clearSign());
       }
       acceptedFiles.forEach(async (file: File) => {
@@ -66,17 +55,21 @@ export const ImportFilesSigner = () => {
           return;
         }
         const buffer = await file.arrayBuffer();
-        const bufferObj: IBuffer = {
-          buffer,
-          name: file.name,
-        };
-        dispatch(addBuffer(bufferObj));
-        dispatch(addFile(file));
+        setFiles((files) => [...files, { file, buffer, name: file.name }]);
         const newHash = await createHash(buffer);
         setHashes([...hashes, newHash]);
       });
     },
-    [dispatch, files, hashes, setHashes, showPopup, sign, targetElement],
+    [
+      dispatch,
+      files,
+      hashes,
+      setFiles,
+      setHashes,
+      showPopup,
+      sign,
+      targetElement,
+    ],
   );
 
   return (

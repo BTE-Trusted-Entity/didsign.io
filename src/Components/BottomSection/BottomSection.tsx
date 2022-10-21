@@ -7,7 +7,7 @@ import {
   clearEndpoint,
   clearFileStatuses,
 } from '../../Features/Signer/VerifiedSignatureSlice';
-import { clearAll, clearFileName } from '../../Features/Signer/FileSlice';
+import { useFiles } from '../Files/Files';
 import { clearSign, selectSign } from '../../Features/Signer/SignatureSlice';
 import {
   clearJWS,
@@ -48,10 +48,12 @@ const InfoLink = () => {
 export const BottomSectionSigner = () => {
   const dispatch = useAppDispatch();
   const setHashes = useHashes().set;
+  const { setFiles, setZip } = useFiles();
 
   const handleDelete = () => {
     dispatch(clearSign());
-    dispatch(clearAll());
+    setFiles([]);
+    setZip();
     setHashes([]);
   };
   const sign = useAppSelector(selectSign);
@@ -76,12 +78,13 @@ export const BottomSectionVerifier = () => {
   const jwsStatus = useAppSelector(selectJwsSignStatus);
   const dispatch = useAppDispatch();
   const setHashes = useHashes().set;
+  const { setFiles, setZip } = useFiles();
 
   const handleDelete = () => {
     dispatch(clearSign());
-    dispatch(clearAll());
+    setFiles([]);
+    setZip();
     setHashes([]);
-    dispatch(clearFileName());
     dispatch(clearEndpoint());
     dispatch(clearJWS());
     dispatch(clearFileStatuses());

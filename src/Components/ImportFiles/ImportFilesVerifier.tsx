@@ -1,23 +1,19 @@
 import Dropzone from 'react-dropzone';
 import React, { useCallback, useEffect, useState } from 'react';
 import { base16 } from 'multiformats/bases/base16';
+import * as zip from '@zip.js/zip.js';
 
 import * as styles from './ImportFiles.module.css';
 
 import ImportIcon from '../../ImageAssets/iconBIG_import_NEW.svg';
 import ReleaseIcon from '../../ImageAssets/iconBIG_import_release.svg';
-import {
-  addFile,
-  addFileName,
-  selectFiles,
-  selectFilenames,
-} from '../../Features/Signer/FileSlice';
+import { useFiles } from '../Files/Files';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
   getFileNames,
   getVerifiedData,
+  handleFilesFromZip,
   isDidSignFile,
-  newUnzip,
 } from '../../Utils/verify-helper';
 import {
   clearEndpoint,
@@ -28,7 +24,7 @@ import {
   updateIndividualFileStatusOnIndex,
 } from '../../Features/Signer/VerifiedSignatureSlice';
 import { createHash, createHashFromHashArray } from '../../Utils/sign-helpers';
-import { NamedCredential, IRemark, SignDoc } from '../../Utils/types';
+import { IRemark, NamedCredential, SignDoc } from '../../Utils/types';
 import {
   addJwsHashArray,
   addJwsSign,
@@ -49,8 +45,7 @@ export const ImportFilesVerifier = () => {
   const jwsHash = useAppSelector(selectJwsHash);
   const jws = useAppSelector(selectJwsSign);
   const jwsStatus = useAppSelector(selectJwsSignStatus);
-  const savedZippedFilenames = useAppSelector(selectFilenames);
-  const files = useAppSelector(selectFiles);
+  const { files, setFiles, setZip } = useFiles();
   const statuses = useAppSelector(fileStatus);
   const [remark, setRemark] = useState<IRemark>();
   const [credentials, setCredentials] = useState<NamedCredential[]>();
@@ -73,7 +68,23 @@ export const ImportFilesVerifier = () => {
     async (file: File) => {
       dispatch(updateSignStatus('Validating'));
 
-      const verifiedSignatureContents = await newUnzip(file);
+      setZip(file.name);
+
+      const reader = new zip.ZipReader(new zip.BlobReader(file));
+      const entries = await reader.getEntries();
+      const newFiles = await Promise.all(
+        entries.map(async (entry) => {
+          if (!entry.getData) throw new Error('Impossible: no entry.getData');
+          const buffer = await entry.getData(new zip.Uint8ArrayWriter());
+          const name = entry.filename;
+          const file = new File([buffer], name);
+          return { file, buffer, name };
+        }),
+      );
+      setFiles(newFiles);
+      await reader.close();
+
+      const verifiedSignatureContents = await handleFilesFromZip(newFiles);
 
       if (verifiedSignatureContents) {
         dispatch(updateSignStatus('Verified'));
@@ -84,57 +95,54 @@ export const ImportFilesVerifier = () => {
       }
       return;
     },
-    [dispatch],
+    [dispatch, setFiles, setZip],
   );
 
   const handleIndividualCase = useCallback(
     async (file: File) => {
-      const reader = new FileReader();
-      reader.readAsArrayBuffer(file);
-      reader.onload = async function () {
-        if (typeof reader.result === 'string')
-          throw new Error(
-            'Verification: type of reader result should be arraybuffer',
-          );
+      const buffer = await file.arrayBuffer();
 
-        if (isDidSignFile(file.name)) {
-          const addMissingPrefix = (hash: string): string =>
-            hash.startsWith(base16.prefix) ? hash : `${base16.prefix}${hash}`;
+      if (isDidSignFile(file.name)) {
+        const addMissingPrefix = (hash: string): string =>
+          hash.startsWith(base16.prefix) ? hash : `${base16.prefix}${hash}`;
 
-          const decoder = new TextDecoder('utf-8');
-          const result = decoder.decode(reader.result as ArrayBuffer);
-          const { jws, hashes, remark, credentials } = JSON.parse(
-            result,
-          ) as SignDoc;
+        const decoder = new TextDecoder('utf-8');
+        const result = decoder.decode(buffer);
+        const { jws, hashes, remark, credentials } = JSON.parse(
+          result,
+        ) as SignDoc;
 
-          if (remark) setRemark(remark);
+        if (remark) setRemark(remark);
 
-          if (credentials) setCredentials(credentials);
+        if (credentials) setCredentials(credentials);
 
-          const hashesWithPrefix = hashes.map((hash) => addMissingPrefix(hash));
-          const baseHash = await createHashFromHashArray(hashesWithPrefix);
-          const hashFromJWS: string = JSON.parse(atob(jws.split('.')[1])).hash;
-          if (baseHash !== addMissingPrefix(hashFromJWS)) {
-            dispatch(updateSignStatus('Corrupted'));
-          }
-          dispatch(addJwsSign(jws));
-          dispatch(addJwsHashArray(hashesWithPrefix));
-          dispatch(updateIndividualFileStatus(true));
-          setHashes([...hashes, '']);
-        } else {
-          const hash = await createHash(reader.result);
-          setHashes([...hashes, hash]);
-          dispatch(updateIndividualFileStatus(false));
+        const hashesWithPrefix = hashes.map((hash) => addMissingPrefix(hash));
+        const baseHash = await createHashFromHashArray(hashesWithPrefix);
+        const hashFromJWS: string = JSON.parse(atob(jws.split('.')[1])).hash;
+        if (baseHash !== addMissingPrefix(hashFromJWS)) {
+          dispatch(updateSignStatus('Corrupted'));
         }
-        dispatch(addFile(file));
-      };
+        dispatch(addJwsSign(jws));
+        dispatch(addJwsHashArray(hashesWithPrefix));
+        dispatch(updateIndividualFileStatus(true));
+        setHashes([...hashes, '']);
+      } else {
+        const hash = await createHash(buffer);
+        setHashes([...hashes, hash]);
+        dispatch(updateIndividualFileStatus(false));
+      }
+      setFiles((files) => [...files, { file, buffer, name: file.name }]);
     },
-    [dispatch, hashes, setHashes],
+    [dispatch, hashes, setFiles, setHashes],
   );
 
   const handleDrop = useCallback(
     (acceptedFiles: File[]) => {
-      if (filesArrayHasDidSign(files) && filesArrayHasDidSign(acceptedFiles)) {
+      const filesArray = files.map(({ file }) => file);
+      if (
+        filesArrayHasDidSign(filesArray) &&
+        filesArrayHasDidSign(acceptedFiles)
+      ) {
         showMultipleSignPopup();
         return;
       }
@@ -153,28 +161,16 @@ export const ImportFilesVerifier = () => {
 
         if (file.name.split('.').pop() === 'zip') {
           const filenames = await getFileNames(file);
-          const didSignFile = filenames.filter((file: string) =>
-            isDidSignFile(file),
-          );
-          if (didSignFile.length && acceptedFiles.length > 1) {
-            return;
-          }
-          if (
-            savedZippedFilenames.filter((file) => isDidSignFile(file))
-              .length === 1 &&
-            didSignFile.length === 1
-          ) {
-            showMultipleSignPopup();
+          const didSignFile = filenames.find(isDidSignFile);
+
+          if (didSignFile && acceptedFiles.length > 1) {
             return;
           }
 
-          if (didSignFile.length === 1) {
-            if (files.length > 0) {
-              return;
+          if (didSignFile) {
+            if (files.length === 0) {
+              await handleZipCase(file);
             }
-            dispatch(addFile(file));
-            dispatch(addFileName(filenames));
-            await handleZipCase(file);
             return;
           }
         }
@@ -186,7 +182,6 @@ export const ImportFilesVerifier = () => {
       files,
       handleIndividualCase,
       handleZipCase,
-      savedZippedFilenames,
       showMultipleSignPopup,
     ],
   );

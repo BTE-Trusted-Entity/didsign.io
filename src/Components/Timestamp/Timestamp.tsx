@@ -20,12 +20,7 @@ import {
   selectSign,
   updateTimestampStatus,
 } from '../../Features/Signer/SignatureSlice';
-import {
-  IBuffer,
-  selectBuffers,
-  updateBufferTop,
-  updateFileTop,
-} from '../../Features/Signer/FileSlice';
+import { useFiles } from '../Files/Files';
 
 import {
   getExtrinsic,
@@ -70,7 +65,7 @@ export function Timestamp() {
   useConnect();
 
   const signature = useAppSelector(selectSign);
-  const buffers = useAppSelector(selectBuffers);
+  const { files, setFiles } = useFiles();
   const signatureDownloaded = useAppSelector(selectDownloadStatus);
   const showPopup = useShowPopup().set;
 
@@ -143,9 +138,8 @@ export function Timestamp() {
   const handleFinalized = useCallback(
     async (blockHash: string, txHash: string) => {
       try {
-        const { buffer } = buffers[0];
         const decoder = new TextDecoder('utf-8');
-        const decoded = decoder.decode(buffer);
+        const decoded = decoder.decode(files[0].buffer);
         const didSignData = JSON.parse(decoded) as SignDoc;
 
         const withRemark = { ...didSignData, remark: { txHash, blockHash } };
@@ -153,14 +147,10 @@ export function Timestamp() {
         const blob = new Blob([JSON.stringify(withRemark)], {
           type: 'application/json;charset=utf-8',
         });
-        const newFile = new File([blob], 'signature.didsign');
-        const newBufferObj: IBuffer = {
-          buffer: await newFile.arrayBuffer(),
-          name: newFile.name,
-        };
-
-        dispatch(updateBufferTop(newBufferObj));
-        dispatch(updateFileTop(newFile));
+        const name = 'signature.didsign';
+        const file = new File([blob], name);
+        const buffer = await file.arrayBuffer();
+        setFiles((files) => [{ file, buffer, name }, ...files.slice(1)]);
 
         setTimestamp(await getTimestamp(blockHash));
 
@@ -172,7 +162,7 @@ export function Timestamp() {
         console.error(exceptionToError(exception));
       }
     },
-    [buffers, dispatch, showPopup],
+    [files, setFiles, dispatch, showPopup],
   );
   const handleSubmit = useCallback(
     async (event) => {

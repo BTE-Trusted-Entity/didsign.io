@@ -5,11 +5,7 @@ import JSZip from 'jszip';
 
 import * as styles from './DownloadButtons.module.css';
 
-import {
-  IBuffer,
-  selectBuffers,
-  selectFiles,
-} from '../../Features/Signer/FileSlice';
+import { useFiles } from '../Files/Files';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
@@ -18,16 +14,18 @@ import {
 } from '../../Features/Signer/SignatureSlice';
 
 export const DownloadButtons = () => {
-  const buffers = useAppSelector(selectBuffers);
-  const [signatureFile] = useAppSelector(selectFiles);
+  const { files } = useFiles();
+  const [signatureFile] = files;
   const [showLoader, setShowLoader] = useState<boolean>(false);
   const [progress, setProgress] = useState<string>('0');
   const isTimestamped = useAppSelector(selectTimestampStatus);
   const dispatch = useAppDispatch();
 
-  const generateZipFile = async (buffers: IBuffer[]) => {
+  async function generateZipFile(
+    files: Array<{ buffer: ArrayBuffer; name: string }>,
+  ) {
     const zip = new JSZip();
-    buffers.map((buffer) => zip.file(buffer.name, buffer.buffer));
+    files.map((buffer) => zip.file(buffer.name, buffer.buffer));
     const content = await zip.generateAsync(
       {
         type: 'blob',
@@ -39,17 +37,17 @@ export const DownloadButtons = () => {
       },
     );
     saveAs(content, 'DIDsign-files.zip');
-  };
+  }
 
   const handleDownloadSign = async () => {
-    saveAs(signatureFile, 'signature.didsign');
+    saveAs(signatureFile.file, 'signature.didsign');
     if (isTimestamped) dispatch(updateDownloadStatus(true));
   };
 
   const handleZip = async () => {
     setShowLoader(true);
     document.body.style.pointerEvents = 'none';
-    await generateZipFile(buffers);
+    await generateZipFile(files);
     setShowLoader(false);
     document.body.style.pointerEvents = 'auto';
     if (isTimestamped) dispatch(updateDownloadStatus(true));
