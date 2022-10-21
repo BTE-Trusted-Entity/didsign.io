@@ -15,11 +15,10 @@ import {
   clearSign,
   selectCredentials,
 } from '../../Features/Signer/SignatureSlice';
-import { showPopup } from '../../Features/Signer/PopupSlice';
 
 import { isDidSignFile } from '../../Utils/verify-helper';
 
-import { SignFileInfoPopup } from '../Popups/Popups';
+import { SignFileInfoPopup, useShowPopup } from '../Popups/Popups';
 import { Timestamp } from '../Timestamp/Timestamp';
 import { CredentialsInsertion } from '../CredentialsInsertion/CredentialsInsertion';
 
@@ -29,14 +28,15 @@ export const FilesSigner = () => {
   const buffers = useAppSelector(selectBuffers);
   const credentials = useAppSelector(selectCredentials);
   const [signPopup, setSignPopup] = useState<boolean>(false);
+  const showPopup = useShowPopup().set;
 
   const showSignInfoPopup = () => {
-    dispatch(showPopup(true));
+    showPopup(true);
     setSignPopup(true);
     document.body.style.overflowY = 'hidden';
   };
   const handleDismiss = () => {
-    dispatch(showPopup(false));
+    showPopup(false);
     setSignPopup(false);
     document.body.style.overflowY = 'auto';
   };

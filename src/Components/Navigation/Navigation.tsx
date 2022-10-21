@@ -5,44 +5,43 @@ import classnames from 'classnames';
 
 import * as styles from './Navigation.module.css';
 
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { showPopup } from '../../Features/Signer/PopupSlice';
+import { useAppSelector } from '../../app/hooks';
 import {
   selectDownloadStatus,
   selectTimestampStatus,
 } from '../../Features/Signer/SignatureSlice';
 import { paths } from '../../Utils/paths';
-import { TimestampWarning } from '../Popups/Popups';
+import { TimestampWarning, useShowPopup } from '../Popups/Popups';
 
 export const Navigation = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   const [showWarningPopup, setShowWarningPopup] = useState(false);
   const isTimestamped = useAppSelector(selectTimestampStatus);
   const signatureDownloaded = useAppSelector(selectDownloadStatus);
+  const showPopup = useShowPopup().set;
 
   const handleVerify = useCallback(() => {
     if (isTimestamped && !signatureDownloaded) {
-      dispatch(showPopup(true));
+      showPopup(true);
       setShowWarningPopup(true);
       return;
     }
 
     navigate(paths.verifier, { replace: true });
-  }, [dispatch, isTimestamped, navigate, signatureDownloaded]);
+  }, [isTimestamped, navigate, showPopup, signatureDownloaded]);
 
   const handleDismiss = useCallback(() => {
-    dispatch(showPopup(false));
+    showPopup(false);
     setShowWarningPopup(false);
-  }, [dispatch]);
+  }, [showPopup]);
 
   const handleOkay = useCallback(() => {
-    dispatch(showPopup(false));
+    showPopup(false);
     setShowWarningPopup(false);
     navigate(paths.verifier, { replace: true });
-  }, [dispatch, navigate]);
+  }, [navigate, showPopup]);
 
   return (
     <div className={styles.navContainer}>

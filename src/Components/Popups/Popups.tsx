@@ -1,11 +1,41 @@
-import React from 'react';
+import React, { createContext, useContext, useMemo, useState } from 'react';
 
 import * as styles from './Popups.module.css';
 
 import { useAppDispatch } from '../../app/hooks';
-import { showPopup } from '../../Features/Signer/PopupSlice';
 import { updateSignStatus } from '../../Features/Signer/VerifyJwsSlice';
 import { clearEndpoint } from '../../Features/Signer/VerifiedSignatureSlice';
+
+interface ShowPopupContextType {
+  visible: boolean;
+
+  set(value: boolean): void;
+}
+
+const ShowPopupContext = createContext<ShowPopupContextType>({
+  visible: false,
+  set() {
+    return;
+  },
+});
+
+export function useShowPopup(): ShowPopupContextType {
+  return useContext(ShowPopupContext);
+}
+
+export function ShowPopupProvider({
+  children,
+}: {
+  children: JSX.Element;
+}): JSX.Element {
+  const [visible, set] = useState(false);
+  const value = useMemo(() => ({ visible, set }), [visible, set]);
+  return (
+    <ShowPopupContext.Provider value={value}>
+      {children}
+    </ShowPopupContext.Provider>
+  );
+}
 
 interface Props {
   onDismiss: React.MouseEventHandler<HTMLButtonElement>;
@@ -14,8 +44,10 @@ interface Props {
 
 export const MultipleSignPopup = () => {
   const dispatch = useAppDispatch();
+  const showPopup = useShowPopup().set;
+
   const handleDismiss = () => {
-    dispatch(showPopup(false));
+    showPopup(false);
     dispatch(clearEndpoint());
     dispatch(updateSignStatus('Not Checked'));
   };

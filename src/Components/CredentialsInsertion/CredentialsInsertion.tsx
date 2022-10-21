@@ -22,9 +22,9 @@ import {
   updateBufferTop,
   updateFileTop,
 } from '../../Features/Signer/FileSlice';
-import { DeleteCredential } from '../Popups/Popups';
-import { showPopup } from '../../Features/Signer/PopupSlice';
+import { DeleteCredential, useShowPopup } from '../Popups/Popups';
 import { useHandleOutsideClick } from '../../Hooks/useHandleOutsideClick';
+
 interface EditingProps {
   stopEditing: () => void;
   credential: NamedCredential;
@@ -39,6 +39,7 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
   const credentialName = credential.name;
   const credentialRowRef = useRef(null);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
+  const showPopup = useShowPopup().set;
 
   const getSignatureData = useCallback(() => {
     const { buffer } = buffers[0];
@@ -123,14 +124,14 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
   );
 
   const handleShowPopup = useCallback(() => {
-    dispatch(showPopup(true));
+    showPopup(true);
     setShowDeletePopup(true);
-  }, [dispatch]);
+  }, [showPopup]);
 
   const handleDismiss = useCallback(() => {
     setShowDeletePopup(false);
-    dispatch(showPopup(false));
-  }, [dispatch]);
+    showPopup(false);
+  }, [showPopup]);
 
   const handleDelete = useCallback(async () => {
     handleDismiss();

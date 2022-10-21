@@ -20,8 +20,7 @@ import { createHash } from '../../Utils/sign-helpers';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { FastAnimation, SlowAnimation } from '../Animation/Animation';
 import { isDidSignFile } from '../../Utils/verify-helper';
-import { SigningMultipleDidFiles } from '../Popups/Popups';
-import { showPopup } from '../../Features/Signer/PopupSlice';
+import { SigningMultipleDidFiles, useShowPopup } from '../Popups/Popups';
 import { clearSign, selectSign } from '../../Features/Signer/SignatureSlice';
 
 export const ImportFilesSigner = () => {
@@ -31,9 +30,10 @@ export const ImportFilesSigner = () => {
   const files = useAppSelector(selectFiles);
   const targetElement = document.querySelector('body');
   const sign = useAppSelector(selectSign);
+  const showPopup = useShowPopup().set;
 
   const handleDismiss = () => {
-    dispatch(showPopup(false));
+    showPopup(false);
     setSignErrorPopup(false);
     if (targetElement != null) {
       enableBodyScroll(targetElement);
@@ -57,7 +57,7 @@ export const ImportFilesSigner = () => {
         setImportIcon(ImportIcon);
 
         if (isDidSignFile(file.name)) {
-          dispatch(showPopup(true));
+          showPopup(true);
           setSignErrorPopup(true);
           if (targetElement != null) {
             disableBodyScroll(targetElement);
@@ -75,7 +75,7 @@ export const ImportFilesSigner = () => {
         dispatch(addHash(newHash));
       });
     },
-    [dispatch, files, sign, targetElement],
+    [dispatch, files, showPopup, sign, targetElement],
   );
 
   return (

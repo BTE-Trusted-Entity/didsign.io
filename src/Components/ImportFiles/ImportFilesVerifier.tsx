@@ -39,8 +39,7 @@ import {
 } from '../../Features/Signer/VerifyJwsSlice';
 import { addHash, selectHash } from '../../Features/Signer/hashSlice';
 import { FastAnimation, SlowAnimationVerifier } from '../Animation/Animation';
-import { showPopup } from '../../Features/Signer/PopupSlice';
-import { MultipleSignPopup } from '../Popups/Popups';
+import { MultipleSignPopup, useShowPopup } from '../Popups/Popups';
 
 import { useConnect } from '../../Hooks/useConnect';
 
@@ -55,6 +54,7 @@ export const ImportFilesVerifier = () => {
   const statuses = useAppSelector(fileStatus);
   const [remark, setRemark] = useState<IRemark>();
   const [credentials, setCredentials] = useState<NamedCredential[]>();
+  const showPopup = useShowPopup().set;
 
   useConnect();
 
@@ -63,8 +63,8 @@ export const ImportFilesVerifier = () => {
   const showMultipleSignPopup = useCallback(() => {
     setImportIcon(ImportIcon);
     dispatch(updateSignStatus('Multiple Sign'));
-    dispatch(showPopup(true));
-  }, [dispatch]);
+    showPopup(true);
+  }, [dispatch, showPopup]);
 
   const filesArrayHasDidSign = (files: File[]) =>
     files.some((file) => isDidSignFile(file.name));

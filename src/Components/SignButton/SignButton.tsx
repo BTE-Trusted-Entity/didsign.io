@@ -17,12 +17,12 @@ import {
   IBuffer,
   selectFiles,
 } from '../../Features/Signer/FileSlice';
-import { showPopup } from '../../Features/Signer/PopupSlice';
 import {
   NoWalletPopup,
   SignErrorPopup,
   SignPopup,
   SignButtonInfoPopup,
+  useShowPopup,
 } from '../Popups/Popups';
 import { exceptionToError } from '../../Utils/exceptionToError';
 
@@ -33,6 +33,7 @@ export const SignButton = () => {
   const targetElement = document.querySelector('body');
   const files = useAppSelector(selectFiles);
   const [signPopup, setSignPopup] = useState<boolean>(false);
+  const showPopup = useShowPopup().set;
 
   const generateSignatureFile = async (blob: Blob) => {
     const newFile = new File([blob], 'signature.didsign');
@@ -47,7 +48,7 @@ export const SignButton = () => {
     if (hashes.length == 0) {
       return;
     }
-    dispatch(showPopup(true));
+    showPopup(true);
     if (targetElement !== null) {
       disableBodyScroll(targetElement);
       setSignStatus('Default');
@@ -73,7 +74,7 @@ export const SignButton = () => {
 
       if (credentials) dispatch(updateCredentials(credentials));
 
-      dispatch(showPopup(false));
+      showPopup(false);
 
       if (targetElement !== null) {
         enableBodyScroll(targetElement);
@@ -100,7 +101,7 @@ export const SignButton = () => {
     if (targetElement !== null) {
       enableBodyScroll(targetElement);
     }
-    dispatch(showPopup(false));
+    showPopup(false);
     setSignStatus(null);
   };
   const showSignPopup = () => {
@@ -108,13 +109,13 @@ export const SignButton = () => {
       disableBodyScroll(targetElement);
     }
     setSignPopup(true);
-    dispatch(showPopup(true));
+    showPopup(true);
   };
   const handleSignDismiss = () => {
     if (targetElement !== null) {
       enableBodyScroll(targetElement);
     }
-    dispatch(showPopup(false));
+    showPopup(false);
     setSignPopup(false);
   };
   return (

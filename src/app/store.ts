@@ -3,7 +3,6 @@ import { configureStore } from '@reduxjs/toolkit';
 import { VerifiedSignatureSlice } from '../Features/Signer/VerifiedSignatureSlice';
 import { fileSlice } from '../Features/Signer/FileSlice';
 import { hashSlice } from '../Features/Signer/hashSlice';
-import { popupSlice } from '../Features/Signer/PopupSlice';
 import { SignatureSlice } from '../Features/Signer/SignatureSlice';
 import { jwsHashSlice } from '../Features/Signer/VerifyJwsSlice';
 
@@ -14,7 +13,6 @@ export const store = configureStore({
     signature: SignatureSlice.reducer,
     contents: VerifiedSignatureSlice.reducer,
     jwshash: jwsHashSlice.reducer,
-    popup: popupSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

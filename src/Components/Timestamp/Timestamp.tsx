@@ -26,7 +26,6 @@ import {
   updateBufferTop,
   updateFileTop,
 } from '../../Features/Signer/FileSlice';
-import { showPopup } from '../../Features/Signer/PopupSlice';
 
 import {
   getExtrinsic,
@@ -42,7 +41,12 @@ import { useConnect } from '../../Hooks/useConnect';
 import { usePreventNavigation } from '../../Hooks/usePreventNavigation';
 
 import { Spinner } from '../Spinner/Spinner';
-import { PendingTx, SignPopup, TimestampError } from '../Popups/Popups';
+import {
+  PendingTx,
+  SignPopup,
+  TimestampError,
+  useShowPopup,
+} from '../Popups/Popups';
 
 function getAccountLabel(account: IKiltAccount) {
   const { address, source, name } = account;
@@ -68,6 +72,7 @@ export function Timestamp() {
   const signature = useAppSelector(selectSign);
   const buffers = useAppSelector(selectBuffers);
   const signatureDownloaded = useAppSelector(selectDownloadStatus);
+  const showPopup = useShowPopup().set;
 
   const dispatch = useAppDispatch();
 
@@ -161,19 +166,19 @@ export function Timestamp() {
 
         setStatus('done');
         dispatch(updateTimestampStatus(true));
-        dispatch(showPopup(false));
+        showPopup(false);
       } catch (exception) {
         setStatus('error');
         console.error(exceptionToError(exception));
       }
     },
-    [buffers, dispatch],
+    [buffers, dispatch, showPopup],
   );
   const handleSubmit = useCallback(
     async (event) => {
       event.preventDefault();
 
-      dispatch(showPopup(true));
+      showPopup(true);
       setStatus('signing');
 
       try {
@@ -225,16 +230,16 @@ export function Timestamp() {
         }
       }
     },
-    [selectedAccount, handleFinalized, signature, dispatch],
+    [showPopup, selectedAccount, signature, handleFinalized],
   );
 
   function handleDismiss() {
-    dispatch(showPopup(false));
+    showPopup(false);
     accounts ? setStatus('accounts-ready') : setStatus('start');
   }
 
   function handleTryAgain() {
-    dispatch(showPopup(false));
+    showPopup(false);
     setStatus('start');
   }
 
