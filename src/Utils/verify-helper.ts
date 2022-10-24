@@ -118,17 +118,15 @@ export const handleFilesFromZip = async (
   }
 
   const verifiedContents = await getVerifiedData(jws, remark);
-
-  if (verifiedContents) {
-    const signEndpointStatus: IVerifiedSignatureContents = {
-      ...verifiedContents,
-      credentials,
-      filesStatus,
-    };
-    return signEndpointStatus;
-  } else {
+  if (!verifiedContents) {
     return undefined;
   }
+
+  return {
+    ...verifiedContents,
+    credentials,
+    filesStatus,
+  };
 };
 
 export const getFileNames = async (file: File): Promise<string[]> => {
@@ -140,9 +138,9 @@ export const getFileNames = async (file: File): Promise<string[]> => {
   return filenames;
 };
 
-export const isDidSignFile = (file: string) => {
-  return file.split('.').pop() == 'didsign';
-};
+export function isDidSignFile(fileName: string) {
+  return fileName.endsWith('.didsign');
+}
 
 export async function getW3NOrDid(did: DidUri): Promise<string> {
   const web3name = await Did.Web3Names.queryWeb3NameForDid(did);

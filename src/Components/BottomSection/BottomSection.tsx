@@ -15,7 +15,7 @@ const InfoLink = () => {
   return (
     <div className={styles.infoLink}>
       <span className={styles.infoItem}>
-        Don&apos;t have an on-chain DID yet?{' '}
+        Don’t have an on-chain DID yet?{' '}
         <a
           target="_blank"
           rel="noreferrer"
@@ -25,7 +25,7 @@ const InfoLink = () => {
         </a>
       </span>
       <span className={styles.infoItem}>
-        Don&apos;t have a web3name yet?{' '}
+        Don’t have a web3name yet?{' '}
         <a
           target="_blank"
           rel="noreferrer"

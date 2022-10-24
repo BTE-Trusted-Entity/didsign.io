@@ -153,7 +153,7 @@ export const ImportFilesVerifier = () => {
           setJWS((old) => ({ ...old, signStatus: 'Not Checked' }));
         }
 
-        if (file.name.split('.').pop() === 'zip') {
+        if (file.name.endsWith('.zip')) {
           const filenames = await getFileNames(file);
           const didSignFile = filenames.find(isDidSignFile);
 

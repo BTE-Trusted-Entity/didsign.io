@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import { Navigate, Route, Routes } from 'react-router-dom';
 
@@ -93,22 +93,19 @@ const Verifier = () => {
   );
 };
 
-export const Main = () => {
+export function Main() {
+  if (process.env.REACT_APP_MAINTENANCE === 'true') {
+    return <Maintenance />;
+  }
+
   return (
     <Routes>
-      {process.env.REACT_APP_MAINTENANCE === 'true' ? (
-        <Route path="*" element={<Maintenance />} />
-      ) : (
-        <Fragment>
-          <Route path={paths.signer} element={<Signer />} />
-          <Route path={paths.verifier} element={<Verifier />} />
-          <Route path="*" element={<Navigate to={paths.signer} replace />} />
-        </Fragment>
-      )}
-
+      <Route path={paths.signer} element={<Signer />} />
+      <Route path={paths.verifier} element={<Verifier />} />
+      <Route path="*" element={<Navigate to={paths.signer} replace />} />
       <Route path={paths.terms} element={<Terms />} />
       <Route path={paths.privacy} element={<Privacy />} />
       <Route path={paths.imprint} element={<Imprint />} />
     </Routes>
   );
-};
+}
