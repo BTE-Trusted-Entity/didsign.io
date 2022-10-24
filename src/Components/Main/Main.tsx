@@ -6,7 +6,6 @@ import * as styles from './Main.module.css';
 
 import { ImportFilesSigner } from '../ImportFiles/ImportFilesSigner';
 import { FilesSigner } from '../FilesSigner/FilesSigner';
-import { useAppDispatch } from '../../app/hooks';
 import { useFiles } from '../Files/Files';
 import { FilesEmpty } from '../FilesEmpty/FilesEmpty';
 import { FilesVerifier } from '../FilesVerifier/FilesVerifier';
@@ -32,7 +31,6 @@ const Signer = () => {
   const { files, setFiles, setZip } = useFiles();
   const { setSignature } = useSignature();
   const { clearJWS } = useJWS();
-  const dispatch = useAppDispatch();
   const setHashes = useHashes().set;
   const { clearEndpoint, setVerifiedSignature } = useVerifiedSignature();
 
@@ -47,7 +45,6 @@ const Signer = () => {
   }, [
     clearEndpoint,
     clearJWS,
-    dispatch,
     setFiles,
     setHashes,
     setSignature,

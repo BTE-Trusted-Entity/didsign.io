@@ -8,7 +8,6 @@ import * as styles from './ImportFiles.module.css';
 import ImportIcon from '../../ImageAssets/iconBIG_import_NEW.svg';
 import ReleaseIcon from '../../ImageAssets/iconBIG_import_release.svg';
 import { useFiles } from '../Files/Files';
-import { useAppDispatch } from '../../app/hooks';
 import {
   getFileNames,
   getVerifiedData,
@@ -45,8 +44,6 @@ export const ImportFilesVerifier = () => {
   const showPopup = useShowPopup().set;
 
   useConnect();
-
-  const dispatch = useAppDispatch();
 
   const showMultipleSignPopup = useCallback(() => {
     setImportIcon(ImportIcon);
@@ -204,7 +201,7 @@ export const ImportFilesVerifier = () => {
         }
       });
     }
-  }, [dispatch, hashes, jwsHash, jwsStatus, setJWS, setVerifiedSignature]);
+  }, [hashes, jwsHash, jwsStatus, setJWS, setVerifiedSignature]);
 
   const fetchDidDocument = useCallback(async () => {
     setJWS((old) => ({ ...old, signStatus: 'Validating' }));
@@ -232,7 +229,7 @@ export const ImportFilesVerifier = () => {
         }
       }
     }
-  }, [statuses, jwsStatus, dispatch, fetchDidDocument, clearEndpoint]);
+  }, [statuses, jwsStatus, fetchDidDocument, clearEndpoint]);
   return (
     <div className={styles.container}>
       {jwsStatus === 'Multiple Sign' && <MultipleSignPopup />}
