@@ -2,14 +2,9 @@ import { Fragment, useState } from 'react';
 
 import * as styles from './FilesSigner.module.css';
 
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-
 import { useFiles } from '../Files/Files';
 import { useHashes } from '../Hashes/Hashes';
-import {
-  clearSign,
-  selectCredentials,
-} from '../../Features/Signer/SignatureSlice';
+import { useSignature } from '../Signature/Signature';
 
 import { isDidSignFile } from '../../Utils/verify-helper';
 
@@ -18,9 +13,8 @@ import { Timestamp } from '../Timestamp/Timestamp';
 import { CredentialsInsertion } from '../CredentialsInsertion/CredentialsInsertion';
 
 export const FilesSigner = () => {
-  const dispatch = useAppDispatch();
   const { files, setFiles } = useFiles();
-  const credentials = useAppSelector(selectCredentials);
+  const { credentials, setSignature } = useSignature();
   const [signPopup, setSignPopup] = useState<boolean>(false);
   const showPopup = useShowPopup().set;
   const { hashes, set: setHashes } = useHashes();
@@ -47,7 +41,7 @@ export const FilesSigner = () => {
     if (didSignFileIndex < 0) return;
 
     setFiles((files) => [...files].splice(didSignFileIndex, 1));
-    dispatch(clearSign());
+    setSignature({});
   };
   return (
     <div className={styles.container}>

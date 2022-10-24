@@ -34,7 +34,8 @@ export async function getKiltAccountsWithEnoughBalance() {
   });
 }
 
-export async function getExtrinsic(signature: string) {
+// TODO: maybe do not default to the empty string and just never pass undefined in?
+export async function getExtrinsic(signature = '') {
   const { api } = await BlockchainApiConnection.getConnectionOrConnect();
 
   return api.tx.system.remark(signature);

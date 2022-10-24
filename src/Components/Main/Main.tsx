@@ -18,7 +18,7 @@ import {
   BottomSectionVerifier,
 } from '../BottomSection/BottomSection';
 import { useHashes } from '../Hashes/Hashes';
-import { clearSign } from '../../Features/Signer/SignatureSlice';
+import { useSignature } from '../Signature/Signature';
 import {
   clearEndpoint,
   clearFileStatuses,
@@ -33,6 +33,7 @@ import { Maintenance } from '../Maintenance/Maintenance';
 
 const Signer = () => {
   const { files, setFiles, setZip } = useFiles();
+  const { setSignature } = useSignature();
   const dispatch = useAppDispatch();
   const setHashes = useHashes().set;
 
@@ -43,8 +44,8 @@ const Signer = () => {
     setFiles([]);
     setZip();
     setHashes([]);
-    dispatch(clearSign());
-  }, [dispatch, setFiles, setHashes, setZip]);
+    setSignature({});
+  }, [dispatch, setFiles, setHashes, setSignature, setZip]);
 
   return (
     <main className={styles.container}>
@@ -60,7 +61,7 @@ const Signer = () => {
 
 const Verifier = () => {
   const { files, setFiles, setZip } = useFiles();
-  const dispatch = useAppDispatch();
+  const { setSignature } = useSignature();
   const setHashes = useHashes().set;
 
   //allows navigation prevented by time stamping
@@ -70,8 +71,8 @@ const Verifier = () => {
     setFiles([]);
     setZip();
     setHashes([]);
-    dispatch(clearSign());
-  }, [dispatch, setFiles, setHashes, setZip]);
+    setSignature({});
+  }, [setFiles, setHashes, setSignature, setZip]);
 
   return (
     <main className={styles.container}>

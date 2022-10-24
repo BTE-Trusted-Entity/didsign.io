@@ -5,11 +5,7 @@ import classnames from 'classnames';
 
 import * as styles from './Navigation.module.css';
 
-import { useAppSelector } from '../../app/hooks';
-import {
-  selectDownloadStatus,
-  selectTimestampStatus,
-} from '../../Features/Signer/SignatureSlice';
+import { useSignature } from '../Signature/Signature';
 import { paths } from '../../Utils/paths';
 import { TimestampWarning, useShowPopup } from '../Popups/Popups';
 
@@ -18,8 +14,8 @@ export const Navigation = () => {
   const navigate = useNavigate();
 
   const [showWarningPopup, setShowWarningPopup] = useState(false);
-  const isTimestamped = useAppSelector(selectTimestampStatus);
-  const signatureDownloaded = useAppSelector(selectDownloadStatus);
+  const { downloaded: signatureDownloaded, timestamped: isTimestamped } =
+    useSignature();
   const showPopup = useShowPopup().set;
 
   const handleVerify = useCallback(() => {

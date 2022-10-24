@@ -8,7 +8,7 @@ import {
   clearFileStatuses,
 } from '../../Features/Signer/VerifiedSignatureSlice';
 import { useFiles } from '../Files/Files';
-import { clearSign, selectSign } from '../../Features/Signer/SignatureSlice';
+import { useSignature } from '../Signature/Signature';
 import {
   clearJWS,
   selectJwsSignStatus,
@@ -46,23 +46,23 @@ const InfoLink = () => {
 };
 
 export const BottomSectionSigner = () => {
-  const dispatch = useAppDispatch();
   const setHashes = useHashes().set;
   const { setFiles, setZip } = useFiles();
+  const { setSignature } = useSignature();
 
   const handleDelete = () => {
-    dispatch(clearSign());
+    setSignature({});
     setFiles([]);
     setZip();
     setHashes([]);
   };
-  const sign = useAppSelector(selectSign);
+  const { signature } = useSignature();
   return (
     <section className={styles.container}>
       <div className={styles.bottomSection}>
-        {!sign ? <SignButton /> : <DownloadButtons />}
+        {!signature ? <SignButton /> : <DownloadButtons />}
 
-        {sign && (
+        {signature && (
           <button
             className={styles.startOverBtn}
             onClick={() => handleDelete()}
@@ -79,9 +79,10 @@ export const BottomSectionVerifier = () => {
   const dispatch = useAppDispatch();
   const setHashes = useHashes().set;
   const { setFiles, setZip } = useFiles();
+  const { setSignature } = useSignature();
 
   const handleDelete = () => {
-    dispatch(clearSign());
+    setSignature({});
     setFiles([]);
     setZip();
     setHashes([]);

@@ -6,20 +6,14 @@ import JSZip from 'jszip';
 import * as styles from './DownloadButtons.module.css';
 
 import { useFiles } from '../Files/Files';
-
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import {
-  selectTimestampStatus,
-  updateDownloadStatus,
-} from '../../Features/Signer/SignatureSlice';
+import { useSignature } from '../Signature/Signature';
 
 export const DownloadButtons = () => {
   const { files } = useFiles();
   const [signatureFile] = files;
   const [showLoader, setShowLoader] = useState<boolean>(false);
   const [progress, setProgress] = useState<string>('0');
-  const isTimestamped = useAppSelector(selectTimestampStatus);
-  const dispatch = useAppDispatch();
+  const { timestamped: isTimestamped, setSignature } = useSignature();
 
   async function generateZipFile(
     files: Array<{ buffer: ArrayBuffer; name: string }>,
@@ -41,7 +35,7 @@ export const DownloadButtons = () => {
 
   const handleDownloadSign = async () => {
     saveAs(signatureFile.file, 'signature.didsign');
-    if (isTimestamped) dispatch(updateDownloadStatus(true));
+    if (isTimestamped) setSignature((old) => ({ ...old, timestamped: true }));
   };
 
   const handleZip = async () => {
@@ -50,7 +44,7 @@ export const DownloadButtons = () => {
     await generateZipFile(files);
     setShowLoader(false);
     document.body.style.pointerEvents = 'auto';
-    if (isTimestamped) dispatch(updateDownloadStatus(true));
+    if (isTimestamped) setSignature((old) => ({ ...old, timestamped: true }));
   };
 
   return (

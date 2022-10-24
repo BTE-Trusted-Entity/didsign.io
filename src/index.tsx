@@ -9,6 +9,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { ShowPopupProvider } from './Components/Popups/Popups';
 import { HashesProvider } from './Components/Hashes/Hashes';
 import { FilesProvider } from './Components/Files/Files';
+import { SignatureProvider } from './Components/Signature/Signature';
 import { DIDSign } from './Components/DidSign/DIDSign';
 import { store } from './app/store';
 
@@ -18,7 +19,9 @@ ReactDOM.render(
       <ShowPopupProvider>
         <HashesProvider>
           <FilesProvider>
-            <DIDSign />
+            <SignatureProvider>
+              <DIDSign />
+            </SignatureProvider>
           </FilesProvider>
         </HashesProvider>
       </ShowPopupProvider>

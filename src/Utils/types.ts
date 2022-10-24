@@ -5,9 +5,9 @@ import {
 } from '@kiltprotocol/sdk-js';
 export interface Signature {
   credentials?: NamedCredential[];
-  signature: string;
-  downloaded: boolean;
-  timestamped: boolean;
+  signature?: string;
+  downloaded?: boolean;
+  timestamped?: boolean;
 }
 
 export interface NamedCredential {

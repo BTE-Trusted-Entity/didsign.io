@@ -10,19 +10,17 @@ import ReleaseIcon from '../../ImageAssets/iconBIG_import_release.svg';
 import { useFiles } from '../Files/Files';
 import { useHashes } from '../Hashes/Hashes';
 import { createHash } from '../../Utils/sign-helpers';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { FastAnimation, SlowAnimation } from '../Animation/Animation';
 import { isDidSignFile } from '../../Utils/verify-helper';
 import { SigningMultipleDidFiles, useShowPopup } from '../Popups/Popups';
-import { clearSign, selectSign } from '../../Features/Signer/SignatureSlice';
+import { useSignature } from '../Signature/Signature';
 
 export const ImportFilesSigner = () => {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon);
   const [signErrorPopup, setSignErrorPopup] = useState<boolean>(false);
-  const dispatch = useAppDispatch();
   const { files, setFiles } = useFiles();
   const targetElement = document.querySelector('body');
-  const sign = useAppSelector(selectSign);
+  const { signature, setSignature } = useSignature();
   const showPopup = useShowPopup().set;
   const { hashes, set: setHashes } = useHashes();
 
@@ -35,13 +33,13 @@ export const ImportFilesSigner = () => {
   };
   const handleDrop = useCallback(
     async (acceptedFiles: File[]) => {
-      if (sign) {
+      if (signature) {
         const didSignFileIndex = files.findIndex((file) =>
           isDidSignFile(file.name),
         );
         if (didSignFileIndex < 0) return;
         setFiles((files) => [...files].splice(didSignFileIndex, 1));
-        dispatch(clearSign());
+        setSignature({});
       }
       acceptedFiles.forEach(async (file: File) => {
         setImportIcon(ImportIcon);
@@ -61,13 +59,13 @@ export const ImportFilesSigner = () => {
       });
     },
     [
-      dispatch,
       files,
       hashes,
       setFiles,
       setHashes,
+      setSignature,
       showPopup,
-      sign,
+      signature,
       targetElement,
     ],
   );

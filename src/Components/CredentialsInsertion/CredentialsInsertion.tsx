@@ -10,11 +10,7 @@ import classnames from 'classnames';
 
 import * as styles from './CredentialsInsertion.module.css';
 
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import {
-  selectCredentials,
-  updateCredentials,
-} from '../../Features/Signer/SignatureSlice';
+import { useSignature } from '../Signature/Signature';
 import { NamedCredential, SignDoc } from '../../Utils/types';
 import { useFiles } from '../Files/Files';
 import { DeleteCredential, useShowPopup } from '../Popups/Popups';
@@ -29,8 +25,7 @@ interface EditingProps {
 function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
   const [error, setError] = useState(false);
   const { files, setFiles } = useFiles();
-  const dispatch = useAppDispatch();
-  const storedCredentials = useAppSelector(selectCredentials);
+  const { credentials: storedCredentials, setSignature } = useSignature();
   const credentialName = credential.name;
   const credentialRowRef = useRef(null);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
@@ -101,14 +96,14 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
         jws,
         credentials: updatedCredentials,
       };
-      dispatch(updateCredentials(updatedCredentials));
+      setSignature((old) => ({ ...old, credentials: updatedCredentials }));
       updateSignatureFile(updatedContents);
     },
     [
       credential,
-      dispatch,
       error,
       getSignatureData,
+      setSignature,
       storedCredentials,
       updateSignatureFile,
     ],
@@ -139,13 +134,13 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
       credentials: credentialsCopy.length > 0 ? credentialsCopy : undefined,
     };
 
-    dispatch(updateCredentials(credentialsCopy));
+    setSignature((old) => ({ ...old, credentials: credentialsCopy }));
     updateSignatureFile(updatedContents);
   }, [
     credential,
-    dispatch,
     getSignatureData,
     handleDismiss,
+    setSignature,
     storedCredentials,
     updateSignatureFile,
   ]);
@@ -230,7 +225,7 @@ function CredentialRow({ credential }: Props) {
 }
 
 export function CredentialsInsertion() {
-  const credentials = useAppSelector(selectCredentials);
+  const { credentials } = useSignature();
 
   return (
     <div className={styles.grid}>

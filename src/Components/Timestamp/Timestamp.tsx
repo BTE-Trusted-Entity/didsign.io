@@ -14,12 +14,7 @@ import classnames from 'classnames';
 
 import * as styles from './Timestamp.module.css';
 
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import {
-  selectDownloadStatus,
-  selectSign,
-  updateTimestampStatus,
-} from '../../Features/Signer/SignatureSlice';
+import { useSignature } from '../Signature/Signature';
 import { useFiles } from '../Files/Files';
 
 import {
@@ -64,12 +59,10 @@ function useFee() {
 export function Timestamp() {
   useConnect();
 
-  const signature = useAppSelector(selectSign);
+  const { signature } = useSignature();
   const { files, setFiles } = useFiles();
-  const signatureDownloaded = useAppSelector(selectDownloadStatus);
+  const { downloaded: signatureDownloaded, setSignature } = useSignature();
   const showPopup = useShowPopup().set;
-
-  const dispatch = useAppDispatch();
 
   const [status, setStatus] = useState<
     | 'start'
@@ -155,14 +148,14 @@ export function Timestamp() {
         setTimestamp(await getTimestamp(blockHash));
 
         setStatus('done');
-        dispatch(updateTimestampStatus(true));
+        setSignature((old) => ({ ...old, timestamped: true }));
         showPopup(false);
       } catch (exception) {
         setStatus('error');
         console.error(exceptionToError(exception));
       }
     },
-    [files, setFiles, dispatch, showPopup],
+    [files, setFiles, setSignature, showPopup],
   );
   const handleSubmit = useCallback(
     async (event) => {

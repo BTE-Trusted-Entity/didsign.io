@@ -4,11 +4,7 @@ import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 
 import * as styles from './SignButton.module.css';
 
-import { useAppDispatch } from '../../app/hooks';
-import {
-  updateCredentials,
-  updateSign,
-} from '../../Features/Signer/SignatureSlice';
+import { useSignature } from '../Signature/Signature';
 import {
   createHashFromHashArray,
   generateJWS,
@@ -31,6 +27,7 @@ export const SignButton = () => {
   >(null);
   const targetElement = document.querySelector('body');
   const { files, setFiles } = useFiles();
+  const { setSignature } = useSignature();
   const [signPopup, setSignPopup] = useState<boolean>(false);
   const showPopup = useShowPopup().set;
 
@@ -66,9 +63,11 @@ export const SignButton = () => {
       });
 
       await generateSignatureFile(blob);
-      dispatch(updateSign(signature));
+      setSignature((old) => ({ ...old, signature }));
 
-      if (credentials) dispatch(updateCredentials(credentials));
+      if (credentials) {
+        setSignature((old) => ({ ...old, credentials }));
+      }
 
       showPopup(false);
 
@@ -91,7 +90,6 @@ export const SignButton = () => {
   };
 
   const { hashes } = useHashes();
-  const dispatch = useAppDispatch();
   const handleDismiss = () => {
     if (targetElement !== null) {
       enableBodyScroll(targetElement);
