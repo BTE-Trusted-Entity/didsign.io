@@ -4,12 +4,11 @@ import { without } from 'lodash-es';
 import * as styles from './FilesSigner.module.css';
 
 import { useFiles } from '../Files/Files';
-import { useHashes } from '../Hashes/Hashes';
 import { useSignature } from '../Signature/Signature';
 
 import { isDidSignFile } from '../../Utils/verify-helper';
 
-import { SignFileInfoPopup, useShowPopup } from '../Popups/Popups';
+import { SignFileInfoPopup } from '../Popups/Popups';
 import { Timestamp } from '../Timestamp/Timestamp';
 import { CredentialsInsertion } from '../CredentialsInsertion/CredentialsInsertion';
 
@@ -17,21 +16,16 @@ export const FilesSigner = () => {
   const { files, setFiles } = useFiles();
   const { credentials, setSignature } = useSignature();
   const [signPopup, setSignPopup] = useState<boolean>(false);
-  const { showPopup } = useShowPopup();
-  const { hashes, setHashes } = useHashes();
 
   const showSignInfoPopup = () => {
-    showPopup(true);
     setSignPopup(true);
     document.body.style.overflowY = 'hidden';
   };
   const handleDismiss = () => {
-    showPopup(false);
     setSignPopup(false);
     document.body.style.overflowY = 'auto';
   };
   const handleDeleteFile = (index: number) => {
-    setHashes(without(hashes, hashes[index]));
     setFiles((files) => without(files, files[index]));
 
     const didSignFile = files.find(({ name }) => isDidSignFile(name));

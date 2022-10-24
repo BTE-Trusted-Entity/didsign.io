@@ -72,7 +72,8 @@ export async function unzipFileEntries(file: File): Promise<FileEntry[]> {
       const buffer = await entry.getData(new zip.Uint8ArrayWriter());
       const name = entry.filename;
       const file = new File([buffer], name);
-      return { file, buffer, name };
+      const hash = await createHash(buffer);
+      return { file, buffer, name, hash };
     }),
   );
   await reader.close();

@@ -13,8 +13,9 @@ import * as styles from './CredentialsInsertion.module.css';
 import { useSignature } from '../Signature/Signature';
 import { NamedCredential, SignDoc } from '../../Utils/types';
 import { useFiles } from '../Files/Files';
-import { DeleteCredential, useShowPopup } from '../Popups/Popups';
+import { DeleteCredential } from '../Popups/Popups';
 import { useHandleOutsideClick } from '../../Hooks/useHandleOutsideClick';
+import { createDidSignFile } from '../../Utils/sign-helpers';
 
 interface EditingProps {
   stopEditing: () => void;
@@ -29,7 +30,6 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
   const credentialName = credential.name;
   const credentialRowRef = useRef(null);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
-  const { showPopup } = useShowPopup();
 
   const getSignatureData = useCallback(() => {
     const { buffer } = files[0];
@@ -44,10 +44,8 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
         type: 'application/json;charset=utf-8',
       });
 
-      const name = 'signature.didsign';
-      const file = new File([blob], name);
-      const buffer = await file.arrayBuffer();
-      setFiles((files) => [{ file, buffer, name }, ...files.slice(1)]);
+      const file = await createDidSignFile(blob);
+      setFiles((files) => [file, ...files.slice(1)]);
     },
     [setFiles],
   );
@@ -110,14 +108,12 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
   );
 
   const handleShowPopup = useCallback(() => {
-    showPopup(true);
     setShowDeletePopup(true);
-  }, [showPopup]);
+  }, []);
 
   const handleDismiss = useCallback(() => {
     setShowDeletePopup(false);
-    showPopup(false);
-  }, [showPopup]);
+  }, []);
 
   const handleDelete = useCallback(async () => {
     handleDismiss();

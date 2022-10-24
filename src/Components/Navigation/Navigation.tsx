@@ -7,7 +7,7 @@ import * as styles from './Navigation.module.css';
 
 import { useSignature } from '../Signature/Signature';
 import { paths } from '../../Utils/paths';
-import { TimestampWarning, useShowPopup } from '../Popups/Popups';
+import { TimestampWarning } from '../Popups/Popups';
 
 export const Navigation = () => {
   const location = useLocation();
@@ -16,28 +16,24 @@ export const Navigation = () => {
   const [showWarningPopup, setShowWarningPopup] = useState(false);
   const { downloaded: signatureDownloaded, timestamped: isTimestamped } =
     useSignature();
-  const { showPopup } = useShowPopup();
 
   const handleVerify = useCallback(() => {
     if (isTimestamped && !signatureDownloaded) {
-      showPopup(true);
       setShowWarningPopup(true);
       return;
     }
 
     navigate(paths.verifier, { replace: true });
-  }, [isTimestamped, navigate, showPopup, signatureDownloaded]);
+  }, [isTimestamped, navigate, signatureDownloaded]);
 
   const handleDismiss = useCallback(() => {
-    showPopup(false);
     setShowWarningPopup(false);
-  }, [showPopup]);
+  }, []);
 
   const handleOkay = useCallback(() => {
-    showPopup(false);
     setShowWarningPopup(false);
     navigate(paths.verifier, { replace: true });
-  }, [navigate, showPopup]);
+  }, [navigate]);
 
   return (
     <div className={styles.navContainer}>

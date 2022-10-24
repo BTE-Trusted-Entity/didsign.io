@@ -26,17 +26,13 @@ import {
 import { IKiltAccount, SignDoc } from '../../Utils/types';
 import { asKiltCoins } from '../../Utils/asKiltCoins';
 import { exceptionToError } from '../../Utils/exceptionToError';
+import { createDidSignFile } from '../../Utils/sign-helpers';
 
 import { useConnect } from '../../Hooks/useConnect';
 import { usePreventNavigation } from '../../Hooks/usePreventNavigation';
 
 import { Spinner } from '../Spinner/Spinner';
-import {
-  PendingTx,
-  SignPopup,
-  TimestampError,
-  useShowPopup,
-} from '../Popups/Popups';
+import { PendingTx, SignPopup, TimestampError } from '../Popups/Popups';
 
 function getAccountLabel(account: IKiltAccount) {
   const { address, source, name } = account;
@@ -62,7 +58,6 @@ export function Timestamp() {
   const { signature } = useSignature();
   const { files, setFiles } = useFiles();
   const { downloaded: signatureDownloaded, setSignature } = useSignature();
-  const { showPopup } = useShowPopup();
 
   const [status, setStatus] = useState<
     | 'start'
@@ -140,28 +135,24 @@ export function Timestamp() {
         const blob = new Blob([JSON.stringify(withRemark)], {
           type: 'application/json;charset=utf-8',
         });
-        const name = 'signature.didsign';
-        const file = new File([blob], name);
-        const buffer = await file.arrayBuffer();
-        setFiles((files) => [{ file, buffer, name }, ...files.slice(1)]);
+        const file = await createDidSignFile(blob);
+        setFiles((files) => [file, ...files.slice(1)]);
 
         setTimestamp(await getTimestamp(blockHash));
 
         setStatus('done');
         setSignature((old) => ({ ...old, timestamped: true }));
-        showPopup(false);
       } catch (exception) {
         setStatus('error');
         console.error(exceptionToError(exception));
       }
     },
-    [files, setFiles, setSignature, showPopup],
+    [files, setFiles, setSignature],
   );
   const handleSubmit = useCallback(
     async (event) => {
       event.preventDefault();
 
-      showPopup(true);
       setStatus('signing');
 
       try {
@@ -213,16 +204,18 @@ export function Timestamp() {
         }
       }
     },
-    [showPopup, selectedAccount, signature, handleFinalized],
+    [selectedAccount, signature, handleFinalized],
   );
 
   function handleDismiss() {
-    showPopup(false);
-    accounts ? setStatus('accounts-ready') : setStatus('start');
+    if (accounts) {
+      setStatus('accounts-ready');
+    } else {
+      setStatus('start');
+    }
   }
 
   function handleTryAgain() {
-    showPopup(false);
     setStatus('start');
   }
 

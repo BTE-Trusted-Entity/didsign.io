@@ -6,18 +6,17 @@ import * as styles from './SignButton.module.css';
 
 import { useSignature } from '../Signature/Signature';
 import {
+  createDidSignFile,
   createHashFromHashArray,
   generateJWS,
   getSignatureContents,
 } from '../../Utils/sign-helpers';
-import { useHashes } from '../Hashes/Hashes';
 import { useFiles } from '../Files/Files';
 import {
   NoWalletPopup,
   SignButtonInfoPopup,
   SignErrorPopup,
   SignPopup,
-  useShowPopup,
 } from '../Popups/Popups';
 import { exceptionToError } from '../../Utils/exceptionToError';
 
@@ -29,25 +28,22 @@ export const SignButton = () => {
   const { files, setFiles } = useFiles();
   const { setSignature } = useSignature();
   const [signPopup, setSignPopup] = useState<boolean>(false);
-  const { showPopup } = useShowPopup();
 
   const generateSignatureFile = async (blob: Blob) => {
-    const name = 'signature.didsign';
-    const file = new File([blob], name);
-    const buffer = await file.arrayBuffer();
-    setFiles((files) => [{ file, buffer, name }, ...files]);
+    const file = await createDidSignFile(blob);
+    setFiles((files) => [file, ...files]);
   };
-  const handleChange = async () => {
-    if (hashes.length == 0) {
+  const handleSign = async () => {
+    if (files.length == 0) {
       return;
     }
-    showPopup(true);
     if (targetElement !== null) {
       disableBodyScroll(targetElement);
-      setSignStatus('Default');
     }
+    setSignStatus('Default');
 
     try {
+      const hashes = files.map(({ hash }) => hash);
       const signingData = await createHashFromHashArray(hashes);
 
       const {
@@ -69,8 +65,6 @@ export const SignButton = () => {
         ...(credentials && { credentials }),
       }));
 
-      showPopup(false);
-
       if (targetElement !== null) {
         enableBodyScroll(targetElement);
       }
@@ -89,12 +83,10 @@ export const SignButton = () => {
     }
   };
 
-  const { hashes } = useHashes();
   const handleDismiss = () => {
     if (targetElement !== null) {
       enableBodyScroll(targetElement);
     }
-    showPopup(false);
     setSignStatus(null);
   };
   const showSignPopup = () => {
@@ -102,13 +94,11 @@ export const SignButton = () => {
       disableBodyScroll(targetElement);
     }
     setSignPopup(true);
-    showPopup(true);
   };
   const handleSignDismiss = () => {
     if (targetElement !== null) {
       enableBodyScroll(targetElement);
     }
-    showPopup(false);
     setSignPopup(false);
   };
   return (
@@ -117,7 +107,7 @@ export const SignButton = () => {
         <button
           className={styles.signBtn}
           disabled={files.length === 0}
-          onClick={() => handleChange()}
+          onClick={() => handleSign()}
         >
           Sign
         </button>

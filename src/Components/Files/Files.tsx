@@ -4,6 +4,7 @@ export interface FileEntry {
   file: File;
   buffer: ArrayBuffer;
   name: string;
+  hash: string;
 }
 
 interface FilesType {

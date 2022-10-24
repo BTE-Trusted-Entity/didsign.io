@@ -2,10 +2,9 @@ import React from 'react';
 
 import * as styles from './JWSErrors.module.css';
 
-import { useJWS } from '../JWS/JWS';
+import { JWSStatus } from '../../Utils/types';
 
-export const JWSErrors = () => {
-  const { signStatus: jwsStatus } = useJWS();
+export function JWSErrors({ jwsStatus }: { jwsStatus: JWSStatus }) {
   if (jwsStatus === 'Multiple Sign') {
     return null;
   }
@@ -34,4 +33,4 @@ export const JWSErrors = () => {
       </div>
     </div>
   );
-};
+}

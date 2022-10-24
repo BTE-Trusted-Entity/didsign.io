@@ -3,14 +3,14 @@ import React, { Fragment } from 'react';
 import * as styles from './DidDocument.module.css';
 
 import { useVerifiedSignature } from '../VerifiedSignature/VerifiedSignature';
-import { useJWS } from '../JWS/JWS';
+import { JWSStatus } from '../../Utils/types';
 import { JWSErrors } from '../JWSErrors/JWSErrors';
 import { ServiceEndpoint } from '../ServiceEndpoints/ServiceEndpoint';
 
 import { useSubscanHost } from '../../Utils/useSubscanHost';
 import { CredentialVerifier } from '../Credential/Credential';
 
-export const DidDocument = () => {
+export function DidDocument({ jwsStatus }: { jwsStatus: JWSStatus }) {
   const {
     did,
     w3name,
@@ -20,13 +20,14 @@ export const DidDocument = () => {
     credentials: attachedCredentials,
     endpoints: serviceEndpoints,
   } = useVerifiedSignature();
-  const { signStatus: jwsStatus } = useJWS();
   const subscanHost = useSubscanHost();
 
-  if (jwsStatus === 'Not Checked' || jwsStatus === 'Validating') return null;
+  if (jwsStatus === 'Not Checked' || jwsStatus === 'Validating' || !did) {
+    return null;
+  }
 
   if (jwsStatus !== 'Verified') {
-    return <JWSErrors />;
+    return <JWSErrors jwsStatus={jwsStatus} />;
   } else {
     return (
       <div className={styles.container}>
@@ -91,6 +92,7 @@ export const DidDocument = () => {
           <div className={styles.endpointsWrapper}>
             {serviceEndpoints.map((endpoint) => (
               <ServiceEndpoint
+                did={did}
                 url={endpoint.urls[0]}
                 endpointType={endpoint.types[0]}
                 key={endpoint.id}
@@ -101,4 +103,4 @@ export const DidDocument = () => {
       </div>
     );
   }
-};
+}

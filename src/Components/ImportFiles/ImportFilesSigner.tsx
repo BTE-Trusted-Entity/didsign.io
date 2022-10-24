@@ -1,5 +1,5 @@
 import Dropzone from 'react-dropzone';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { without } from 'lodash-es';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 
@@ -8,24 +8,59 @@ import * as styles from './ImportFiles.module.css';
 import ImportIcon from '../../ImageAssets/iconBIG_import_NEW.svg';
 import ReleaseIcon from '../../ImageAssets/iconBIG_import_release.svg';
 import { useFiles } from '../Files/Files';
-import { useHashes } from '../Hashes/Hashes';
 import { createHash } from '../../Utils/sign-helpers';
 import { FastAnimation, SlowAnimation } from '../Animation/Animation';
 import { isDidSignFile } from '../../Utils/verify-helper';
-import { SigningMultipleDidFiles, useShowPopup } from '../Popups/Popups';
+import { SigningMultipleDidFiles } from '../Popups/Popups';
 import { useSignature } from '../Signature/Signature';
+import { Navigation } from '../Navigation/Navigation';
+import { FilesEmpty } from '../FilesEmpty/FilesEmpty';
+import { FilesSigner } from '../FilesSigner/FilesSigner';
+import { SignButton } from '../SignButton/SignButton';
+import { DownloadButtons } from '../DownloadButtons/DownloadButtons';
+
+// TODO: extract component?
+function InfoLink() {
+  return (
+    <div className={styles.infoLink}>
+      <span className={styles.infoItem}>
+        Don’t have an on-chain DID yet?{' '}
+        <a
+          target="_blank"
+          rel="noreferrer"
+          href="https://www.trusted-entity.io/assets/pdf/Upgrading-to-on-chain-DID.pdf"
+        >
+          Read here
+        </a>
+      </span>
+      <span className={styles.infoItem}>
+        Don’t have a web3name yet?{' '}
+        <a
+          target="_blank"
+          rel="noreferrer"
+          href="https://www.trusted-entity.io/assets/pdf/How_To_Guide_web3name_link_address_Full_May22.pdf"
+        >
+          Read here
+        </a>
+      </span>
+    </div>
+  );
+}
 
 export const ImportFilesSigner = () => {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon);
   const [signErrorPopup, setSignErrorPopup] = useState<boolean>(false);
-  const { files, setFiles } = useFiles();
+  const { files, setFiles, setZip } = useFiles();
   const targetElement = document.querySelector('body');
   const { signature, setSignature } = useSignature();
-  const { showPopup } = useShowPopup();
-  const { hashes, setHashes } = useHashes();
+
+  useEffect(() => {
+    setFiles([]);
+    setZip();
+    setSignature({});
+  }, [setFiles, setSignature, setZip]);
 
   const handleDismiss = () => {
-    showPopup(false);
     setSignErrorPopup(false);
     if (targetElement != null) {
       enableBodyScroll(targetElement);
@@ -43,8 +78,8 @@ export const ImportFilesSigner = () => {
       acceptedFiles.forEach(async (file: File) => {
         setImportIcon(ImportIcon);
 
-        if (isDidSignFile(file.name)) {
-          showPopup(true);
+        const { name } = file;
+        if (isDidSignFile(name)) {
           setSignErrorPopup(true);
           if (targetElement != null) {
             disableBodyScroll(targetElement);
@@ -52,52 +87,71 @@ export const ImportFilesSigner = () => {
           return;
         }
         const buffer = await file.arrayBuffer();
-        setFiles((files) => [...files, { file, buffer, name: file.name }]);
-        const newHash = await createHash(buffer);
-        setHashes([...hashes, newHash]);
+        const hash = await createHash(buffer);
+        setFiles((files) => [...files, { file, buffer, name, hash }]);
       });
     },
-    [
-      files,
-      hashes,
-      setFiles,
-      setHashes,
-      setSignature,
-      showPopup,
-      signature,
-      targetElement,
-    ],
+    [files, setFiles, setSignature, signature, targetElement],
   );
 
+  const handleDelete = () => {
+    setSignature({});
+    setFiles([]);
+    setZip();
+  };
+
   return (
-    <div className={styles.container}>
-      <Dropzone
-        onDrop={handleDrop}
-        onDragLeave={() => setImportIcon(ImportIcon)}
-        onDragEnter={() => setImportIcon(ReleaseIcon)}
-      >
-        {({ getRootProps, getInputProps }) => (
-          <div className={styles.dropContainer} {...getRootProps({})}>
-            {impIcon == ImportIcon ? <SlowAnimation /> : <FastAnimation />}
+    <main className={styles.main}>
+      <Navigation />
+      <div className={styles.middleSection}>
+        <div className={styles.container}>
+          <Dropzone
+            onDrop={handleDrop}
+            onDragLeave={() => setImportIcon(ImportIcon)}
+            onDragEnter={() => setImportIcon(ReleaseIcon)}
+          >
+            {({ getRootProps, getInputProps }) => (
+              <div className={styles.dropContainer} {...getRootProps({})}>
+                {impIcon == ImportIcon ? <SlowAnimation /> : <FastAnimation />}
 
-            <input {...getInputProps()} />
-            <img className={styles.importIcon} src={impIcon} />
-            {impIcon === ImportIcon && (
-              <span className={styles.signText}>Sign Your Files</span>
+                <input {...getInputProps()} />
+                <img className={styles.importIcon} src={impIcon} />
+                {impIcon === ImportIcon && (
+                  <span className={styles.signText}>Sign Your Files</span>
+                )}
+                {impIcon === ImportIcon && (
+                  <span className={styles.dragDropText}>drag & drop</span>
+                )}
+                {impIcon === ImportIcon && (
+                  <span className={styles.browseFilesText}>
+                    or click / tap to browse your files
+                  </span>
+                )}
+              </div>
             )}
-            {impIcon === ImportIcon && (
-              <span className={styles.dragDropText}>drag & drop</span>
-            )}
-            {impIcon === ImportIcon && (
-              <span className={styles.browseFilesText}>
-                or click / tap to browse your files
-              </span>
-            )}
-          </div>
-        )}
-      </Dropzone>
+          </Dropzone>
 
-      {signErrorPopup && <SigningMultipleDidFiles onDismiss={handleDismiss} />}
-    </div>
+          {signErrorPopup && (
+            <SigningMultipleDidFiles onDismiss={handleDismiss} />
+          )}
+        </div>
+
+        {files.length === 0 ? <FilesEmpty /> : <FilesSigner />}
+      </div>
+
+      <section className={styles.bottomContainer}>
+        <div className={styles.bottomSection}>
+          {!signature ? <SignButton /> : <DownloadButtons />}
+
+          {signature && (
+            <button
+              className={styles.startOverBtn}
+              onClick={() => handleDelete()}
+            />
+          )}
+        </div>
+        <InfoLink />
+      </section>
+    </main>
   );
 };

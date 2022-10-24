@@ -6,19 +6,23 @@ import * as styles from './FilesVerifier.module.css';
 
 import { useFiles } from '../Files/Files';
 import { useVerifiedSignature } from '../VerifiedSignature/VerifiedSignature';
-import { useHashes } from '../Hashes/Hashes';
-import { useJWS } from '../JWS/JWS';
+import { JWSStatus } from '../../Utils/types';
 
 import { isDidSignFile } from '../../Utils/verify-helper';
 
-export const FilesVerifier = () => {
+export function FilesVerifier({
+  jwsStatus,
+  clearJWS,
+  onDelete,
+}: {
+  jwsStatus: JWSStatus;
+  clearJWS: () => void;
+  onDelete: () => void;
+}) {
   const { files, zip, setFiles, setZip } = useFiles();
 
-  const { signStatus: jwsStatus, clearJWS, setJWS } = useJWS();
   const { filesStatus, clearEndpoint, setVerifiedSignature } =
     useVerifiedSignature();
-
-  const { hashes, setHashes } = useHashes();
 
   const handleDeleteAll = () => {
     if (jwsStatus === 'Validating') {
@@ -28,7 +32,6 @@ export const FilesVerifier = () => {
     clearEndpoint();
     setFiles([]);
     setZip();
-    setHashes([]);
     clearJWS();
     setVerifiedSignature((old) => ({ ...old, filesStatus: [] }));
   };
@@ -48,7 +51,7 @@ export const FilesVerifier = () => {
     }
 
     if (jwsStatus !== 'Corrupted') {
-      setJWS((old) => ({ ...old, signStatus: 'Not Checked' }));
+      onDelete();
     }
 
     clearEndpoint();
@@ -57,7 +60,6 @@ export const FilesVerifier = () => {
       filesStatus: [...old.filesStatus].splice(index, 1),
     }));
     setFiles((files) => without(files, fileEntry));
-    setHashes(without(hashes, hashes[index]));
   };
 
   if (files.length === 0) {
@@ -135,4 +137,4 @@ export const FilesVerifier = () => {
       )}
     </Fragment>
   );
-};
+}

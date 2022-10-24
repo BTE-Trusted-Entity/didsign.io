@@ -3,6 +3,7 @@ import {
   DidUri,
   RequestForAttestation,
 } from '@kiltprotocol/sdk-js';
+
 export interface Signature {
   credentials?: NamedCredential[];
   signature?: string;
@@ -14,10 +15,12 @@ export interface NamedCredential {
   name: string;
   credential: RequestForAttestation;
 }
+
 export interface IRemark {
   txHash: string;
   blockHash: string;
 }
+
 export interface SignDoc {
   jws: string;
   hashes: string[];
@@ -41,3 +44,11 @@ export interface IKiltAccount {
   source: string;
   name?: string;
 }
+
+export type JWSStatus =
+  | 'Verified'
+  | 'Not Checked'
+  | 'Validating'
+  | 'Corrupted'
+  | 'Multiple Sign'
+  | 'Invalid';
