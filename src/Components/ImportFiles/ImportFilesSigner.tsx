@@ -21,8 +21,8 @@ export const ImportFilesSigner = () => {
   const { files, setFiles } = useFiles();
   const targetElement = document.querySelector('body');
   const { signature, setSignature } = useSignature();
-  const showPopup = useShowPopup().set;
-  const { hashes, set: setHashes } = useHashes();
+  const { showPopup } = useShowPopup();
+  const { hashes, setHashes } = useHashes();
 
   const handleDismiss = () => {
     showPopup(false);

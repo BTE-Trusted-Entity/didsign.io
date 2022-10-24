@@ -29,7 +29,7 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
   const credentialName = credential.name;
   const credentialRowRef = useRef(null);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
-  const showPopup = useShowPopup().set;
+  const { showPopup } = useShowPopup();
 
   const getSignatureData = useCallback(() => {
     const { buffer } = files[0];

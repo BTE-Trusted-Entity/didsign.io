@@ -8,12 +8,12 @@ import { useVerifiedSignature } from '../VerifiedSignature/VerifiedSignature';
 interface ShowPopupContextType {
   visible: boolean;
 
-  set(value: boolean): void;
+  showPopup(value: boolean): void;
 }
 
 const ShowPopupContext = createContext<ShowPopupContextType>({
   visible: false,
-  set() {
+  showPopup() {
     return;
   },
 });
@@ -27,8 +27,8 @@ export function ShowPopupProvider({
 }: {
   children: JSX.Element;
 }): JSX.Element {
-  const [visible, set] = useState(false);
-  const value = useMemo(() => ({ visible, set }), [visible, set]);
+  const [visible, showPopup] = useState(false);
+  const value = useMemo(() => ({ visible, showPopup }), [visible]);
   return (
     <ShowPopupContext.Provider value={value}>
       {children}
@@ -42,7 +42,7 @@ interface Props {
 }
 
 export const MultipleSignPopup = () => {
-  const showPopup = useShowPopup().set;
+  const { showPopup } = useShowPopup();
   const { setJWS } = useJWS();
   const { clearEndpoint } = useVerifiedSignature();
 

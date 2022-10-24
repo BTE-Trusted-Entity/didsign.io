@@ -16,7 +16,7 @@ export const Navigation = () => {
   const [showWarningPopup, setShowWarningPopup] = useState(false);
   const { downloaded: signatureDownloaded, timestamped: isTimestamped } =
     useSignature();
-  const showPopup = useShowPopup().set;
+  const { showPopup } = useShowPopup();
 
   const handleVerify = useCallback(() => {
     if (isTimestamped && !signatureDownloaded) {

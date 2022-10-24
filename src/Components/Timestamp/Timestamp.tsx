@@ -62,7 +62,7 @@ export function Timestamp() {
   const { signature } = useSignature();
   const { files, setFiles } = useFiles();
   const { downloaded: signatureDownloaded, setSignature } = useSignature();
-  const showPopup = useShowPopup().set;
+  const { showPopup } = useShowPopup();
 
   const [status, setStatus] = useState<
     | 'start'

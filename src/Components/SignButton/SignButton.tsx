@@ -29,7 +29,7 @@ export const SignButton = () => {
   const { files, setFiles } = useFiles();
   const { setSignature } = useSignature();
   const [signPopup, setSignPopup] = useState<boolean>(false);
-  const showPopup = useShowPopup().set;
+  const { showPopup } = useShowPopup();
 
   const generateSignatureFile = async (blob: Blob) => {
     const name = 'signature.didsign';

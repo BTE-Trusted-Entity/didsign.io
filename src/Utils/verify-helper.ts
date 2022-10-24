@@ -9,7 +9,10 @@ import {
 } from '@kiltprotocol/sdk-js';
 
 import { base16 } from 'multiformats/bases/base16';
+import * as zip from '@zip.js/zip.js';
 import JSZip from 'jszip';
+
+import { FileEntry } from '../Components/Files/Files';
 
 import { createHash, createHashFromHashArray } from './sign-helpers';
 import { IRemark, IVerifiedSignatureContents, SignDoc } from './types';
@@ -59,8 +62,24 @@ export const getVerifiedData = async (jws: string, remark?: IRemark) => {
   };
 };
 
+export async function unzipFileEntries(file: File): Promise<FileEntry[]> {
+  const reader = new zip.ZipReader(new zip.BlobReader(file));
+  const entries = await reader.getEntries();
+  const result = await Promise.all(
+    entries.map(async (entry) => {
+      if (!entry.getData) throw new Error('Impossible: no entry.getData');
+      const buffer = await entry.getData(new zip.Uint8ArrayWriter());
+      const name = entry.filename;
+      const file = new File([buffer], name);
+      return { file, buffer, name };
+    }),
+  );
+  await reader.close();
+  return result;
+}
+
 export const handleFilesFromZip = async (
-  files: Array<{ file: File; buffer: ArrayBuffer; name: string }>,
+  files: FileEntry[],
 ): Promise<IVerifiedSignatureContents | undefined> => {
   const fileData: string[] = [];
   const filesStatus: boolean[] = [];

@@ -5,7 +5,7 @@ import JSZip from 'jszip';
 
 import * as styles from './DownloadButtons.module.css';
 
-import { useFiles } from '../Files/Files';
+import { FileEntry, useFiles } from '../Files/Files';
 import { useSignature } from '../Signature/Signature';
 
 export const DownloadButtons = () => {
@@ -15,11 +15,9 @@ export const DownloadButtons = () => {
   const [progress, setProgress] = useState<string>('0');
   const { timestamped: isTimestamped, setSignature } = useSignature();
 
-  async function generateZipFile(
-    files: Array<{ buffer: ArrayBuffer; name: string }>,
-  ) {
+  async function generateZipFile(files: FileEntry[]) {
     const zip = new JSZip();
-    files.map((buffer) => zip.file(buffer.name, buffer.buffer));
+    files.map(({ buffer, name }) => zip.file(name, buffer));
     const content = await zip.generateAsync(
       {
         type: 'blob',

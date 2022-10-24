@@ -31,7 +31,7 @@ const Signer = () => {
   const { files, setFiles, setZip } = useFiles();
   const { setSignature } = useSignature();
   const { clearJWS } = useJWS();
-  const setHashes = useHashes().set;
+  const { setHashes } = useHashes();
   const { clearEndpoint, setVerifiedSignature } = useVerifiedSignature();
 
   useEffect(() => {
@@ -67,7 +67,7 @@ const Signer = () => {
 const Verifier = () => {
   const { files, setFiles, setZip } = useFiles();
   const { setSignature } = useSignature();
-  const setHashes = useHashes().set;
+  const { setHashes } = useHashes();
 
   //allows navigation prevented by time stamping
   usePreventNavigation(false);

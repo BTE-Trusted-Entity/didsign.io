@@ -39,7 +39,7 @@ const InfoLink = () => {
 };
 
 export const BottomSectionSigner = () => {
-  const setHashes = useHashes().set;
+  const { setHashes } = useHashes();
   const { setFiles, setZip } = useFiles();
   const { setSignature } = useSignature();
 
@@ -69,7 +69,7 @@ export const BottomSectionSigner = () => {
 
 export const BottomSectionVerifier = () => {
   const { signStatus: jwsStatus, clearJWS } = useJWS();
-  const setHashes = useHashes().set;
+  const { setHashes } = useHashes();
   const { setFiles, setZip } = useFiles();
   const { setSignature } = useSignature();
   const { clearEndpoint, setVerifiedSignature } = useVerifiedSignature();

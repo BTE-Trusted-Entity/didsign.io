@@ -3,12 +3,12 @@ import React, { createContext, useContext, useMemo, useState } from 'react';
 interface HashesContextType {
   hashes: string[];
 
-  set(value: string[]): void;
+  setHashes(value: string[]): void;
 }
 
 const HashesContext = createContext<HashesContextType>({
   hashes: [],
-  set() {
+  setHashes() {
     return;
   },
 });
@@ -22,8 +22,8 @@ export function HashesProvider({
 }: {
   children: JSX.Element;
 }): JSX.Element {
-  const [hashes, set] = useState<string[]>([]);
-  const value = useMemo(() => ({ hashes, set }), [hashes, set]);
+  const [hashes, setHashes] = useState<string[]>([]);
+  const value = useMemo(() => ({ hashes, setHashes }), [hashes]);
   return (
     <HashesContext.Provider value={value}>{children}</HashesContext.Provider>
   );

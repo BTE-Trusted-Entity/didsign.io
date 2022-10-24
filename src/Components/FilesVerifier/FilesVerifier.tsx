@@ -18,7 +18,7 @@ export const FilesVerifier = () => {
   const { filesStatus, clearEndpoint, setVerifiedSignature } =
     useVerifiedSignature();
 
-  const { hashes, set: setHashes } = useHashes();
+  const { hashes, setHashes } = useHashes();
 
   const handleDeleteAll = () => {
     if (jwsStatus === 'Validating') {

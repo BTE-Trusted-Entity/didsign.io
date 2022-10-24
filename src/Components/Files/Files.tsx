@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo, useState } from 'react';
 
-interface FileEntry {
+export interface FileEntry {
   file: File;
   buffer: ArrayBuffer;
   name: string;

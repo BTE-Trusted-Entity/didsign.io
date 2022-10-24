@@ -1,7 +1,6 @@
 import Dropzone from 'react-dropzone';
 import React, { useCallback, useEffect, useState } from 'react';
 import { base16 } from 'multiformats/bases/base16';
-import * as zip from '@zip.js/zip.js';
 
 import * as styles from './ImportFiles.module.css';
 
@@ -13,6 +12,7 @@ import {
   getVerifiedData,
   handleFilesFromZip,
   isDidSignFile,
+  unzipFileEntries,
 } from '../../Utils/verify-helper';
 import { useVerifiedSignature } from '../VerifiedSignature/VerifiedSignature';
 import { createHash, createHashFromHashArray } from '../../Utils/sign-helpers';
@@ -26,7 +26,7 @@ import { useConnect } from '../../Hooks/useConnect';
 
 export const ImportFilesVerifier = () => {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon);
-  const { hashes, set: setHashes } = useHashes();
+  const { hashes, setHashes } = useHashes();
   const {
     hashArray: jwsHash,
     sign: jws,
@@ -41,7 +41,7 @@ export const ImportFilesVerifier = () => {
   } = useVerifiedSignature();
   const [remark, setRemark] = useState<IRemark>();
   const [credentials, setCredentials] = useState<NamedCredential[]>();
-  const showPopup = useShowPopup().set;
+  const { showPopup } = useShowPopup();
 
   useConnect();
 
@@ -60,20 +60,8 @@ export const ImportFilesVerifier = () => {
 
       setZip(file.name);
 
-      const reader = new zip.ZipReader(new zip.BlobReader(file));
-      const entries = await reader.getEntries();
-      const newFiles = await Promise.all(
-        entries.map(async (entry) => {
-          if (!entry.getData) throw new Error('Impossible: no entry.getData');
-          const buffer = await entry.getData(new zip.Uint8ArrayWriter());
-          const name = entry.filename;
-          const file = new File([buffer], name);
-          return { file, buffer, name };
-        }),
-      );
+      const newFiles = await unzipFileEntries(file);
       setFiles(newFiles);
-      await reader.close();
-
       const verifiedSignatureContents = await handleFilesFromZip(newFiles);
 
       if (verifiedSignatureContents) {

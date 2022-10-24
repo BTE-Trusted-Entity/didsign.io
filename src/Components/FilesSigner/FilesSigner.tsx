@@ -16,8 +16,8 @@ export const FilesSigner = () => {
   const { files, setFiles } = useFiles();
   const { credentials, setSignature } = useSignature();
   const [signPopup, setSignPopup] = useState<boolean>(false);
-  const showPopup = useShowPopup().set;
-  const { hashes, set: setHashes } = useHashes();
+  const { showPopup } = useShowPopup();
+  const { hashes, setHashes } = useHashes();
 
   const showSignInfoPopup = () => {
     showPopup(true);
