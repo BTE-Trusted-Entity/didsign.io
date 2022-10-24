@@ -5,7 +5,7 @@ import {
   useRef,
   useState,
 } from 'react';
-
+import { without } from 'lodash-es';
 import classnames from 'classnames';
 
 import * as styles from './CredentialsInsertion.module.css';
@@ -125,16 +125,15 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
 
     if (!storedCredentials) throw new Error('No credentials');
 
-    const credentialsCopy = [...storedCredentials];
-    credentialsCopy.splice(credentialsCopy.indexOf(credential), 1);
+    const credentials = without(storedCredentials, credential);
 
     const updatedContents = {
       hashes,
       jws,
-      credentials: credentialsCopy.length > 0 ? credentialsCopy : undefined,
+      ...(credentials.length > 0 && { credentials }),
     };
 
-    setSignature((old) => ({ ...old, credentials: credentialsCopy }));
+    setSignature((old) => ({ ...old, credentials }));
     updateSignatureFile(updatedContents);
   }, [
     credential,

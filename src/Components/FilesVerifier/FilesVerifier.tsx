@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-
+import { findIndex, without } from 'lodash-es';
 import classnames from 'classnames';
 
 import * as styles from './FilesVerifier.module.css';
@@ -36,8 +36,9 @@ export const FilesVerifier = () => {
   const handleDeleteFile = (file: File) => {
     if (jwsStatus === 'Validating') return;
 
-    const index = files.findIndex((entry) => entry.file === file);
-    const didSignFileDeleted = isDidSignFile(files[index].name);
+    const index = findIndex(files, { file });
+    const fileEntry = files[index];
+    const didSignFileDeleted = isDidSignFile(fileEntry.name);
     if (didSignFileDeleted) {
       setVerifiedSignature((old) => ({
         ...old,
@@ -53,10 +54,10 @@ export const FilesVerifier = () => {
     clearEndpoint();
     setVerifiedSignature((old) => ({
       ...old,
-      filesStatus: old.filesStatus.splice(index, 1),
+      filesStatus: [...old.filesStatus].splice(index, 1),
     }));
-    setFiles((files) => [...files].splice(index, 1));
-    setHashes([...hashes].splice(index, 1));
+    setFiles((files) => without(files, fileEntry));
+    setHashes(without(hashes, hashes[index]));
   };
 
   if (files.length === 0) {

@@ -65,8 +65,9 @@ export const getVerifiedData = async (jws: string, remark?: IRemark) => {
 export async function unzipFileEntries(file: File): Promise<FileEntry[]> {
   const reader = new zip.ZipReader(new zip.BlobReader(file));
   const entries = await reader.getEntries();
+  const fileEntries = entries.filter(({ getData }) => getData);
   const result = await Promise.all(
-    entries.map(async (entry) => {
+    fileEntries.map(async (entry) => {
       if (!entry.getData) throw new Error('Impossible: no entry.getData');
       const buffer = await entry.getData(new zip.Uint8ArrayWriter());
       const name = entry.filename;

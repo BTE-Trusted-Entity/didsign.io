@@ -1,6 +1,6 @@
 import Dropzone from 'react-dropzone';
 import React, { useCallback, useState } from 'react';
-
+import { without } from 'lodash-es';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 
 import * as styles from './ImportFiles.module.css';
@@ -34,11 +34,10 @@ export const ImportFilesSigner = () => {
   const handleDrop = useCallback(
     async (acceptedFiles: File[]) => {
       if (signature) {
-        const didSignFileIndex = files.findIndex((file) =>
-          isDidSignFile(file.name),
-        );
-        if (didSignFileIndex < 0) return;
-        setFiles((files) => [...files].splice(didSignFileIndex, 1));
+        const didSignFile = files.find(({ name }) => isDidSignFile(name));
+        if (!didSignFile) return;
+
+        setFiles((files) => without(files, didSignFile));
         setSignature({});
       }
       acceptedFiles.forEach(async (file: File) => {

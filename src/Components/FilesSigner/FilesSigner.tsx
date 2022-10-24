@@ -1,4 +1,5 @@
 import { Fragment, useState } from 'react';
+import { without } from 'lodash-es';
 
 import * as styles from './FilesSigner.module.css';
 
@@ -29,18 +30,14 @@ export const FilesSigner = () => {
     setSignPopup(false);
     document.body.style.overflowY = 'auto';
   };
-  const handleDeleteFile = (file: File) => {
-    const index = files.findIndex((entry) => entry.file === file);
-    setHashes([...hashes].splice(index, 1));
-    setFiles((files) => [...files].splice(index, 1));
+  const handleDeleteFile = (index: number) => {
+    setHashes(without(hashes, hashes[index]));
+    setFiles((files) => without(files, files[index]));
 
-    const didSignFileIndex = files.findIndex((file) =>
-      isDidSignFile(file.name),
-    );
+    const didSignFile = files.find(({ name }) => isDidSignFile(name));
+    if (!didSignFile) return;
 
-    if (didSignFileIndex < 0) return;
-
-    setFiles((files) => [...files].splice(didSignFileIndex, 1));
+    setFiles((files) => without(files, didSignFile));
     setSignature({});
   };
   return (
@@ -80,7 +77,7 @@ export const FilesSigner = () => {
                 <button
                   className={styles.deleteBtn}
                   aria-label="delete file"
-                  onClick={() => handleDeleteFile(file)}
+                  onClick={() => handleDeleteFile(index)}
                 />
               </div>
             )}

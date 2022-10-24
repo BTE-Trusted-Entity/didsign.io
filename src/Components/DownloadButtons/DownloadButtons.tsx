@@ -17,7 +17,7 @@ export const DownloadButtons = () => {
 
   async function generateZipFile(files: FileEntry[]) {
     const zip = new JSZip();
-    files.map(({ buffer, name }) => zip.file(name, buffer));
+    files.forEach(({ buffer, name }) => zip.file(name, buffer));
     const content = await zip.generateAsync(
       {
         type: 'blob',

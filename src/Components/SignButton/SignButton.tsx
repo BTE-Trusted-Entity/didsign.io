@@ -63,11 +63,11 @@ export const SignButton = () => {
       });
 
       await generateSignatureFile(blob);
-      setSignature((old) => ({ ...old, signature }));
-
-      if (credentials) {
-        setSignature((old) => ({ ...old, credentials }));
-      }
+      setSignature((old) => ({
+        ...old,
+        signature,
+        ...(credentials && { credentials }),
+      }));
 
       showPopup(false);
 
