@@ -120,15 +120,6 @@ export const getFileNames = async (file: File): Promise<string[]> => {
   return filenames;
 };
 
-export const replaceFileStatus = (statusArray: boolean[]): boolean[] => {
-  statusArray = statusArray.map((element) => {
-    if (element === true) {
-      return false;
-    }
-    return element;
-  });
-  return statusArray;
-};
 export const isDidSignFile = (file: string) => {
   return file.split('.').pop() == 'didsign';
 };

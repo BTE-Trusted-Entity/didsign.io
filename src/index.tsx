@@ -11,6 +11,7 @@ import { HashesProvider } from './Components/Hashes/Hashes';
 import { FilesProvider } from './Components/Files/Files';
 import { SignatureProvider } from './Components/Signature/Signature';
 import { JWSProvider } from './Components/JWS/JWS';
+import { VerifiedSignatureProvider } from './Components/VerifiedSignature/VerifiedSignature';
 import { DIDSign } from './Components/DidSign/DIDSign';
 import { store } from './app/store';
 
@@ -22,7 +23,9 @@ ReactDOM.render(
           <FilesProvider>
             <SignatureProvider>
               <JWSProvider>
-                <DIDSign />
+                <VerifiedSignatureProvider>
+                  <DIDSign />
+                </VerifiedSignatureProvider>
               </JWSProvider>
             </SignatureProvider>
           </FilesProvider>

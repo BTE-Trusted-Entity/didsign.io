@@ -4,8 +4,7 @@ import classnames from 'classnames';
 
 import * as styles from './ServiceEndpoint.module.css';
 
-import { useAppSelector } from '../../app/hooks';
-import { selectVerifiedDid } from '../../Features/Signer/VerifiedSignatureSlice';
+import { useVerifiedSignature } from '../VerifiedSignature/VerifiedSignature';
 
 import { CredentialVerifier } from '../Credential/Credential';
 
@@ -15,7 +14,7 @@ interface Props {
 }
 
 export const ServiceEndpoint = ({ url, endpointType }: Props) => {
-  const did = useAppSelector(selectVerifiedDid);
+  const { did } = useVerifiedSignature();
 
   const [credential, setCredential] = useState();
 

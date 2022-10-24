@@ -19,10 +19,7 @@ import {
 } from '../BottomSection/BottomSection';
 import { useHashes } from '../Hashes/Hashes';
 import { useSignature } from '../Signature/Signature';
-import {
-  clearEndpoint,
-  clearFileStatuses,
-} from '../../Features/Signer/VerifiedSignatureSlice';
+import { useVerifiedSignature } from '../VerifiedSignature/VerifiedSignature';
 import { useJWS } from '../JWS/JWS';
 import { usePreventNavigation } from '../../Hooks/usePreventNavigation';
 import { Terms } from '../Terms/Terms';
@@ -37,16 +34,26 @@ const Signer = () => {
   const { clearJWS } = useJWS();
   const dispatch = useAppDispatch();
   const setHashes = useHashes().set;
+  const { clearEndpoint, setVerifiedSignature } = useVerifiedSignature();
 
   useEffect(() => {
-    dispatch(clearEndpoint());
+    clearEndpoint();
     clearJWS();
-    dispatch(clearFileStatuses());
+    setVerifiedSignature((old) => ({ ...old, filesStatus: [] }));
     setFiles([]);
     setZip();
     setHashes([]);
     setSignature({});
-  }, [clearJWS, dispatch, setFiles, setHashes, setSignature, setZip]);
+  }, [
+    clearEndpoint,
+    clearJWS,
+    dispatch,
+    setFiles,
+    setHashes,
+    setSignature,
+    setVerifiedSignature,
+    setZip,
+  ]);
 
   return (
     <main className={styles.container}>

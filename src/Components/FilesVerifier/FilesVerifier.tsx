@@ -4,15 +4,8 @@ import classnames from 'classnames';
 
 import * as styles from './FilesVerifier.module.css';
 
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useFiles } from '../Files/Files';
-import {
-  clearEndpoint,
-  clearFileStatuses,
-  deleteFilestatusOnIndex,
-  fileStatus,
-  replaceStatus,
-} from '../../Features/Signer/VerifiedSignatureSlice';
+import { useVerifiedSignature } from '../VerifiedSignature/VerifiedSignature';
 import { useHashes } from '../Hashes/Hashes';
 import { useJWS } from '../JWS/JWS';
 
@@ -22,9 +15,9 @@ export const FilesVerifier = () => {
   const { files, zip, setFiles, setZip } = useFiles();
 
   const { signStatus: jwsStatus, clearJWS, setJWS } = useJWS();
-  const filesStatus = useAppSelector(fileStatus);
+  const { filesStatus, clearEndpoint, setVerifiedSignature } =
+    useVerifiedSignature();
 
-  const dispatch = useAppDispatch();
   const { hashes, set: setHashes } = useHashes();
 
   const handleDeleteAll = () => {
@@ -32,12 +25,12 @@ export const FilesVerifier = () => {
       return;
     }
 
-    dispatch(clearEndpoint());
+    clearEndpoint();
     setFiles([]);
     setZip();
     setHashes([]);
     clearJWS();
-    dispatch(clearFileStatuses());
+    setVerifiedSignature((old) => ({ ...old, filesStatus: [] }));
   };
 
   const handleDeleteFile = (file: File) => {
@@ -46,7 +39,10 @@ export const FilesVerifier = () => {
     const index = files.findIndex((entry) => entry.file === file);
     const didSignFileDeleted = isDidSignFile(files[index].name);
     if (didSignFileDeleted) {
-      dispatch(replaceStatus());
+      setVerifiedSignature((old) => ({
+        ...old,
+        filesStatus: old.filesStatus.map(() => false),
+      }));
       clearJWS();
     }
 
@@ -54,8 +50,11 @@ export const FilesVerifier = () => {
       setJWS((old) => ({ ...old, signStatus: 'Not Checked' }));
     }
 
-    dispatch(clearEndpoint());
-    dispatch(deleteFilestatusOnIndex(index));
+    clearEndpoint();
+    setVerifiedSignature((old) => ({
+      ...old,
+      filesStatus: old.filesStatus.splice(index, 1),
+    }));
     setFiles((files) => [...files].splice(index, 1));
     setHashes([...hashes].splice(index, 1));
   };

@@ -2,11 +2,7 @@ import React from 'react';
 
 import * as styles from './BottomSection.module.css';
 
-import { useAppDispatch } from '../../app/hooks';
-import {
-  clearEndpoint,
-  clearFileStatuses,
-} from '../../Features/Signer/VerifiedSignatureSlice';
+import { useVerifiedSignature } from '../VerifiedSignature/VerifiedSignature';
 import { useFiles } from '../Files/Files';
 import { useSignature } from '../Signature/Signature';
 import { useJWS } from '../JWS/JWS';
@@ -73,19 +69,19 @@ export const BottomSectionSigner = () => {
 
 export const BottomSectionVerifier = () => {
   const { signStatus: jwsStatus, clearJWS } = useJWS();
-  const dispatch = useAppDispatch();
   const setHashes = useHashes().set;
   const { setFiles, setZip } = useFiles();
   const { setSignature } = useSignature();
+  const { clearEndpoint, setVerifiedSignature } = useVerifiedSignature();
 
   const handleDelete = () => {
     setSignature({});
     setFiles([]);
     setZip();
     setHashes([]);
-    dispatch(clearEndpoint());
+    clearEndpoint();
     clearJWS();
-    dispatch(clearFileStatuses());
+    setVerifiedSignature((old) => ({ ...old, filesStatus: [] }));
   };
 
   return (

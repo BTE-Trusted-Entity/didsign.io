@@ -2,9 +2,8 @@ import React, { createContext, useContext, useMemo, useState } from 'react';
 
 import * as styles from './Popups.module.css';
 
-import { useAppDispatch } from '../../app/hooks';
 import { useJWS } from '../JWS/JWS';
-import { clearEndpoint } from '../../Features/Signer/VerifiedSignatureSlice';
+import { useVerifiedSignature } from '../VerifiedSignature/VerifiedSignature';
 
 interface ShowPopupContextType {
   visible: boolean;
@@ -43,13 +42,13 @@ interface Props {
 }
 
 export const MultipleSignPopup = () => {
-  const dispatch = useAppDispatch();
   const showPopup = useShowPopup().set;
   const { setJWS } = useJWS();
+  const { clearEndpoint } = useVerifiedSignature();
 
   const handleDismiss = () => {
     showPopup(false);
-    dispatch(clearEndpoint());
+    clearEndpoint();
     setJWS((old) => ({ ...old, signStatus: 'Not Checked' }));
   };
   return (

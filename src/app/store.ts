@@ -1,11 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import { VerifiedSignatureSlice } from '../Features/Signer/VerifiedSignatureSlice';
-
 export const store = configureStore({
-  reducer: {
-    contents: VerifiedSignatureSlice.reducer,
-  },
+  reducer: {},
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,

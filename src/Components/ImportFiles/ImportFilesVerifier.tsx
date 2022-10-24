@@ -8,21 +8,14 @@ import * as styles from './ImportFiles.module.css';
 import ImportIcon from '../../ImageAssets/iconBIG_import_NEW.svg';
 import ReleaseIcon from '../../ImageAssets/iconBIG_import_release.svg';
 import { useFiles } from '../Files/Files';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useAppDispatch } from '../../app/hooks';
 import {
   getFileNames,
   getVerifiedData,
   handleFilesFromZip,
   isDidSignFile,
 } from '../../Utils/verify-helper';
-import {
-  clearEndpoint,
-  fileStatus,
-  update,
-  updateAllFilesStatus,
-  updateIndividualFileStatus,
-  updateIndividualFileStatusOnIndex,
-} from '../../Features/Signer/VerifiedSignatureSlice';
+import { useVerifiedSignature } from '../VerifiedSignature/VerifiedSignature';
 import { createHash, createHashFromHashArray } from '../../Utils/sign-helpers';
 import { IRemark, NamedCredential, SignDoc } from '../../Utils/types';
 import { useJWS } from '../JWS/JWS';
@@ -42,7 +35,11 @@ export const ImportFilesVerifier = () => {
     setJWS,
   } = useJWS();
   const { files, setFiles, setZip } = useFiles();
-  const statuses = useAppSelector(fileStatus);
+  const {
+    filesStatus: statuses,
+    clearEndpoint,
+    setVerifiedSignature,
+  } = useVerifiedSignature();
   const [remark, setRemark] = useState<IRemark>();
   const [credentials, setCredentials] = useState<NamedCredential[]>();
   const showPopup = useShowPopup().set;
@@ -84,14 +81,20 @@ export const ImportFilesVerifier = () => {
 
       if (verifiedSignatureContents) {
         setJWS((old) => ({ ...old, signStatus: 'Verified' }));
-        dispatch(update(verifiedSignatureContents));
-        dispatch(updateAllFilesStatus(verifiedSignatureContents.filesStatus));
+        setVerifiedSignature((old) => ({
+          ...verifiedSignatureContents,
+          endpoints: [...old.endpoints, ...verifiedSignatureContents.endpoints],
+          filesStatus: [
+            ...old.filesStatus,
+            ...verifiedSignatureContents.filesStatus,
+          ],
+        }));
       } else {
         setJWS((old) => ({ ...old, signStatus: 'Invalid' }));
       }
       return;
     },
-    [dispatch, setFiles, setJWS, setZip],
+    [setFiles, setJWS, setVerifiedSignature, setZip],
   );
 
   const handleIndividualCase = useCallback(
@@ -124,16 +127,22 @@ export const ImportFilesVerifier = () => {
           hashArray: [...old.hashArray, ...hashesWithPrefix],
           sign: jws,
         }));
-        dispatch(updateIndividualFileStatus(true));
+        setVerifiedSignature((old) => ({
+          ...old,
+          filesStatus: [...old.filesStatus, true],
+        }));
         setHashes([...hashes, '']);
       } else {
         const hash = await createHash(buffer);
         setHashes([...hashes, hash]);
-        dispatch(updateIndividualFileStatus(false));
+        setVerifiedSignature((old) => ({
+          ...old,
+          filesStatus: [...old.filesStatus, false],
+        }));
       }
       setFiles((files) => [...files, { file, buffer, name: file.name }]);
     },
-    [dispatch, hashes, setFiles, setHashes, setJWS],
+    [hashes, setFiles, setHashes, setJWS, setVerifiedSignature],
   );
 
   const handleDrop = useCallback(
@@ -181,35 +190,37 @@ export const ImportFilesVerifier = () => {
   );
   useEffect(() => {
     if (jwsHash.length) {
-      hashes.filter(async (hash, index) => {
+      hashes.forEach((hash, index) => {
         if (jwsHash.includes(hash)) {
-          dispatch(updateIndividualFileStatusOnIndex(index));
+          setVerifiedSignature((old) => {
+            const filesStatus = [...old.filesStatus];
+            filesStatus[index] = true;
+            return { ...old, filesStatus };
+          });
         } else {
           if (hash !== '') {
             setJWS((old) => ({ ...old, signStatus: 'Invalid' }));
           }
-          return;
         }
       });
     }
-  }, [dispatch, hashes, jwsHash, jwsStatus, setJWS]);
+  }, [dispatch, hashes, jwsHash, jwsStatus, setJWS, setVerifiedSignature]);
 
   const fetchDidDocument = useCallback(async () => {
     setJWS((old) => ({ ...old, signStatus: 'Validating' }));
     const verifiedSignatureInstance = await getVerifiedData(jws, remark);
     if (verifiedSignatureInstance) {
       setJWS((old) => ({ ...old, signStatus: 'Verified' }));
-      dispatch(
-        update({
-          ...verifiedSignatureInstance,
-          filesStatus: statuses,
-          credentials,
-        }),
-      );
+      setVerifiedSignature((old) => ({
+        ...verifiedSignatureInstance,
+        filesStatus: statuses,
+        credentials,
+        endpoints: [...old.endpoints, ...verifiedSignatureInstance.endpoints],
+      }));
     } else {
       setJWS((old) => ({ ...old, signStatus: 'Invalid' }));
     }
-  }, [credentials, dispatch, jws, remark, setJWS, statuses]);
+  }, [credentials, jws, remark, setJWS, setVerifiedSignature, statuses]);
 
   useEffect(() => {
     if (jwsStatus === 'Not Checked') {
@@ -217,11 +228,11 @@ export const ImportFilesVerifier = () => {
         if (!statuses.includes(false)) {
           fetchDidDocument();
         } else {
-          dispatch(clearEndpoint());
+          clearEndpoint();
         }
       }
     }
-  }, [statuses, jwsStatus, dispatch, fetchDidDocument]);
+  }, [statuses, jwsStatus, dispatch, fetchDidDocument, clearEndpoint]);
   return (
     <div className={styles.container}>
       {jwsStatus === 'Multiple Sign' && <MultipleSignPopup />}
