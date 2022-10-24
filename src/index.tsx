@@ -10,6 +10,7 @@ import { ShowPopupProvider } from './Components/Popups/Popups';
 import { HashesProvider } from './Components/Hashes/Hashes';
 import { FilesProvider } from './Components/Files/Files';
 import { SignatureProvider } from './Components/Signature/Signature';
+import { JWSProvider } from './Components/JWS/JWS';
 import { DIDSign } from './Components/DidSign/DIDSign';
 import { store } from './app/store';
 
@@ -20,7 +21,9 @@ ReactDOM.render(
         <HashesProvider>
           <FilesProvider>
             <SignatureProvider>
-              <DIDSign />
+              <JWSProvider>
+                <DIDSign />
+              </JWSProvider>
             </SignatureProvider>
           </FilesProvider>
         </HashesProvider>

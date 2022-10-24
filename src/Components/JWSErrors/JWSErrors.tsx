@@ -2,11 +2,10 @@ import React from 'react';
 
 import * as styles from './JWSErrors.module.css';
 
-import { useAppSelector } from '../../app/hooks';
-import { selectJwsSignStatus } from '../../Features/Signer/VerifyJwsSlice';
+import { useJWS } from '../JWS/JWS';
 
 export const JWSErrors = () => {
-  const jwsStatus = useAppSelector(selectJwsSignStatus);
+  const { signStatus: jwsStatus } = useJWS();
   if (jwsStatus === 'Multiple Sign') {
     return null;
   }

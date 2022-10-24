@@ -14,18 +14,14 @@ import {
   replaceStatus,
 } from '../../Features/Signer/VerifiedSignatureSlice';
 import { useHashes } from '../Hashes/Hashes';
-import {
-  clearJWS,
-  selectJwsSignStatus,
-  updateSignStatus,
-} from '../../Features/Signer/VerifyJwsSlice';
+import { useJWS } from '../JWS/JWS';
 
 import { isDidSignFile } from '../../Utils/verify-helper';
 
 export const FilesVerifier = () => {
   const { files, zip, setFiles, setZip } = useFiles();
 
-  const jwsStatus = useAppSelector(selectJwsSignStatus);
+  const { signStatus: jwsStatus, clearJWS, setJWS } = useJWS();
   const filesStatus = useAppSelector(fileStatus);
 
   const dispatch = useAppDispatch();
@@ -40,7 +36,7 @@ export const FilesVerifier = () => {
     setFiles([]);
     setZip();
     setHashes([]);
-    dispatch(clearJWS());
+    clearJWS();
     dispatch(clearFileStatuses());
   };
 
@@ -51,11 +47,11 @@ export const FilesVerifier = () => {
     const didSignFileDeleted = isDidSignFile(files[index].name);
     if (didSignFileDeleted) {
       dispatch(replaceStatus());
-      dispatch(clearJWS());
+      clearJWS();
     }
 
     if (jwsStatus !== 'Corrupted') {
-      dispatch(updateSignStatus('Not Checked'));
+      setJWS((old) => ({ ...old, signStatus: 'Not Checked' }));
     }
 
     dispatch(clearEndpoint());

@@ -23,7 +23,7 @@ import {
   clearEndpoint,
   clearFileStatuses,
 } from '../../Features/Signer/VerifiedSignatureSlice';
-import { clearJWS } from '../../Features/Signer/VerifyJwsSlice';
+import { useJWS } from '../JWS/JWS';
 import { usePreventNavigation } from '../../Hooks/usePreventNavigation';
 import { Terms } from '../Terms/Terms';
 import { Privacy } from '../Privacy/Privacy';
@@ -34,18 +34,19 @@ import { Maintenance } from '../Maintenance/Maintenance';
 const Signer = () => {
   const { files, setFiles, setZip } = useFiles();
   const { setSignature } = useSignature();
+  const { clearJWS } = useJWS();
   const dispatch = useAppDispatch();
   const setHashes = useHashes().set;
 
   useEffect(() => {
     dispatch(clearEndpoint());
-    dispatch(clearJWS());
+    clearJWS();
     dispatch(clearFileStatuses());
     setFiles([]);
     setZip();
     setHashes([]);
     setSignature({});
-  }, [dispatch, setFiles, setHashes, setSignature, setZip]);
+  }, [clearJWS, dispatch, setFiles, setHashes, setSignature, setZip]);
 
   return (
     <main className={styles.container}>

@@ -3,7 +3,7 @@ import React, { createContext, useContext, useMemo, useState } from 'react';
 import * as styles from './Popups.module.css';
 
 import { useAppDispatch } from '../../app/hooks';
-import { updateSignStatus } from '../../Features/Signer/VerifyJwsSlice';
+import { useJWS } from '../JWS/JWS';
 import { clearEndpoint } from '../../Features/Signer/VerifiedSignatureSlice';
 
 interface ShowPopupContextType {
@@ -45,11 +45,12 @@ interface Props {
 export const MultipleSignPopup = () => {
   const dispatch = useAppDispatch();
   const showPopup = useShowPopup().set;
+  const { setJWS } = useJWS();
 
   const handleDismiss = () => {
     showPopup(false);
     dispatch(clearEndpoint());
-    dispatch(updateSignStatus('Not Checked'));
+    setJWS((old) => ({ ...old, signStatus: 'Not Checked' }));
   };
   return (
     <div className={styles.container}>

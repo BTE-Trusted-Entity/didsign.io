@@ -12,7 +12,7 @@ import {
   selectVerifiedSign,
   selectW3Name,
 } from '../../Features/Signer/VerifiedSignatureSlice';
-import { selectJwsSignStatus } from '../../Features/Signer/VerifyJwsSlice';
+import { useJWS } from '../JWS/JWS';
 import { JWSErrors } from '../JWSErrors/JWSErrors';
 import { ServiceEndpoint } from '../ServiceEndpoints/ServiceEndpoint';
 
@@ -27,7 +27,7 @@ export const DidDocument = () => {
   const signature = useAppSelector(selectVerifiedSign);
   const attachedCredentials = useAppSelector(selectAttachedCredentials);
   const seviceEndpoints = useAppSelector(selectServiceEndpoints);
-  const jwsStatus = useAppSelector(selectJwsSignStatus);
+  const { signStatus: jwsStatus } = useJWS();
   const subscanHost = useSubscanHost();
 
   if (jwsStatus === 'Not Checked' || jwsStatus === 'Validating') return null;

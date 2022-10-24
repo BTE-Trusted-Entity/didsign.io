@@ -1,12 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import { VerifiedSignatureSlice } from '../Features/Signer/VerifiedSignatureSlice';
-import { jwsHashSlice } from '../Features/Signer/VerifyJwsSlice';
 
 export const store = configureStore({
   reducer: {
     contents: VerifiedSignatureSlice.reducer,
-    jwshash: jwsHashSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

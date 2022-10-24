@@ -2,17 +2,14 @@ import React from 'react';
 
 import * as styles from './BottomSection.module.css';
 
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useAppDispatch } from '../../app/hooks';
 import {
   clearEndpoint,
   clearFileStatuses,
 } from '../../Features/Signer/VerifiedSignatureSlice';
 import { useFiles } from '../Files/Files';
 import { useSignature } from '../Signature/Signature';
-import {
-  clearJWS,
-  selectJwsSignStatus,
-} from '../../Features/Signer/VerifyJwsSlice';
+import { useJWS } from '../JWS/JWS';
 import { useHashes } from '../Hashes/Hashes';
 import { DownloadButtons } from '../DownloadButtons/DownloadButtons';
 import { SignButton } from '../SignButton/SignButton';
@@ -75,7 +72,7 @@ export const BottomSectionSigner = () => {
 };
 
 export const BottomSectionVerifier = () => {
-  const jwsStatus = useAppSelector(selectJwsSignStatus);
+  const { signStatus: jwsStatus, clearJWS } = useJWS();
   const dispatch = useAppDispatch();
   const setHashes = useHashes().set;
   const { setFiles, setZip } = useFiles();
@@ -87,7 +84,7 @@ export const BottomSectionVerifier = () => {
     setZip();
     setHashes([]);
     dispatch(clearEndpoint());
-    dispatch(clearJWS());
+    clearJWS();
     dispatch(clearFileStatuses());
   };
 

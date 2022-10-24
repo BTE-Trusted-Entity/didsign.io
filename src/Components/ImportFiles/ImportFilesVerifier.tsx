@@ -25,14 +25,7 @@ import {
 } from '../../Features/Signer/VerifiedSignatureSlice';
 import { createHash, createHashFromHashArray } from '../../Utils/sign-helpers';
 import { IRemark, NamedCredential, SignDoc } from '../../Utils/types';
-import {
-  addJwsHashArray,
-  addJwsSign,
-  selectJwsHash,
-  selectJwsSign,
-  selectJwsSignStatus,
-  updateSignStatus,
-} from '../../Features/Signer/VerifyJwsSlice';
+import { useJWS } from '../JWS/JWS';
 import { useHashes } from '../Hashes/Hashes';
 import { FastAnimation, SlowAnimationVerifier } from '../Animation/Animation';
 import { MultipleSignPopup, useShowPopup } from '../Popups/Popups';
@@ -42,9 +35,12 @@ import { useConnect } from '../../Hooks/useConnect';
 export const ImportFilesVerifier = () => {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon);
   const { hashes, set: setHashes } = useHashes();
-  const jwsHash = useAppSelector(selectJwsHash);
-  const jws = useAppSelector(selectJwsSign);
-  const jwsStatus = useAppSelector(selectJwsSignStatus);
+  const {
+    hashArray: jwsHash,
+    sign: jws,
+    signStatus: jwsStatus,
+    setJWS,
+  } = useJWS();
   const { files, setFiles, setZip } = useFiles();
   const statuses = useAppSelector(fileStatus);
   const [remark, setRemark] = useState<IRemark>();
@@ -57,16 +53,16 @@ export const ImportFilesVerifier = () => {
 
   const showMultipleSignPopup = useCallback(() => {
     setImportIcon(ImportIcon);
-    dispatch(updateSignStatus('Multiple Sign'));
+    setJWS((old) => ({ ...old, signStatus: 'Multiple Sign' }));
     showPopup(true);
-  }, [dispatch, showPopup]);
+  }, [setJWS, showPopup]);
 
   const filesArrayHasDidSign = (files: File[]) =>
     files.some((file) => isDidSignFile(file.name));
 
   const handleZipCase = useCallback(
     async (file: File) => {
-      dispatch(updateSignStatus('Validating'));
+      setJWS((old) => ({ ...old, signStatus: 'Validating' }));
 
       setZip(file.name);
 
@@ -87,15 +83,15 @@ export const ImportFilesVerifier = () => {
       const verifiedSignatureContents = await handleFilesFromZip(newFiles);
 
       if (verifiedSignatureContents) {
-        dispatch(updateSignStatus('Verified'));
+        setJWS((old) => ({ ...old, signStatus: 'Verified' }));
         dispatch(update(verifiedSignatureContents));
         dispatch(updateAllFilesStatus(verifiedSignatureContents.filesStatus));
       } else {
-        dispatch(updateSignStatus('Invalid'));
+        setJWS((old) => ({ ...old, signStatus: 'Invalid' }));
       }
       return;
     },
-    [dispatch, setFiles, setZip],
+    [dispatch, setFiles, setJWS, setZip],
   );
 
   const handleIndividualCase = useCallback(
@@ -120,10 +116,14 @@ export const ImportFilesVerifier = () => {
         const baseHash = await createHashFromHashArray(hashesWithPrefix);
         const hashFromJWS: string = JSON.parse(atob(jws.split('.')[1])).hash;
         if (baseHash !== addMissingPrefix(hashFromJWS)) {
-          dispatch(updateSignStatus('Corrupted'));
+          setJWS((old) => ({ ...old, signStatus: 'Corrupted' }));
         }
-        dispatch(addJwsSign(jws));
-        dispatch(addJwsHashArray(hashesWithPrefix));
+
+        setJWS((old) => ({
+          ...old,
+          hashArray: [...old.hashArray, ...hashesWithPrefix],
+          sign: jws,
+        }));
         dispatch(updateIndividualFileStatus(true));
         setHashes([...hashes, '']);
       } else {
@@ -133,7 +133,7 @@ export const ImportFilesVerifier = () => {
       }
       setFiles((files) => [...files, { file, buffer, name: file.name }]);
     },
-    [dispatch, hashes, setFiles, setHashes],
+    [dispatch, hashes, setFiles, setHashes, setJWS],
   );
 
   const handleDrop = useCallback(
@@ -156,7 +156,7 @@ export const ImportFilesVerifier = () => {
       acceptedFiles.forEach(async (file: File) => {
         setImportIcon(ImportIcon);
         if (files.length === 0) {
-          dispatch(updateSignStatus('Not Checked'));
+          setJWS((old) => ({ ...old, signStatus: 'Not Checked' }));
         }
 
         if (file.name.split('.').pop() === 'zip') {
@@ -177,13 +177,7 @@ export const ImportFilesVerifier = () => {
         await handleIndividualCase(file);
       });
     },
-    [
-      dispatch,
-      files,
-      handleIndividualCase,
-      handleZipCase,
-      showMultipleSignPopup,
-    ],
+    [files, handleIndividualCase, handleZipCase, setJWS, showMultipleSignPopup],
   );
   useEffect(() => {
     if (jwsHash.length) {
@@ -192,19 +186,19 @@ export const ImportFilesVerifier = () => {
           dispatch(updateIndividualFileStatusOnIndex(index));
         } else {
           if (hash !== '') {
-            dispatch(updateSignStatus('Invalid'));
+            setJWS((old) => ({ ...old, signStatus: 'Invalid' }));
           }
           return;
         }
       });
     }
-  }, [dispatch, hashes, jwsHash, jwsStatus]);
+  }, [dispatch, hashes, jwsHash, jwsStatus, setJWS]);
 
   const fetchDidDocument = useCallback(async () => {
-    dispatch(updateSignStatus('Validating'));
+    setJWS((old) => ({ ...old, signStatus: 'Validating' }));
     const verifiedSignatureInstance = await getVerifiedData(jws, remark);
     if (verifiedSignatureInstance) {
-      dispatch(updateSignStatus('Verified'));
+      setJWS((old) => ({ ...old, signStatus: 'Verified' }));
       dispatch(
         update({
           ...verifiedSignatureInstance,
@@ -213,9 +207,9 @@ export const ImportFilesVerifier = () => {
         }),
       );
     } else {
-      dispatch(updateSignStatus('Invalid'));
+      setJWS((old) => ({ ...old, signStatus: 'Invalid' }));
     }
-  }, [credentials, dispatch, jws, remark, statuses]);
+  }, [credentials, dispatch, jws, remark, setJWS, statuses]);
 
   useEffect(() => {
     if (jwsStatus === 'Not Checked') {
