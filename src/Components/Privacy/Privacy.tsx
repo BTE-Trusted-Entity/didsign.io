@@ -34,7 +34,7 @@ export const Privacy = () => {
             As the controller, the B.T.E. BOTLabs Trusted Entity GmbH has
             implemented numerous technical and organizational measures to ensure
             the most complete protection of personal data processed through this
-            website. However, Internetbased data transmissions may in principle
+            website. However, Internet-based data transmissions may in principle
             have security gaps, so absolute protection may not be guaranteed.
             For this reason, every data subject is free to transfer personal
             data to us via alternative means, e.g. by telephone.
@@ -96,7 +96,7 @@ export const Privacy = () => {
               </h3>
               <p>
                 Restriction of processing is the marking of stored personal data
-                with the aim of limiting their processing in the future.{' '}
+                with the aim of limiting their processing in the future.
               </p>
             </li>
             <li>
@@ -223,86 +223,97 @@ export const Privacy = () => {
         </section>
 
         <section>
-          <h2 className={styles.sectionHeading}>3. Cookies</h2>
+          <h2 className={styles.sectionHeading}>
+            3. Provision of the Website and creation of log files
+          </h2>
           <p>
-            The Internet pages of the B.T.E. BOTLabs Trusted Entity GmbH for
-            DIDsign use cookies. Cookies are text files that are stored in a
-            computer system via an Internet browser.
+            Every time you visit our website, the system of our commissioned
+            provider (hosting services): Amazon Web Services, Inc, based in 410
+            Terry Avenue North Seattle WA 98109, United States, collects and
+            stores data and information from the computer system of the calling
+            computer. For that purpose, only servers in Frankfurt am Main,
+            Germany are used.
           </p>
           <p>
-            Many Internet sites and servers use cookies. Many cookies contain a
-            so-called cookie ID. A cookie ID is a unique identifier of the
-            cookie. It consists of a character string through which Internet
-            pages and servers can be assigned to the specific Internet browser
-            in which the cookie was stored. This allows visited Internet sites
-            and servers to differentiate the individual browser of the dats
-            subject from other Internet browsers that contain other cookies. A
-            specific Internet browser can be recognized and identified using the
-            unique cookie ID.
+            We automatically collect and store information in so-called server
+            log files, which the computer system of the computer used to use the
+            Website automatically transmits to us: (i) browser type and browser
+            version; (ii) operating system used; (iii) your IP address; (iv)
+            time of the server inquiry; (v) website from which you accessed our
+            website.
           </p>
           <p>
-            Through the use of cookies, the B.T.E. BOTLabs Trusted Entity GmbH
-            can provide the users of this website with more user-friendly
-            services that would not be possible without the cookie setting.
+            The data are stored in the log files of our system. These data are
+            not stored together with other User’s personal data and are not
+            combined with other data sources.
           </p>
           <p>
-            By means of a cookie, the information and offers on our website can
-            be optimized with the user in mind. Cookies allow us, as previously
-            mentioned, to recognize our website users. The purpose of this
-            recognition is to make it easier for users to utilize our website.
-            The website user that uses cookies, e.g. does not have to enter
-            access data each time the website is accessed, because this is taken
-            over by the website, and the cookie is thus stored on the user’s
-            computer system. Another example is the cookie of a shopping cart in
-            an online shop. The online store remembers the articles that a
-            customer has placed in the virtual shopping cart via a cookie.
+            The legal basis for the temporary storage of data and log files is
+            Art. 6 paragraph 1 lit. f) GDPR. The temporary storage by the system
+            is necessary to enable the Website to be delivered to your computer.
+            The storage in log files is done to ensure the functionality of the
+            Website. In addition, the data are used to optimize the Website and
+            to ensure the security of our information technology systems. For
+            these purposes, the data must be stored for the duration of the
+            session.
           </p>
           <p>
-            The data subject may, at any time, prevent the setting of cookies
-            through our website by means of a corresponding setting of the
-            Internet browser used, and may thus permanently deny the setting of
-            cookies. Furthermore, already set cookies may be deleted at any time
-            via an Internet browser or other software programs. This is possible
-            in all popular Internet browsers. If the data subject deactivates
-            the setting of cookies in the Internet browser used, not all
-            functions of our website may be entirely usable.
+            Our legitimate interest in data processing pursuant to Article 6
+            paragraph 1 lit. f) GDPR also lies in these purposes. Without
+            collection and storage of data as described, the operation of the
+            Website is not possible.
+          </p>
+          <p>
+            The data are stored for not more than 24 hours and will be then
+            deleted from the web server.
           </p>
         </section>
 
         <section>
-          <h2 className={styles.sectionHeading}>
-            4. Collection of general data and information
-          </h2>
+          <h2 className={styles.sectionHeading}>4. Email contact</h2>
           <p>
-            The website of the B.T.E. BOTLabs Trusted Entity GmbH collects a
-            series of general data and information when a data subject or
-            automated system calls up the website. This general data and
-            information are stored in the server log files. Collected may be (1)
-            the browser types and versions used, (2) the operating system used
-            by the accessing system, (3) the website from which an accessing
-            system reaches our website (so-called referrers), (4) the
-            sub-websites, (5) the date and time of access to the Internet site,
-            (6) an Internet protocol address (IP address), (7) the Internet
-            service provider of the accessing system, and (8) any other similar
-            data and information that may be used in the event of attacks on our
-            information technology systems.
+            The email address given on our website: info@botlabs.io can of
+            course be used by you for electronic contact.
           </p>
           <p>
-            When using these general data and information, the B.T.E. BOTLabs
-            Trusted Entity GmbH does not draw any conclusions about the data
-            subject. Rather, this information is needed to (1) deliver the
-            content of our website correctly, (2) optimize the content of our
-            website as well as its advertisement, (3) ensure the long-term
-            viability of our information technology systems and website
-            technology, and (4) provide law enforcement authorities with the
-            information necessary for criminal prosecution in case of a
-            cyber-attack. Therefore, the B.T.E. BOTLabs Trusted Entity GmbH
-            analyzes anonymously collected data and information statistically,
-            with the aim of increasing the data protection and data security of
-            our enterprise, and to ensure an optimal level of protection for the
-            personal data we process. The anonymous data of the server log files
-            are stored separately from all personal data provided by a data
-            subject.
+            All email communication in which we are involved is transferred to
+            Google Ireland Limited, Gordon House, Barrow Street, Dublin 4,
+            Ireland and stored on its servers.
+          </p>
+          <p>
+            When you contact us by email, the data you provide (your email
+            address, if applicable your name and your telephone number) as well
+            as the data technically necessary in the course of sending an email
+            will be stored. These are technical, automatically transmitted data
+            in the header of an email, which, among other things, provide
+            information about the route taken by the email and provide
+            information about the sender, recipient, date of creation, format of
+            the content and the stations of transmission. They are stored
+            exclusively in order to communicate with you.
+          </p>
+          <p>
+            The legal basis for storage and processing of personal data
+            transmitted via email Article 6 paragraph 1 lit. f) GDPR.
+          </p>
+          <p>
+            The storage of the latter is necessary for communication with you
+            being the legitimate interest in data processing pursuant to Article
+            6 paragraph 1 lit. f) GDPR.
+          </p>
+          <p>
+            We will delete your personal data as soon as the purpose of the
+            storage no longer applies. We regularly check whether data is still
+            needed or whether it can be deleted.
+          </p>
+          <h3 className={styles.sectionHeading}>
+            SPECIAL NOTES ON EMAIL COMMUNICATION
+          </h3>
+          <p>
+            Of course, we make every effort to process and store your personal
+            data in such a way that they are not accessible to third parties by
+            using all technical and organizational means at our disposal. When
+            communicating by email, we cannot guarantee complete data security,
+            so we recommend that you send confidential information by post.
           </p>
         </section>
 
@@ -660,133 +671,7 @@ export const Privacy = () => {
 
         <section>
           <h2 className={styles.sectionHeading}>
-            7. Data protection provisions about the application and use of
-            Google Analytics (with anonymization function)
-          </h2>
-          <p>
-            On this website, the controller has integrated the component of
-            Google Analytics (with the anonymizer function). Google Analytics is
-            a web analytics service. Web analytics is the collection, gathering,
-            and analysis of data about the behavior of visitors to websites. A
-            web analysis service collects, inter alia, data about the website
-            from which a person has come (the so-called referrer), which
-            sub-pages were visited, or how often and for what duration a subpage
-            was viewed. Web analytics are mainly used for the optimization of a
-            website and in order to carry out a cost-benefit analysis of
-            Internet advertising.
-          </p>
-          <p>
-            The operator of the Google Analytics component is Google Ireland
-            Limited, Gordon House, Barrow Street, Dublin, D04 E5W5, Ireland
-          </p>
-          <p>
-            For the web analytics through Google Analytics the controller uses
-            the application {`"_gat._anonymizeIp"`}. By means of this
-            application the IP address of the Internet connection of the data
-            subject is abridged by Google and anonymised when accessing our
-            websites from a Member State of the European Union or another
-            Contracting State to the Agreement on the European Economic Area.
-          </p>
-          <p>
-            The purpose of the Google Analytics component is to analyze the
-            traffic on our website. Google uses the collected data and
-            information, inter alia, to evaluate the use of our website and to
-            provide online reports, which show the activities on our websites,
-            and to provide other services concerning the use of our Internet
-            site for us.
-          </p>
-          <p>
-            Google Analytics places a cookie on the information technology
-            system of the data subject. The definition of cookies is explained
-            above. With the setting of the cookie, Google is enabled to analyze
-            the use of our website. With each call-up to one of the individual
-            pages of this Internet site, which is operated by the controller and
-            into which a Google Analytics component was integrated, the Internet
-            browser on the information technology system of the data subject
-            will automatically submit data through the Google Analytics
-            component for the purpose of online advertising and the settlement
-            of commissions to Google. During the course of this technical
-            procedure, the enterprise Google gains knowledge of personal
-            information, such as the IP address of the data subject, which
-            serves Google, inter alia, to understand the origin of visitors and
-            clicks, and subsequently create commission settlements.
-          </p>
-          <p>
-            The cookie is used to store personal information, such as the access
-            time, the location from which the access was made, and the frequency
-            of visits of our website by the data subject. With each visit to our
-            Internet site, such personal data, including the IP address of the
-            Internet access used by the data subject, will be transmitted to
-            Google in the United States of America. These personal data are
-            stored by Google in the United States of America. Google may pass
-            these personal data collected through the technical procedure to
-            third parties.
-          </p>
-          <p>
-            The data subject may, as stated above, prevent the setting of
-            cookies through our website at any time by means of a corresponding
-            adjustment of the web browser used and thus permanently deny the
-            setting of cookies. Such an adjustment to the Internet browser used
-            would also prevent Google Analytics from setting a cookie on the
-            information technology system of the data subject. In addition,
-            cookies already in use by Google Analytics may be deleted at any
-            time via a web browser or other software programs.
-          </p>
-          <p>
-            In addition, the data subject has the possibility of objecting to a
-            collection of data that are generated by Google Analytics, which is
-            related to the use of this website, as well as the processing of
-            this data by Google and the chance to preclude any such. For this
-            purpose, the data subject must download a browser add-on under the
-            link https://tools.google.com/dlpage/gaoptout and install it. This
-            browser add-on tells Google Analytics through a JavaScript, that any
-            data and information about the visits of Internet pages may not be
-            transmitted to Google Analytics. The installation of the browser
-            add-ons is considered an objection by Google. If the information
-            technology system of the data subject is later deleted, formatted,
-            or newly installed, then the data subject must reinstall the browser
-            add-ons to disable Google Analytics. If the browser add-on was
-            uninstalled by the data subject or any other person who is
-            attributable to their sphere of competence, or is disabled, it is
-            possible to execute the reinstallation or reactivation of the
-            browser add-ons.
-          </p>
-          <p>
-            Further information and the applicable data protection provisions of
-            Google may be retrieved under{' '}
-            <a
-              className={styles.anchor}
-              href="https://www.google.com/intl/en/policies/privacy/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              https://www.google.com/intl/en/policies/privacy/
-            </a>{' '}
-            and under{' '}
-            <a
-              className={styles.anchor}
-              href="https://www.google.com/analytics/terms/us.html"
-              target="_blank"
-              rel="noreferrer"
-            >
-              https://www.google.com/analytics/terms/us.html
-            </a>
-            . Google Analytics is further explained under the following Link{' '}
-            <a
-              className={styles.anchor}
-              href="https://www.google.com/analytics/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              https://www.google.com/analytics/
-            </a>
-            .
-          </p>
-        </section>
-
-        <section>
-          <h2 className={styles.sectionHeading}>
-            8. Legal basis for the processing
+            7. Legal basis for the processing
           </h2>
           <p>
             Art. 6(1) lit. a GDPR serves as the legal basis for processing
@@ -824,7 +709,7 @@ export const Privacy = () => {
 
         <section>
           <h2 className={styles.sectionHeading}>
-            9. The legitimate interests pursued by the controller or by a third
+            8. The legitimate interests pursued by the controller or by a third
             party
           </h2>
           <p>
@@ -836,7 +721,7 @@ export const Privacy = () => {
 
         <section>
           <h2 className={styles.sectionHeading}>
-            10. Period for which the personal data will be stored
+            9. Period for which the personal data will be stored
           </h2>
           <p>
             The criteria used to determine the period of storage of personal
@@ -849,7 +734,7 @@ export const Privacy = () => {
 
         <section>
           <h2 className={styles.sectionHeading}>
-            11. Provision of personal data as statutory or contractual
+            10. Provision of personal data as statutory or contractual
             requirement; Requirement necessary to enter into a contract;
             Obligation of the data subject to provide the personal data;
             possible consequences of failure to provide such data
@@ -875,7 +760,7 @@ export const Privacy = () => {
 
         <section>
           <h2 className={styles.sectionHeading}>
-            12. Existence of automated decision-making
+            11. Existence of automated decision-making
           </h2>
           <p>
             As a responsible company, we do not use automatic decision-making or
