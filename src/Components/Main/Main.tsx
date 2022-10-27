@@ -11,6 +11,7 @@ import { Imprint } from '../Imprint/Imprint';
 import { Maintenance } from '../Maintenance/Maintenance';
 import { VerifiedSignatureProvider } from '../VerifiedSignature/VerifiedSignature';
 import { FilesProvider } from '../Files/Files';
+import { SignatureProvider } from '../Signature/Signature';
 
 export function Main() {
   if (process.env.REACT_APP_MAINTENANCE === 'true') {
@@ -23,7 +24,9 @@ export function Main() {
         path={paths.signer}
         element={
           <FilesProvider>
-            <ImportFilesSigner />
+            <SignatureProvider>
+              <ImportFilesSigner />
+            </SignatureProvider>
           </FilesProvider>
         }
       />

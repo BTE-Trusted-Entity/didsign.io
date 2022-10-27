@@ -52,7 +52,7 @@ export const ImportFilesSigner = () => {
   const [signErrorPopup, setSignErrorPopup] = useState<boolean>(false);
   const { files, setFiles } = useFiles();
   const targetElement = document.querySelector('body');
-  const { signature, setSignature } = useSignature();
+  const { signature, timestamped, downloaded, setSignature } = useSignature();
 
   useEffect(() => {
     setSignature({});
@@ -99,7 +99,7 @@ export const ImportFilesSigner = () => {
 
   return (
     <main className={styles.main}>
-      <Navigation />
+      <Navigation needWarning={timestamped && !downloaded} />
       <div className={styles.middleSection}>
         <div className={styles.container}>
           <Dropzone

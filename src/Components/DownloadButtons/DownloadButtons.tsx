@@ -13,7 +13,7 @@ export const DownloadButtons = () => {
   const [signatureFile] = files;
   const [showLoader, setShowLoader] = useState<boolean>(false);
   const [progress, setProgress] = useState<string>('0');
-  const { timestamped: isTimestamped, setSignature } = useSignature();
+  const { setSignature } = useSignature();
 
   async function generateZipFile(files: FileEntry[]) {
     const zip = new JSZip();
@@ -33,7 +33,7 @@ export const DownloadButtons = () => {
 
   const handleDownloadSign = async () => {
     saveAs(signatureFile.file, 'signature.didsign');
-    if (isTimestamped) setSignature((old) => ({ ...old, downloaded: true }));
+    setSignature((old) => ({ ...old, downloaded: true }));
   };
 
   const handleZip = async () => {
@@ -42,7 +42,7 @@ export const DownloadButtons = () => {
     await generateZipFile(files);
     setShowLoader(false);
     document.body.style.pointerEvents = 'auto';
-    if (isTimestamped) setSignature((old) => ({ ...old, downloaded: true }));
+    setSignature((old) => ({ ...old, downloaded: true }));
   };
 
   return (

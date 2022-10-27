@@ -83,19 +83,16 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
 
       if (!storedCredentials) throw new Error('No credentials');
 
-      const updatedCredentials = [...storedCredentials];
-      const credentialCopy = { ...credential, name: input };
+      const updatedCredentials = storedCredentials.map((old) =>
+        old !== credential ? old : { ...credential, name: input },
+      );
 
-      updatedCredentials[updatedCredentials.indexOf(credential)] =
-        credentialCopy;
-
-      const updatedContents = {
+      setSignature((old) => ({ ...old, credentials: updatedCredentials }));
+      updateSignatureFile({
         hashes,
         jws,
         credentials: updatedCredentials,
-      };
-      setSignature((old) => ({ ...old, credentials: updatedCredentials }));
-      updateSignatureFile(updatedContents);
+      });
     },
     [
       credential,

@@ -31,7 +31,6 @@ import { Navigation } from '../Navigation/Navigation';
 import { FilesEmpty } from '../FilesEmpty/FilesEmpty';
 import { FilesVerifier } from '../FilesVerifier/FilesVerifier';
 import { usePreventNavigation } from '../../Hooks/usePreventNavigation';
-import { useSignature } from '../Signature/Signature';
 import { DidDocument } from '../DidDocument/DidDocument';
 
 interface JWSState {
@@ -64,16 +63,11 @@ export const ImportFilesVerifier = () => {
     useVerifiedSignature();
   const [remark, setRemark] = useState<IRemark>();
   const [credentials, setCredentials] = useState<NamedCredential[]>();
-  const { setSignature } = useSignature();
 
   useConnect();
 
   //allows navigation prevented by time stamping
   usePreventNavigation(false);
-
-  useEffect(() => {
-    setSignature({});
-  }, [setSignature]);
 
   const handleDeleteFile = useCallback(
     (index: number) => {
@@ -302,7 +296,6 @@ export const ImportFilesVerifier = () => {
   }, [files, jwsStatus, fetchDidDocument, clearVerifiedSignature]);
 
   const handleDelete = () => {
-    setSignature({});
     setFiles([]);
     setZip(undefined);
     clearVerifiedSignature();

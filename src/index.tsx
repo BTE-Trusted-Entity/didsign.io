@@ -6,15 +6,12 @@ import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 
 import { ShowPopupProvider } from './Components/Popups/Popups';
-import { SignatureProvider } from './Components/Signature/Signature';
 import { DIDSign } from './Components/DidSign/DIDSign';
 
 ReactDOM.render(
   <BrowserRouter>
     <ShowPopupProvider>
-      <SignatureProvider>
-        <DIDSign />
-      </SignatureProvider>
+      <DIDSign />
     </ShowPopupProvider>
   </BrowserRouter>,
   document.getElementById('root'),

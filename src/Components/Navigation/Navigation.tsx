@@ -5,26 +5,23 @@ import classnames from 'classnames';
 
 import * as styles from './Navigation.module.css';
 
-import { useSignature } from '../Signature/Signature';
 import { paths } from '../../Utils/paths';
 import { TimestampWarning } from '../Popups/Popups';
 
-export const Navigation = () => {
+export function Navigation({ needWarning = false }: { needWarning?: boolean }) {
   const location = useLocation();
   const navigate = useNavigate();
 
   const [showWarningPopup, setShowWarningPopup] = useState(false);
-  const { downloaded: signatureDownloaded, timestamped: isTimestamped } =
-    useSignature();
 
   const handleVerify = useCallback(() => {
-    if (isTimestamped && !signatureDownloaded) {
+    if (needWarning) {
       setShowWarningPopup(true);
       return;
     }
 
     navigate(paths.verifier, { replace: true });
-  }, [isTimestamped, navigate, signatureDownloaded]);
+  }, [navigate, needWarning]);
 
   const handleDismiss = useCallback(() => {
     setShowWarningPopup(false);
@@ -75,4 +72,4 @@ export const Navigation = () => {
       )}
     </div>
   );
-};
+}

@@ -55,9 +55,12 @@ function useFee() {
 export function Timestamp() {
   useConnect();
 
-  const { signature } = useSignature();
   const { files, setFiles } = useFiles();
-  const { downloaded: signatureDownloaded, setSignature } = useSignature();
+  const {
+    downloaded: signatureDownloaded,
+    signature,
+    setSignature,
+  } = useSignature();
 
   const [status, setStatus] = useState<
     | 'start'
