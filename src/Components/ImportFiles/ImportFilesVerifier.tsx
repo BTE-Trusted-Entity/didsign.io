@@ -15,10 +15,10 @@ import {
   isDidSignFile,
   unzipFileEntries,
 } from '../../Utils/verify-helper';
-import { useVerifiedSignature } from '../VerifiedSignature/VerifiedSignature';
 import { createHash, createHashFromHashArray } from '../../Utils/sign-helpers';
 import {
   IRemark,
+  IVerifiedSignatureContents,
   JWSStatus,
   NamedCredential,
   SignDoc,
@@ -39,18 +39,27 @@ interface JWSState {
   jwsHashes: string[];
 }
 
-const initialJwsState: JWSState = {
+const initialJws: JWSState = {
   jws: '',
   jwsStatus: 'Not Checked',
   jwsHashes: [],
 };
 
+const initialVerifiedSignature: IVerifiedSignatureContents = {
+  signature: '',
+  did: undefined,
+  endpoints: [],
+  w3name: '',
+  txHash: '',
+  credentials: [],
+};
+
 export const ImportFilesVerifier = () => {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon);
 
-  const [jwsState, setJwsState] = useState(initialJwsState);
+  const [jwsState, setJwsState] = useState(initialJws);
   const { jws, jwsStatus, jwsHashes } = jwsState;
-  const clearJWS = useCallback(() => setJwsState(initialJwsState), []);
+  const clearJWS = useCallback(() => setJwsState(initialJws), []);
   const setJwsStatus = useCallback(
     (status: JWSStatus) =>
       setJwsState((old) => ({ ...old, jwsStatus: status })),
@@ -59,10 +68,15 @@ export const ImportFilesVerifier = () => {
 
   const [zip, setZip] = useState<string>();
   const [files, setFiles] = useState<FileEntry[]>([]);
-  const { clearVerifiedSignature, setVerifiedSignature } =
-    useVerifiedSignature();
   const [remark, setRemark] = useState<IRemark>();
   const [credentials, setCredentials] = useState<NamedCredential[]>();
+
+  const [verifiedSignature, setVerifiedSignature] =
+    useState<IVerifiedSignatureContents>(initialVerifiedSignature);
+  const clearVerifiedSignature = useCallback(
+    () => setVerifiedSignature(initialVerifiedSignature),
+    [],
+  );
 
   useConnect();
 
@@ -365,7 +379,10 @@ export const ImportFilesVerifier = () => {
             </span>
           )}
 
-          <DidDocument jwsStatus={jwsStatus} />
+          <DidDocument
+            jwsStatus={jwsStatus}
+            verifiedSignature={verifiedSignature}
+          />
 
           {jwsStatus === 'Verified' && (
             <button

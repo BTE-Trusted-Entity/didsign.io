@@ -9,7 +9,6 @@ import { Terms } from '../Terms/Terms';
 import { Privacy } from '../Privacy/Privacy';
 import { Imprint } from '../Imprint/Imprint';
 import { Maintenance } from '../Maintenance/Maintenance';
-import { VerifiedSignatureProvider } from '../VerifiedSignature/VerifiedSignature';
 import { FilesProvider } from '../Files/Files';
 import { SignatureProvider } from '../Signature/Signature';
 
@@ -30,14 +29,7 @@ export function Main() {
           </FilesProvider>
         }
       />
-      <Route
-        path={paths.verifier}
-        element={
-          <VerifiedSignatureProvider>
-            <ImportFilesVerifier />
-          </VerifiedSignatureProvider>
-        }
-      />
+      <Route path={paths.verifier} element={<ImportFilesVerifier />} />
       <Route path="*" element={<Navigate to={paths.signer} replace />} />
       <Route path={paths.terms} element={<Terms />} />
       <Route path={paths.privacy} element={<Privacy />} />

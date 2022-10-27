@@ -2,15 +2,20 @@ import React, { Fragment } from 'react';
 
 import * as styles from './DidDocument.module.css';
 
-import { useVerifiedSignature } from '../VerifiedSignature/VerifiedSignature';
-import { JWSStatus } from '../../Utils/types';
+import { IVerifiedSignatureContents, JWSStatus } from '../../Utils/types';
 import { JWSErrors } from '../JWSErrors/JWSErrors';
 import { ServiceEndpoint } from '../ServiceEndpoints/ServiceEndpoint';
 
 import { useSubscanHost } from '../../Utils/useSubscanHost';
 import { CredentialVerifier } from '../Credential/Credential';
 
-export function DidDocument({ jwsStatus }: { jwsStatus: JWSStatus }) {
+export function DidDocument({
+  jwsStatus,
+  verifiedSignature,
+}: {
+  jwsStatus: JWSStatus;
+  verifiedSignature: IVerifiedSignatureContents;
+}) {
   const {
     did,
     w3name,
@@ -19,7 +24,7 @@ export function DidDocument({ jwsStatus }: { jwsStatus: JWSStatus }) {
     signature,
     credentials: attachedCredentials,
     endpoints: serviceEndpoints,
-  } = useVerifiedSignature();
+  } = verifiedSignature;
   const subscanHost = useSubscanHost();
 
   if (jwsStatus === 'Not Checked' || jwsStatus === 'Validating' || !did) {
