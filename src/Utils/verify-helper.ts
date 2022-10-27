@@ -11,6 +11,7 @@ import {
 import { base16 } from 'multiformats/bases/base16';
 import * as zip from '@zip.js/zip.js';
 import JSZip from 'jszip';
+import { some } from 'lodash-es';
 
 import { FileEntry } from '../Components/Files/Files';
 
@@ -80,41 +81,28 @@ export async function unzipFileEntries(file: File): Promise<FileEntry[]> {
   return result;
 }
 
-export const handleFilesFromZip = async (
+export async function handleFilesFromZip(
   files: FileEntry[],
-): Promise<IVerifiedSignatureContents | undefined> => {
-  const fileData: string[] = [];
-  const filesStatus: boolean[] = [];
-  let doc: SignDoc = {
-    jws: '',
-    hashes: [],
-  };
-  for (const entry of files) {
-    if (isDidSignFile(entry.name)) {
-      const text = await entry.file.text();
-      filesStatus.push(true);
-      doc = JSON.parse(text);
-    } else {
-      const hash = await createHash(entry.buffer);
-      fileData.push(hash);
-    }
-  }
+): Promise<(IVerifiedSignatureContents & { files: FileEntry[] }) | undefined> {
+  const didSignFile = files.find(({ name }) => isDidSignFile(name));
+  const doc: SignDoc = didSignFile
+    ? JSON.parse(await didSignFile.file.text())
+    : { jws: '', hashes: [] };
 
   const addMissingPrefix = (hash: string): string =>
     hash.startsWith(base16.prefix) ? hash : `${base16.prefix}${hash}`;
   const { jws, hashes, remark, credentials } = doc;
   const hashesWithPrefix = hashes.map((hash) => addMissingPrefix(hash));
 
-  fileData.map((hash) => {
-    const status = hashesWithPrefix.includes(hash);
-    filesStatus.push(status);
-  });
-
   const baseHash = await createHashFromHashArray(hashesWithPrefix);
   const jwsBaseJson = atob(jws.split('.')[1]);
   const jwsBaseHash = addMissingPrefix(JSON.parse(jwsBaseJson).hash);
 
-  if (baseHash !== jwsBaseHash || filesStatus.includes(false)) {
+  const verifiedFiles = files.map((file) => ({
+    ...file,
+    verified: isDidSignFile(file.name) || hashesWithPrefix.includes(file.hash),
+  }));
+  if (baseHash !== jwsBaseHash || some(verifiedFiles, { verified: false })) {
     return undefined;
   }
 
@@ -126,9 +114,9 @@ export const handleFilesFromZip = async (
   return {
     ...verifiedContents,
     credentials,
-    filesStatus,
+    files: verifiedFiles,
   };
-};
+}
 
 export const getFileNames = async (file: File): Promise<string[]> => {
   const unzip = new JSZip();

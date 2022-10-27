@@ -25,7 +25,6 @@ const initialState: IVerifiedSignatureContents = {
   w3name: '',
   txHash: '',
   credentials: [],
-  filesStatus: [],
 };
 
 const VerifiedSignatureContext = createContext<VerifiedSignatureContextType>({

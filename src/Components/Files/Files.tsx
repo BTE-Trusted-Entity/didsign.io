@@ -5,6 +5,7 @@ export interface FileEntry {
   buffer: ArrayBuffer;
   name: string;
   hash: string;
+  verified?: boolean;
 }
 
 interface FilesType {

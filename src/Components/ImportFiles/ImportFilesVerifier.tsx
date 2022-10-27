@@ -62,11 +62,7 @@ export const ImportFilesVerifier = () => {
   );
 
   const { files, setFiles, setZip } = useFiles();
-  const {
-    filesStatus: statuses,
-    clearEndpoint,
-    setVerifiedSignature,
-  } = useVerifiedSignature();
+  const { clearEndpoint, setVerifiedSignature } = useVerifiedSignature();
   const [remark, setRemark] = useState<IRemark>();
   const [credentials, setCredentials] = useState<NamedCredential[]>();
   const { setSignature } = useSignature();
@@ -110,11 +106,8 @@ export const ImportFilesVerifier = () => {
         setVerifiedSignature((old) => ({
           ...verifiedSignatureContents,
           endpoints: [...old.endpoints, ...verifiedSignatureContents.endpoints],
-          filesStatus: [
-            ...old.filesStatus,
-            ...verifiedSignatureContents.filesStatus,
-          ],
         }));
+        setFiles(verifiedSignatureContents.files);
       } else {
         setJwsStatus('Invalid');
       }
@@ -131,6 +124,7 @@ export const ImportFilesVerifier = () => {
       const isDidSign = isDidSignFile(name);
       // TODO: can we still hash it?
       const hash = isDidSign ? '' : await createHash(buffer);
+      const verified = isDidSign;
 
       if (isDidSign) {
         const addMissingPrefix = (hash: string): string =>
@@ -158,19 +152,10 @@ export const ImportFilesVerifier = () => {
           jws,
           jwsHashes: [...old.jwsHashes, ...hashesWithPrefix],
         }));
-        setVerifiedSignature((old) => ({
-          ...old,
-          filesStatus: [...old.filesStatus, true],
-        }));
-      } else {
-        setVerifiedSignature((old) => ({
-          ...old,
-          filesStatus: [...old.filesStatus, false],
-        }));
       }
-      setFiles((files) => [...files, { file, buffer, name, hash }]);
+      setFiles((files) => [...files, { file, buffer, name, hash, verified }]);
     },
-    [setFiles, setJwsStatus, setVerifiedSignature],
+    [setFiles, setJwsStatus],
   );
 
   const handleDrop = useCallback(
@@ -223,16 +208,16 @@ export const ImportFilesVerifier = () => {
     ],
   );
   useEffect(() => {
-    if (jwsHashes.length) {
-      files.forEach(({ hash }, index) => {
-        if (jwsHashes.includes(hash)) {
-          setVerifiedSignature((old) => {
-            const filesStatus = [...old.filesStatus];
-            filesStatus[index] = true;
-            return { ...old, filesStatus };
-          });
+    if (jwsHashes.length > 0) {
+      files.forEach((file) => {
+        if (jwsHashes.includes(file.hash)) {
+          setFiles((oldFiles) =>
+            oldFiles.map((oldFile) =>
+              oldFile !== file ? oldFile : { ...file, verified: true },
+            ),
+          );
         } else {
-          if (hash !== '') {
+          if (file.hash !== '') {
             setJwsStatus('Invalid');
           }
         }
@@ -242,6 +227,7 @@ export const ImportFilesVerifier = () => {
     files,
     jwsHashes,
     jwsStatus,
+    setFiles,
     setJwsState,
     setJwsStatus,
     setVerifiedSignature,
@@ -254,16 +240,18 @@ export const ImportFilesVerifier = () => {
       setJwsStatus('Verified');
       setVerifiedSignature((old) => ({
         ...verifiedSignatureInstance,
-        filesStatus: statuses,
         credentials,
         endpoints: [...old.endpoints, ...verifiedSignatureInstance.endpoints],
       }));
     } else {
       setJwsStatus('Invalid');
     }
-  }, [credentials, jws, remark, setJwsStatus, setVerifiedSignature, statuses]);
+  }, [credentials, jws, remark, setJwsStatus, setVerifiedSignature]);
 
   useEffect(() => {
+    const statuses = files
+      .map(({ verified }) => verified)
+      .filter((value) => typeof value === 'boolean');
     if (jwsStatus === 'Not Checked') {
       if (statuses && statuses.length > 1) {
         if (!statuses.includes(false)) {
@@ -273,7 +261,7 @@ export const ImportFilesVerifier = () => {
         }
       }
     }
-  }, [statuses, jwsStatus, fetchDidDocument, clearEndpoint]);
+  }, [files, jwsStatus, fetchDidDocument, clearEndpoint]);
 
   const handleDelete = () => {
     setSignature({});
@@ -281,7 +269,6 @@ export const ImportFilesVerifier = () => {
     setZip();
     clearEndpoint();
     clearJWS();
-    setVerifiedSignature((old) => ({ ...old, filesStatus: [] }));
   };
 
   return (

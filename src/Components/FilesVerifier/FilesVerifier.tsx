@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import { findIndex, without } from 'lodash-es';
-import classnames from 'classnames';
 
 import * as styles from './FilesVerifier.module.css';
 
@@ -21,8 +20,7 @@ export function FilesVerifier({
 }) {
   const { files, zip, setFiles, setZip } = useFiles();
 
-  const { filesStatus, clearEndpoint, setVerifiedSignature } =
-    useVerifiedSignature();
+  const { clearEndpoint } = useVerifiedSignature();
 
   const handleDeleteAll = () => {
     if (jwsStatus === 'Validating') {
@@ -33,7 +31,6 @@ export function FilesVerifier({
     setFiles([]);
     setZip();
     clearJWS();
-    setVerifiedSignature((old) => ({ ...old, filesStatus: [] }));
   };
 
   const handleDeleteFile = (file: File) => {
@@ -43,10 +40,9 @@ export function FilesVerifier({
     const fileEntry = files[index];
     const didSignFileDeleted = isDidSignFile(fileEntry.name);
     if (didSignFileDeleted) {
-      setVerifiedSignature((old) => ({
-        ...old,
-        filesStatus: old.filesStatus.map(() => false),
-      }));
+      setFiles((oldFiles) =>
+        oldFiles.map((old) => ({ ...old, verified: false })),
+      );
       clearJWS();
     }
 
@@ -55,10 +51,6 @@ export function FilesVerifier({
     }
 
     clearEndpoint();
-    setVerifiedSignature((old) => ({
-      ...old,
-      filesStatus: [...old.filesStatus].splice(index, 1),
-    }));
     setFiles((files) => without(files, fileEntry));
   };
 
@@ -83,13 +75,11 @@ export function FilesVerifier({
           <h2 className={styles.heading}>Files</h2>
 
           <ul className={styles.list}>
-            {files.map(({ name }, index) => (
+            {files.map(({ name, verified }, index) => (
               <li
-                className={classnames(
-                  filesStatus[index]
-                    ? styles.unzippedFileOk
-                    : styles.unzippedFileInvalid,
-                )}
+                className={
+                  verified ? styles.unzippedFileOk : styles.unzippedFileInvalid
+                }
                 key={index}
               >
                 {isDidSignFile(name) ? (
@@ -110,11 +100,9 @@ export function FilesVerifier({
           <h2 className={styles.heading}>Files</h2>
 
           <ul className={styles.list}>
-            {files.map(({ file }, index) => (
+            {files.map(({ file, verified }, index) => (
               <li
-                className={classnames(
-                  filesStatus[index] ? styles.fileOk : styles.fileInvalid,
-                )}
+                className={verified ? styles.fileOk : styles.fileInvalid}
                 key={index}
               >
                 {isDidSignFile(file.name) ? (

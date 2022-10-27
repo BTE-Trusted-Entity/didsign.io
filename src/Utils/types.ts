@@ -36,7 +36,6 @@ export interface IVerifiedSignatureContents {
   timestamp?: string;
   txHash?: string;
   credentials?: NamedCredential[];
-  filesStatus: boolean[];
 }
 
 export interface IKiltAccount {
