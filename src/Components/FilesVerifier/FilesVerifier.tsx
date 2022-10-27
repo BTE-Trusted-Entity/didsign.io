@@ -1,63 +1,22 @@
 import React, { Fragment } from 'react';
-import { findIndex, without } from 'lodash-es';
 
 import * as styles from './FilesVerifier.module.css';
 
-import { useFiles } from '../Files/Files';
-import { useVerifiedSignature } from '../VerifiedSignature/VerifiedSignature';
-import { JWSStatus } from '../../Utils/types';
+import { FileEntry } from '../Files/Files';
 
 import { isDidSignFile } from '../../Utils/verify-helper';
 
 export function FilesVerifier({
-  jwsStatus,
-  clearJWS,
+  files,
+  zip,
   onDelete,
+  onDeleteAll,
 }: {
-  jwsStatus: JWSStatus;
-  clearJWS: () => void;
-  onDelete: () => void;
+  files: FileEntry[];
+  zip?: string;
+  onDelete: (index: number) => void;
+  onDeleteAll: () => void;
 }) {
-  const { files, zip, setFiles, setZip } = useFiles();
-
-  const { clearEndpoint } = useVerifiedSignature();
-
-  const handleDeleteAll = () => {
-    if (jwsStatus === 'Validating') {
-      return;
-    }
-
-    clearEndpoint();
-    setFiles([]);
-    setZip();
-    clearJWS();
-  };
-
-  const handleDeleteFile = (file: File) => {
-    if (jwsStatus === 'Validating') return;
-
-    const index = findIndex(files, { file });
-    const fileEntry = files[index];
-    const didSignFileDeleted = isDidSignFile(fileEntry.name);
-    if (didSignFileDeleted) {
-      setFiles((oldFiles) =>
-        oldFiles.map((old) => ({ ...old, verified: false })),
-      );
-      clearJWS();
-    }
-
-    if (jwsStatus !== 'Corrupted') {
-      onDelete();
-    }
-
-    clearEndpoint();
-    setFiles((files) => without(files, fileEntry));
-  };
-
-  if (files.length === 0) {
-    return null;
-  }
-
   return (
     <Fragment>
       {zip && (
@@ -68,7 +27,7 @@ export function FilesVerifier({
             <button
               className={styles.deleteBtn}
               aria-label="Remove all files"
-              onClick={handleDeleteAll}
+              onClick={onDeleteAll}
             />
           </div>
 
@@ -116,7 +75,7 @@ export function FilesVerifier({
                 <button
                   className={styles.deleteBtn}
                   aria-label="Remove file"
-                  onClick={() => handleDeleteFile(file)}
+                  onClick={() => onDelete(index)}
                 />
               </li>
             ))}

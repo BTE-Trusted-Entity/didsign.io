@@ -15,7 +15,7 @@ interface VerifiedSignatureContextType extends IVerifiedSignatureContents {
       | ((value: IVerifiedSignatureContents) => IVerifiedSignatureContents),
   ): void;
 
-  clearEndpoint(): void;
+  clearVerifiedSignature(): void;
 }
 
 const initialState: IVerifiedSignatureContents = {
@@ -32,7 +32,7 @@ const VerifiedSignatureContext = createContext<VerifiedSignatureContextType>({
   setVerifiedSignature() {
     return undefined;
   },
-  clearEndpoint() {
+  clearVerifiedSignature() {
     return undefined;
   },
 });
@@ -49,7 +49,7 @@ export function VerifiedSignatureProvider({
   const [verifiedSignature, setVerifiedSignature] =
     useState<IVerifiedSignatureContents>(initialState);
 
-  const clearEndpoint = useCallback(
+  const clearVerifiedSignature = useCallback(
     () => setVerifiedSignature(initialState),
     [],
   );
@@ -58,9 +58,9 @@ export function VerifiedSignatureProvider({
     () => ({
       ...verifiedSignature,
       setVerifiedSignature,
-      clearEndpoint,
+      clearVerifiedSignature,
     }),
-    [clearEndpoint, verifiedSignature],
+    [clearVerifiedSignature, verifiedSignature],
   );
 
   return (

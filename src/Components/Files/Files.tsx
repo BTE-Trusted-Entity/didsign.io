@@ -10,21 +10,15 @@ export interface FileEntry {
 
 interface FilesType {
   files: Array<FileEntry>;
-  zip?: string;
 
   setFiles: (
     filesOrSetter: FileEntry[] | ((values: FileEntry[]) => FileEntry[]),
   ) => void;
-
-  setZip(name?: string): void;
 }
 
 const FilesContext = createContext<FilesType>({
   files: [],
   setFiles() {
-    return undefined;
-  },
-  setZip() {
     return undefined;
   },
 });
@@ -39,18 +33,7 @@ export function FilesProvider({
   children: JSX.Element;
 }): JSX.Element {
   const [files, setFiles] = useState<FileEntry[]>([]);
-  const [zip, setZip] = useState<string>();
-
-  const value = useMemo(
-    () => ({
-      files,
-      setFiles,
-      zip,
-      setZip,
-    }),
-    [files, zip],
-  );
-
+  const value = useMemo(() => ({ files, setFiles }), [files]);
   return (
     <FilesContext.Provider value={value}>{children}</FilesContext.Provider>
   );

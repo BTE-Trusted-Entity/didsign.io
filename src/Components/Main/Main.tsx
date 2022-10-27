@@ -10,6 +10,7 @@ import { Privacy } from '../Privacy/Privacy';
 import { Imprint } from '../Imprint/Imprint';
 import { Maintenance } from '../Maintenance/Maintenance';
 import { VerifiedSignatureProvider } from '../VerifiedSignature/VerifiedSignature';
+import { FilesProvider } from '../Files/Files';
 
 export function Main() {
   if (process.env.REACT_APP_MAINTENANCE === 'true') {
@@ -18,7 +19,14 @@ export function Main() {
 
   return (
     <Routes>
-      <Route path={paths.signer} element={<ImportFilesSigner />} />
+      <Route
+        path={paths.signer}
+        element={
+          <FilesProvider>
+            <ImportFilesSigner />
+          </FilesProvider>
+        }
+      />
       <Route
         path={paths.verifier}
         element={

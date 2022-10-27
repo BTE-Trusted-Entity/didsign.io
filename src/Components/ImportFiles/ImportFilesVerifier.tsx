@@ -1,12 +1,13 @@
 import Dropzone from 'react-dropzone';
 import React, { useCallback, useEffect, useState } from 'react';
 import { base16 } from 'multiformats/bases/base16';
+import { without } from 'lodash-es';
 
 import * as styles from './ImportFiles.module.css';
 
 import ImportIcon from '../../ImageAssets/iconBIG_import_NEW.svg';
 import ReleaseIcon from '../../ImageAssets/iconBIG_import_release.svg';
-import { useFiles } from '../Files/Files';
+import { FileEntry } from '../Files/Files';
 import {
   getFileNames,
   getVerifiedData,
@@ -56,13 +57,11 @@ export const ImportFilesVerifier = () => {
       setJwsState((old) => ({ ...old, jwsStatus: status })),
     [],
   );
-  const handleFileDelete = useCallback(
-    () => setJwsStatus('Not Checked'),
-    [setJwsStatus],
-  );
 
-  const { files, setFiles, setZip } = useFiles();
-  const { clearEndpoint, setVerifiedSignature } = useVerifiedSignature();
+  const [zip, setZip] = useState<string>();
+  const [files, setFiles] = useState<FileEntry[]>([]);
+  const { clearVerifiedSignature, setVerifiedSignature } =
+    useVerifiedSignature();
   const [remark, setRemark] = useState<IRemark>();
   const [credentials, setCredentials] = useState<NamedCredential[]>();
   const { setSignature } = useSignature();
@@ -73,10 +72,49 @@ export const ImportFilesVerifier = () => {
   usePreventNavigation(false);
 
   useEffect(() => {
-    setFiles([]);
-    setZip();
     setSignature({});
-  }, [setFiles, setSignature, setZip]);
+  }, [setSignature]);
+
+  const handleDeleteFile = useCallback(
+    (index: number) => {
+      if (jwsStatus === 'Validating') return;
+
+      const file = files[index];
+      const didSignFileDeleted = isDidSignFile(file.name);
+      if (didSignFileDeleted) {
+        setFiles((oldFiles) =>
+          oldFiles.map((old) => ({ ...old, verified: false })),
+        );
+        clearJWS();
+      }
+
+      if (jwsStatus !== 'Corrupted') {
+        setJwsStatus('Not Checked');
+      }
+
+      clearVerifiedSignature();
+      setFiles((files) => without(files, file));
+    },
+    [
+      clearJWS,
+      clearVerifiedSignature,
+      files,
+      jwsStatus,
+      setFiles,
+      setJwsStatus,
+    ],
+  );
+
+  const handleDeleteAll = useCallback(() => {
+    if (jwsStatus === 'Validating') {
+      return;
+    }
+
+    clearVerifiedSignature();
+    setFiles([]);
+    setZip(undefined);
+    clearJWS();
+  }, [clearJWS, clearVerifiedSignature, jwsStatus, setFiles, setZip]);
 
   const showMultipleSignPopup = useCallback(() => {
     setImportIcon(ImportIcon);
@@ -84,9 +122,9 @@ export const ImportFilesVerifier = () => {
   }, [setJwsStatus]);
 
   const dismissMultipleSignPopup = useCallback(() => {
-    clearEndpoint();
+    clearVerifiedSignature();
     setJwsStatus('Not Checked');
-  }, [clearEndpoint, setJwsStatus]);
+  }, [clearVerifiedSignature, setJwsStatus]);
 
   const filesArrayHasDidSign = (files: File[]) =>
     files.some((file) => isDidSignFile(file.name));
@@ -257,17 +295,17 @@ export const ImportFilesVerifier = () => {
         if (!statuses.includes(false)) {
           fetchDidDocument();
         } else {
-          clearEndpoint();
+          clearVerifiedSignature();
         }
       }
     }
-  }, [files, jwsStatus, fetchDidDocument, clearEndpoint]);
+  }, [files, jwsStatus, fetchDidDocument, clearVerifiedSignature]);
 
   const handleDelete = () => {
     setSignature({});
     setFiles([]);
-    setZip();
-    clearEndpoint();
+    setZip(undefined);
+    clearVerifiedSignature();
     clearJWS();
   };
 
@@ -314,9 +352,10 @@ export const ImportFilesVerifier = () => {
         {files.length === 0 && <FilesEmpty />}
         {files.length > 0 && (
           <FilesVerifier
-            jwsStatus={jwsStatus}
-            clearJWS={clearJWS}
-            onDelete={handleFileDelete}
+            files={files}
+            zip={zip}
+            onDelete={handleDeleteFile}
+            onDeleteAll={handleDeleteAll}
           />
         )}
       </div>

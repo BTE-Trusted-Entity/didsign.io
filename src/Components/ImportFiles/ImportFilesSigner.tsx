@@ -50,15 +50,13 @@ function InfoLink() {
 export const ImportFilesSigner = () => {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon);
   const [signErrorPopup, setSignErrorPopup] = useState<boolean>(false);
-  const { files, setFiles, setZip } = useFiles();
+  const { files, setFiles } = useFiles();
   const targetElement = document.querySelector('body');
   const { signature, setSignature } = useSignature();
 
   useEffect(() => {
-    setFiles([]);
-    setZip();
     setSignature({});
-  }, [setFiles, setSignature, setZip]);
+  }, [setSignature]);
 
   const handleDismiss = () => {
     setSignErrorPopup(false);
@@ -97,7 +95,6 @@ export const ImportFilesSigner = () => {
   const handleDelete = () => {
     setSignature({});
     setFiles([]);
-    setZip();
   };
 
   return (
