@@ -83,5 +83,8 @@
       "distDir": "build",
       "context": "browser"
     }
+  },
+  "engines": {
+    "node": ">=18.12.0"
   }
 }
