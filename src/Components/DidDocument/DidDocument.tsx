@@ -2,38 +2,37 @@ import React, { Fragment } from 'react';
 
 import * as styles from './DidDocument.module.css';
 
-import { useAppSelector } from '../../app/hooks';
-import {
-  selectAttachedCredentials,
-  selectServiceEndpoints,
-  selectTimestamp,
-  selectTxHash,
-  selectVerifiedDid,
-  selectVerifiedSign,
-  selectW3Name,
-} from '../../Features/Signer/VerifiedSignatureSlice';
-import { selectJwsSignStatus } from '../../Features/Signer/VerifyJwsSlice';
+import { IVerifiedSignatureContents, JWSStatus } from '../../Utils/types';
 import { JWSErrors } from '../JWSErrors/JWSErrors';
 import { ServiceEndpoint } from '../ServiceEndpoints/ServiceEndpoint';
 
 import { useSubscanHost } from '../../Utils/useSubscanHost';
 import { CredentialVerifier } from '../Credential/Credential';
 
-export const DidDocument = () => {
-  const did = useAppSelector(selectVerifiedDid);
-  const w3name = useAppSelector(selectW3Name);
-  const timestamp = useAppSelector(selectTimestamp) || 'No timestamp available';
-  const txHash = useAppSelector(selectTxHash);
-  const signature = useAppSelector(selectVerifiedSign);
-  const attachedCredentials = useAppSelector(selectAttachedCredentials);
-  const seviceEndpoints = useAppSelector(selectServiceEndpoints);
-  const jwsStatus = useAppSelector(selectJwsSignStatus);
+export function DidDocument({
+  jwsStatus,
+  verifiedSignature,
+}: {
+  jwsStatus: JWSStatus;
+  verifiedSignature: IVerifiedSignatureContents;
+}) {
+  const {
+    did,
+    w3name,
+    timestamp = 'No timestamp available',
+    txHash,
+    signature,
+    credentials: attachedCredentials,
+    endpoints: serviceEndpoints,
+  } = verifiedSignature;
   const subscanHost = useSubscanHost();
 
-  if (jwsStatus === 'Not Checked' || jwsStatus === 'Validating') return null;
+  if (jwsStatus === 'Not Checked' || jwsStatus === 'Validating' || !did) {
+    return null;
+  }
 
   if (jwsStatus !== 'Verified') {
-    return <JWSErrors />;
+    return <JWSErrors jwsStatus={jwsStatus} />;
   } else {
     return (
       <div className={styles.container}>
@@ -96,8 +95,9 @@ export const DidDocument = () => {
         <div className={styles.textWrapper}>
           <span className={styles.title}>Service Endpoints</span>
           <div className={styles.endpointsWrapper}>
-            {seviceEndpoints.map((endpoint) => (
+            {serviceEndpoints.map((endpoint) => (
               <ServiceEndpoint
+                did={did}
                 url={endpoint.urls[0]}
                 endpointType={endpoint.types[0]}
                 key={endpoint.id}
@@ -108,4 +108,4 @@ export const DidDocument = () => {
       </div>
     );
   }
-};
+}

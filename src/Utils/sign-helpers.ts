@@ -49,3 +49,10 @@ export const generateJWS = (
   const jws = `${encodedHeaders}.${encodedPlayload}.${encodedSignature}`;
   return jws;
 };
+
+export async function createDidSignFile(blob: Blob) {
+  const name = 'signature.didsign';
+  const file = new File([blob], name);
+  const buffer = await file.arrayBuffer();
+  return { file, buffer, name, hash: '' };
+}

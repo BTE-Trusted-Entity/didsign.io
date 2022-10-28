@@ -1,140 +1,216 @@
 import Dropzone from 'react-dropzone';
 import React, { useCallback, useEffect, useState } from 'react';
 import { base16 } from 'multiformats/bases/base16';
+import { without } from 'lodash-es';
 
 import * as styles from './ImportFiles.module.css';
 
 import ImportIcon from '../../ImageAssets/iconBIG_import_NEW.svg';
 import ReleaseIcon from '../../ImageAssets/iconBIG_import_release.svg';
-import {
-  addFile,
-  addFileName,
-  selectFiles,
-  selectFilenames,
-} from '../../Features/Signer/FileSlice';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { FileEntry } from '../Files/Files';
 import {
   getFileNames,
   getVerifiedData,
+  handleFilesFromZip,
   isDidSignFile,
-  newUnzip,
+  unzipFileEntries,
 } from '../../Utils/verify-helper';
-import {
-  clearEndpoint,
-  fileStatus,
-  update,
-  updateAllFilesStatus,
-  updateIndividualFileStatus,
-  updateIndividualFileStatusOnIndex,
-} from '../../Features/Signer/VerifiedSignatureSlice';
 import { createHash, createHashFromHashArray } from '../../Utils/sign-helpers';
-import { NamedCredential, IRemark, SignDoc } from '../../Utils/types';
 import {
-  addJwsHashArray,
-  addJwsSign,
-  selectJwsHash,
-  selectJwsSign,
-  selectJwsSignStatus,
-  updateSignStatus,
-} from '../../Features/Signer/VerifyJwsSlice';
-import { addHash, selectHash } from '../../Features/Signer/hashSlice';
+  IRemark,
+  IVerifiedSignatureContents,
+  JWSStatus,
+  NamedCredential,
+  SignDoc,
+} from '../../Utils/types';
 import { FastAnimation, SlowAnimationVerifier } from '../Animation/Animation';
-import { showPopup } from '../../Features/Signer/PopupSlice';
 import { MultipleSignPopup } from '../Popups/Popups';
 
 import { useConnect } from '../../Hooks/useConnect';
+import { Navigation } from '../Navigation/Navigation';
+import { FilesEmpty } from '../FilesEmpty/FilesEmpty';
+import { FilesVerifier } from '../FilesVerifier/FilesVerifier';
+import { usePreventNavigation } from '../../Hooks/usePreventNavigation';
+import { DidDocument } from '../DidDocument/DidDocument';
+import { replace } from '../../Utils/replace';
+
+interface JWSState {
+  jws: string;
+  jwsStatus: JWSStatus;
+  jwsHashes: string[];
+}
+
+const initialJws: JWSState = {
+  jws: '',
+  jwsStatus: 'Not Checked',
+  jwsHashes: [],
+};
+
+const initialVerifiedSignature: IVerifiedSignatureContents = {
+  signature: '',
+  did: undefined,
+  endpoints: [],
+  w3name: '',
+  txHash: '',
+  credentials: [],
+};
 
 export const ImportFilesVerifier = () => {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon);
-  const fileHash = useAppSelector(selectHash);
-  const jwsHash = useAppSelector(selectJwsHash);
-  const jws = useAppSelector(selectJwsSign);
-  const jwsStatus = useAppSelector(selectJwsSignStatus);
-  const savedZippedFilenames = useAppSelector(selectFilenames);
-  const files = useAppSelector(selectFiles);
-  const statuses = useAppSelector(fileStatus);
+
+  const [jwsState, setJwsState] = useState(initialJws);
+  const { jws, jwsStatus, jwsHashes } = jwsState;
+  const clearJWS = useCallback(() => setJwsState(initialJws), []);
+  const setJwsStatus = useCallback(
+    (status: JWSStatus) =>
+      setJwsState((old) => ({ ...old, jwsStatus: status })),
+    [],
+  );
+
+  const [zip, setZip] = useState<string>();
+  const [files, setFiles] = useState<FileEntry[]>([]);
   const [remark, setRemark] = useState<IRemark>();
   const [credentials, setCredentials] = useState<NamedCredential[]>();
 
+  const [verifiedSignature, setVerifiedSignature] =
+    useState<IVerifiedSignatureContents>(initialVerifiedSignature);
+  const clearVerifiedSignature = useCallback(
+    () => setVerifiedSignature(initialVerifiedSignature),
+    [],
+  );
+
   useConnect();
 
-  const dispatch = useAppDispatch();
+  //allows navigation prevented by time stamping
+  usePreventNavigation(false);
+
+  const handleDeleteFile = useCallback(
+    (index: number) => {
+      if (jwsStatus === 'Validating') return;
+
+      const file = files[index];
+      const didSignFileDeleted = isDidSignFile(file.name);
+      if (didSignFileDeleted) {
+        setFiles((oldFiles) =>
+          oldFiles.map((old) => ({ ...old, verified: false })),
+        );
+        clearJWS();
+      }
+
+      if (jwsStatus !== 'Corrupted') {
+        setJwsStatus('Not Checked');
+      }
+
+      clearVerifiedSignature();
+      setFiles((files) => without(files, file));
+    },
+    [
+      clearJWS,
+      clearVerifiedSignature,
+      files,
+      jwsStatus,
+      setFiles,
+      setJwsStatus,
+    ],
+  );
+
+  const handleDeleteAll = useCallback(() => {
+    if (jwsStatus === 'Validating') {
+      return;
+    }
+
+    clearVerifiedSignature();
+    setFiles([]);
+    setZip(undefined);
+    clearJWS();
+  }, [clearJWS, clearVerifiedSignature, jwsStatus, setFiles, setZip]);
 
   const showMultipleSignPopup = useCallback(() => {
     setImportIcon(ImportIcon);
-    dispatch(updateSignStatus('Multiple Sign'));
-    dispatch(showPopup(true));
-  }, [dispatch]);
+    setJwsStatus('Multiple Sign');
+  }, [setJwsStatus]);
+
+  const dismissMultipleSignPopup = useCallback(() => {
+    clearVerifiedSignature();
+    setJwsStatus('Not Checked');
+  }, [clearVerifiedSignature, setJwsStatus]);
 
   const filesArrayHasDidSign = (files: File[]) =>
     files.some((file) => isDidSignFile(file.name));
 
   const handleZipCase = useCallback(
     async (file: File) => {
-      dispatch(updateSignStatus('Validating'));
+      setJwsStatus('Validating');
 
-      const verifiedSignatureContents = await newUnzip(file);
+      setZip(file.name);
+
+      const newFiles = await unzipFileEntries(file);
+      setFiles(newFiles);
+      const verifiedSignatureContents = await handleFilesFromZip(newFiles);
 
       if (verifiedSignatureContents) {
-        dispatch(updateSignStatus('Verified'));
-        dispatch(update(verifiedSignatureContents));
-        dispatch(updateAllFilesStatus(verifiedSignatureContents.filesStatus));
+        setJwsStatus('Verified');
+        setVerifiedSignature((old) => ({
+          ...verifiedSignatureContents,
+          endpoints: [...old.endpoints, ...verifiedSignatureContents.endpoints],
+        }));
+        setFiles(verifiedSignatureContents.files);
       } else {
-        dispatch(updateSignStatus('Invalid'));
+        setJwsStatus('Invalid');
       }
       return;
     },
-    [dispatch],
+    [setFiles, setJwsStatus, setVerifiedSignature, setZip],
   );
 
   const handleIndividualCase = useCallback(
     async (file: File) => {
-      const reader = new FileReader();
-      reader.readAsArrayBuffer(file);
-      reader.onload = async function () {
-        if (typeof reader.result === 'string')
-          throw new Error(
-            'Verification: type of reader result should be arraybuffer',
-          );
+      const { name } = file;
+      const buffer = await file.arrayBuffer();
 
-        if (isDidSignFile(file.name)) {
-          const addMissingPrefix = (hash: string): string =>
-            hash.startsWith(base16.prefix) ? hash : `${base16.prefix}${hash}`;
+      const isDidSign = isDidSignFile(name);
+      const hash = isDidSign ? '' : await createHash(buffer);
+      const verified = isDidSign;
 
-          const decoder = new TextDecoder('utf-8');
-          const result = decoder.decode(reader.result as ArrayBuffer);
-          const { jws, hashes, remark, credentials } = JSON.parse(
-            result,
-          ) as SignDoc;
+      if (isDidSign) {
+        const addMissingPrefix = (hash: string): string =>
+          hash.startsWith(base16.prefix) ? hash : `${base16.prefix}${hash}`;
 
-          if (remark) setRemark(remark);
+        const decoder = new TextDecoder('utf-8');
+        const result = decoder.decode(buffer);
+        const { jws, hashes, remark, credentials } = JSON.parse(
+          result,
+        ) as SignDoc;
 
-          if (credentials) setCredentials(credentials);
+        if (remark) setRemark(remark);
 
-          const hashesWithPrefix = hashes.map((hash) => addMissingPrefix(hash));
-          const baseHash = await createHashFromHashArray(hashesWithPrefix);
-          const hashFromJWS: string = JSON.parse(atob(jws.split('.')[1])).hash;
-          if (baseHash !== addMissingPrefix(hashFromJWS)) {
-            dispatch(updateSignStatus('Corrupted'));
-          }
-          dispatch(addJwsSign(jws));
-          dispatch(addJwsHashArray(hashesWithPrefix));
-          dispatch(updateIndividualFileStatus(true));
-          dispatch(addHash(''));
-        } else {
-          const hash = await createHash(reader.result);
-          dispatch(addHash(hash));
-          dispatch(updateIndividualFileStatus(false));
+        if (credentials) setCredentials(credentials);
+
+        const hashesWithPrefix = hashes.map((hash) => addMissingPrefix(hash));
+        const baseHash = await createHashFromHashArray(hashesWithPrefix);
+        const hashFromJWS: string = JSON.parse(atob(jws.split('.')[1])).hash;
+        if (baseHash !== addMissingPrefix(hashFromJWS)) {
+          setJwsStatus('Corrupted');
         }
-        dispatch(addFile(file));
-      };
+
+        setJwsState((old) => ({
+          ...old,
+          jws,
+          jwsHashes: [...old.jwsHashes, ...hashesWithPrefix],
+        }));
+      }
+      setFiles((files) => [...files, { file, buffer, name, hash, verified }]);
     },
-    [dispatch],
+    [setFiles, setJwsStatus],
   );
 
   const handleDrop = useCallback(
     (acceptedFiles: File[]) => {
-      if (filesArrayHasDidSign(files) && filesArrayHasDidSign(acceptedFiles)) {
+      const filesArray = files.map(({ file }) => file);
+      if (
+        filesArrayHasDidSign(filesArray) &&
+        filesArrayHasDidSign(acceptedFiles)
+      ) {
         showMultipleSignPopup();
         return;
       }
@@ -148,33 +224,21 @@ export const ImportFilesVerifier = () => {
       acceptedFiles.forEach(async (file: File) => {
         setImportIcon(ImportIcon);
         if (files.length === 0) {
-          dispatch(updateSignStatus('Not Checked'));
+          setJwsStatus('Not Checked');
         }
 
-        if (file.name.split('.').pop() === 'zip') {
+        if (file.name.endsWith('.zip')) {
           const filenames = await getFileNames(file);
-          const didSignFile = filenames.filter((file: string) =>
-            isDidSignFile(file),
-          );
-          if (didSignFile.length && acceptedFiles.length > 1) {
-            return;
-          }
-          if (
-            savedZippedFilenames.filter((file) => isDidSignFile(file))
-              .length === 1 &&
-            didSignFile.length === 1
-          ) {
-            showMultipleSignPopup();
+          const didSignFile = filenames.find(isDidSignFile);
+
+          if (didSignFile && acceptedFiles.length > 1) {
             return;
           }
 
-          if (didSignFile.length === 1) {
-            if (files.length > 0) {
-              return;
+          if (didSignFile) {
+            if (files.length === 0) {
+              await handleZipCase(file);
             }
-            dispatch(addFile(file));
-            dispatch(addFileName(filenames));
-            await handleZipCase(file);
             return;
           }
         }
@@ -182,90 +246,150 @@ export const ImportFilesVerifier = () => {
       });
     },
     [
-      dispatch,
       files,
       handleIndividualCase,
       handleZipCase,
-      savedZippedFilenames,
+      setJwsStatus,
       showMultipleSignPopup,
     ],
   );
   useEffect(() => {
-    if (jwsHash.length) {
-      fileHash.filter(async (hash, index) => {
-        if (jwsHash.includes(hash)) {
-          dispatch(updateIndividualFileStatusOnIndex(index));
+    if (jwsHashes.length > 0) {
+      files.forEach((file) => {
+        if (jwsHashes.includes(file.hash)) {
+          setFiles((oldFiles) =>
+            replace(oldFiles, file, { ...file, verified: true }),
+          );
         } else {
-          if (hash !== '') {
-            dispatch(updateSignStatus('Invalid'));
+          if (file.hash !== '') {
+            setJwsStatus('Invalid');
           }
-          return;
         }
       });
     }
-  }, [dispatch, fileHash, jwsHash, jwsStatus]);
+  }, [
+    files,
+    jwsHashes,
+    jwsStatus,
+    setFiles,
+    setJwsState,
+    setJwsStatus,
+    setVerifiedSignature,
+  ]);
 
   const fetchDidDocument = useCallback(async () => {
-    dispatch(updateSignStatus('Validating'));
+    setJwsStatus('Validating');
     const verifiedSignatureInstance = await getVerifiedData(jws, remark);
     if (verifiedSignatureInstance) {
-      dispatch(updateSignStatus('Verified'));
-      dispatch(
-        update({
-          ...verifiedSignatureInstance,
-          filesStatus: statuses,
-          credentials,
-        }),
-      );
+      setJwsStatus('Verified');
+      setVerifiedSignature((old) => ({
+        ...verifiedSignatureInstance,
+        credentials,
+        endpoints: [...old.endpoints, ...verifiedSignatureInstance.endpoints],
+      }));
     } else {
-      dispatch(updateSignStatus('Invalid'));
+      setJwsStatus('Invalid');
     }
-  }, [credentials, dispatch, jws, remark, statuses]);
+  }, [credentials, jws, remark, setJwsStatus, setVerifiedSignature]);
 
   useEffect(() => {
+    const statuses = files
+      .map(({ verified }) => verified)
+      .filter((value) => typeof value === 'boolean');
     if (jwsStatus === 'Not Checked') {
       if (statuses && statuses.length > 1) {
         if (!statuses.includes(false)) {
           fetchDidDocument();
         } else {
-          dispatch(clearEndpoint());
+          clearVerifiedSignature();
         }
       }
     }
-  }, [statuses, jwsStatus, dispatch, fetchDidDocument]);
+  }, [files, jwsStatus, fetchDidDocument, clearVerifiedSignature]);
+
+  const handleDelete = () => {
+    setFiles([]);
+    setZip(undefined);
+    clearVerifiedSignature();
+    clearJWS();
+  };
+
   return (
-    <div className={styles.container}>
-      {jwsStatus === 'Multiple Sign' && <MultipleSignPopup />}
+    <main className={styles.main}>
+      <Navigation />
+      <div className={styles.middleSection}>
+        <div className={styles.container}>
+          {jwsStatus === 'Multiple Sign' && (
+            <MultipleSignPopup onDismiss={dismissMultipleSignPopup} />
+          )}
 
-      <Dropzone
-        onDrop={handleDrop}
-        onDragLeave={() => setImportIcon(ImportIcon)}
-        onDragEnter={() => setImportIcon(ReleaseIcon)}
-      >
-        {({ getRootProps, getInputProps }) => (
-          <div className={styles.dropContainer} {...getRootProps({})}>
-            {impIcon == ImportIcon ? (
-              <SlowAnimationVerifier />
-            ) : (
-              <FastAnimation />
-            )}
+          <Dropzone
+            onDrop={handleDrop}
+            onDragLeave={() => setImportIcon(ImportIcon)}
+            onDragEnter={() => setImportIcon(ReleaseIcon)}
+          >
+            {({ getRootProps, getInputProps }) => (
+              <div className={styles.dropContainer} {...getRootProps({})}>
+                {impIcon == ImportIcon ? (
+                  <SlowAnimationVerifier />
+                ) : (
+                  <FastAnimation />
+                )}
 
-            <input {...getInputProps()} />
-            <img className={styles.importIcon} src={impIcon} />
-            {impIcon === ImportIcon && (
-              <span className={styles.signText}>Verify Your Files</span>
+                <input {...getInputProps()} />
+                <img className={styles.importIcon} src={impIcon} />
+                {impIcon === ImportIcon && (
+                  <span className={styles.signText}>Verify Your Files</span>
+                )}
+                {impIcon === ImportIcon && (
+                  <span className={styles.dragDropText}>drag & drop</span>
+                )}
+                {impIcon === ImportIcon && (
+                  <span className={styles.browseFilesText}>
+                    or click / tap to browse your files
+                  </span>
+                )}
+              </div>
             )}
-            {impIcon === ImportIcon && (
-              <span className={styles.dragDropText}>drag & drop</span>
-            )}
-            {impIcon === ImportIcon && (
-              <span className={styles.browseFilesText}>
-                or click / tap to browse your files
-              </span>
-            )}
-          </div>
+          </Dropzone>
+        </div>
+
+        {files.length === 0 && <FilesEmpty />}
+        {files.length > 0 && (
+          <FilesVerifier
+            files={files}
+            zip={zip}
+            onDelete={handleDeleteFile}
+            onDeleteAll={handleDeleteAll}
+          />
         )}
-      </Dropzone>
-    </div>
+      </div>
+
+      <section className={styles.bottomContainer}>
+        <div className={styles.bottomSection}>
+          {jwsStatus === 'Validating' && (
+            <span className={styles.verificationLoader} />
+          )}
+
+          {jwsStatus === 'Not Checked' && (
+            <span className={styles.verificationText}>
+              Verification <div></div>
+            </span>
+          )}
+
+          <DidDocument
+            jwsStatus={jwsStatus}
+            verifiedSignature={verifiedSignature}
+          />
+
+          {jwsStatus === 'Verified' && (
+            <button
+              className={styles.startOverBtn}
+              onClick={() => handleDelete()}
+            />
+          )}
+        </div>
+      </section>
+    </main>
   );
 };

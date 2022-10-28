@@ -5,29 +5,19 @@ import JSZip from 'jszip';
 
 import * as styles from './DownloadButtons.module.css';
 
-import {
-  IBuffer,
-  selectBuffers,
-  selectFiles,
-} from '../../Features/Signer/FileSlice';
-
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import {
-  selectTimestampStatus,
-  updateDownloadStatus,
-} from '../../Features/Signer/SignatureSlice';
+import { FileEntry, useFiles } from '../Files/Files';
+import { useSignature } from '../Signature/Signature';
 
 export const DownloadButtons = () => {
-  const buffers = useAppSelector(selectBuffers);
-  const [signatureFile] = useAppSelector(selectFiles);
+  const { files } = useFiles();
+  const [signatureFile] = files;
   const [showLoader, setShowLoader] = useState<boolean>(false);
   const [progress, setProgress] = useState<string>('0');
-  const isTimestamped = useAppSelector(selectTimestampStatus);
-  const dispatch = useAppDispatch();
+  const { setSignature } = useSignature();
 
-  const generateZipFile = async (buffers: IBuffer[]) => {
+  async function generateZipFile(files: FileEntry[]) {
     const zip = new JSZip();
-    buffers.map((buffer) => zip.file(buffer.name, buffer.buffer));
+    files.forEach(({ buffer, name }) => zip.file(name, buffer));
     const content = await zip.generateAsync(
       {
         type: 'blob',
@@ -39,20 +29,20 @@ export const DownloadButtons = () => {
       },
     );
     saveAs(content, 'DIDsign-files.zip');
-  };
+  }
 
   const handleDownloadSign = async () => {
-    saveAs(signatureFile, 'signature.didsign');
-    if (isTimestamped) dispatch(updateDownloadStatus(true));
+    saveAs(signatureFile.file, 'signature.didsign');
+    setSignature((old) => ({ ...old, downloaded: true }));
   };
 
   const handleZip = async () => {
     setShowLoader(true);
     document.body.style.pointerEvents = 'none';
-    await generateZipFile(buffers);
+    await generateZipFile(files);
     setShowLoader(false);
     document.body.style.pointerEvents = 'auto';
-    if (isTimestamped) dispatch(updateDownloadStatus(true));
+    setSignature((old) => ({ ...old, downloaded: true }));
   };
 
   return (

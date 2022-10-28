@@ -4,25 +4,19 @@ import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 
 import * as styles from './SignButton.module.css';
 
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useSignature } from '../Signature/Signature';
 import {
-  updateCredentials,
-  updateSign,
-} from '../../Features/Signer/SignatureSlice';
-import { getSignatureContents, generateJWS } from '../../Utils/sign-helpers';
-import { selectFinalHash, selectHash } from '../../Features/Signer/hashSlice';
-import {
-  addBufferTop,
-  addFileTop,
-  IBuffer,
-  selectFiles,
-} from '../../Features/Signer/FileSlice';
-import { showPopup } from '../../Features/Signer/PopupSlice';
+  createDidSignFile,
+  createHashFromHashArray,
+  generateJWS,
+  getSignatureContents,
+} from '../../Utils/sign-helpers';
+import { useFiles } from '../Files/Files';
 import {
   NoWalletPopup,
+  SignButtonInfoPopup,
   SignErrorPopup,
   SignPopup,
-  SignButtonInfoPopup,
 } from '../Popups/Popups';
 import { exceptionToError } from '../../Utils/exceptionToError';
 
@@ -31,30 +25,26 @@ export const SignButton = () => {
     'SignError' | 'Default' | 'No Sporran' | null
   >(null);
   const targetElement = document.querySelector('body');
-  const files = useAppSelector(selectFiles);
+  const { files, setFiles } = useFiles();
+  const { setSignature } = useSignature();
   const [signPopup, setSignPopup] = useState<boolean>(false);
 
   const generateSignatureFile = async (blob: Blob) => {
-    const newFile = new File([blob], 'signature.didsign');
-    const newBufferObj: IBuffer = {
-      buffer: await newFile.arrayBuffer(),
-      name: newFile.name,
-    };
-    dispatch(addBufferTop(newBufferObj));
-    dispatch(addFileTop(newFile));
+    const file = await createDidSignFile(blob);
+    setFiles((files) => [file, ...files]);
   };
-  const handleChange = async () => {
-    if (hashes.length == 0) {
+  const handleSign = async () => {
+    if (files.length == 0) {
       return;
     }
-    dispatch(showPopup(true));
     if (targetElement !== null) {
       disableBodyScroll(targetElement);
-      setSignStatus('Default');
     }
+    setSignStatus('Default');
 
     try {
-      const signingData = await finalHash;
+      const hashes = files.map(({ hash }) => hash);
+      const signingData = await createHashFromHashArray(hashes);
 
       const {
         credentials = undefined,
@@ -69,11 +59,11 @@ export const SignButton = () => {
       });
 
       await generateSignatureFile(blob);
-      dispatch(updateSign(signature));
-
-      if (credentials) dispatch(updateCredentials(credentials));
-
-      dispatch(showPopup(false));
+      setSignature((old) => ({
+        ...old,
+        signature,
+        ...(credentials && { credentials }),
+      }));
 
       if (targetElement !== null) {
         enableBodyScroll(targetElement);
@@ -93,14 +83,10 @@ export const SignButton = () => {
     }
   };
 
-  const hashes = useAppSelector(selectHash);
-  const finalHash = useAppSelector(selectFinalHash);
-  const dispatch = useAppDispatch();
   const handleDismiss = () => {
     if (targetElement !== null) {
       enableBodyScroll(targetElement);
     }
-    dispatch(showPopup(false));
     setSignStatus(null);
   };
   const showSignPopup = () => {
@@ -108,13 +94,11 @@ export const SignButton = () => {
       disableBodyScroll(targetElement);
     }
     setSignPopup(true);
-    dispatch(showPopup(true));
   };
   const handleSignDismiss = () => {
     if (targetElement !== null) {
       enableBodyScroll(targetElement);
     }
-    dispatch(showPopup(false));
     setSignPopup(false);
   };
   return (
@@ -123,7 +107,7 @@ export const SignButton = () => {
         <button
           className={styles.signBtn}
           disabled={files.length === 0}
-          onClick={() => handleChange()}
+          onClick={() => handleSign()}
         >
           Sign
         </button>

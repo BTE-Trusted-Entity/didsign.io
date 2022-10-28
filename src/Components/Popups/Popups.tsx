@@ -1,24 +1,60 @@
-import React from 'react';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 import * as styles from './Popups.module.css';
 
-import { useAppDispatch } from '../../app/hooks';
-import { showPopup } from '../../Features/Signer/PopupSlice';
-import { updateSignStatus } from '../../Features/Signer/VerifyJwsSlice';
-import { clearEndpoint } from '../../Features/Signer/VerifiedSignatureSlice';
+interface ShowPopupContextType {
+  visible: boolean;
+
+  showPopup(value: boolean): void;
+}
+
+const ShowPopupContext = createContext<ShowPopupContextType>({
+  visible: false,
+  showPopup() {
+    return;
+  },
+});
+
+export function useShowPopup(): ShowPopupContextType {
+  return useContext(ShowPopupContext);
+}
+
+export function ShowPopupProvider({
+  children,
+}: {
+  children: JSX.Element;
+}): JSX.Element {
+  const [visible, showPopup] = useState(false);
+  const value = useMemo(() => ({ visible, showPopup }), [visible]);
+  return (
+    <ShowPopupContext.Provider value={value}>
+      {children}
+    </ShowPopupContext.Provider>
+  );
+}
+
+function usePopupBackdrop() {
+  const { showPopup } = useShowPopup();
+  return useEffect(() => {
+    showPopup(true);
+    return () => showPopup(false);
+  }, [showPopup]);
+}
 
 interface Props {
   onDismiss: React.MouseEventHandler<HTMLButtonElement>;
   onOkay?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-export const MultipleSignPopup = () => {
-  const dispatch = useAppDispatch();
-  const handleDismiss = () => {
-    dispatch(showPopup(false));
-    dispatch(clearEndpoint());
-    dispatch(updateSignStatus('Not Checked'));
-  };
+export function MultipleSignPopup({ onDismiss }: { onDismiss: () => void }) {
+  usePopupBackdrop();
+
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
@@ -28,15 +64,16 @@ export const MultipleSignPopup = () => {
           Multiple signature files found. Please import only one signature file.
         </span>
 
-        <button className={styles.dismissBtn} onClick={() => handleDismiss()}>
+        <button className={styles.dismissBtn} onClick={onDismiss}>
           Dismiss
         </button>
       </div>
     </div>
   );
-};
+}
 
 export const SignFileInfoPopup = ({ onDismiss }: Props) => {
+  usePopupBackdrop();
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
@@ -65,6 +102,7 @@ export const SignFileInfoPopup = ({ onDismiss }: Props) => {
 };
 
 export const SignButtonInfoPopup = ({ onDismiss }: Props) => {
+  usePopupBackdrop();
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
@@ -89,6 +127,7 @@ export const SignButtonInfoPopup = ({ onDismiss }: Props) => {
 };
 
 export const SigningMultipleDidFiles = ({ onDismiss }: Props) => {
+  usePopupBackdrop();
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
@@ -107,6 +146,7 @@ export const SigningMultipleDidFiles = ({ onDismiss }: Props) => {
 };
 
 export const SignPopup = ({ onDismiss }: Props) => {
+  usePopupBackdrop();
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
@@ -126,6 +166,7 @@ export const SignPopup = ({ onDismiss }: Props) => {
 };
 
 export const NoWalletPopup = ({ onDismiss }: Props) => {
+  usePopupBackdrop();
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
@@ -147,6 +188,7 @@ export const NoWalletPopup = ({ onDismiss }: Props) => {
 };
 
 export const SignErrorPopup = ({ onDismiss }: Props) => {
+  usePopupBackdrop();
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
@@ -165,6 +207,7 @@ export const SignErrorPopup = ({ onDismiss }: Props) => {
 };
 
 export const PendingTx = () => {
+  usePopupBackdrop();
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
@@ -185,6 +228,7 @@ export const PendingTx = () => {
 };
 
 export const TimestampError = ({ onDismiss }: Props) => {
+  usePopupBackdrop();
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
@@ -202,6 +246,7 @@ export const TimestampError = ({ onDismiss }: Props) => {
   );
 };
 export const DeleteCredential = ({ onDismiss, onOkay }: Props) => {
+  usePopupBackdrop();
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
@@ -224,6 +269,7 @@ export const DeleteCredential = ({ onDismiss, onOkay }: Props) => {
 };
 
 export const TimestampWarning = ({ onDismiss, onOkay }: Props) => {
+  usePopupBackdrop();
   return (
     <div className={styles.container}>
       <div className={styles.popup}>

@@ -1,21 +1,10 @@
 import { Fragment, useState } from 'react';
+import { without } from 'lodash-es';
 
 import * as styles from './FilesSigner.module.css';
 
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-
-import {
-  deleteBuffer,
-  deleteFile,
-  selectBuffers,
-  selectFiles,
-} from '../../Features/Signer/FileSlice';
-import { deleteHashFromIndex } from '../../Features/Signer/hashSlice';
-import {
-  clearSign,
-  selectCredentials,
-} from '../../Features/Signer/SignatureSlice';
-import { showPopup } from '../../Features/Signer/PopupSlice';
+import { useFiles } from '../Files/Files';
+import { useSignature } from '../Signature/Signature';
 
 import { isDidSignFile } from '../../Utils/verify-helper';
 
@@ -24,41 +13,33 @@ import { Timestamp } from '../Timestamp/Timestamp';
 import { CredentialsInsertion } from '../CredentialsInsertion/CredentialsInsertion';
 
 export const FilesSigner = () => {
-  const dispatch = useAppDispatch();
-  const files = useAppSelector(selectFiles);
-  const buffers = useAppSelector(selectBuffers);
-  const credentials = useAppSelector(selectCredentials);
+  const { files, setFiles } = useFiles();
+  const { credentials, setSignature } = useSignature();
   const [signPopup, setSignPopup] = useState<boolean>(false);
 
   const showSignInfoPopup = () => {
-    dispatch(showPopup(true));
     setSignPopup(true);
     document.body.style.overflowY = 'hidden';
   };
   const handleDismiss = () => {
-    dispatch(showPopup(false));
     setSignPopup(false);
     document.body.style.overflowY = 'auto';
   };
-  const handleDeleteFile = (file: File) => {
-    const index = files.indexOf(file);
-    dispatch(deleteHashFromIndex(index));
-    dispatch(deleteBuffer(buffers[index]));
-    dispatch(deleteFile(file));
-    const didSignFile = files.find((file) => isDidSignFile(file.name));
+  const handleDeleteFile = (index: number) => {
+    setFiles((files) => without(files, files[index]));
 
+    const didSignFile = files.find(({ name }) => isDidSignFile(name));
     if (!didSignFile) return;
 
-    dispatch(deleteBuffer(buffers[files.indexOf(didSignFile)]));
-    dispatch(deleteFile(didSignFile));
-    dispatch(clearSign());
+    setFiles((files) => without(files, didSignFile));
+    setSignature({});
   };
   return (
     <div className={styles.container}>
       <h2 className={styles.heading}>Files</h2>
 
       <ul className={styles.list}>
-        {files.map((file: File, index: number) => (
+        {files.map(({ file }, index) => (
           <li key={index}>
             {isDidSignFile(file.name) && (
               <Fragment>
@@ -90,7 +71,7 @@ export const FilesSigner = () => {
                 <button
                   className={styles.deleteBtn}
                   aria-label="delete file"
-                  onClick={() => handleDeleteFile(file)}
+                  onClick={() => handleDeleteFile(index)}
                 />
               </div>
             )}

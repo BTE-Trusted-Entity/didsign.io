@@ -1,22 +1,19 @@
-import React, { useState } from 'react';
+import type { DidUri } from '@kiltprotocol/sdk-js';
 
+import { useState } from 'react';
 import classnames from 'classnames';
 
 import * as styles from './ServiceEndpoint.module.css';
-
-import { useAppSelector } from '../../app/hooks';
-import { selectVerifiedDid } from '../../Features/Signer/VerifiedSignatureSlice';
 
 import { CredentialVerifier } from '../Credential/Credential';
 
 interface Props {
   url: string;
   endpointType: string;
+  did: DidUri;
 }
 
-export const ServiceEndpoint = ({ url, endpointType }: Props) => {
-  const did = useAppSelector(selectVerifiedDid);
-
+export function ServiceEndpoint({ url, endpointType, did }: Props) {
   const [credential, setCredential] = useState();
 
   const [fetching, setFetching] = useState(false);
@@ -72,4 +69,4 @@ export const ServiceEndpoint = ({ url, endpointType }: Props) => {
       {credential && <CredentialVerifier credential={credential} did={did} />}
     </div>
   );
-};
+}

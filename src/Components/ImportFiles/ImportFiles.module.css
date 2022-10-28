@@ -1,3 +1,11 @@
+.main {
+  composes: container from '../Main/Main.module.css';
+}
+
+.middleSection {
+  composes: middleSection from '../Main/Main.module.css';
+}
+
 .container {
   display: flex;
   max-width: 766px;
@@ -53,4 +61,24 @@
 .importIcon {
   position: absolute;
   margin: auto;
+}
+
+.bottomContainer {
+  composes: bottomContainer from '../BottomSection/BottomSection.module.css';
+}
+
+.bottomSection {
+  composes: bottomSection from '../BottomSection/BottomSection.module.css';
+}
+
+.verificationLoader {
+  composes: verificationLoader from '../BottomSection/BottomSection.module.css';
+}
+
+.verificationText {
+  composes: verificationText from '../BottomSection/BottomSection.module.css';
+}
+
+.startOverBtn {
+  composes: startOverBtn from '../BottomSection/BottomSection.module.css';
 }

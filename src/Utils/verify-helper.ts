@@ -11,6 +11,9 @@ import {
 import { base16 } from 'multiformats/bases/base16';
 import * as zip from '@zip.js/zip.js';
 import JSZip from 'jszip';
+import { some } from 'lodash-es';
+
+import { FileEntry } from '../Components/Files/Files';
 
 import { createHash, createHashFromHashArray } from './sign-helpers';
 import { IRemark, IVerifiedSignatureContents, SignDoc } from './types';
@@ -60,70 +63,60 @@ export const getVerifiedData = async (jws: string, remark?: IRemark) => {
   };
 };
 
-export const newUnzip = async (
-  file: File,
-): Promise<IVerifiedSignatureContents | undefined> => {
+export async function unzipFileEntries(file: File): Promise<FileEntry[]> {
   const reader = new zip.ZipReader(new zip.BlobReader(file));
-  const fileData: string[] = [];
-  let doc: SignDoc = {
-    jws: '',
-    hashes: [],
-  };
-  const filesStatus: boolean[] = [];
-  // get all entries from the zip
   const entries = await reader.getEntries();
-  const files = entries.filter((key: zip.Entry) => {
-    return !key.filename.match(/^__MACOSX\//);
-  });
-  if (files.length) {
-    for (const entry of files) {
-      if (entry.getData) {
-        if (isDidSignFile(entry.filename)) {
-          const text = await entry.getData(new zip.TextWriter());
-          filesStatus.push(true);
-          doc = JSON.parse(text);
-          continue;
-        } else {
-          const text = await entry.getData(new zip.Uint8ArrayWriter());
-          const hash = await createHash(text);
-          fileData.push(hash);
-        }
-      }
-    }
-    await reader.close();
+  const fileEntries = entries.filter(({ getData }) => getData);
+  const result = await Promise.all(
+    fileEntries.map(async (entry) => {
+      if (!entry.getData) throw new Error('Impossible: no entry.getData');
+      const buffer = await entry.getData(new zip.Uint8ArrayWriter());
+      const name = entry.filename;
+      const file = new File([buffer], name);
+      const hash = await createHash(buffer);
+      return { file, buffer, name, hash };
+    }),
+  );
+  await reader.close();
+  return result;
+}
 
-    const addMissingPrefix = (hash: string): string =>
-      hash.startsWith(base16.prefix) ? hash : `${base16.prefix}${hash}`;
-    const { jws, hashes, remark, credentials } = doc;
-    const hashesWithPrefix = hashes.map((hash) => addMissingPrefix(hash));
+export async function handleFilesFromZip(
+  files: FileEntry[],
+): Promise<(IVerifiedSignatureContents & { files: FileEntry[] }) | undefined> {
+  const didSignFile = files.find(({ name }) => isDidSignFile(name));
+  const doc: SignDoc = didSignFile
+    ? JSON.parse(await didSignFile.file.text())
+    : { jws: '', hashes: [] };
 
-    fileData.map((hash) => {
-      const status = hashesWithPrefix.includes(hash);
-      filesStatus.push(status);
-    });
+  const addMissingPrefix = (hash: string): string =>
+    hash.startsWith(base16.prefix) ? hash : `${base16.prefix}${hash}`;
+  const { jws, hashes, remark, credentials } = doc;
+  const hashesWithPrefix = hashes.map((hash) => addMissingPrefix(hash));
 
-    const baseHash = await createHashFromHashArray(hashesWithPrefix);
-    const jwsBaseJson = atob(jws.split('.')[1]);
-    const jwsBaseHash = addMissingPrefix(JSON.parse(jwsBaseJson).hash);
+  const baseHash = await createHashFromHashArray(hashesWithPrefix);
+  const jwsBaseJson = atob(jws.split('.')[1]);
+  const jwsBaseHash = addMissingPrefix(JSON.parse(jwsBaseJson).hash);
 
-    if (baseHash !== jwsBaseHash || filesStatus.includes(false)) {
-      return undefined;
-    }
-
-    const verifiedContents = await getVerifiedData(jws, remark);
-
-    if (verifiedContents) {
-      const signEndpointStatus: IVerifiedSignatureContents = {
-        ...verifiedContents,
-        credentials,
-        filesStatus,
-      };
-      return signEndpointStatus;
-    } else {
-      return undefined;
-    }
+  const verifiedFiles = files.map((file) => ({
+    ...file,
+    verified: isDidSignFile(file.name) || hashesWithPrefix.includes(file.hash),
+  }));
+  if (baseHash !== jwsBaseHash || some(verifiedFiles, { verified: false })) {
+    return undefined;
   }
-};
+
+  const verifiedContents = await getVerifiedData(jws, remark);
+  if (!verifiedContents) {
+    return undefined;
+  }
+
+  return {
+    ...verifiedContents,
+    credentials,
+    files: verifiedFiles,
+  };
+}
 
 export const getFileNames = async (file: File): Promise<string[]> => {
   const unzip = new JSZip();
@@ -134,18 +127,9 @@ export const getFileNames = async (file: File): Promise<string[]> => {
   return filenames;
 };
 
-export const replaceFileStatus = (statusArray: boolean[]): boolean[] => {
-  statusArray = statusArray.map((element) => {
-    if (element === true) {
-      return false;
-    }
-    return element;
-  });
-  return statusArray;
-};
-export const isDidSignFile = (file: string) => {
-  return file.split('.').pop() == 'didsign';
-};
+export function isDidSignFile(fileName: string) {
+  return fileName.endsWith('.didsign');
+}
 
 export async function getW3NOrDid(did: DidUri): Promise<string> {
   const web3name = await Did.Web3Names.queryWeb3NameForDid(did);

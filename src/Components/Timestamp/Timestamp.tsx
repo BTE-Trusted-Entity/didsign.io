@@ -14,19 +14,8 @@ import classnames from 'classnames';
 
 import * as styles from './Timestamp.module.css';
 
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import {
-  selectDownloadStatus,
-  selectSign,
-  updateTimestampStatus,
-} from '../../Features/Signer/SignatureSlice';
-import {
-  IBuffer,
-  selectBuffers,
-  updateBufferTop,
-  updateFileTop,
-} from '../../Features/Signer/FileSlice';
-import { showPopup } from '../../Features/Signer/PopupSlice';
+import { useSignature } from '../Signature/Signature';
+import { useFiles } from '../Files/Files';
 
 import {
   getExtrinsic,
@@ -37,6 +26,7 @@ import {
 import { IKiltAccount, SignDoc } from '../../Utils/types';
 import { asKiltCoins } from '../../Utils/asKiltCoins';
 import { exceptionToError } from '../../Utils/exceptionToError';
+import { createDidSignFile } from '../../Utils/sign-helpers';
 
 import { useConnect } from '../../Hooks/useConnect';
 import { usePreventNavigation } from '../../Hooks/usePreventNavigation';
@@ -65,11 +55,12 @@ function useFee() {
 export function Timestamp() {
   useConnect();
 
-  const signature = useAppSelector(selectSign);
-  const buffers = useAppSelector(selectBuffers);
-  const signatureDownloaded = useAppSelector(selectDownloadStatus);
-
-  const dispatch = useAppDispatch();
+  const { files, setFiles } = useFiles();
+  const {
+    downloaded: signatureDownloaded,
+    signature,
+    setSignature,
+  } = useSignature();
 
   const [status, setStatus] = useState<
     | 'start'
@@ -138,9 +129,8 @@ export function Timestamp() {
   const handleFinalized = useCallback(
     async (blockHash: string, txHash: string) => {
       try {
-        const { buffer } = buffers[0];
         const decoder = new TextDecoder('utf-8');
-        const decoded = decoder.decode(buffer);
+        const decoded = decoder.decode(files[0].buffer);
         const didSignData = JSON.parse(decoded) as SignDoc;
 
         const withRemark = { ...didSignData, remark: { txHash, blockHash } };
@@ -148,37 +138,36 @@ export function Timestamp() {
         const blob = new Blob([JSON.stringify(withRemark)], {
           type: 'application/json;charset=utf-8',
         });
-        const newFile = new File([blob], 'signature.didsign');
-        const newBufferObj: IBuffer = {
-          buffer: await newFile.arrayBuffer(),
-          name: newFile.name,
-        };
-
-        dispatch(updateBufferTop(newBufferObj));
-        dispatch(updateFileTop(newFile));
+        const file = await createDidSignFile(blob);
+        setFiles((files) => [file, ...files.slice(1)]);
 
         setTimestamp(await getTimestamp(blockHash));
 
         setStatus('done');
-        dispatch(updateTimestampStatus(true));
-        dispatch(showPopup(false));
+        setSignature((old) => ({
+          ...old,
+          timestamped: true,
+          downloaded: false,
+        }));
       } catch (exception) {
         setStatus('error');
         console.error(exceptionToError(exception));
       }
     },
-    [buffers, dispatch],
+    [files, setFiles, setSignature],
   );
   const handleSubmit = useCallback(
     async (event) => {
       event.preventDefault();
 
-      dispatch(showPopup(true));
       setStatus('signing');
 
       try {
         if (!selectedAccount) {
           throw new Error('No selected account');
+        }
+        if (!signature) {
+          throw new Error('Impossible: signature not set');
         }
 
         const { api } = await BlockchainApiConnection.getConnectionOrConnect();
@@ -225,16 +214,18 @@ export function Timestamp() {
         }
       }
     },
-    [selectedAccount, handleFinalized, signature, dispatch],
+    [selectedAccount, signature, handleFinalized],
   );
 
   function handleDismiss() {
-    dispatch(showPopup(false));
-    accounts ? setStatus('accounts-ready') : setStatus('start');
+    if (accounts) {
+      setStatus('accounts-ready');
+    } else {
+      setStatus('start');
+    }
   }
 
   function handleTryAgain() {
-    dispatch(showPopup(false));
     setStatus('start');
   }
 

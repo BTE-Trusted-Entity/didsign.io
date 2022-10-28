@@ -1,30 +1,23 @@
 import {
+  ChangeEvent,
+  KeyboardEvent,
   useCallback,
   useRef,
   useState,
-  KeyboardEvent,
-  ChangeEvent,
 } from 'react';
-
+import { without } from 'lodash-es';
 import classnames from 'classnames';
 
 import * as styles from './CredentialsInsertion.module.css';
 
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import {
-  selectCredentials,
-  updateCredentials,
-} from '../../Features/Signer/SignatureSlice';
+import { useSignature } from '../Signature/Signature';
 import { NamedCredential, SignDoc } from '../../Utils/types';
-import {
-  IBuffer,
-  selectBuffers,
-  updateBufferTop,
-  updateFileTop,
-} from '../../Features/Signer/FileSlice';
+import { useFiles } from '../Files/Files';
 import { DeleteCredential } from '../Popups/Popups';
-import { showPopup } from '../../Features/Signer/PopupSlice';
 import { useHandleOutsideClick } from '../../Hooks/useHandleOutsideClick';
+import { createDidSignFile } from '../../Utils/sign-helpers';
+import { replace } from '../../Utils/replace';
+
 interface EditingProps {
   stopEditing: () => void;
   credential: NamedCredential;
@@ -33,19 +26,18 @@ interface EditingProps {
 
 function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
   const [error, setError] = useState(false);
-  const buffers = useAppSelector(selectBuffers);
-  const dispatch = useAppDispatch();
-  const storedCredentials = useAppSelector(selectCredentials);
+  const { files, setFiles } = useFiles();
+  const { credentials: storedCredentials, setSignature } = useSignature();
   const credentialName = credential.name;
   const credentialRowRef = useRef(null);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
 
   const getSignatureData = useCallback(() => {
-    const { buffer } = buffers[0];
+    const { buffer } = files[0];
     const decoder = new TextDecoder('utf-8');
     const decoded = decoder.decode(buffer);
     return JSON.parse(decoded) as SignDoc;
-  }, [buffers]);
+  }, [files]);
 
   const updateSignatureFile = useCallback(
     async (newContents: SignDoc) => {
@@ -53,16 +45,10 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
         type: 'application/json;charset=utf-8',
       });
 
-      const newFile = new File([blob], 'signature.didsign');
-      const newBufferObj: IBuffer = {
-        buffer: await newFile.arrayBuffer(),
-        name: newFile.name,
-      };
-
-      dispatch(updateBufferTop(newBufferObj));
-      dispatch(updateFileTop(newFile));
+      const file = await createDidSignFile(blob);
+      setFiles((files) => [file, ...files.slice(1)]);
     },
-    [dispatch],
+    [setFiles],
   );
 
   const handleStopEditing = useCallback(() => {
@@ -98,39 +84,35 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
 
       if (!storedCredentials) throw new Error('No credentials');
 
-      const updatedCredentials = [...storedCredentials];
-      const credentialCopy = { ...credential, name: input };
+      const updatedCredentials = replace(storedCredentials, credential, {
+        ...credential,
+        name: input,
+      });
 
-      updatedCredentials[updatedCredentials.indexOf(credential)] =
-        credentialCopy;
-
-      const updatedContents = {
+      setSignature((old) => ({ ...old, credentials: updatedCredentials }));
+      updateSignatureFile({
         hashes,
         jws,
         credentials: updatedCredentials,
-      };
-      dispatch(updateCredentials(updatedCredentials));
-      updateSignatureFile(updatedContents);
+      });
     },
     [
       credential,
-      dispatch,
       error,
       getSignatureData,
+      setSignature,
       storedCredentials,
       updateSignatureFile,
     ],
   );
 
   const handleShowPopup = useCallback(() => {
-    dispatch(showPopup(true));
     setShowDeletePopup(true);
-  }, [dispatch]);
+  }, []);
 
   const handleDismiss = useCallback(() => {
     setShowDeletePopup(false);
-    dispatch(showPopup(false));
-  }, [dispatch]);
+  }, []);
 
   const handleDelete = useCallback(async () => {
     handleDismiss();
@@ -138,22 +120,21 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
 
     if (!storedCredentials) throw new Error('No credentials');
 
-    const credentialsCopy = [...storedCredentials];
-    credentialsCopy.splice(credentialsCopy.indexOf(credential), 1);
+    const credentials = without(storedCredentials, credential);
 
     const updatedContents = {
       hashes,
       jws,
-      credentials: credentialsCopy.length > 0 ? credentialsCopy : undefined,
+      ...(credentials.length > 0 && { credentials }),
     };
 
-    dispatch(updateCredentials(credentialsCopy));
+    setSignature((old) => ({ ...old, credentials }));
     updateSignatureFile(updatedContents);
   }, [
     credential,
-    dispatch,
     getSignatureData,
     handleDismiss,
+    setSignature,
     storedCredentials,
     updateSignatureFile,
   ]);
@@ -238,7 +219,7 @@ function CredentialRow({ credential }: Props) {
 }
 
 export function CredentialsInsertion() {
-  const credentials = useAppSelector(selectCredentials);
+  const { credentials } = useSignature();
 
   return (
     <div className={styles.grid}>

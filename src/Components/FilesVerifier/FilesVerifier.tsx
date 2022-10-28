@@ -1,108 +1,44 @@
 import React, { Fragment } from 'react';
 
-import classnames from 'classnames';
-
 import * as styles from './FilesVerifier.module.css';
 
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import {
-  clearAll,
-  clearFileName,
-  deleteFile,
-  selectFiles,
-  selectFilenames,
-} from '../../Features/Signer/FileSlice';
-import {
-  clearEndpoint,
-  clearFileStatuses,
-  deleteFilestatusOnIndex,
-  fileStatus,
-  replaceStatus,
-} from '../../Features/Signer/VerifiedSignatureSlice';
-import {
-  clearHash,
-  deleteHashFromIndex,
-} from '../../Features/Signer/hashSlice';
-import {
-  clearJWS,
-  selectJwsSignStatus,
-  updateSignStatus,
-} from '../../Features/Signer/VerifyJwsSlice';
+import { FileEntry } from '../Files/Files';
 
 import { isDidSignFile } from '../../Utils/verify-helper';
 
-export const FilesVerifier = () => {
-  const files = useAppSelector(selectFiles);
-  const unzippedFileNames = useAppSelector(selectFilenames);
-
-  const jwsStatus = useAppSelector(selectJwsSignStatus);
-  const filesStatus = useAppSelector(fileStatus);
-
-  const dispatch = useAppDispatch();
-
-  const handleDeleteAll = () => {
-    if (jwsStatus === 'Validating') {
-      return;
-    }
-
-    dispatch(clearEndpoint());
-    dispatch(clearAll());
-    dispatch(clearHash());
-    dispatch(clearFileName());
-    dispatch(clearJWS());
-    dispatch(clearFileStatuses());
-  };
-
-  const handleDeleteFile = (file: File) => {
-    if (jwsStatus === 'Validating') return;
-
-    const index = files.indexOf(file);
-    const didSignFileDeleted = isDidSignFile(files[index].name);
-    if (didSignFileDeleted) {
-      dispatch(replaceStatus());
-      dispatch(clearJWS());
-    }
-
-    if (jwsStatus !== 'Corrupted') {
-      dispatch(updateSignStatus('Not Checked'));
-    }
-
-    dispatch(clearEndpoint());
-    dispatch(deleteFilestatusOnIndex(index));
-    dispatch(deleteFile(file));
-    dispatch(deleteHashFromIndex(index));
-  };
-
-  if (files.length === 0) {
-    return null;
-  }
-
-  const hasUnzippedFiles = unzippedFileNames.length > 0;
-
+export function FilesVerifier({
+  files,
+  zip,
+  onDelete,
+  onDeleteAll,
+}: {
+  files: FileEntry[];
+  zip?: string;
+  onDelete: (index: number) => void;
+  onDeleteAll: () => void;
+}) {
   return (
     <Fragment>
-      {hasUnzippedFiles && (
+      {zip && (
         <div className={styles.zipContainer}>
           <div className={styles.zipFile}>
-            <p className={styles.zipFilename}>{files[0].name}</p>
+            <p className={styles.zipFilename}>{zip}</p>
 
             <button
               className={styles.deleteBtn}
               aria-label="Remove all files"
-              onClick={handleDeleteAll}
+              onClick={onDeleteAll}
             />
           </div>
 
           <h2 className={styles.heading}>Files</h2>
 
           <ul className={styles.list}>
-            {unzippedFileNames.map((name: string, index: number) => (
+            {files.map(({ name, verified }, index) => (
               <li
-                className={classnames(
-                  filesStatus[index]
-                    ? styles.unzippedFileOk
-                    : styles.unzippedFileInvalid,
-                )}
+                className={
+                  verified ? styles.unzippedFileOk : styles.unzippedFileInvalid
+                }
                 key={index}
               >
                 {isDidSignFile(name) ? (
@@ -118,16 +54,14 @@ export const FilesVerifier = () => {
         </div>
       )}
 
-      {!hasUnzippedFiles && (
+      {!zip && (
         <div className={styles.container}>
           <h2 className={styles.heading}>Files</h2>
 
           <ul className={styles.list}>
-            {files.map((file: File, index: number) => (
+            {files.map(({ file, verified }, index) => (
               <li
-                className={classnames(
-                  filesStatus[index] ? styles.fileOk : styles.fileInvalid,
-                )}
+                className={verified ? styles.fileOk : styles.fileInvalid}
                 key={index}
               >
                 {isDidSignFile(file.name) ? (
@@ -141,7 +75,7 @@ export const FilesVerifier = () => {
                 <button
                   className={styles.deleteBtn}
                   aria-label="Remove file"
-                  onClick={() => handleDeleteFile(file)}
+                  onClick={() => onDelete(index)}
                 />
               </li>
             ))}
@@ -150,4 +84,4 @@ export const FilesVerifier = () => {
       )}
     </Fragment>
   );
-};
+}
