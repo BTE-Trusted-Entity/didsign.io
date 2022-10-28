@@ -1,6 +1,6 @@
 import type { DidUri } from '@kiltprotocol/sdk-js';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import classnames from 'classnames';
 
 import * as styles from './ServiceEndpoint.module.css';
