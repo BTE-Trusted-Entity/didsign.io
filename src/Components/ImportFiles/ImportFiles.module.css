@@ -64,22 +64,21 @@
 }
 
 .bottomContainer {
-  composes: bottomContainer from '../BottomSection/BottomSection.module.css'
+  composes: bottomContainer from '../BottomSection/BottomSection.module.css';
 }
 
 .bottomSection {
-  composes: bottomSection from '../BottomSection/BottomSection.module.css'
+  composes: bottomSection from '../BottomSection/BottomSection.module.css';
 }
 
 .verificationLoader {
-  composes: verificationLoader from '../BottomSection/BottomSection.module.css'
+  composes: verificationLoader from '../BottomSection/BottomSection.module.css';
 }
 
 .verificationText {
-  composes: verificationText from '../BottomSection/BottomSection.module.css'
+  composes: verificationText from '../BottomSection/BottomSection.module.css';
 }
 
 .startOverBtn {
-  composes: startOverBtn from '../BottomSection/BottomSection.module.css'
+  composes: startOverBtn from '../BottomSection/BottomSection.module.css';
 }
-
