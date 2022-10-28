@@ -72,7 +72,7 @@ export function CredentialVerifier({ credential, did }: IDIDCredential) {
         Object.keys(claimContents).map((key, index) => (
           <div className={styles.property} key={index}>
             <span className={styles.name}>{key}</span>
-            <span className={styles.value}>{claimContents[key]}</span>
+            <span className={styles.value}>{String(claimContents[key])}</span>
           </div>
         ))}
 
