@@ -1,4 +1,3 @@
-
 import * as styles from './BottomSection.module.css';
 
 export function InfoLink() {
