@@ -144,7 +144,11 @@ export function Timestamp() {
         setTimestamp(await getTimestamp(blockHash));
 
         setStatus('done');
-        setSignature((old) => ({ ...old, timestamped: true }));
+        setSignature((old) => ({
+          ...old,
+          timestamped: true,
+          downloaded: false,
+        }));
       } catch (exception) {
         setStatus('error');
         console.error(exceptionToError(exception));
