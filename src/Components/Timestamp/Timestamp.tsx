@@ -1,4 +1,5 @@
 import React, {
+  FormEvent,
   Fragment,
   KeyboardEvent,
   useCallback,
@@ -157,7 +158,7 @@ export function Timestamp() {
     [files, setFiles, setSignature],
   );
   const handleSubmit = useCallback(
-    async (event) => {
+    async (event: FormEvent) => {
       event.preventDefault();
 
       setStatus('signing');
