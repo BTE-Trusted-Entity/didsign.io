@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState } from 'react';
+import { createContext, useContext } from 'react';
 
 export interface FileEntry {
   file: File;
@@ -16,7 +16,7 @@ interface FilesType {
   ) => void;
 }
 
-const FilesContext = createContext<FilesType>({
+export const FilesContext = createContext<FilesType>({
   files: [],
   setFiles() {
     return undefined;
@@ -25,16 +25,4 @@ const FilesContext = createContext<FilesType>({
 
 export function useFiles(): FilesType {
   return useContext(FilesContext);
-}
-
-export function FilesProvider({
-  children,
-}: {
-  children: JSX.Element;
-}): JSX.Element {
-  const [files, setFiles] = useState<FileEntry[]>([]);
-  const value = useMemo(() => ({ files, setFiles }), [files]);
-  return (
-    <FilesContext.Provider value={value}>{children}</FilesContext.Provider>
-  );
 }

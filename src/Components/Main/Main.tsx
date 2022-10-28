@@ -9,8 +9,6 @@ import { Terms } from '../Terms/Terms';
 import { Privacy } from '../Privacy/Privacy';
 import { Imprint } from '../Imprint/Imprint';
 import { Maintenance } from '../Maintenance/Maintenance';
-import { FilesProvider } from '../Files/Files';
-import { SignatureProvider } from '../Signature/Signature';
 
 export function Main() {
   if (process.env.REACT_APP_MAINTENANCE === 'true') {
@@ -19,16 +17,7 @@ export function Main() {
 
   return (
     <Routes>
-      <Route
-        path={paths.signer}
-        element={
-          <FilesProvider>
-            <SignatureProvider>
-              <ImportFilesSigner />
-            </SignatureProvider>
-          </FilesProvider>
-        }
-      />
+      <Route path={paths.signer} element={<ImportFilesSigner />} />
       <Route path={paths.verifier} element={<ImportFilesVerifier />} />
       <Route path="*" element={<Navigate to={paths.signer} replace />} />
       <Route path={paths.terms} element={<Terms />} />
