@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 import { Navigate, Route, Routes } from 'react-router-dom';
 
@@ -11,15 +11,19 @@ import { Imprint } from '../Imprint/Imprint';
 import { Maintenance } from '../Maintenance/Maintenance';
 
 export function Main() {
-  if (process.env.REACT_APP_MAINTENANCE === 'true') {
-    return <Maintenance />;
-  }
+  const isMaintenance = process.env.REACT_APP_MAINTENANCE === 'true';
 
   return (
     <Routes>
-      <Route path={paths.signer} element={<ImportFilesSigner />} />
-      <Route path={paths.verifier} element={<ImportFilesVerifier />} />
-      <Route path="*" element={<Navigate to={paths.signer} replace />} />
+      {isMaintenance ? (
+        <Route path="*" element={<Maintenance />} />
+      ) : (
+        <Fragment>
+          <Route path={paths.signer} element={<ImportFilesSigner />} />
+          <Route path={paths.verifier} element={<ImportFilesVerifier />} />
+          <Route path="*" element={<Navigate to={paths.signer} replace />} />
+        </Fragment>
+      )}
       <Route path={paths.terms} element={<Terms />} />
       <Route path={paths.privacy} element={<Privacy />} />
       <Route path={paths.imprint} element={<Imprint />} />
