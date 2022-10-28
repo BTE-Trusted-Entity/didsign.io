@@ -168,7 +168,6 @@ export const ImportFilesVerifier = () => {
       const buffer = await file.arrayBuffer();
 
       const isDidSign = isDidSignFile(name);
-      // TODO: can we still hash it?
       const hash = isDidSign ? '' : await createHash(buffer);
       const verified = isDidSign;
 

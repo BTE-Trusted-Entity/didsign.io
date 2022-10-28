@@ -166,6 +166,9 @@ export function Timestamp() {
         if (!selectedAccount) {
           throw new Error('No selected account');
         }
+        if (!signature) {
+          throw new Error('Impossible: signature not set');
+        }
 
         const { api } = await BlockchainApiConnection.getConnectionOrConnect();
 
