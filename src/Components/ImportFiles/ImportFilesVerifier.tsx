@@ -32,7 +32,6 @@ import { FilesEmpty } from '../FilesEmpty/FilesEmpty';
 import { FilesVerifier } from '../FilesVerifier/FilesVerifier';
 import { usePreventNavigation } from '../../Hooks/usePreventNavigation';
 import { DidDocument } from '../DidDocument/DidDocument';
-import { replace } from '../../Utils/replace';
 
 interface JWSState {
   jws: string;
@@ -89,6 +88,8 @@ export const ImportFilesVerifier = () => {
       if (jwsStatus === 'Validating') return;
 
       const file = files[index];
+      setFiles((files) => without(files, file));
+
       const didSignFileDeleted = isDidSignFile(file.name);
       if (didSignFileDeleted) {
         setFiles((oldFiles) =>
@@ -102,7 +103,6 @@ export const ImportFilesVerifier = () => {
       }
 
       clearVerifiedSignature();
-      setFiles((files) => without(files, file));
     },
     [
       clearJWS,
@@ -254,18 +254,24 @@ export const ImportFilesVerifier = () => {
     ],
   );
   useEffect(() => {
-    if (jwsHashes.length > 0) {
-      files.forEach((file) => {
-        if (jwsHashes.includes(file.hash)) {
-          setFiles((oldFiles) =>
-            replace(oldFiles, file, { ...file, verified: true }),
-          );
-        } else {
-          if (file.hash !== '') {
-            setJwsStatus('Invalid');
-          }
-        }
-      });
+    if (jwsHashes.length <= 0) {
+      return;
+    }
+
+    let needUpdate = false;
+    const newFiles = files.map((file) => {
+      if (file.hash !== '' && !jwsHashes.includes(file.hash)) {
+        setJwsStatus('Invalid');
+        return file;
+      }
+      if (file.verified) {
+        return file;
+      }
+      needUpdate = true;
+      return { ...file, verified: true };
+    });
+    if (needUpdate) {
+      setFiles(newFiles);
     }
   }, [
     files,
@@ -306,13 +312,6 @@ export const ImportFilesVerifier = () => {
       }
     }
   }, [files, jwsStatus, fetchDidDocument, clearVerifiedSignature]);
-
-  const handleDelete = () => {
-    setFiles([]);
-    setZip(undefined);
-    clearVerifiedSignature();
-    clearJWS();
-  };
 
   return (
     <main className={styles.main}>
@@ -383,10 +382,7 @@ export const ImportFilesVerifier = () => {
           />
 
           {jwsStatus === 'Verified' && (
-            <button
-              className={styles.startOverBtn}
-              onClick={() => handleDelete()}
-            />
+            <button className={styles.startOverBtn} onClick={handleDeleteAll} />
           )}
         </div>
       </section>
