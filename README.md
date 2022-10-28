@@ -10,4 +10,4 @@ DIDsign is a website that allows you to:
 
 This works for single documents, or multiple documents.
 
-The source code of https://didsign.io/
+https://didsign.io/
