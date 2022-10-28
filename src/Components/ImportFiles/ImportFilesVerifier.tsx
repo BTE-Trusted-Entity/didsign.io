@@ -32,6 +32,7 @@ import { FilesEmpty } from '../FilesEmpty/FilesEmpty';
 import { FilesVerifier } from '../FilesVerifier/FilesVerifier';
 import { usePreventNavigation } from '../../Hooks/usePreventNavigation';
 import { DidDocument } from '../DidDocument/DidDocument';
+import { replace } from '../../Utils/replace';
 
 interface JWSState {
   jws: string;
@@ -257,9 +258,7 @@ export const ImportFilesVerifier = () => {
       files.forEach((file) => {
         if (jwsHashes.includes(file.hash)) {
           setFiles((oldFiles) =>
-            oldFiles.map((oldFile) =>
-              oldFile !== file ? oldFile : { ...file, verified: true },
-            ),
+            replace(oldFiles, file, { ...file, verified: true }),
           );
         } else {
           if (file.hash !== '') {

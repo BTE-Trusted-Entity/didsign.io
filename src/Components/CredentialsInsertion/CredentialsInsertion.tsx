@@ -16,6 +16,7 @@ import { useFiles } from '../Files/Files';
 import { DeleteCredential } from '../Popups/Popups';
 import { useHandleOutsideClick } from '../../Hooks/useHandleOutsideClick';
 import { createDidSignFile } from '../../Utils/sign-helpers';
+import { replace } from '../../Utils/replace';
 
 interface EditingProps {
   stopEditing: () => void;
@@ -83,9 +84,10 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
 
       if (!storedCredentials) throw new Error('No credentials');
 
-      const updatedCredentials = storedCredentials.map((old) =>
-        old !== credential ? old : { ...credential, name: input },
-      );
+      const updatedCredentials = replace(storedCredentials, credential, {
+        ...credential,
+        name: input,
+      });
 
       setSignature((old) => ({ ...old, credentials: updatedCredentials }));
       updateSignatureFile({
