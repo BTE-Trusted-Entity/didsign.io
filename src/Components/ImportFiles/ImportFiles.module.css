@@ -71,14 +71,6 @@
   composes: bottomSection from '../BottomSection/BottomSection.module.css'
 }
 
-.infoLink {
-  composes: infoLink from '../BottomSection/BottomSection.module.css'
-}
-
-.infoItem {
-  composes: infoItem from '../BottomSection/BottomSection.module.css'
-}
-
 .verificationLoader {
   composes: verificationLoader from '../BottomSection/BottomSection.module.css'
 }

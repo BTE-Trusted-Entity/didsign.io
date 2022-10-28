@@ -9,8 +9,6 @@ export const browseFilesText: string;
 export const importIcon: string;
 export const bottomContainer: string;
 export const bottomSection: string;
-export const infoLink: string;
-export const infoItem: string;
 export const verificationLoader: string;
 export const verificationText: string;
 export const startOverBtn: string;
