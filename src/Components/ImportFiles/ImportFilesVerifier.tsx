@@ -62,7 +62,7 @@ function addMissingPrefix(hash: string): string {
 }
 
 export function ImportFilesVerifier() {
-  const [impIcon, setImportIcon] = useState<string>(ImportIcon);
+  const [impIcon, setImportIcon] = useState(ImportIcon);
 
   const [jwsState, setJwsState] = useState(initialJws);
   const { jws, jwsStatus, jwsHashes } = jwsState;
@@ -78,8 +78,9 @@ export function ImportFilesVerifier() {
   const [remark, setRemark] = useState<IRemark>();
   const [credentials, setCredentials] = useState<NamedCredential[]>();
 
-  const [verifiedSignature, setVerifiedSignature] =
-    useState<IVerifiedSignatureContents>(initialVerifiedSignature);
+  const [verifiedSignature, setVerifiedSignature] = useState(
+    initialVerifiedSignature,
+  );
   const clearVerifiedSignature = useCallback(
     () => setVerifiedSignature(initialVerifiedSignature),
     [],

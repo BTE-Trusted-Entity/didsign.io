@@ -20,11 +20,11 @@ import { exceptionToError } from '../../Utils/exceptionToError';
 
 export function SignButton() {
   const [signStatus, setSignStatus] = useState<
-    'SignError' | 'Default' | 'No Sporran' | null
-  >(null);
+    'SignError' | 'Default' | 'No Sporran'
+  >();
   const { files, setFiles } = useFiles();
   const { setSignature } = useSignature();
-  const [signPopup, setSignPopup] = useState<boolean>(false);
+  const [signPopup, setSignPopup] = useState(false);
 
   const handleSign = useCallback(async () => {
     if (files.length == 0) {
@@ -70,7 +70,7 @@ export function SignButton() {
   }, [files, setFiles, setSignature]);
 
   const handleDismiss = useCallback(() => {
-    setSignStatus(null);
+    setSignStatus(undefined);
   }, []);
 
   const showSignPopup = useCallback(() => {

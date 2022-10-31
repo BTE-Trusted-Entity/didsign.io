@@ -21,8 +21,8 @@ import { Signature } from '../../Utils/types';
 import { InfoLink } from '../BottomSection/InfoLink';
 
 export function ImportFilesSigner() {
-  const [impIcon, setImportIcon] = useState<string>(ImportIcon);
-  const [signErrorPopup, setSignErrorPopup] = useState<boolean>(false);
+  const [impIcon, setImportIcon] = useState(ImportIcon);
+  const [signErrorPopup, setSignErrorPopup] = useState(false);
 
   const [files, setFiles] = useState<FileEntry[]>([]);
   const filesContext = useMemo(() => ({ files, setFiles }), [files]);

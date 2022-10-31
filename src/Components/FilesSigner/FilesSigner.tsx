@@ -15,7 +15,7 @@ import { CredentialsInsertion } from '../CredentialsInsertion/CredentialsInserti
 export function FilesSigner() {
   const { files, setFiles } = useFiles();
   const { credentials, setSignature } = useSignature();
-  const [signPopup, setSignPopup] = useState<boolean>(false);
+  const [signPopup, setSignPopup] = useState(false);
 
   const showSignInfoPopup = useCallback(() => {
     setSignPopup(true);

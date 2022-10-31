@@ -11,8 +11,8 @@ import { useSignature } from '../Signature/Signature';
 export function DownloadButtons() {
   const { files } = useFiles();
   const [signatureFile] = files;
-  const [showLoader, setShowLoader] = useState<boolean>(false);
-  const [progress, setProgress] = useState<string>('0');
+  const [showLoader, setShowLoader] = useState(false);
+  const [progress, setProgress] = useState('0');
   const { setSignature } = useSignature();
 
   async function generateZipFile(files: FileEntry[]) {
