@@ -771,10 +771,34 @@ export const Privacy = () => {
         <section>
           <p>
             Developed by the specialists for LegalTech at Willing &#38; Able
-            that also developed the system for data protection officer training.
-            The legal texts contained in our privacy policy generator have been
-            provided and published by Prof. Dr. h.c. Heiko Jonny Maniero from
-            the German Association for Data Protection and Christian Solmecke
+            that also developed the system for{' '}
+            <a
+              className={styles.anchor}
+              href="https://abletotrain.com/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              data protection officer training
+            </a>
+            . The legal texts contained in our privacy policy generator have
+            been provided and published by{' '}
+            <a
+              className={styles.anchor}
+              href="https://dg-datenschutz.de/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Prof. Dr. h.c. Heiko Jonny Maniero
+            </a>{' '}
+            from the German Association for Data Protection and{' '}
+            <a
+              className={styles.anchor}
+              href="https://dg-datenschutz.de/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Christian Solmecke
+            </a>{' '}
             from WBS law.
           </p>
         </section>
