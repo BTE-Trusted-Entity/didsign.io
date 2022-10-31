@@ -317,3 +317,11 @@ export function TimestampWarning({ onDismiss, onOkay }: Props) {
     </div>
   );
 }
+
+export function Backdrop() {
+  const { visible } = useShowPopup();
+  if (!visible) {
+    return null;
+  }
+  return <div className={styles.backdrop} />;
+}

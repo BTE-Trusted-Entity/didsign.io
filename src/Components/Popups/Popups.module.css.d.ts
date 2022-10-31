@@ -1,4 +1,5 @@
 export const __esModule: true;
+export const backdrop: string;
 export const container: string;
 export const popup: string;
 export const heading: string;

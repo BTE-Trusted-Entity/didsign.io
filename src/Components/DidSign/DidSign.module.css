@@ -8,13 +8,3 @@
   background-color: var(--color-light-blue);
   overflow-x: hidden;
 }
-
-.darkOverlay {
-  background-color: black;
-  opacity: 0.7;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 20;
-  overflow-y: hidden;
-}
