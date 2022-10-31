@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 
-import classnames from 'classnames';
-
 import {
   Did,
   DidUri,
@@ -65,6 +63,7 @@ export function CredentialVerifier({ credential, did }: IDIDCredential) {
       }
     })();
   }, [credential, did]);
+
   return (
     <div className={styles.credential}>
       {isCredentialValid &&
@@ -83,15 +82,13 @@ export function CredentialVerifier({ credential, did }: IDIDCredential) {
 
       <div className={styles.property}>
         <span className={styles.name}>Valid</span>
-        {
-          <span
-            className={classnames(
-              isCredentialValid
-                ? styles.credentialValid
-                : styles.credentialInvalid,
-            )}
-          ></span>
-        }
+        <span
+          className={
+            isCredentialValid
+              ? styles.credentialValid
+              : styles.credentialInvalid
+          }
+        ></span>
       </div>
     </div>
   );
