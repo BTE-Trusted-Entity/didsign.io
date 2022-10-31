@@ -1,6 +1,6 @@
 import type { DidUri } from '@kiltprotocol/sdk-js';
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import classnames from 'classnames';
 
 import * as styles from './ServiceEndpoint.module.css';
@@ -19,7 +19,7 @@ export function ServiceEndpoint({ url, endpointType, did }: Props) {
   const [fetching, setFetching] = useState(false);
   const [fetched, setFetched] = useState(false);
 
-  const handleFetch = async () => {
+  const handleFetch = useCallback(async () => {
     if (fetched) {
       setFetched(false);
       setCredential(undefined);
@@ -46,7 +46,7 @@ export function ServiceEndpoint({ url, endpointType, did }: Props) {
     } finally {
       setFetching(false);
     }
-  };
+  }, [credential, did, fetched, url]);
 
   return (
     <div className={styles.container}>

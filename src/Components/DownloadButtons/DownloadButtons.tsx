@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
@@ -31,19 +31,19 @@ export function DownloadButtons() {
     saveAs(content, 'DIDsign-files.zip');
   }
 
-  const handleDownloadSign = async () => {
+  const handleDownloadSign = useCallback(() => {
     saveAs(signatureFile.file, 'signature.didsign');
     setSignature((old) => ({ ...old, downloaded: true }));
-  };
+  }, [setSignature, signatureFile.file]);
 
-  const handleZip = async () => {
+  const handleZip = useCallback(async () => {
     setShowLoader(true);
     document.body.style.pointerEvents = 'none';
     await generateZipFile(files);
     setShowLoader(false);
     document.body.style.pointerEvents = 'auto';
     setSignature((old) => ({ ...old, downloaded: true }));
-  };
+  }, [files, setSignature]);
 
   return (
     <div className={styles.container}>

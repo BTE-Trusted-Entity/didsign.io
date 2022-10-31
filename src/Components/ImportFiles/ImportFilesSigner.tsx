@@ -37,12 +37,12 @@ export function ImportFilesSigner() {
 
   const targetElement = document.querySelector('body');
 
-  const handleDismiss = () => {
+  const handleDismiss = useCallback(() => {
     setSignErrorPopup(false);
     if (targetElement != null) {
       enableBodyScroll(targetElement);
     }
-  };
+  }, [targetElement]);
 
   const handleDrop = useCallback(
     async (acceptedFiles: File[]) => {
@@ -72,10 +72,10 @@ export function ImportFilesSigner() {
     [files, setFiles, setSignature, signature, targetElement],
   );
 
-  const handleDelete = () => {
+  const handleDelete = useCallback(() => {
     setSignature({});
     setFiles([]);
-  };
+  }, []);
 
   return (
     <FilesContext.Provider value={filesContext}>
@@ -129,7 +129,7 @@ export function ImportFilesSigner() {
               {signature && (
                 <button
                   className={styles.startOverBtn}
-                  onClick={() => handleDelete()}
+                  onClick={handleDelete}
                 />
               )}
             </div>

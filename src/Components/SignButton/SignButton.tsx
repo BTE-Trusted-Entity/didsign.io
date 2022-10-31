@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 
@@ -29,11 +29,7 @@ export function SignButton() {
   const { setSignature } = useSignature();
   const [signPopup, setSignPopup] = useState<boolean>(false);
 
-  const generateSignatureFile = async (blob: Blob) => {
-    const file = await createDidSignFile(blob);
-    setFiles((files) => [file, ...files]);
-  };
-  const handleSign = async () => {
+  const handleSign = useCallback(async () => {
     if (files.length == 0) {
       return;
     }
@@ -58,7 +54,9 @@ export function SignButton() {
         type: 'application/json;charset=utf-8',
       });
 
-      await generateSignatureFile(blob);
+      const file = await createDidSignFile(blob);
+      setFiles((files) => [file, ...files]);
+
       setSignature((old) => ({
         ...old,
         signature,
@@ -81,26 +79,29 @@ export function SignButton() {
         }
       }
     }
-  };
+  }, [files, setFiles, setSignature, targetElement]);
 
-  const handleDismiss = () => {
+  const handleDismiss = useCallback(() => {
     if (targetElement !== null) {
       enableBodyScroll(targetElement);
     }
     setSignStatus(null);
-  };
-  const showSignPopup = () => {
+  }, [targetElement]);
+
+  const showSignPopup = useCallback(() => {
     if (targetElement !== null) {
       disableBodyScroll(targetElement);
     }
     setSignPopup(true);
-  };
-  const handleSignDismiss = () => {
+  }, [targetElement]);
+
+  const handleSignDismiss = useCallback(() => {
     if (targetElement !== null) {
       enableBodyScroll(targetElement);
     }
     setSignPopup(false);
-  };
+  }, [targetElement]);
+
   return (
     <div className={styles.container}>
       <div className={styles.buttonContainer}>

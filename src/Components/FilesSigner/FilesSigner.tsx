@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useCallback, useState } from 'react';
 import { without } from 'lodash-es';
 
 import * as styles from './FilesSigner.module.css';
@@ -17,23 +17,29 @@ export function FilesSigner() {
   const { credentials, setSignature } = useSignature();
   const [signPopup, setSignPopup] = useState<boolean>(false);
 
-  const showSignInfoPopup = () => {
+  const showSignInfoPopup = useCallback(() => {
     setSignPopup(true);
     document.body.style.overflowY = 'hidden';
-  };
-  const handleDismiss = () => {
+  }, []);
+
+  const handleDismiss = useCallback(() => {
     setSignPopup(false);
     document.body.style.overflowY = 'auto';
-  };
-  const handleDeleteFile = (index: number) => {
-    setFiles((files) => without(files, files[index]));
+  }, []);
 
-    const didSignFile = files.find(({ name }) => isDidSignFile(name));
-    if (!didSignFile) return;
+  const handleDeleteFile = useCallback(
+    (index: number) => {
+      setFiles((files) => without(files, files[index]));
 
-    setFiles((files) => without(files, didSignFile));
-    setSignature({});
-  };
+      const didSignFile = files.find(({ name }) => isDidSignFile(name));
+      if (!didSignFile) return;
+
+      setFiles((files) => without(files, didSignFile));
+      setSignature({});
+    },
+    [files, setFiles, setSignature],
+  );
+
   return (
     <div className={styles.container}>
       <h2 className={styles.heading}>Files</h2>

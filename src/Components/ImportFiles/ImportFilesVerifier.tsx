@@ -57,6 +57,10 @@ const initialVerifiedSignature: IVerifiedSignatureContents = {
   credentials: [],
 };
 
+function addMissingPrefix(hash: string): string {
+  return hash.startsWith(base16.prefix) ? hash : `${base16.prefix}${hash}`;
+}
+
 export function ImportFilesVerifier() {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon);
 
@@ -138,9 +142,6 @@ export function ImportFilesVerifier() {
     setJwsStatus('Not Checked');
   }, [clearVerifiedSignature, setJwsStatus]);
 
-  const filesArrayHasDidSign = (files: File[]) =>
-    files.some((file) => isDidSignFile(file.name));
-
   const handleZipCase = useCallback(
     async (file: File) => {
       setJwsStatus('Validating');
@@ -176,9 +177,6 @@ export function ImportFilesVerifier() {
       const verified = isDidSign;
 
       if (isDidSign) {
-        const addMissingPrefix = (hash: string): string =>
-          hash.startsWith(base16.prefix) ? hash : `${base16.prefix}${hash}`;
-
         const decoder = new TextDecoder('utf-8');
         const result = decoder.decode(buffer);
         const { jws, hashes, remark, credentials } = JSON.parse(
@@ -209,10 +207,9 @@ export function ImportFilesVerifier() {
 
   const handleDrop = useCallback(
     (acceptedFiles: File[]) => {
-      const filesArray = files.map(({ file }) => file);
       if (
-        filesArrayHasDidSign(filesArray) &&
-        filesArrayHasDidSign(acceptedFiles)
+        files.some(({ name }) => isDidSignFile(name)) &&
+        acceptedFiles.some(({ name }) => isDidSignFile(name))
       ) {
         showMultipleSignPopup();
         return;
