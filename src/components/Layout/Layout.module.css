@@ -1,0 +1,103 @@
+.main {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  overflow-x: hidden;
+  flex: 1;
+  background:
+    url('BottomLeftBubble.svg') no-repeat bottom left / auto 40%,
+    url('BottomRightBubble.svg') no-repeat bottom right / auto 40%,
+    var(--color-light-blue);
+  padding-bottom: 100px;
+}
+
+.middleSection {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background:
+    url('CenterLeftBubble.svg') no-repeat bottom left/ auto 20%,
+    url('CenterRightBubble.svg') no-repeat bottom right/auto 20%,
+    var(--color-silver-blue);
+}
+
+.container {
+  display: flex;
+  max-width: 766px;
+  width: 90%;
+  height: 220px;
+  position: relative;
+  margin-top: 12px;
+}
+
+.dropContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  height: 100%;
+  position: absolute;
+  cursor: pointer;
+}
+
+.signText {
+  position: absolute;
+  top: 32px;
+  pointer-events: none;
+  color: white;
+  text-align: center;
+  font-size: 16px;
+  line-height: 17px;
+  letter-spacing: 0.11px;
+}
+
+.dragDropText {
+  position: absolute;
+  top: 56px;
+  pointer-events: none;
+  color: white;
+  text-align: center;
+  font-size: 14px;
+  line-height: 17px;
+  letter-spacing: 0.11px;
+}
+
+.browseFilesText {
+  position: absolute;
+  bottom: 48px;
+  pointer-events: none;
+  color: white;
+  text-align: center;
+  font-size: 14px;
+  line-height: 17px;
+  letter-spacing: 0.11px;
+}
+
+.importIcon {
+  position: absolute;
+  margin: auto;
+}
+
+.bottomContainer {
+  composes: bottomContainer from '../BottomSection/BottomSection.module.css';
+}
+
+.bottomSection {
+  composes: bottomSection from '../BottomSection/BottomSection.module.css';
+}
+
+.verificationLoader {
+  composes: verificationLoader from '../BottomSection/BottomSection.module.css';
+}
+
+.verificationText {
+  composes: verificationText from '../BottomSection/BottomSection.module.css';
+}
+
+.startOverBtn {
+  composes: startOverBtn from '../BottomSection/BottomSection.module.css';
+}

@@ -1,0 +1,6 @@
+.spinner {
+  display: inline-block;
+  height: 18px;
+  width: 18px;
+  background: url('../../images/puff.svg') no-repeat center/100%;
+}

@@ -1,0 +1,49 @@
+.container {
+  composes: container from '../Files/Files.module.css';
+  grid-template: 'heading list' / 15% auto;
+}
+
+.heading {
+  composes: heading from '../Files/Files.module.css';
+  grid-area: heading;
+}
+
+.list {
+  composes: list from '../Files/Files.module.css';
+  grid-area: list;
+}
+
+.file {
+  composes: file from '../Files/Files.module.css';
+}
+
+.docFile {
+  composes: docFile from '../Files/Files.module.css';
+}
+
+.imageFile {
+  composes: imageFile from '../Files/Files.module.css';
+}
+
+.didsignFile {
+  composes: didsignFile from '../Files/Files.module.css';
+}
+
+.deleteBtn {
+  composes: deleteBtn from '../Files/Files.module.css';
+}
+
+.infoBtn {
+  composes: iconBtn from '../Files/Files.module.css';
+  background: url('../../images/icon_info.svg') no-repeat center right/110%;
+}
+
+.didsignInfo {
+  margin: 0;
+  color: var(--color-pure-red);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  line-height: 13px;
+}
