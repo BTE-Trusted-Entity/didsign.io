@@ -8,7 +8,10 @@ import {
   KeyRelationship,
 } from '@kiltprotocol/sdk-js';
 
+// disabling until https://github.com/import-js/eslint-plugin-import/issues/2352 is fixed
+// eslint-disable-next-line import/no-unresolved
 import { base16 } from 'multiformats/bases/base16';
+
 import * as zip from '@zip.js/zip.js';
 import JSZip from 'jszip';
 import { some } from 'lodash-es';
