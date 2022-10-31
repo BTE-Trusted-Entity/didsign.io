@@ -1,6 +1,6 @@
 import * as styles from './Terms.module.css';
 
-export const Terms = () => {
+export function Terms() {
   return (
     <main className={styles.container}>
       <div className={styles.content}>
@@ -496,4 +496,4 @@ export const Terms = () => {
       </div>
     </main>
   );
-};
+}

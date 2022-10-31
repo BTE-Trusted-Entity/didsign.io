@@ -22,7 +22,7 @@ import { createHash, createHashFromHashArray } from './sign-helpers';
 import { IRemark, IVerifiedSignatureContents, SignDoc } from './types';
 import { getVerifiedTimestamp } from './timestamp';
 
-const resolveServiceEndpoints = async (did: DidUri) => {
+async function resolveServiceEndpoints(did: DidUri) {
   const didDetails = await Did.DidResolver.resolveDoc(did);
   const endPoints = didDetails?.details?.getEndpoints();
   if (endPoints) {
@@ -30,9 +30,9 @@ const resolveServiceEndpoints = async (did: DidUri) => {
   } else {
     return [];
   }
-};
+}
 
-export const getVerifiedData = async (jws: string, remark?: IRemark) => {
+export async function getVerifiedData(jws: string, remark?: IRemark) {
   if (jws === '') {
     return null;
   }
@@ -64,7 +64,7 @@ export const getVerifiedData = async (jws: string, remark?: IRemark) => {
     timestamp,
     txHash,
   };
-};
+}
 
 export async function unzipFileEntries(file: File): Promise<FileEntry[]> {
   const reader = new zip.ZipReader(new zip.BlobReader(file));
@@ -92,8 +92,10 @@ export async function handleFilesFromZip(
     ? JSON.parse(await didSignFile.file.text())
     : { jws: '', hashes: [] };
 
-  const addMissingPrefix = (hash: string): string =>
-    hash.startsWith(base16.prefix) ? hash : `${base16.prefix}${hash}`;
+  function addMissingPrefix(hash: string): string {
+    return hash.startsWith(base16.prefix) ? hash : `${base16.prefix}${hash}`;
+  }
+
   const { jws, hashes, remark, credentials } = doc;
   const hashesWithPrefix = hashes.map((hash) => addMissingPrefix(hash));
 
@@ -121,14 +123,14 @@ export async function handleFilesFromZip(
   };
 }
 
-export const getFileNames = async (file: File): Promise<string[]> => {
+export async function getFileNames(file: File): Promise<string[]> {
   const unzip = new JSZip();
   const unzipFile = await unzip.loadAsync(file);
   const filenames = Object.keys(unzipFile.files).filter((key) => {
     return !key.match(/^__MACOSX\//);
   });
   return filenames;
-};
+}
 
 export function isDidSignFile(fileName: string) {
   return fileName.endsWith('.didsign');
@@ -139,24 +141,24 @@ export async function getW3NOrDid(did: DidUri): Promise<string> {
   return web3name ? `w3n:${web3name}` : did;
 }
 
-export const getAttestationForRequest = async (
+export async function getAttestationForRequest(
   req4Att: IRequestForAttestation,
-) => {
+) {
   return Attestation.query(req4Att.rootHash);
-};
+}
 
-export const validateAttestation = async (attestation: Attestation | null) => {
+export async function validateAttestation(attestation: Attestation | null) {
   if (attestation != null) {
     if (!attestation.revoked) {
       return true;
     }
   }
   return false;
-};
+}
 
-export const validateCredential = async (
+export async function validateCredential(
   credentialInput: ICredential,
-): Promise<boolean> => {
+): Promise<boolean> {
   const credential = Credential.fromCredential(credentialInput);
   return await Credential.verify(credential);
-};
+}

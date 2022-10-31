@@ -8,7 +8,7 @@ import * as styles from './DownloadButtons.module.css';
 import { FileEntry, useFiles } from '../Files/Files';
 import { useSignature } from '../Signature/Signature';
 
-export const DownloadButtons = () => {
+export function DownloadButtons() {
   const { files } = useFiles();
   const [signatureFile] = files;
   const [showLoader, setShowLoader] = useState<boolean>(false);
@@ -80,4 +80,4 @@ export const DownloadButtons = () => {
       )}
     </div>
   );
-};
+}

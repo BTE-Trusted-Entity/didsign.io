@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 import * as styles from './Popups.module.css';
 
@@ -72,7 +66,7 @@ export function MultipleSignPopup({ onDismiss }: { onDismiss: () => void }) {
   );
 }
 
-export const SignFileInfoPopup = ({ onDismiss }: Props) => {
+export function SignFileInfoPopup({ onDismiss }: Props) {
   usePopupBackdrop();
   return (
     <div className={styles.container}>
@@ -99,9 +93,9 @@ export const SignFileInfoPopup = ({ onDismiss }: Props) => {
       </div>
     </div>
   );
-};
+}
 
-export const SignButtonInfoPopup = ({ onDismiss }: Props) => {
+export function SignButtonInfoPopup({ onDismiss }: Props) {
   usePopupBackdrop();
   return (
     <div className={styles.container}>
@@ -124,9 +118,9 @@ export const SignButtonInfoPopup = ({ onDismiss }: Props) => {
       </div>
     </div>
   );
-};
+}
 
-export const SigningMultipleDidFiles = ({ onDismiss }: Props) => {
+export function SigningMultipleDidFiles({ onDismiss }: Props) {
   usePopupBackdrop();
   return (
     <div className={styles.container}>
@@ -143,9 +137,9 @@ export const SigningMultipleDidFiles = ({ onDismiss }: Props) => {
       </div>
     </div>
   );
-};
+}
 
-export const SignPopup = ({ onDismiss }: Props) => {
+export function SignPopup({ onDismiss }: Props) {
   usePopupBackdrop();
   return (
     <div className={styles.container}>
@@ -163,9 +157,9 @@ export const SignPopup = ({ onDismiss }: Props) => {
       </div>
     </div>
   );
-};
+}
 
-export const NoWalletPopup = ({ onDismiss }: Props) => {
+export function NoWalletPopup({ onDismiss }: Props) {
   usePopupBackdrop();
   return (
     <div className={styles.container}>
@@ -185,9 +179,9 @@ export const NoWalletPopup = ({ onDismiss }: Props) => {
       </div>
     </div>
   );
-};
+}
 
-export const SignErrorPopup = ({ onDismiss }: Props) => {
+export function SignErrorPopup({ onDismiss }: Props) {
   usePopupBackdrop();
   return (
     <div className={styles.container}>
@@ -204,9 +198,9 @@ export const SignErrorPopup = ({ onDismiss }: Props) => {
       </div>
     </div>
   );
-};
+}
 
-export const PendingTx = () => {
+export function PendingTx() {
   usePopupBackdrop();
   return (
     <div className={styles.container}>
@@ -225,9 +219,9 @@ export const PendingTx = () => {
       </div>
     </div>
   );
-};
+}
 
-export const TimestampError = ({ onDismiss }: Props) => {
+export function TimestampError({ onDismiss }: Props) {
   usePopupBackdrop();
   return (
     <div className={styles.container}>
@@ -244,8 +238,9 @@ export const TimestampError = ({ onDismiss }: Props) => {
       </div>
     </div>
   );
-};
-export const DeleteCredential = ({ onDismiss, onOkay }: Props) => {
+}
+
+export function DeleteCredential({ onDismiss, onOkay }: Props) {
   usePopupBackdrop();
   return (
     <div className={styles.container}>
@@ -266,9 +261,9 @@ export const DeleteCredential = ({ onDismiss, onOkay }: Props) => {
       </div>
     </div>
   );
-};
+}
 
-export const TimestampWarning = ({ onDismiss, onOkay }: Props) => {
+export function TimestampWarning({ onDismiss, onOkay }: Props) {
   usePopupBackdrop();
   return (
     <div className={styles.container}>
@@ -291,4 +286,4 @@ export const TimestampWarning = ({ onDismiss, onOkay }: Props) => {
       </div>
     </div>
   );
-};
+}

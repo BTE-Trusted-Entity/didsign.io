@@ -1,22 +1,24 @@
 import * as styles from './Animation.module.css';
 
-export const SlowAnimation = () => {
+export function SlowAnimation() {
   return (
     <div className={styles.containerSlow}>
       <div className={styles.gradient} />
       <div className={styles.circle2} />
     </div>
   );
-};
-export const SlowAnimationVerifier = () => {
+}
+
+export function SlowAnimationVerifier() {
   return (
     <div className={styles.containerVerifier}>
       <div className={styles.gradient} />
       <div className={styles.circle2} />
     </div>
   );
-};
-export const FastAnimation = () => {
+}
+
+export function FastAnimation() {
   return (
     <div className={styles.containerFast}>
       <div className={styles.gradient} />
@@ -26,4 +28,4 @@ export const FastAnimation = () => {
       <div className={styles.circle5} />
     </div>
   );
-};
+}

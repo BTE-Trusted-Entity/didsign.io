@@ -1,6 +1,6 @@
 import * as styles from './FilesEmpty.module.css';
 
-export const FilesEmpty = () => {
+export function FilesEmpty() {
   const list = [1, 2, 3, 4];
 
   return (
@@ -14,4 +14,4 @@ export const FilesEmpty = () => {
       </div>
     </div>
   );
-};
+}

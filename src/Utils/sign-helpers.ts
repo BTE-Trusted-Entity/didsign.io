@@ -13,32 +13,34 @@ export const sha56 = hasher.from({
   encode: sha256AsU8a,
 });
 
-export const createHash = async (blob: ArrayBuffer | null): Promise<string> => {
+export async function createHash(blob: ArrayBuffer | null): Promise<string> {
   if (!blob) throw new Error('No File given');
   const blobAsU8a = new Uint8Array(blob);
   const hash = await sha56.digest(blobAsU8a);
   return base16.encode(hash.bytes);
-};
+}
 
 const sporranWindow = window.kilt || {};
-export const createHashFromHashArray = async (
+
+export async function createHashFromHashArray(
   hashArray: string[],
-): Promise<string> => {
+): Promise<string> {
   if (hashArray.length === 1) {
     return hashArray[0];
   }
   const sortedHash = [...hashArray].sort();
   const asJson = json.encode(sortedHash);
   return await createHash(asJson);
-};
+}
 
-export const getSignatureContents = async (finalHash: string) =>
-  sporranWindow.sporran.signWithDid(finalHash);
+export async function getSignatureContents(finalHash: string) {
+  return sporranWindow.sporran.signWithDid(finalHash);
+}
 
-export const generateJWS = (
+export function generateJWS(
   signature: { signature: string; didKeyUri: string },
   finalHash: string,
-): string => {
+): string {
   const header = {
     alg: 'Sr25519',
     typ: 'JWS',
@@ -52,7 +54,7 @@ export const generateJWS = (
   const encodedSignature = btoa(signature.signature).replaceAll('=', '');
   const jws = `${encodedHeaders}.${encodedPlayload}.${encodedSignature}`;
   return jws;
-};
+}
 
 export async function createDidSignFile(blob: Blob) {
   const name = 'signature.didsign';

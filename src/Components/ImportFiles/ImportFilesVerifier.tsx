@@ -57,7 +57,7 @@ const initialVerifiedSignature: IVerifiedSignatureContents = {
   credentials: [],
 };
 
-export const ImportFilesVerifier = () => {
+export function ImportFilesVerifier() {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon);
 
   const [jwsState, setJwsState] = useState(initialJws);
@@ -391,4 +391,4 @@ export const ImportFilesVerifier = () => {
       </section>
     </main>
   );
-};
+}

@@ -12,7 +12,7 @@ import { SignFileInfoPopup } from '../Popups/Popups';
 import { Timestamp } from '../Timestamp/Timestamp';
 import { CredentialsInsertion } from '../CredentialsInsertion/CredentialsInsertion';
 
-export const FilesSigner = () => {
+export function FilesSigner() {
   const { files, setFiles } = useFiles();
   const { credentials, setSignature } = useSignature();
   const [signPopup, setSignPopup] = useState<boolean>(false);
@@ -82,4 +82,4 @@ export const FilesSigner = () => {
       {signPopup && <SignFileInfoPopup onDismiss={handleDismiss} />}
     </div>
   );
-};
+}

@@ -21,7 +21,7 @@ import { DownloadButtons } from '../DownloadButtons/DownloadButtons';
 import { Signature } from '../../Utils/types';
 import { InfoLink } from '../BottomSection/InfoLink';
 
-export const ImportFilesSigner = () => {
+export function ImportFilesSigner() {
   const [impIcon, setImportIcon] = useState<string>(ImportIcon);
   const [signErrorPopup, setSignErrorPopup] = useState<boolean>(false);
 
@@ -139,4 +139,4 @@ export const ImportFilesSigner = () => {
       </SignatureContext.Provider>
     </FilesContext.Provider>
   );
-};
+}

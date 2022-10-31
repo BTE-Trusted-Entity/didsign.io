@@ -1,6 +1,6 @@
 import * as styles from './Privacy.module.css';
 
-export const Privacy = () => {
+export function Privacy() {
   return (
     <main className={styles.container}>
       <div className={styles.content}>
@@ -781,4 +781,4 @@ export const Privacy = () => {
       </div>
     </main>
   );
-};
+}

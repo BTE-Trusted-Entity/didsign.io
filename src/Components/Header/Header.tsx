@@ -4,15 +4,16 @@ import * as styles from './Header.module.css';
 
 import { paths } from '../../Utils/paths';
 
-export const Header = () => {
+export function Header() {
   return (
     <header className={styles.header}>
       <PrimaryHeader />
       <SecondaryHeader />
     </header>
   );
-};
-const PrimaryHeader = () => {
+}
+
+function PrimaryHeader() {
   return (
     <div className={styles.primaryHeader}>
       <div className={styles.logoContainer}>
@@ -20,9 +21,9 @@ const PrimaryHeader = () => {
       </div>
     </div>
   );
-};
+}
 
-const SecondaryHeader = () => {
+function SecondaryHeader() {
   return (
     <div className={styles.secondaryHeader}>
       <span className={styles.text}>
@@ -31,4 +32,4 @@ const SecondaryHeader = () => {
       </span>
     </div>
   );
-};
+}

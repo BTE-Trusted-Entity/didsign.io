@@ -1,6 +1,6 @@
 import * as styles from './Imprint.module.css';
 
-export const Imprint = () => {
+export function Imprint() {
   return (
     <main className={styles.container}>
       <div className={styles.content}>
@@ -50,4 +50,4 @@ export const Imprint = () => {
       </div>
     </main>
   );
-};
+}

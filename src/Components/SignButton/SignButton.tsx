@@ -20,7 +20,7 @@ import {
 } from '../Popups/Popups';
 import { exceptionToError } from '../../Utils/exceptionToError';
 
-export const SignButton = () => {
+export function SignButton() {
   const [signStatus, setSignStatus] = useState<
     'SignError' | 'Default' | 'No Sporran' | null
   >(null);
@@ -132,4 +132,4 @@ export const SignButton = () => {
       </div>
     </div>
   );
-};
+}

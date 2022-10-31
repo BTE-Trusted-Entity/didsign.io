@@ -5,7 +5,7 @@ import { Main } from '../Main/Main';
 import { Footer } from '../Footer/Footer';
 import { useShowPopup } from '../Popups/Popups';
 
-export const DIDSign = () => {
+export function DIDSign() {
   const popupVisible = useShowPopup().visible;
 
   return (
@@ -16,4 +16,4 @@ export const DIDSign = () => {
       <Footer />
     </div>
   );
-};
+}
