@@ -1,7 +1,10 @@
 import Dropzone from 'react-dropzone';
 import React, { useCallback, useEffect, useState } from 'react';
-import { base16 } from 'multiformats/bases/base16';
 import { without } from 'lodash-es';
+
+// disabling until https://github.com/import-js/eslint-plugin-import/issues/2352 is fixed
+// eslint-disable-next-line import/no-unresolved
+import { base16 } from 'multiformats/bases/base16';
 
 import * as styles from './ImportFiles.module.css';
 

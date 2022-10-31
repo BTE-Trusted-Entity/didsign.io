@@ -1,7 +1,11 @@
 import { sha256AsU8a } from '@polkadot/util-crypto';
+
+/* eslint-disable import/no-unresolved */
+// disabling until https://github.com/import-js/eslint-plugin-import/issues/2352 is fixed
 import * as hasher from 'multiformats/hashes/hasher';
 import { base16 } from 'multiformats/bases/base16';
 import * as json from 'multiformats/codecs/json';
+/* eslint-enable import/no-unresolved */
 
 export const sha56 = hasher.from({
   name: 'sha2-256',
