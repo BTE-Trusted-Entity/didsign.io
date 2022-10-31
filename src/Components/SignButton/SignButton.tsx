@@ -1,7 +1,5 @@
 import { useCallback, useState } from 'react';
 
-import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-
 import * as styles from './SignButton.module.css';
 
 import { useSignature } from '../Signature/Signature';
@@ -24,7 +22,6 @@ export function SignButton() {
   const [signStatus, setSignStatus] = useState<
     'SignError' | 'Default' | 'No Sporran' | null
   >(null);
-  const targetElement = document.querySelector('body');
   const { files, setFiles } = useFiles();
   const { setSignature } = useSignature();
   const [signPopup, setSignPopup] = useState<boolean>(false);
@@ -32,9 +29,6 @@ export function SignButton() {
   const handleSign = useCallback(async () => {
     if (files.length == 0) {
       return;
-    }
-    if (targetElement !== null) {
-      disableBodyScroll(targetElement);
     }
     setSignStatus('Default');
 
@@ -62,13 +56,7 @@ export function SignButton() {
         signature,
         ...(credentials && { credentials }),
       }));
-
-      if (targetElement !== null) {
-        enableBodyScroll(targetElement);
-      }
     } catch (error: unknown) {
-      if (targetElement) disableBodyScroll(targetElement);
-
       if (!window.kilt.sporran) {
         setSignStatus('No Sporran');
       } else {
@@ -79,28 +67,19 @@ export function SignButton() {
         }
       }
     }
-  }, [files, setFiles, setSignature, targetElement]);
+  }, [files, setFiles, setSignature]);
 
   const handleDismiss = useCallback(() => {
-    if (targetElement !== null) {
-      enableBodyScroll(targetElement);
-    }
     setSignStatus(null);
-  }, [targetElement]);
+  }, []);
 
   const showSignPopup = useCallback(() => {
-    if (targetElement !== null) {
-      disableBodyScroll(targetElement);
-    }
     setSignPopup(true);
-  }, [targetElement]);
+  }, []);
 
   const handleSignDismiss = useCallback(() => {
-    if (targetElement !== null) {
-      enableBodyScroll(targetElement);
-    }
     setSignPopup(false);
-  }, [targetElement]);
+  }, []);
 
   return (
     <div className={styles.container}>

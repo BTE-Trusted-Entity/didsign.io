@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 
 import * as styles from './Popups.module.css';
 
@@ -41,6 +42,14 @@ function usePopupBackdrop() {
   }, [showPopup]);
 }
 
+function useFixedBody() {
+  return useEffect(() => {
+    const { body } = document;
+    disableBodyScroll(body);
+    return () => enableBodyScroll(body);
+  }, []);
+}
+
 interface Props {
   onDismiss: React.MouseEventHandler<HTMLButtonElement>;
   onOkay?: React.MouseEventHandler<HTMLButtonElement>;
@@ -48,6 +57,7 @@ interface Props {
 
 export function MultipleSignPopup({ onDismiss }: { onDismiss: () => void }) {
   usePopupBackdrop();
+  useFixedBody();
 
   return (
     <div className={styles.container}>
@@ -68,6 +78,8 @@ export function MultipleSignPopup({ onDismiss }: { onDismiss: () => void }) {
 
 export function SignFileInfoPopup({ onDismiss }: Props) {
   usePopupBackdrop();
+  useFixedBody();
+
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
@@ -97,6 +109,8 @@ export function SignFileInfoPopup({ onDismiss }: Props) {
 
 export function SignButtonInfoPopup({ onDismiss }: Props) {
   usePopupBackdrop();
+  useFixedBody();
+
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
@@ -122,6 +136,8 @@ export function SignButtonInfoPopup({ onDismiss }: Props) {
 
 export function SigningMultipleDidFiles({ onDismiss }: Props) {
   usePopupBackdrop();
+  useFixedBody();
+
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
@@ -141,6 +157,8 @@ export function SigningMultipleDidFiles({ onDismiss }: Props) {
 
 export function SignPopup({ onDismiss }: Props) {
   usePopupBackdrop();
+  useFixedBody();
+
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
@@ -161,6 +179,8 @@ export function SignPopup({ onDismiss }: Props) {
 
 export function NoWalletPopup({ onDismiss }: Props) {
   usePopupBackdrop();
+  useFixedBody();
+
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
@@ -183,6 +203,8 @@ export function NoWalletPopup({ onDismiss }: Props) {
 
 export function SignErrorPopup({ onDismiss }: Props) {
   usePopupBackdrop();
+  useFixedBody();
+
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
@@ -202,6 +224,8 @@ export function SignErrorPopup({ onDismiss }: Props) {
 
 export function PendingTx() {
   usePopupBackdrop();
+  useFixedBody();
+
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
@@ -223,6 +247,8 @@ export function PendingTx() {
 
 export function TimestampError({ onDismiss }: Props) {
   usePopupBackdrop();
+  useFixedBody();
+
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
@@ -242,6 +268,8 @@ export function TimestampError({ onDismiss }: Props) {
 
 export function DeleteCredential({ onDismiss, onOkay }: Props) {
   usePopupBackdrop();
+  useFixedBody();
+
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
@@ -265,6 +293,8 @@ export function DeleteCredential({ onDismiss, onOkay }: Props) {
 
 export function TimestampWarning({ onDismiss, onOkay }: Props) {
   usePopupBackdrop();
+  useFixedBody();
+
   return (
     <div className={styles.container}>
       <div className={styles.popup}>

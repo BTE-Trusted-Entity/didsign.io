@@ -1,7 +1,6 @@
 import Dropzone from 'react-dropzone';
 import { useCallback, useMemo, useState } from 'react';
 import { without } from 'lodash-es';
-import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 
 import * as styles from './ImportFiles.module.css';
 
@@ -35,14 +34,9 @@ export function ImportFilesSigner() {
   );
   const { signature, timestamped, downloaded } = signatureValues;
 
-  const targetElement = document.querySelector('body');
-
   const handleDismiss = useCallback(() => {
     setSignErrorPopup(false);
-    if (targetElement != null) {
-      enableBodyScroll(targetElement);
-    }
-  }, [targetElement]);
+  }, []);
 
   const handleDrop = useCallback(
     async (acceptedFiles: File[]) => {
@@ -59,9 +53,6 @@ export function ImportFilesSigner() {
         const { name } = file;
         if (isDidSignFile(name)) {
           setSignErrorPopup(true);
-          if (targetElement != null) {
-            disableBodyScroll(targetElement);
-          }
           return;
         }
         const buffer = await file.arrayBuffer();
@@ -69,7 +60,7 @@ export function ImportFilesSigner() {
         setFiles((files) => [...files, { file, buffer, name, hash }]);
       });
     },
-    [files, setFiles, setSignature, signature, targetElement],
+    [files, setFiles, setSignature, signature],
   );
 
   const handleDelete = useCallback(() => {
