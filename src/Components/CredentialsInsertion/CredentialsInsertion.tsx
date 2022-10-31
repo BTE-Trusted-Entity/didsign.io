@@ -34,18 +34,6 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
     return JSON.parse(decoded) as SignDoc;
   }, [files]);
 
-  const updateSignatureFile = useCallback(
-    async (newContents: SignDoc) => {
-      const blob = new Blob([JSON.stringify(newContents)], {
-        type: 'application/json;charset=utf-8',
-      });
-
-      const file = await createDidSignFile(blob);
-      setFiles((files) => [file, ...files.slice(1)]);
-    },
-    [setFiles],
-  );
-
   const handleStopEditing = useCallback(() => {
     if (showDeletePopup.current) return;
     stopEditing();
@@ -63,7 +51,7 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
   );
 
   const handleChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
+    async (event: ChangeEvent<HTMLInputElement>) => {
       const input = event.currentTarget.value;
 
       if (input.length < 1 || input.length > 32) {
@@ -79,25 +67,23 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
 
       if (!storedCredentials) throw new Error('No credentials');
 
-      const updatedCredentials = replace(storedCredentials, credential, {
+      const credentials = replace(storedCredentials, credential, {
         ...credential,
         name: input,
       });
 
-      setSignature((old) => ({ ...old, credentials: updatedCredentials }));
-      updateSignatureFile({
-        hashes,
-        jws,
-        credentials: updatedCredentials,
-      });
+      setSignature((old) => ({ ...old, credentials }));
+
+      const file = await createDidSignFile({ hashes, jws, credentials });
+      setFiles((files) => [file, ...files.slice(1)]);
     },
     [
       credential,
       error,
       getSignatureData,
+      setFiles,
       setSignature,
       storedCredentials,
-      updateSignatureFile,
     ],
   );
 
@@ -116,14 +102,16 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
     };
 
     setSignature((old) => ({ ...old, credentials }));
-    updateSignatureFile(updatedContents);
+
+    const file = await createDidSignFile(updatedContents);
+    setFiles((files) => [file, ...files.slice(1)]);
   }, [
     credential,
     getSignatureData,
+    setFiles,
     setSignature,
     showDeletePopup,
     storedCredentials,
-    updateSignatureFile,
   ]);
 
   return (

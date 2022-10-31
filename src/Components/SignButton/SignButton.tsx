@@ -44,12 +44,8 @@ export function SignButton() {
       } = await getSignatureContents(signingData);
 
       const jws = generateJWS({ signature, didKeyUri }, signingData);
-      const signedDoc = { hashes, jws, credentials };
-      const blob = new Blob([JSON.stringify(signedDoc)], {
-        type: 'application/json;charset=utf-8',
-      });
 
-      const file = await createDidSignFile(blob);
+      const file = await createDidSignFile({ hashes, jws, credentials });
       setFiles((files) => [file, ...files]);
 
       setSignature((old) => ({

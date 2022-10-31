@@ -1,3 +1,5 @@
+import type { SignDoc } from './types';
+
 import { sha256AsU8a } from '@polkadot/util-crypto';
 
 /* eslint-disable import/no-unresolved */
@@ -56,7 +58,10 @@ export function generateJWS(
   return jws;
 }
 
-export async function createDidSignFile(blob: Blob) {
+export async function createDidSignFile(data: SignDoc) {
+  const blob = new Blob([JSON.stringify(data)], {
+    type: 'application/json;charset=utf-8',
+  });
   const name = 'signature.didsign';
   const file = new File([blob], name);
   const buffer = await file.arrayBuffer();

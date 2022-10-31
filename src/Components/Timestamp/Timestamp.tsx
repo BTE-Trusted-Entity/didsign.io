@@ -122,12 +122,11 @@ export function Timestamp() {
         const decoded = decoder.decode(files[0].buffer);
         const didSignData = JSON.parse(decoded) as SignDoc;
 
-        const withRemark = { ...didSignData, remark: { txHash, blockHash } };
-
-        const blob = new Blob([JSON.stringify(withRemark)], {
-          type: 'application/json;charset=utf-8',
+        const file = await createDidSignFile({
+          ...didSignData,
+          remark: { txHash, blockHash },
         });
-        const file = await createDidSignFile(blob);
+
         setFiles((files) => [file, ...files.slice(1)]);
 
         setTimestamp(await getTimestamp(blockHash));
