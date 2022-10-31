@@ -1,10 +1,10 @@
-.header {
+.container {
   display: flex;
   width: 100vw;
   flex-direction: column;
 }
 
-.primaryHeader {
+.primary {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -21,7 +21,7 @@
   width: 90%;
 }
 
-.headerLogoBtn {
+.logoBtn {
   display: block;
   width: 168.5px;
   height: 52px;
@@ -30,7 +30,7 @@
   cursor: pointer;
 }
 
-.secondaryHeader {
+.secondary {
   display: flex;
   flex-direction: column;
   width: 100vw;

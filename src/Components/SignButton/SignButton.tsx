@@ -28,7 +28,7 @@ export function SignButton() {
   const signPopup = useBooleanState();
 
   const handleSign = useCallback(async () => {
-    if (files.length == 0) {
+    if (files.length === 0) {
       return;
     }
     setSignStatus('Default');
@@ -57,7 +57,7 @@ export function SignButton() {
         signature,
         ...(credentials && { credentials }),
       }));
-    } catch (error: unknown) {
+    } catch (error) {
       if (!window.kilt.sporran) {
         setSignStatus('No Sporran');
       } else {
@@ -80,7 +80,7 @@ export function SignButton() {
         <button
           className={styles.signBtn}
           disabled={files.length === 0}
-          onClick={() => handleSign()}
+          onClick={handleSign}
         >
           Sign
         </button>

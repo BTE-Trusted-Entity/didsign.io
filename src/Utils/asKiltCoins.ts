@@ -3,6 +3,7 @@ import BN from 'bn.js';
 const KILT_POWER = 15;
 
 const PRECISION = 3;
+
 const FORMAT = {
   minimumFractionDigits: PRECISION,
   maximumFractionDigits: PRECISION,

@@ -55,18 +55,18 @@ interface Props {
   onOkay?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-export function MultipleSignPopup({ onDismiss }: { onDismiss: () => void }) {
+export function MultipleSignPopup({ onDismiss }: Props) {
   usePopupBackdrop();
   useFixedBody();
 
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
-        <h1 className={styles.attentionHeading}>Verification Error</h1>
+        <h2 className={styles.attentionHeading}>Verification Error</h2>
 
-        <span className={styles.text}>
+        <p className={styles.text}>
           Multiple signature files found. Please import only one signature file.
-        </span>
+        </p>
 
         <button className={styles.dismissBtn} onClick={onDismiss}>
           Dismiss
@@ -83,21 +83,19 @@ export function SignFileInfoPopup({ onDismiss }: Props) {
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
-        <h1 className={styles.signatureHeading}>Signature</h1>
+        <h2 className={styles.signatureHeading}>Signature</h2>
 
-        <span className={styles.text}>
+        <p className={styles.text}>
           Your files have been signed and your DIDsign signature has been added
           successfully.
-        </span>
-        <span className={styles.text}>
-          {' '}
+        </p>
+        <p className={styles.text}>
           The receiver of your documents needs to get your signature together
           with the set of signed files in order to get the verification.
-        </span>
-        <span className={styles.text}>
-          {' '}
+        </p>
+        <p className={styles.text}>
           The easiest way to proceed is to zip all files into one archive.
-        </span>
+        </p>
 
         <button className={styles.dismissBtn} onClick={onDismiss}>
           OK
@@ -114,17 +112,16 @@ export function SignButtonInfoPopup({ onDismiss }: Props) {
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
-        <h1 className={styles.infoHeading}>Signing</h1>
+        <h2 className={styles.infoHeading}>Signing</h2>
 
-        <span className={styles.text}>
+        <p className={styles.text}>
           In order to successfully sign your files with DIDsign, make sure to
           have a wallet installed that has an on-chain DID.
-        </span>
-        <span className={styles.text}>
-          {' '}
+        </p>
+        <p className={styles.text}>
           We recommend to use Sporran, which is a browser extension available
           for Google Chrome and Mozilla Firefox.
-        </span>
+        </p>
 
         <button className={styles.dismissBtn} onClick={onDismiss}>
           OK
@@ -141,11 +138,9 @@ export function SigningMultipleDidFiles({ onDismiss }: Props) {
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
-        <h1 className={styles.attentionHeading}>Sign Error</h1>
+        <h2 className={styles.attentionHeading}>Sign Error</h2>
 
-        <span className={styles.text}>
-          Signing of signature file is not allowed.
-        </span>
+        <p className={styles.text}>Signing of signature file is not allowed.</p>
 
         <button className={styles.dismissBtn} onClick={onDismiss}>
           Dismiss
@@ -162,12 +157,12 @@ export function SignPopup({ onDismiss }: Props) {
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
-        <h1 className={styles.infoHeading}>Signature Needed</h1>
+        <h2 className={styles.infoHeading}>Signature Needed</h2>
 
-        <span className={styles.text}>
+        <p className={styles.text}>
           Please wait for your wallet extension to open and sign the transaction
           there.
-        </span>
+        </p>
 
         <button className={styles.dismissBtn} onClick={onDismiss}>
           Dismiss
@@ -184,14 +179,14 @@ export function NoWalletPopup({ onDismiss }: Props) {
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
-        <h1 className={styles.infoHeading}>No Wallet Found</h1>
+        <h2 className={styles.infoHeading}>No Wallet Found</h2>
 
-        <span className={styles.text}>
+        <p className={styles.text}>
           To sign your files with DIDsign you need an on-chain DID in a wallet
           that supports it. We recommend Sporran, a browser extension available
           for Google Chrome and Firefox. Any other wallet supporting on-chain
           signing on the KILT blockchain can also be used.
-        </span>
+        </p>
 
         <button className={styles.dismissBtn} onClick={onDismiss}>
           Dismiss
@@ -208,11 +203,11 @@ export function SignErrorPopup({ onDismiss }: Props) {
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
-        <h1 className={styles.attentionHeading}>Sign Error</h1>
+        <h2 className={styles.attentionHeading}>Sign Error</h2>
 
-        <span className={styles.text}>
-          It looks like error occured while signing. Please try again.
-        </span>
+        <p className={styles.text}>
+          It looks like error occurred while signing. Please try again.
+        </p>
 
         <button className={styles.dismissBtn} onClick={onDismiss}>
           Dismiss
@@ -229,17 +224,17 @@ export function PendingTx() {
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
-        <h1 className={styles.spinnerHeading}>
+        <h2 className={styles.spinnerHeading}>
           Blockchain Transaction Pending
-        </h1>
+        </h2>
 
-        <span className={styles.text}>
+        <p className={styles.text}>
           Your timestamp is being added to the KILT blockchain.
-        </span>
+        </p>
 
-        <span className={styles.bottomText}>
+        <p className={styles.bottomText}>
           Please leave this tab open until the transaction is complete.
-        </span>
+        </p>
       </div>
     </div>
   );
@@ -252,11 +247,11 @@ export function TimestampError({ onDismiss }: Props) {
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
-        <h1 className={styles.attentionHeading}>Error Timestamping</h1>
+        <h2 className={styles.attentionHeading}>Error Timestamping</h2>
 
-        <span className={styles.text}>
+        <p className={styles.text}>
           Click “Try Again” or reload the page or restart your browser.
-        </span>
+        </p>
 
         <button className={styles.dismissBtn} onClick={onDismiss}>
           Dismiss
@@ -273,11 +268,12 @@ export function DeleteCredential({ onDismiss, onOkay }: Props) {
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
-        <h1 className={styles.infoHeading}>Delete Credential</h1>
+        <h2 className={styles.infoHeading}>Delete Credential</h2>
 
-        <span className={styles.text}>
+        <p className={styles.text}>
           Do you want to delete this credential from your signature file?
-        </span>
+        </p>
+
         <div className={styles.btnWrapper}>
           <button className={styles.cancelBtn} onClick={onDismiss}>
             Cancel
@@ -298,13 +294,14 @@ export function TimestampWarning({ onDismiss, onOkay }: Props) {
   return (
     <div className={styles.container}>
       <div className={styles.popup}>
-        <h1 className={styles.attentionHeading}>Save Your File!</h1>
+        <h2 className={styles.attentionHeading}>Save Your File!</h2>
 
-        <span className={styles.text}>
+        <p className={styles.text}>
           Your data belongs to you – DIDsign doesn’t keep a copy of it. Make
           sure you have saved your timestamped file before switching to the
           verifier tab.
-        </span>
+        </p>
+
         <div className={styles.btnWrapper}>
           <button className={styles.cancelBtn} onClick={onDismiss}>
             Cancel

@@ -8,7 +8,7 @@
   gap: 8px;
 }
 
-.zipBtnWapper {
+.zipBtnWrapper {
   display: flex;
   gap: 10px;
   justify-content: flex-start;

@@ -60,7 +60,7 @@ export function ServiceEndpoint({ url, endpointType, did }: Props) {
             [styles.fetchBtn]: !fetched.current,
             [styles.loader]: fetching.current,
           })}
-          onClick={() => handleFetch()}
+          onClick={handleFetch}
         >
           <span>{fetched ? 'Close' : 'Fetch'}</span>
         </button>

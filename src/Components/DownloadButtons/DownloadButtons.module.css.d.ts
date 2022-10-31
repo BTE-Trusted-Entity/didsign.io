@@ -1,6 +1,6 @@
 export const __esModule: true;
 export const container: string;
-export const zipBtnWapper: string;
+export const zipBtnWrapper: string;
 export const zipText: string;
 export const downloadSignText: string;
 export const zipBtn: string;

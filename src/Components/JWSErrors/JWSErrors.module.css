@@ -3,11 +3,11 @@
   margin-bottom: 30px;
 }
 
-.textWrapper {
+.wrapper {
   composes: textWrapper from '../DidDocument/DidDocument.module.css';
 }
 
-.verificationErrorText {
+.verificationText {
   display: flex;
   justify-content: center;
   font-size: 16px;
@@ -19,10 +19,10 @@
   color: var(--color-orange);
 }
 
-.errorTitle {
+.title {
   composes: errorTitle from '../DidDocument/DidDocument.module.css';
 }
 
-.errorText {
+.text {
   composes: errorText from '../DidDocument/DidDocument.module.css';
 }

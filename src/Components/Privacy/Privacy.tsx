@@ -58,7 +58,7 @@ export function Privacy() {
           </p>
           <ul>
             <li>
-              <h3 className={styles.listHeading}>a&#41; Personal data</h3>
+              <h3 className={styles.listHeading}>a) Personal data</h3>
               <p>
                 Personal data means any information relating to an identified or
                 identifiable natural person (“data subject”). An identifiable
@@ -71,7 +71,7 @@ export function Privacy() {
               </p>
             </li>
             <li>
-              <h3 className={styles.listHeading}>b&#41; Data subject</h3>
+              <h3 className={styles.listHeading}>b) Data subject</h3>
               <p>
                 Data subject is any identified or identifiable natural person,
                 whose personal data is processed by the controller responsible
@@ -79,7 +79,7 @@ export function Privacy() {
               </p>
             </li>
             <li>
-              <h3 className={styles.listHeading}>c&#41; Processing</h3>
+              <h3 className={styles.listHeading}>c) Processing</h3>
               <p>
                 Processing is any operation or set of operations which is
                 performed on personal data or on sets of personal data, whether
@@ -92,7 +92,7 @@ export function Privacy() {
             </li>
             <li>
               <h3 className={styles.listHeading}>
-                d&#41; Restriction of processing
+                d) Restriction of processing
               </h3>
               <p>
                 Restriction of processing is the marking of stored personal data
@@ -100,7 +100,7 @@ export function Privacy() {
               </p>
             </li>
             <li>
-              <h3 className={styles.listHeading}>e&#41; Profiling</h3>
+              <h3 className={styles.listHeading}>e) Profiling</h3>
               <p>
                 Profiling means any form of automated processing of personal
                 data consisting of the use of personal data to evaluate certain
@@ -112,7 +112,7 @@ export function Privacy() {
               </p>
             </li>
             <li>
-              <h3 className={styles.listHeading}>f&#41; Pseudonymisation</h3>
+              <h3 className={styles.listHeading}>f) Pseudonymisation</h3>
               <p>
                 Pseudonymisation is the processing of personal data in such a
                 manner that the personal data can no longer be attributed to a
@@ -125,7 +125,7 @@ export function Privacy() {
             </li>
             <li>
               <h3 className={styles.listHeading}>
-                g&#41; Controller or controller responsible for the processing
+                g) Controller or controller responsible for the processing
               </h3>
               <p>
                 Controller or controller responsible for the processing is the
@@ -138,7 +138,7 @@ export function Privacy() {
               </p>
             </li>
             <li>
-              <h3 className={styles.listHeading}>h&#41; Processor</h3>
+              <h3 className={styles.listHeading}>h) Processor</h3>
               <p>
                 Processor is a natural or legal person, public authority, agency
                 or other body which processes personal data on behalf of the
@@ -146,7 +146,7 @@ export function Privacy() {
               </p>
             </li>
             <li>
-              <h3 className={styles.listHeading}>i&#41; Recipient</h3>
+              <h3 className={styles.listHeading}>i) Recipient</h3>
               <p>
                 Recipient is a natural or legal person, public authority, agency
                 or another body, to which the personal data are disclosed,
@@ -160,7 +160,7 @@ export function Privacy() {
               </p>
             </li>
             <li>
-              <h3 className={styles.listHeading}>j&#41; Third party</h3>
+              <h3 className={styles.listHeading}>j) Third party</h3>
               <p>
                 Third party is a natural or legal person, public authority,
                 agency or body other than the data subject, controller,
@@ -170,7 +170,7 @@ export function Privacy() {
               </p>
             </li>
             <li>
-              <h3 className={styles.listHeading}>k&#41; Consent</h3>
+              <h3 className={styles.listHeading}>k) Consent</h3>
               <p>
                 Consent of the data subject is any freely given, specific,
                 informed and unambiguous indication of the data subject’s wishes
@@ -212,7 +212,7 @@ export function Privacy() {
             >
               https://support.kilt.io/support/home
             </a>{' '}
-            {`and click on "Contact Us"`}
+            and click on “Contact Us”
           </p>
           <p>
             Website:{' '}
@@ -342,9 +342,7 @@ export function Privacy() {
           </h2>
           <ul>
             <li>
-              <h3 className={styles.listHeading}>
-                a&#41; Right of confirmation
-              </h3>
+              <h3 className={styles.listHeading}>a) Right of confirmation</h3>
               <p>
                 Each data subject shall have the right granted by the European
                 legislator to obtain from the controller the confirmation as to
@@ -355,7 +353,7 @@ export function Privacy() {
               </p>
             </li>
             <li>
-              <h3 className={styles.listHeading}>b&#41; Right of access</h3>
+              <h3 className={styles.listHeading}>b) Right of access</h3>
               <p>
                 Each data subject shall have the right granted by the European
                 legislator to obtain from the controller free information about
@@ -413,9 +411,7 @@ export function Privacy() {
               </p>
             </li>
             <li>
-              <h3 className={styles.listHeading}>
-                c&#41; Right to rectification
-              </h3>
+              <h3 className={styles.listHeading}>c) Right to rectification</h3>
               <p>
                 Each data subject shall have the right granted by the European
                 legislator to obtain from the controller without undue delay the
@@ -433,7 +429,7 @@ export function Privacy() {
             </li>
             <li>
               <h3 className={styles.listHeading}>
-                d&#41; Right to erasure (Right to be forgotten)
+                d) Right to erasure (Right to be forgotten)
               </h3>
               <p>
                 Each data subject shall have the right granted by the European
@@ -495,7 +491,7 @@ export function Privacy() {
             </li>
             <li>
               <h3 className={styles.listHeading}>
-                e&#41; Right of restriction of processing
+                e) Right of restriction of processing
               </h3>
               <p>
                 Each data subject shall have the right granted by the European
@@ -537,7 +533,7 @@ export function Privacy() {
             </li>
             <li>
               <h3 className={styles.listHeading}>
-                f&#41; Right to data portability
+                f) Right to data portability
               </h3>
               <p>
                 Each data subject shall have the right granted by the European
@@ -569,7 +565,7 @@ export function Privacy() {
               </p>
             </li>
             <li>
-              <h3 className={styles.listHeading}>g&#41; Right to object</h3>
+              <h3 className={styles.listHeading}>g) Right to object</h3>
               <p>
                 Each data subject shall have the right granted by the European
                 legislator to object, on grounds relating to his or her
@@ -618,7 +614,7 @@ export function Privacy() {
             </li>
             <li>
               <h3 className={styles.listHeading}>
-                h&#41; Automated individual decision-making, including profiling
+                h) Automated individual decision-making, including profiling
               </h3>
               <p>
                 Each data subject shall have the right granted by the European
@@ -653,7 +649,7 @@ export function Privacy() {
             </li>
             <li>
               <h3 className={styles.listHeading}>
-                i&#41; Right to withdraw data protection consent
+                i) Right to withdraw data protection consent
               </h3>
               <p>
                 Each data subject shall have the right granted by the European
@@ -770,9 +766,9 @@ export function Privacy() {
 
         <section>
           <p>
-            Developed by the specialists for LegalTech at Willing &#38; Able
-            that also developed the system for data protection officer training.
-            The legal texts contained in our privacy policy generator have been
+            Developed by the specialists for LegalTech at Willing & Able that
+            also developed the system for data protection officer training. The
+            legal texts contained in our privacy policy generator have been
             provided and published by Prof. Dr. h.c. Heiko Jonny Maniero from
             the German Association for Data Protection and Christian Solmecke
             from WBS law.

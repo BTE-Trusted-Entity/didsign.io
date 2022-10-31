@@ -5,32 +5,28 @@ export function Imprint() {
     <main className={styles.container}>
       <div className={styles.content}>
         <h1 className={styles.heading}>Imprint</h1>
-        <section className={styles.imprintSection}>
-          <p className={styles.imprintLine}>
-            B.T.E. BOTLabs Trusted Entity GmbH
-          </p>
-          <p className={styles.imprintLine}>Keithstraße 2-4</p>
-          <p className={styles.imprintLine}>10787 Berlin, Germany</p>
+        <section className={styles.section}>
+          <p className={styles.line}>B.T.E. BOTLabs Trusted Entity GmbH</p>
+          <p className={styles.line}>Keithstraße 2-4</p>
+          <p className={styles.line}>10787 Berlin, Germany</p>
         </section>
 
-        <section className={styles.imprintSection}>
-          <p className={styles.imprintLine}>German Commercial Court:</p>
-          <p className={styles.imprintLine}>
-            Amtsgericht Charlottenburg in Berlin
-          </p>
-          <p className={styles.imprintLine}>Registration Number: HRB 231219B</p>
-          <p className={styles.imprintLine}>VAT No: DE 346528612</p>
-          <p className={styles.imprintLine}>Managing Director: Ingo Rübe</p>
+        <section className={styles.section}>
+          <p className={styles.line}>German Commercial Court:</p>
+          <p className={styles.line}>Amtsgericht Charlottenburg in Berlin</p>
+          <p className={styles.line}>Registration Number: HRB 231219B</p>
+          <p className={styles.line}>VAT No: DE 346528612</p>
+          <p className={styles.line}>Managing Director: Ingo Rübe</p>
         </section>
 
-        <section className={styles.imprintSection}>
-          <p className={styles.imprintLine}>
+        <section className={styles.section}>
+          <p className={styles.line}>
             Contact:{' '}
             <a className={styles.anchor} href="mailto:info@botlabs.org">
               info@botlabs.org
             </a>
           </p>
-          <p className={styles.imprintLine}>
+          <p className={styles.line}>
             Or go to{' '}
             <a
               className={styles.anchor}
@@ -40,11 +36,11 @@ export function Imprint() {
             >
               Tech support
             </a>{' '}
-            {`and click on "Contact Us"`}
+            and click on ”Contact Us”
           </p>
         </section>
 
-        <p className={styles.imprintSection}>
+        <p className={styles.section}>
           Requirements according to § 5 TMG (Germany)
         </p>
       </div>

@@ -10,14 +10,13 @@ import {
 import BN from 'bn.js';
 import { web3FromAddress } from '@polkadot/extension-dapp';
 import { BlockchainApiConnection } from '@kiltprotocol/chain-helpers';
-
+import { remove } from 'lodash-es';
 import classnames from 'classnames';
 
 import * as styles from './Timestamp.module.css';
 
 import { useSignature } from '../Signature/Signature';
 import { useFiles } from '../Files/Files';
-
 import {
   getExtrinsic,
   getFee,
@@ -28,18 +27,14 @@ import { IKiltAccount, SignDoc } from '../../Utils/types';
 import { asKiltCoins } from '../../Utils/asKiltCoins';
 import { exceptionToError } from '../../Utils/exceptionToError';
 import { createDidSignFile } from '../../Utils/sign-helpers';
-
 import { useConnect } from '../../Hooks/useConnect';
 import { usePreventNavigation } from '../../Hooks/usePreventNavigation';
-
 import { Spinner } from '../Spinner/Spinner';
 import { PendingTx, SignPopup, TimestampError } from '../Popups/Popups';
 import { useBooleanState } from '../../Utils/useBooleanState';
 
-function getAccountLabel(account: IKiltAccount) {
-  const { address, source, name } = account;
-
-  return name ? `${name} (${source})` : `${address} (${source})`;
+function getAccountLabel({ source, address, name = address }: IKiltAccount) {
+  return `${name} (${source})`;
 }
 
 function useFee() {
@@ -93,12 +88,12 @@ export function Timestamp() {
       setStatus('accounts-ready');
     } catch (exception) {
       setStatus('error');
-      console.error(exceptionToError(exception));
+      console.error(exception);
     }
   }, []);
 
   const handleSelectClick = useCallback(
-    (account: IKiltAccount) => () => {
+    (account: IKiltAccount) => {
       setSelectedAccount(account);
       isAccountsMenuOpen.off();
     },
@@ -106,7 +101,7 @@ export function Timestamp() {
   );
 
   const handleSelectKeyPress = useCallback(
-    (account: IKiltAccount) => (event: KeyboardEvent) => {
+    (account: IKiltAccount, event: KeyboardEvent) => {
       if (event.key !== 'Enter') {
         return;
       }
@@ -117,7 +112,7 @@ export function Timestamp() {
   );
 
   const remainingAccounts = useMemo(() => {
-    return accounts?.filter((account) => account !== selectedAccount);
+    return remove(accounts || [], selectedAccount);
   }, [selectedAccount, accounts]);
 
   const handleFinalized = useCallback(
@@ -150,6 +145,7 @@ export function Timestamp() {
     },
     [files, setFiles, setSignature],
   );
+
   const handleSubmit = useCallback(
     async (event: FormEvent) => {
       event.preventDefault();
@@ -165,9 +161,7 @@ export function Timestamp() {
         }
 
         const { api } = await BlockchainApiConnection.getConnectionOrConnect();
-
         const extrinsic = await getExtrinsic(signature);
-
         const injector = await web3FromAddress(selectedAccount.address);
 
         await extrinsic.signAndSend(
@@ -201,10 +195,10 @@ export function Timestamp() {
           },
         );
       } catch (exception) {
-        const error = exceptionToError(exception);
-        if (!error.message.includes('User closed the popup')) {
+        const { message } = exceptionToError(exception);
+        if (!message.includes('User closed the popup')) {
           setStatus('error');
-          console.error(error);
+          console.error(exception);
         }
       }
     },
@@ -243,6 +237,7 @@ export function Timestamp() {
             </button>
           </section>
         )}
+
         {status === 'getting-accounts' && <Spinner />}
 
         {status === 'accounts-ready' && (
@@ -287,8 +282,10 @@ export function Timestamp() {
                         <li
                           className={styles.option}
                           key={account.address}
-                          onClick={handleSelectClick(account)}
-                          onKeyPress={handleSelectKeyPress(account)}
+                          onClick={() => handleSelectClick(account)}
+                          onKeyPress={(event) =>
+                            handleSelectKeyPress(account, event)
+                          }
                           tabIndex={0}
                         >
                           <p>{getAccountLabel(account)}</p>

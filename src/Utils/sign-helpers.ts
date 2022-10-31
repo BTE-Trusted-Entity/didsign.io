@@ -30,7 +30,7 @@ export async function createHashFromHashArray(
   }
   const sortedHash = [...hashArray].sort();
   const asJson = json.encode(sortedHash);
-  return await createHash(asJson);
+  return createHash(asJson);
 }
 
 export async function getSignatureContents(finalHash: string) {
@@ -50,9 +50,9 @@ export function generateJWS(
   const claim = {
     hash: finalHash,
   };
-  const encodedPlayload = btoa(JSON.stringify(claim)).replaceAll('=', '');
+  const encodedPayload = btoa(JSON.stringify(claim)).replaceAll('=', '');
   const encodedSignature = btoa(signature.signature).replaceAll('=', '');
-  const jws = `${encodedHeaders}.${encodedPlayload}.${encodedSignature}`;
+  const jws = `${encodedHeaders}.${encodedPayload}.${encodedSignature}`;
   return jws;
 }
 

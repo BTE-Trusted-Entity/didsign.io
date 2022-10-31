@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react';
-
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
 
@@ -48,7 +47,7 @@ export function DownloadButtons() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.zipBtnWapper}>
+      <div className={styles.zipBtnWrapper}>
         <span className={styles.zipText}>now</span>
         <button className={styles.zipBtn} onClick={handleZip}>
           <span>{showLoader.current ? 'ZIPPING' : 'ZIP ALL FILES'}</span>
@@ -60,11 +59,11 @@ export function DownloadButtons() {
           <div className={styles.progressbar}>
             <div
               className={styles.progress}
-              style={{ width: progress + '%' }}
+              style={{ width: `${progress}%` }}
             />
           </div>
 
-          <span className={styles.progressInfo}>{progress + '%'}</span>
+          <span className={styles.progressInfo}>{progress}%</span>
         </div>
       )}
 

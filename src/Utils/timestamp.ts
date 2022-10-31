@@ -1,5 +1,4 @@
 import { BlockchainApiConnection } from '@kiltprotocol/chain-helpers';
-
 import { Keyring } from '@polkadot/keyring';
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 
@@ -9,7 +8,7 @@ export async function getKiltAccountsWithEnoughBalance() {
   const { api } = await BlockchainApiConnection.getConnectionOrConnect();
   const genesisHash = api.genesisHash.toHex();
 
-  await web3Enable('DIDSign by BTE');
+  await web3Enable('DIDsign by BTE');
   const allAccounts = await web3Accounts();
 
   const kiltAccounts = allAccounts.filter(
@@ -21,12 +20,10 @@ export async function getKiltAccountsWithEnoughBalance() {
   const timeStampingFee = await getFee();
 
   for (const account of kiltAccounts) {
-    if (
-      (await api.query.system.account(account.address)).data.free.gte(
-        timeStampingFee,
-      )
-    )
+    const balance = await api.query.system.account(account.address);
+    if (balance.data.free.gte(timeStampingFee)) {
       enoughBalanceAccounts.push(account);
+    }
   }
 
   return enoughBalanceAccounts.map(({ address, meta: { source, name } }) => {
@@ -57,22 +54,22 @@ export async function getTimestamp(blockHash: string) {
 
   const apiInstance = await api.at(blockHash);
   const timestamp = (await apiInstance.query.timestamp.now()).toNumber();
-  const dateInstance = new Date(timestamp);
 
-  return `${dateInstance.toLocaleString()} (UTC ${dateInstance
-    .toUTCString()
-    .slice(16, -4)})`;
+  const date = new Date(timestamp);
+  const utc = date.toUTCString().slice(16, -4);
+
+  return `${date.toLocaleString()} (UTC ${utc})`;
 }
 
 async function getSignatureFromRemark(remark: IRemark) {
   const { api } = await BlockchainApiConnection.getConnectionOrConnect();
   const { txHash, blockHash } = remark;
   const signedBlock = await api.rpc.chain.getBlock(blockHash);
-  const extrWithRemark = signedBlock.block.extrinsics.find(
+  const extrinsicWithRemark = signedBlock.block.extrinsics.find(
     ({ hash }) => hash.toHex() === txHash,
   );
-  if (extrWithRemark) {
-    return extrWithRemark.method.args.toString();
+  if (extrinsicWithRemark) {
+    return extrinsicWithRemark.method.args.toString();
   }
 }
 

@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-
 import classnames from 'classnames';
 
 import * as styles from './Navigation.module.css';
@@ -34,7 +33,7 @@ export function Navigation({ needWarning = false }: { needWarning?: boolean }) {
       <nav className={styles.navbar}>
         <NavLink
           className={({ isActive }) =>
-            isActive ? styles.navlinkActive : styles.navlink
+            isActive ? styles.navLinkActive : styles.navLink
           }
           to={paths.signer}
         >
@@ -49,8 +48,8 @@ export function Navigation({ needWarning = false }: { needWarning?: boolean }) {
         <a
           className={
             location.pathname === paths.verifier
-              ? styles.navlinkActive
-              : styles.navlink
+              ? styles.navLinkActive
+              : styles.navLink
           }
           onClick={handleVerify}
         >
@@ -64,6 +63,7 @@ export function Navigation({ needWarning = false }: { needWarning?: boolean }) {
           />
         </a>
       </nav>
+
       {showWarningPopup.current && (
         <TimestampWarning
           onDismiss={showWarningPopup.off}

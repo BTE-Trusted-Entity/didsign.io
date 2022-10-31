@@ -24,12 +24,7 @@ import { getVerifiedTimestamp } from './timestamp';
 
 async function resolveServiceEndpoints(did: DidUri) {
   const didDetails = await Did.DidResolver.resolveDoc(did);
-  const endPoints = didDetails?.details?.getEndpoints();
-  if (endPoints) {
-    return endPoints;
-  } else {
-    return [];
-  }
+  return didDetails?.details?.getEndpoints() || [];
 }
 
 export async function getVerifiedData(jws: string, remark?: IRemark) {
@@ -87,7 +82,7 @@ export async function unzipFileEntries(file: File): Promise<FileEntry[]> {
 export async function handleFilesFromZip(
   files: FileEntry[],
 ): Promise<(IVerifiedSignatureContents & { files: FileEntry[] }) | undefined> {
-  const didSignFile = files.find(({ name }) => isDidSignFile(name));
+  const didSignFile = files.find(isDidSignFile);
   const doc: SignDoc = didSignFile
     ? JSON.parse(await didSignFile.file.text())
     : { jws: '', hashes: [] };
@@ -97,7 +92,7 @@ export async function handleFilesFromZip(
   }
 
   const { jws, hashes, remark, credentials } = doc;
-  const hashesWithPrefix = hashes.map((hash) => addMissingPrefix(hash));
+  const hashesWithPrefix = hashes.map(addMissingPrefix);
 
   const baseHash = await createHashFromHashArray(hashesWithPrefix);
   const jwsBaseJson = atob(jws.split('.')[1]);
@@ -105,7 +100,7 @@ export async function handleFilesFromZip(
 
   const verifiedFiles = files.map((file) => ({
     ...file,
-    verified: isDidSignFile(file.name) || hashesWithPrefix.includes(file.hash),
+    verified: isDidSignFile(file) || hashesWithPrefix.includes(file.hash),
   }));
   if (baseHash !== jwsBaseHash || some(verifiedFiles, { verified: false })) {
     return undefined;
@@ -124,16 +119,12 @@ export async function handleFilesFromZip(
 }
 
 export async function getFileNames(file: File): Promise<string[]> {
-  const unzip = new JSZip();
-  const unzipFile = await unzip.loadAsync(file);
-  const filenames = Object.keys(unzipFile.files).filter((key) => {
-    return !key.match(/^__MACOSX\//);
-  });
-  return filenames;
+  const { files } = await new JSZip().loadAsync(file);
+  return Object.keys(files).filter((key) => !key.startsWith('__MACOSX/'));
 }
 
-export function isDidSignFile(fileName: string) {
-  return fileName.endsWith('.didsign');
+export function isDidSignFile({ name }: { name: string }) {
+  return name.endsWith('.didsign');
 }
 
 export async function getW3NOrDid(did: DidUri): Promise<string> {
@@ -148,17 +139,12 @@ export async function getAttestationForRequest(
 }
 
 export async function validateAttestation(attestation: Attestation | null) {
-  if (attestation != null) {
-    if (!attestation.revoked) {
-      return true;
-    }
-  }
-  return false;
+  return attestation !== null && !attestation.revoked;
 }
 
 export async function validateCredential(
   credentialInput: ICredential,
 ): Promise<boolean> {
   const credential = Credential.fromCredential(credentialInput);
-  return await Credential.verify(credential);
+  return Credential.verify(credential);
 }

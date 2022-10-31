@@ -20,5 +20,6 @@ export function usePreventNavigation(active: boolean): void {
     } else {
       removeUnloadListener();
     }
+    return removeUnloadListener;
   }, [active]);
 }

@@ -38,7 +38,7 @@ export function ImportFilesSigner() {
   const handleDrop = useCallback(
     async (acceptedFiles: File[]) => {
       if (signature) {
-        const didSignFile = files.find(({ name }) => isDidSignFile(name));
+        const didSignFile = files.find(isDidSignFile);
         if (!didSignFile) return;
 
         setFiles((files) => without(files, didSignFile));
@@ -48,7 +48,7 @@ export function ImportFilesSigner() {
         setImportIcon(ImportIcon);
 
         const { name } = file;
-        if (isDidSignFile(name)) {
+        if (isDidSignFile(file)) {
           signErrorPopup.on();
           return;
         }
@@ -79,7 +79,7 @@ export function ImportFilesSigner() {
               >
                 {({ getRootProps, getInputProps }) => (
                   <div className={styles.dropContainer} {...getRootProps({})}>
-                    {impIcon == ImportIcon ? (
+                    {impIcon === ImportIcon ? (
                       <SlowAnimation />
                     ) : (
                       <FastAnimation />

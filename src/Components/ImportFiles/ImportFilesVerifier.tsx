@@ -98,7 +98,7 @@ export function ImportFilesVerifier() {
       const file = files[index];
       setFiles((files) => without(files, file));
 
-      const didSignFileDeleted = isDidSignFile(file.name);
+      const didSignFileDeleted = isDidSignFile(file);
       if (didSignFileDeleted) {
         setFiles((oldFiles) =>
           oldFiles.map((old) => ({ ...old, verified: false })),
@@ -173,7 +173,7 @@ export function ImportFilesVerifier() {
       const { name } = file;
       const buffer = await file.arrayBuffer();
 
-      const isDidSign = isDidSignFile(name);
+      const isDidSign = isDidSignFile(file);
       const hash = isDidSign ? '' : await createHash(buffer);
       const verified = isDidSign;
 
@@ -208,17 +208,12 @@ export function ImportFilesVerifier() {
 
   const handleDrop = useCallback(
     (acceptedFiles: File[]) => {
-      if (
-        files.some(({ name }) => isDidSignFile(name)) &&
-        acceptedFiles.some(({ name }) => isDidSignFile(name))
-      ) {
+      if (files.some(isDidSignFile) && acceptedFiles.some(isDidSignFile)) {
         showMultipleSignPopup();
         return;
       }
-      const signatureFiles = acceptedFiles.filter((file) =>
-        isDidSignFile(file.name),
-      );
-      if (signatureFiles.length > 1) {
+      const hasSignatureFiles = acceptedFiles.some(isDidSignFile);
+      if (hasSignatureFiles) {
         showMultipleSignPopup();
         return;
       }
@@ -230,7 +225,7 @@ export function ImportFilesVerifier() {
 
         if (file.name.endsWith('.zip')) {
           const filenames = await getFileNames(file);
-          const didSignFile = filenames.find(isDidSignFile);
+          const didSignFile = filenames.find((name) => isDidSignFile({ name }));
 
           if (didSignFile && acceptedFiles.length > 1) {
             return;
@@ -330,7 +325,7 @@ export function ImportFilesVerifier() {
           >
             {({ getRootProps, getInputProps }) => (
               <div className={styles.dropContainer} {...getRootProps({})}>
-                {impIcon == ImportIcon ? (
+                {impIcon === ImportIcon ? (
                   <SlowAnimationVerifier />
                 ) : (
                   <FastAnimation />
