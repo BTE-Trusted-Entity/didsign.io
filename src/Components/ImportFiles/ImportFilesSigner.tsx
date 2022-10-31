@@ -1,5 +1,5 @@
 import Dropzone from 'react-dropzone';
-import { useCallback, useMemo, useState } from 'react';
+import { Fragment, useCallback, useMemo, useState } from 'react';
 import { without } from 'lodash-es';
 
 import * as styles from './ImportFiles.module.css';
@@ -22,7 +22,8 @@ import { InfoLink } from '../BottomSection/InfoLink';
 import { useBooleanState } from '../../Utils/useBooleanState';
 
 export function ImportFilesSigner() {
-  const [impIcon, setImportIcon] = useState(ImportIcon);
+  const dragging = useBooleanState();
+  const icon = dragging.current ? ReleaseIcon : ImportIcon;
   const signErrorPopup = useBooleanState();
 
   const [files, setFiles] = useState<FileEntry[]>([]);
@@ -45,7 +46,7 @@ export function ImportFilesSigner() {
         setSignature({});
       }
       acceptedFiles.forEach(async (file: File) => {
-        setImportIcon(ImportIcon);
+        dragging.off();
 
         const { name } = file;
         if (isDidSignFile(file)) {
@@ -57,7 +58,7 @@ export function ImportFilesSigner() {
         setFiles((files) => [...files, { file, buffer, name, hash }]);
       });
     },
-    [files, signErrorPopup, signature],
+    [dragging, files, signErrorPopup, signature],
   );
 
   const handleDelete = useCallback(() => {
@@ -74,29 +75,24 @@ export function ImportFilesSigner() {
             <div className={styles.container}>
               <Dropzone
                 onDrop={handleDrop}
-                onDragLeave={() => setImportIcon(ImportIcon)}
-                onDragEnter={() => setImportIcon(ReleaseIcon)}
+                onDragEnter={dragging.on}
+                onDragLeave={dragging.off}
               >
                 {({ getRootProps, getInputProps }) => (
                   <div className={styles.dropContainer} {...getRootProps({})}>
-                    {impIcon === ImportIcon ? (
-                      <SlowAnimation />
-                    ) : (
-                      <FastAnimation />
-                    )}
+                    {dragging.current ? <FastAnimation /> : <SlowAnimation />}
 
                     <input {...getInputProps()} />
-                    <img className={styles.importIcon} src={impIcon} />
-                    {impIcon === ImportIcon && (
-                      <span className={styles.signText}>Sign Your Files</span>
-                    )}
-                    {impIcon === ImportIcon && (
-                      <span className={styles.dragDropText}>drag & drop</span>
-                    )}
-                    {impIcon === ImportIcon && (
-                      <span className={styles.browseFilesText}>
-                        or click / tap to browse your files
-                      </span>
+                    <img className={styles.importIcon} src={icon} alt="" />
+
+                    {!dragging.current && (
+                      <Fragment>
+                        <span className={styles.signText}>Sign Your Files</span>
+                        <span className={styles.dragDropText}>drag & drop</span>
+                        <span className={styles.browseFilesText}>
+                          or click / tap to browse your files
+                        </span>
+                      </Fragment>
                     )}
                   </div>
                 )}

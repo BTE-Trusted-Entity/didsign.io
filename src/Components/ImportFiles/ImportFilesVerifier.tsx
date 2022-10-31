@@ -1,5 +1,5 @@
 import Dropzone from 'react-dropzone';
-import { useCallback, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import { without } from 'lodash-es';
 
 // disabling until https://github.com/import-js/eslint-plugin-import/issues/2352 is fixed
@@ -28,13 +28,13 @@ import {
 } from '../../Utils/types';
 import { FastAnimation, SlowAnimationVerifier } from '../Animation/Animation';
 import { MultipleSignPopup } from '../Popups/Popups';
-
 import { useConnect } from '../../Hooks/useConnect';
 import { Navigation } from '../Navigation/Navigation';
 import { FilesEmpty } from '../FilesEmpty/FilesEmpty';
 import { FilesVerifier } from '../FilesVerifier/FilesVerifier';
 import { usePreventNavigation } from '../../Hooks/usePreventNavigation';
 import { DidDocument } from '../DidDocument/DidDocument';
+import { useBooleanState } from '../../Utils/useBooleanState';
 
 interface JWSState {
   jws: string;
@@ -62,7 +62,8 @@ function addMissingPrefix(hash: string): string {
 }
 
 export function ImportFilesVerifier() {
-  const [impIcon, setImportIcon] = useState(ImportIcon);
+  const dragging = useBooleanState();
+  const icon = dragging.current ? ReleaseIcon : ImportIcon;
 
   const [jwsState, setJwsState] = useState(initialJws);
   const { jws, jwsStatus, jwsHashes } = jwsState;
@@ -132,11 +133,6 @@ export function ImportFilesVerifier() {
     setZip(undefined);
     clearJWS();
   }, [clearJWS, clearVerifiedSignature, jwsStatus, setFiles, setZip]);
-
-  const showMultipleSignPopup = useCallback(() => {
-    setImportIcon(ImportIcon);
-    setJwsStatus('Multiple Sign');
-  }, [setJwsStatus]);
 
   const dismissMultipleSignPopup = useCallback(() => {
     clearVerifiedSignature();
@@ -208,17 +204,20 @@ export function ImportFilesVerifier() {
 
   const handleDrop = useCallback(
     (acceptedFiles: File[]) => {
+      dragging.off();
+
       if (files.some(isDidSignFile) && acceptedFiles.some(isDidSignFile)) {
-        showMultipleSignPopup();
+        setJwsStatus('Multiple Sign');
         return;
       }
-      const hasSignatureFiles = acceptedFiles.some(isDidSignFile);
-      if (hasSignatureFiles) {
-        showMultipleSignPopup();
+
+      const signatureFilesCount = acceptedFiles.filter(isDidSignFile).length;
+      if (signatureFilesCount > 1) {
+        setJwsStatus('Multiple Sign');
         return;
       }
+
       acceptedFiles.forEach(async (file: File) => {
-        setImportIcon(ImportIcon);
         if (files.length === 0) {
           setJwsStatus('Not Checked');
         }
@@ -241,14 +240,9 @@ export function ImportFilesVerifier() {
         await handleIndividualCase(file);
       });
     },
-    [
-      files,
-      handleIndividualCase,
-      handleZipCase,
-      setJwsStatus,
-      showMultipleSignPopup,
-    ],
+    [dragging, files, handleIndividualCase, handleZipCase, setJwsStatus],
   );
+
   useEffect(() => {
     if (jwsHashes.length <= 0) {
       return;
@@ -281,30 +275,33 @@ export function ImportFilesVerifier() {
 
   const fetchDidDocument = useCallback(async () => {
     setJwsStatus('Validating');
+
     const verifiedSignatureInstance = await getVerifiedData(jws, remark);
-    if (verifiedSignatureInstance) {
-      setJwsStatus('Verified');
-      setVerifiedSignature((old) => ({
-        ...verifiedSignatureInstance,
-        credentials,
-        endpoints: [...old.endpoints, ...verifiedSignatureInstance.endpoints],
-      }));
-    } else {
+    if (!verifiedSignatureInstance) {
       setJwsStatus('Invalid');
+      return;
     }
+
+    setJwsStatus('Verified');
+    setVerifiedSignature((old) => ({
+      ...verifiedSignatureInstance,
+      credentials,
+      endpoints: [...old.endpoints, ...verifiedSignatureInstance.endpoints],
+    }));
   }, [credentials, jws, remark, setJwsStatus, setVerifiedSignature]);
 
   useEffect(() => {
+    if (jwsStatus !== 'Not Checked') {
+      return;
+    }
     const statuses = files
       .map(({ verified }) => verified)
       .filter((value) => typeof value === 'boolean');
-    if (jwsStatus === 'Not Checked') {
-      if (statuses && statuses.length > 1) {
-        if (!statuses.includes(false)) {
-          fetchDidDocument();
-        } else {
-          clearVerifiedSignature();
-        }
+    if (statuses && statuses.length > 1) {
+      if (!statuses.includes(false)) {
+        fetchDidDocument();
+      } else {
+        clearVerifiedSignature();
       }
     }
   }, [files, jwsStatus, fetchDidDocument, clearVerifiedSignature]);
@@ -320,29 +317,28 @@ export function ImportFilesVerifier() {
 
           <Dropzone
             onDrop={handleDrop}
-            onDragLeave={() => setImportIcon(ImportIcon)}
-            onDragEnter={() => setImportIcon(ReleaseIcon)}
+            onDragEnter={dragging.on}
+            onDragLeave={dragging.off}
           >
             {({ getRootProps, getInputProps }) => (
               <div className={styles.dropContainer} {...getRootProps({})}>
-                {impIcon === ImportIcon ? (
-                  <SlowAnimationVerifier />
-                ) : (
+                {dragging.current ? (
                   <FastAnimation />
+                ) : (
+                  <SlowAnimationVerifier />
                 )}
 
                 <input {...getInputProps()} />
-                <img className={styles.importIcon} src={impIcon} />
-                {impIcon === ImportIcon && (
-                  <span className={styles.signText}>Verify Your Files</span>
-                )}
-                {impIcon === ImportIcon && (
-                  <span className={styles.dragDropText}>drag & drop</span>
-                )}
-                {impIcon === ImportIcon && (
-                  <span className={styles.browseFilesText}>
-                    or click / tap to browse your files
-                  </span>
+                <img className={styles.importIcon} src={icon} alt="" />
+
+                {!dragging.current && (
+                  <Fragment>
+                    <span className={styles.signText}>Verify Your Files</span>
+                    <span className={styles.dragDropText}>drag & drop</span>
+                    <span className={styles.browseFilesText}>
+                      or click / tap to browse your files
+                    </span>
+                  </Fragment>
                 )}
               </div>
             )}
