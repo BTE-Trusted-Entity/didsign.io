@@ -1,5 +1,3 @@
-import React from 'react';
-
 import * as styles from './JWSErrors.module.css';
 
 import { JWSStatus } from '../../Utils/types';

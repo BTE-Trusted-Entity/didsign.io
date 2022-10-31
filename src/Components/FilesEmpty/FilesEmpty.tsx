@@ -1,5 +1,3 @@
-import React from 'react';
-
 import * as styles from './FilesEmpty.module.css';
 
 export const FilesEmpty = () => {

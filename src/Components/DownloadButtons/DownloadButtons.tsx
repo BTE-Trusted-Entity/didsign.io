@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';

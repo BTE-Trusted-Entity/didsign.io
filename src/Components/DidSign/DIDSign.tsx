@@ -1,5 +1,3 @@
-import React from 'react';
-
 import * as styles from './DidSign.module.css';
 
 import { Header } from '../Header/Header';

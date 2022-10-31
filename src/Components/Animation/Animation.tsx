@@ -1,5 +1,3 @@
-import React from 'react';
-
 import * as styles from './Animation.module.css';
 
 export const SlowAnimation = () => {

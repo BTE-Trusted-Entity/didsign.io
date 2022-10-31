@@ -1,5 +1,5 @@
 import Dropzone from 'react-dropzone';
-import React, { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { without } from 'lodash-es';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 

@@ -1,5 +1,5 @@
 import Dropzone from 'react-dropzone';
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { without } from 'lodash-es';
 
 // disabling until https://github.com/import-js/eslint-plugin-import/issues/2352 is fixed
