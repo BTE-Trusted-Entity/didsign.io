@@ -40,10 +40,10 @@ export function Navigation({ needWarning = false }: { needWarning?: boolean }) {
         >
           <span>SIGN</span>
           <div
-            className={classnames(
-              styles.signUnderline,
-              location.pathname === paths.signer && styles.activeUnderline,
-            )}
+            className={classnames({
+              [styles.signUnderline]: true,
+              [styles.activeUnderline]: location.pathname === paths.signer,
+            })}
           />
         </NavLink>
         <a
@@ -57,10 +57,10 @@ export function Navigation({ needWarning = false }: { needWarning?: boolean }) {
           <span>Verify</span>
 
           <div
-            className={classnames(
-              styles.verifyUnderline,
-              location.pathname === paths.verifier && styles.activeUnderline,
-            )}
+            className={classnames({
+              [styles.verifyUnderline]: true,
+              [styles.activeUnderline]: location.pathname === paths.verifier,
+            })}
           />
         </a>
       </nav>

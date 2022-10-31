@@ -254,10 +254,10 @@ export function Timestamp() {
               >
                 {!isAccountsMenuOpen.current && (
                   <button
-                    className={classnames(
-                      styles.openBtn,
-                      Boolean(selectedAccount) && styles.selectedAccount,
-                    )}
+                    className={classnames({
+                      [styles.openBtn]: true,
+                      [styles.selectedAccount]: selectedAccount,
+                    })}
                     type="button"
                     onClick={isAccountsMenuOpen.on}
                   >
@@ -270,10 +270,10 @@ export function Timestamp() {
                 {isAccountsMenuOpen.current && (
                   <Fragment>
                     <button
-                      className={classnames(
-                        styles.closeBtn,
-                        Boolean(selectedAccount) && styles.selectedAccount,
-                      )}
+                      className={classnames({
+                        [styles.closeBtn]: true,
+                        [styles.selectedAccount]: selectedAccount,
+                      })}
                       type="button"
                       onClick={isAccountsMenuOpen.off}
                     >
