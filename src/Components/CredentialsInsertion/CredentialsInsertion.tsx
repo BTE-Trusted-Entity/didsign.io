@@ -1,10 +1,4 @@
-import {
-  ChangeEvent,
-  KeyboardEvent,
-  useCallback,
-  useRef,
-  useState,
-} from 'react';
+import { ChangeEvent, KeyboardEvent, useCallback, useRef } from 'react';
 import { without } from 'lodash-es';
 import classnames from 'classnames';
 
@@ -17,6 +11,7 @@ import { DeleteCredential } from '../Popups/Popups';
 import { useHandleOutsideClick } from '../../Hooks/useHandleOutsideClick';
 import { createDidSignFile } from '../../Utils/sign-helpers';
 import { replace } from '../../Utils/replace';
+import { useBooleanState } from '../../Utils/useBooleanState';
 
 interface EditingProps {
   stopEditing: () => void;
@@ -25,12 +20,12 @@ interface EditingProps {
 }
 
 function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
-  const [error, setError] = useState(false);
+  const error = useBooleanState();
   const { files, setFiles } = useFiles();
   const { credentials: storedCredentials, setSignature } = useSignature();
   const credentialName = credential.name;
   const credentialRowRef = useRef(null);
-  const [showDeletePopup, setShowDeletePopup] = useState(false);
+  const showDeletePopup = useBooleanState();
 
   const getSignatureData = useCallback(() => {
     const { buffer } = files[0];
@@ -52,7 +47,7 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
   );
 
   const handleStopEditing = useCallback(() => {
-    if (showDeletePopup) return;
+    if (showDeletePopup.current) return;
     stopEditing();
   }, [showDeletePopup, stopEditing]);
 
@@ -72,11 +67,11 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
       const input = event.currentTarget.value;
 
       if (input.length < 1 || input.length > 32) {
-        setError(true);
+        error.on();
         return;
       }
-      if (error) {
-        setError(false);
+      if (error.current) {
+        error.off();
         return;
       }
 
@@ -106,16 +101,8 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
     ],
   );
 
-  const handleShowPopup = useCallback(() => {
-    setShowDeletePopup(true);
-  }, []);
-
-  const handleDismiss = useCallback(() => {
-    setShowDeletePopup(false);
-  }, []);
-
   const handleDelete = useCallback(async () => {
-    handleDismiss();
+    showDeletePopup.off();
     const { hashes, jws } = getSignatureData();
 
     if (!storedCredentials) throw new Error('No credentials');
@@ -133,8 +120,8 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
   }, [
     credential,
     getSignatureData,
-    handleDismiss,
     setSignature,
+    showDeletePopup,
     storedCredentials,
     updateSignatureFile,
   ]);
@@ -145,7 +132,7 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
       className={classnames({
         [styles.credentialContainer]: true,
         [styles.editing]: isEditing,
-        [styles.error]: error,
+        [styles.error]: error.current,
       })}
     >
       <label className={styles.credentialLabel}>Credential</label>
@@ -160,7 +147,7 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
           onChange={handleChange}
           autoFocus
         />
-        {error && (
+        {error.current && (
           <span className={styles.inputError}>
             Credential name should have 1 to 32 characters
           </span>
@@ -171,11 +158,14 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
         <button
           className={styles.deleteBtn}
           aria-label="delete credential"
-          onClick={handleShowPopup}
+          onClick={showDeletePopup.on}
         />
       </div>
-      {showDeletePopup && (
-        <DeleteCredential onDismiss={handleDismiss} onOkay={handleDelete} />
+      {showDeletePopup.current && (
+        <DeleteCredential
+          onDismiss={showDeletePopup.off}
+          onOkay={handleDelete}
+        />
       )}
     </div>
   );
@@ -186,19 +176,15 @@ interface Props {
 }
 
 function CredentialRow({ credential }: Props) {
-  const [isEditing, setIsEditing] = useState(false);
+  const isEditing = useBooleanState();
   const credentialName = credential.name;
 
-  const stopEditing = useCallback(() => {
-    setIsEditing(false);
-  }, []);
-
-  if (isEditing) {
+  if (isEditing.current) {
     return (
       <EditContents
         credential={credential}
-        isEditing={isEditing}
-        stopEditing={stopEditing}
+        isEditing={isEditing.current}
+        stopEditing={isEditing.off}
       />
     );
   }
@@ -211,7 +197,7 @@ function CredentialRow({ credential }: Props) {
         <button
           className={styles.editBtn}
           aria-label="edit name"
-          onClick={() => setIsEditing(true)}
+          onClick={isEditing.on}
         />
       </div>
     </div>

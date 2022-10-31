@@ -19,10 +19,11 @@ import { SignButton } from '../SignButton/SignButton';
 import { DownloadButtons } from '../DownloadButtons/DownloadButtons';
 import { Signature } from '../../Utils/types';
 import { InfoLink } from '../BottomSection/InfoLink';
+import { useBooleanState } from '../../Utils/useBooleanState';
 
 export function ImportFilesSigner() {
   const [impIcon, setImportIcon] = useState(ImportIcon);
-  const [signErrorPopup, setSignErrorPopup] = useState(false);
+  const signErrorPopup = useBooleanState();
 
   const [files, setFiles] = useState<FileEntry[]>([]);
   const filesContext = useMemo(() => ({ files, setFiles }), [files]);
@@ -33,10 +34,6 @@ export function ImportFilesSigner() {
     [signatureValues],
   );
   const { signature, timestamped, downloaded } = signatureValues;
-
-  const handleDismiss = useCallback(() => {
-    setSignErrorPopup(false);
-  }, []);
 
   const handleDrop = useCallback(
     async (acceptedFiles: File[]) => {
@@ -52,7 +49,7 @@ export function ImportFilesSigner() {
 
         const { name } = file;
         if (isDidSignFile(name)) {
-          setSignErrorPopup(true);
+          signErrorPopup.on();
           return;
         }
         const buffer = await file.arrayBuffer();
@@ -60,7 +57,7 @@ export function ImportFilesSigner() {
         setFiles((files) => [...files, { file, buffer, name, hash }]);
       });
     },
-    [files, setFiles, setSignature, signature],
+    [files, signErrorPopup, signature],
   );
 
   const handleDelete = useCallback(() => {
@@ -105,8 +102,8 @@ export function ImportFilesSigner() {
                 )}
               </Dropzone>
 
-              {signErrorPopup && (
-                <SigningMultipleDidFiles onDismiss={handleDismiss} />
+              {signErrorPopup.current && (
+                <SigningMultipleDidFiles onDismiss={signErrorPopup.off} />
               )}
             </div>
 

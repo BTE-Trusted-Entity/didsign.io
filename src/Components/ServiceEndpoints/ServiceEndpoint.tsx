@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import * as styles from './ServiceEndpoint.module.css';
 
 import { CredentialVerifier } from '../Credential/Credential';
+import { useBooleanState } from '../../Utils/useBooleanState';
 
 interface Props {
   url: string;
@@ -16,21 +17,21 @@ interface Props {
 export function ServiceEndpoint({ url, endpointType, did }: Props) {
   const [credential, setCredential] = useState();
 
-  const [fetching, setFetching] = useState(false);
-  const [fetched, setFetched] = useState(false);
+  const fetching = useBooleanState();
+  const fetched = useBooleanState();
 
   const handleFetch = useCallback(async () => {
-    if (fetched) {
-      setFetched(false);
+    if (fetched.current) {
+      fetched.off();
       setCredential(undefined);
       return;
     } else {
-      setFetched(true);
+      fetched.on();
     }
     if (credential) {
       return;
     }
-    setFetching(true);
+    fetching.on();
 
     try {
       const response = await fetch(url);
@@ -42,11 +43,11 @@ export function ServiceEndpoint({ url, endpointType, did }: Props) {
       }
     } catch (error) {
       console.log(error);
-      setFetched(false);
+      fetched.off();
     } finally {
-      setFetching(false);
+      fetching.off();
     }
-  }, [credential, did, fetched, url]);
+  }, [credential, did, fetched, fetching, url]);
 
   return (
     <div className={styles.container}>
@@ -55,8 +56,8 @@ export function ServiceEndpoint({ url, endpointType, did }: Props) {
 
         <button
           className={classnames(
-            fetched ? styles.closeBtn : styles.fetchBtn,
-            fetching && styles.loader,
+            fetched.current ? styles.closeBtn : styles.fetchBtn,
+            fetching.current && styles.loader,
           )}
           onClick={() => handleFetch()}
         >

@@ -17,6 +17,7 @@ import {
   SignPopup,
 } from '../Popups/Popups';
 import { exceptionToError } from '../../Utils/exceptionToError';
+import { useBooleanState } from '../../Utils/useBooleanState';
 
 export function SignButton() {
   const [signStatus, setSignStatus] = useState<
@@ -24,7 +25,7 @@ export function SignButton() {
   >();
   const { files, setFiles } = useFiles();
   const { setSignature } = useSignature();
-  const [signPopup, setSignPopup] = useState(false);
+  const signPopup = useBooleanState();
 
   const handleSign = useCallback(async () => {
     if (files.length == 0) {
@@ -73,14 +74,6 @@ export function SignButton() {
     setSignStatus(undefined);
   }, []);
 
-  const showSignPopup = useCallback(() => {
-    setSignPopup(true);
-  }, []);
-
-  const handleSignDismiss = useCallback(() => {
-    setSignPopup(false);
-  }, []);
-
   return (
     <div className={styles.container}>
       <div className={styles.buttonContainer}>
@@ -95,10 +88,10 @@ export function SignButton() {
         <button
           className={styles.infoBtn}
           aria-label="Sign Information"
-          onClick={showSignPopup}
+          onClick={signPopup.on}
         ></button>
 
-        {signPopup && <SignButtonInfoPopup onDismiss={handleSignDismiss} />}
+        {signPopup.current && <SignButtonInfoPopup onDismiss={signPopup.off} />}
 
         {signStatus === 'Default' && <SignPopup onDismiss={handleDismiss} />}
 

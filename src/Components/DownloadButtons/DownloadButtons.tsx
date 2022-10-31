@@ -7,11 +7,12 @@ import * as styles from './DownloadButtons.module.css';
 
 import { FileEntry, useFiles } from '../Files/Files';
 import { useSignature } from '../Signature/Signature';
+import { useBooleanState } from '../../Utils/useBooleanState';
 
 export function DownloadButtons() {
   const { files } = useFiles();
   const [signatureFile] = files;
-  const [showLoader, setShowLoader] = useState(false);
+  const showLoader = useBooleanState();
   const [progress, setProgress] = useState('0');
   const { setSignature } = useSignature();
 
@@ -37,24 +38,24 @@ export function DownloadButtons() {
   }, [setSignature, signatureFile.file]);
 
   const handleZip = useCallback(async () => {
-    setShowLoader(true);
+    showLoader.on();
     document.body.style.pointerEvents = 'none';
     await generateZipFile(files);
-    setShowLoader(false);
+    showLoader.off();
     document.body.style.pointerEvents = 'auto';
     setSignature((old) => ({ ...old, downloaded: true }));
-  }, [files, setSignature]);
+  }, [files, setSignature, showLoader]);
 
   return (
     <div className={styles.container}>
       <div className={styles.zipBtnWapper}>
         <span className={styles.zipText}>now</span>
         <button className={styles.zipBtn} onClick={handleZip}>
-          <span>{showLoader ? 'ZIPPING' : 'ZIP ALL FILES'}</span>
+          <span>{showLoader.current ? 'ZIPPING' : 'ZIP ALL FILES'}</span>
         </button>
       </div>
 
-      {showLoader && (
+      {showLoader.current && (
         <div className={styles.progressbarWrapper}>
           <div className={styles.progressbar}>
             <div
@@ -67,7 +68,7 @@ export function DownloadButtons() {
         </div>
       )}
 
-      {!showLoader && (
+      {!showLoader.current && (
         <div className={styles.downloadSignBtnWrapper}>
           <span className={styles.downloadSignText}>or only download</span>
           <button

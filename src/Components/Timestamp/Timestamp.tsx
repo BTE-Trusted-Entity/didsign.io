@@ -34,6 +34,7 @@ import { usePreventNavigation } from '../../Hooks/usePreventNavigation';
 
 import { Spinner } from '../Spinner/Spinner';
 import { PendingTx, SignPopup, TimestampError } from '../Popups/Popups';
+import { useBooleanState } from '../../Utils/useBooleanState';
 
 function getAccountLabel(account: IKiltAccount) {
   const { address, source, name } = account;
@@ -79,7 +80,7 @@ export function Timestamp() {
 
   const [accounts, setAccounts] = useState<IKiltAccount[]>();
   const [selectedAccount, setSelectedAccount] = useState<IKiltAccount>();
-  const [isAccountsMenuOpen, setIsAccountsMenuOpen] = useState(false);
+  const isAccountsMenuOpen = useBooleanState();
 
   const [timestamp, setTimestamp] = useState('');
 
@@ -96,20 +97,12 @@ export function Timestamp() {
     }
   }, []);
 
-  const handleMenuOpen = useCallback(() => {
-    setIsAccountsMenuOpen(true);
-  }, []);
-
-  const handleMenuClose = useCallback(() => {
-    setIsAccountsMenuOpen(false);
-  }, []);
-
   const handleSelectClick = useCallback(
     (account: IKiltAccount) => () => {
       setSelectedAccount(account);
-      setIsAccountsMenuOpen(false);
+      isAccountsMenuOpen.off();
     },
-    [],
+    [isAccountsMenuOpen],
   );
 
   const handleSelectKeyPress = useCallback(
@@ -118,9 +111,9 @@ export function Timestamp() {
         return;
       }
       setSelectedAccount(account);
-      setIsAccountsMenuOpen(false);
+      isAccountsMenuOpen.off();
     },
-    [],
+    [isAccountsMenuOpen],
   );
 
   const remainingAccounts = useMemo(() => {
@@ -255,15 +248,18 @@ export function Timestamp() {
         {status === 'accounts-ready' && (
           <form onSubmit={handleSubmit}>
             <section className={styles.section}>
-              <div className={styles.select} aria-expanded={isAccountsMenuOpen}>
-                {!isAccountsMenuOpen && (
+              <div
+                className={styles.select}
+                aria-expanded={isAccountsMenuOpen.current}
+              >
+                {!isAccountsMenuOpen.current && (
                   <button
                     className={classnames(
                       styles.openBtn,
                       Boolean(selectedAccount) && styles.selectedAccount,
                     )}
                     type="button"
-                    onClick={handleMenuOpen}
+                    onClick={isAccountsMenuOpen.on}
                   >
                     {selectedAccount
                       ? getAccountLabel(selectedAccount)
@@ -271,7 +267,7 @@ export function Timestamp() {
                   </button>
                 )}
 
-                {isAccountsMenuOpen && (
+                {isAccountsMenuOpen.current && (
                   <Fragment>
                     <button
                       className={classnames(
@@ -279,7 +275,7 @@ export function Timestamp() {
                         Boolean(selectedAccount) && styles.selectedAccount,
                       )}
                       type="button"
-                      onClick={handleMenuClose}
+                      onClick={isAccountsMenuOpen.off}
                     >
                       {selectedAccount
                         ? getAccountLabel(selectedAccount)

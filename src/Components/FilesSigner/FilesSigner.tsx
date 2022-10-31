@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useState } from 'react';
+import { Fragment, useCallback } from 'react';
 import { without } from 'lodash-es';
 
 import * as styles from './FilesSigner.module.css';
@@ -11,21 +11,12 @@ import { isDidSignFile } from '../../Utils/verify-helper';
 import { SignFileInfoPopup } from '../Popups/Popups';
 import { Timestamp } from '../Timestamp/Timestamp';
 import { CredentialsInsertion } from '../CredentialsInsertion/CredentialsInsertion';
+import { useBooleanState } from '../../Utils/useBooleanState';
 
 export function FilesSigner() {
   const { files, setFiles } = useFiles();
   const { credentials, setSignature } = useSignature();
-  const [signPopup, setSignPopup] = useState(false);
-
-  const showSignInfoPopup = useCallback(() => {
-    setSignPopup(true);
-    document.body.style.overflowY = 'hidden';
-  }, []);
-
-  const handleDismiss = useCallback(() => {
-    setSignPopup(false);
-    document.body.style.overflowY = 'auto';
-  }, []);
+  const signPopup = useBooleanState();
 
   const handleDeleteFile = useCallback(
     (index: number) => {
@@ -57,7 +48,7 @@ export function FilesSigner() {
                     <button
                       className={styles.infoBtn}
                       aria-label="signature file information"
-                      onClick={showSignInfoPopup}
+                      onClick={signPopup.on}
                     />
                   </p>
                 </div>
@@ -85,7 +76,7 @@ export function FilesSigner() {
         ))}
       </ul>
 
-      {signPopup && <SignFileInfoPopup onDismiss={handleDismiss} />}
+      {signPopup.current && <SignFileInfoPopup onDismiss={signPopup.off} />}
     </div>
   );
 }

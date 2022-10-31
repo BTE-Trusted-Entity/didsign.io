@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
 import classnames from 'classnames';
@@ -7,30 +7,27 @@ import * as styles from './Navigation.module.css';
 
 import { paths } from '../../Utils/paths';
 import { TimestampWarning } from '../Popups/Popups';
+import { useBooleanState } from '../../Utils/useBooleanState';
 
 export function Navigation({ needWarning = false }: { needWarning?: boolean }) {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [showWarningPopup, setShowWarningPopup] = useState(false);
+  const showWarningPopup = useBooleanState();
 
   const handleVerify = useCallback(() => {
     if (needWarning) {
-      setShowWarningPopup(true);
+      showWarningPopup.on();
       return;
     }
 
     navigate(paths.verifier, { replace: true });
-  }, [navigate, needWarning]);
-
-  const handleDismiss = useCallback(() => {
-    setShowWarningPopup(false);
-  }, []);
+  }, [navigate, needWarning, showWarningPopup]);
 
   const handleOkay = useCallback(() => {
-    setShowWarningPopup(false);
+    showWarningPopup.off();
     navigate(paths.verifier, { replace: true });
-  }, [navigate]);
+  }, [navigate, showWarningPopup]);
 
   return (
     <div className={styles.navContainer}>
@@ -67,8 +64,11 @@ export function Navigation({ needWarning = false }: { needWarning?: boolean }) {
           />
         </a>
       </nav>
-      {showWarningPopup && (
-        <TimestampWarning onDismiss={handleDismiss} onOkay={handleOkay} />
+      {showWarningPopup.current && (
+        <TimestampWarning
+          onDismiss={showWarningPopup.off}
+          onOkay={handleOkay}
+        />
       )}
     </div>
   );
