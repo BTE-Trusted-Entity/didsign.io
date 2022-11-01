@@ -216,7 +216,7 @@ export function Privacy() {
           </p>
           <p>
             Website:{' '}
-            <a className={styles.anchor} href="src/views/Privacy/Privacy">
+            <a className={styles.anchor} href="https://didsign.io/">
               https://didsign.io/
             </a>
           </p>
