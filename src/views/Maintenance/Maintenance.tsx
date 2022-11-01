@@ -11,7 +11,7 @@ export function Maintenance() {
         </p>
         <a
           className={styles.anchor}
-          href="src/views/Maintenance/Maintenance"
+          href="https://status.kilt.io/"
           target="_blank"
           rel="noreferrer"
         >
