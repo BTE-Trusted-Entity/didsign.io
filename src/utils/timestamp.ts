@@ -68,9 +68,7 @@ async function getSignatureFromRemark(remark: IRemark) {
   const extrinsicWithRemark = signedBlock.block.extrinsics.find(
     ({ hash }) => hash.toHex() === txHash,
   );
-  if (extrinsicWithRemark) {
-    return extrinsicWithRemark.method.args.toString();
-  }
+  return extrinsicWithRemark?.method.args.toString();
 }
 
 export async function getVerifiedTimestamp(
