@@ -6,7 +6,7 @@ export const file: string;
 export const docFile: string;
 export const imageFile: string;
 export const didsignFile: string;
-export const deleteBtn: string;
+export const deleteButton: string;
 export const fileOk: string;
 export const fileInvalid: string;
 export const zipContainer: string;

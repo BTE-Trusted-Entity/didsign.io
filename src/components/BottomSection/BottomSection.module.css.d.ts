@@ -5,4 +5,4 @@ export const infoLink: string;
 export const infoItem: string;
 export const verificationLoader: string;
 export const verificationText: string;
-export const startOverBtn: string;
+export const startOverButton: string;

@@ -44,7 +44,7 @@ export function SignedFiles() {
                   <p className={styles.didsignInfo}>
                     added by DIDsign
                     <button
-                      className={styles.infoBtn}
+                      className={styles.infoButton}
                       aria-label="signature file information"
                       onClick={signPopup.on}
                     />
@@ -64,7 +64,7 @@ export function SignedFiles() {
                 )}
 
                 <button
-                  className={styles.deleteBtn}
+                  className={styles.deleteButton}
                   aria-label="delete file"
                   onClick={() => handleDeleteFile(index)}
                 />

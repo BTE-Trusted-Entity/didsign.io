@@ -58,7 +58,7 @@
   gap: 5px;
 }
 
-.btn {
+.button {
   width: 100px;
   height: 22px;
   display: inline-flex;
@@ -73,7 +73,7 @@
   cursor: pointer;
 }
 
-.btn:disabled {
+.button:disabled {
   background: var(--color-orange-secondary);
   color: rgb(var(--color-white-rgb) / 50%);
   pointer-events: none;
@@ -98,7 +98,7 @@
   }
 }
 
-.openBtn {
+.openButton {
   padding: 2px 30px 2px 6px;
   margin: 0;
   border-top: 1px solid var(--color-dark-purple);
@@ -125,8 +125,8 @@
   color: inherit;
 }
 
-.closeBtn {
-  composes: openBtn;
+.closeButton {
+  composes: openButton;
   background:
     url('chevron_up_dark.svg') no-repeat top 8px
     right 9px,

@@ -56,8 +56,8 @@ export function ServiceEndpoint({ url, endpointType, did }: Props) {
 
         <button
           className={classnames({
-            [styles.closeBtn]: fetched.current,
-            [styles.fetchBtn]: !fetched.current,
+            [styles.closeButton]: fetched.current,
+            [styles.fetchButton]: !fetched.current,
             [styles.loader]: fetching.current,
           })}
           onClick={handleFetch}

@@ -115,7 +115,7 @@ export function Sign() {
 
               {signature && (
                 <button
-                  className={styles.startOverBtn}
+                  className={styles.startOverButton}
                   onClick={handleDelete}
                 />
               )}

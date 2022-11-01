@@ -21,7 +21,7 @@ export function VerifiedFiles({
           <p className={styles.zipFilename}>{zip}</p>
 
           <button
-            className={styles.deleteBtn}
+            className={styles.deleteButton}
             aria-label="Remove all files"
             onClick={onDeleteAll}
           />
@@ -70,7 +70,7 @@ export function VerifiedFiles({
             )}
 
             <button
-              className={styles.deleteBtn}
+              className={styles.deleteButton}
               aria-label="Remove file"
               onClick={() => onDelete(index)}
             />

@@ -106,7 +106,7 @@
   margin: 0;
 }
 
-.btnWrapper {
+.buttonWrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -115,7 +115,7 @@
   margin-bottom: 20px;
 }
 
-.dismissBtn {
+.dismissButton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -133,13 +133,13 @@
   cursor: pointer;
 }
 
-.okayBtn {
-  composes: dismissBtn;
+.okayButton {
+  composes: dismissButton;
   width: 100px;
 }
 
-.cancelBtn {
-  composes: dismissBtn;
+.cancelButton {
+  composes: dismissButton;
   width: 100px;
 }
 

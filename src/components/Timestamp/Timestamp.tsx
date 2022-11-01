@@ -228,7 +228,7 @@ export function Timestamp() {
               {fee ? `≈ (${asKiltCoins(fee)} KILT)` : <Spinner />}
             </p>
             <button
-              className={styles.btn}
+              className={styles.button}
               onClick={handleStartClick}
               disabled={!fee}
             >
@@ -249,7 +249,7 @@ export function Timestamp() {
                 {!isAccountsMenuOpen.current && (
                   <button
                     className={classnames({
-                      [styles.openBtn]: true,
+                      [styles.openButton]: true,
                       [styles.selectedAccount]: selectedAccount,
                     })}
                     type="button"
@@ -265,7 +265,7 @@ export function Timestamp() {
                   <Fragment>
                     <button
                       className={classnames({
-                        [styles.closeBtn]: true,
+                        [styles.closeButton]: true,
                         [styles.selectedAccount]: selectedAccount,
                       })}
                       type="button"
@@ -296,7 +296,7 @@ export function Timestamp() {
               </div>
 
               <button
-                className={styles.btn}
+                className={styles.button}
                 type="submit"
                 disabled={!selectedAccount}
               >

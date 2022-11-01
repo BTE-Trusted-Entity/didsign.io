@@ -35,7 +35,7 @@
   overflow-wrap: break-word;
 }
 
-.fetchBtn {
+.fetchButton {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -56,8 +56,8 @@
   cursor: pointer;
 }
 
-.closeBtn {
-  composes: fetchBtn;
+.closeButton {
+  composes: fetchButton;
   background:
     url('chevron_up_white.svg') no-repeat 90% / auto,
     var(--color-medium-blue);

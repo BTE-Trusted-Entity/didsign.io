@@ -29,12 +29,12 @@
   composes: didsignFile from '../Files/Files.module.css';
 }
 
-.deleteBtn {
-  composes: deleteBtn from '../Files/Files.module.css';
+.deleteButton {
+  composes: deleteButton from '../Files/Files.module.css';
 }
 
-.infoBtn {
-  composes: iconBtn from '../Files/Files.module.css';
+.infoButton {
+  composes: iconButton from '../Files/Files.module.css';
   background: url('../../images/icon_info.svg') no-repeat center right/110%;
 }
 

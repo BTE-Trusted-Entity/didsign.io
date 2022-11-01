@@ -377,7 +377,10 @@ export function Verify() {
           />
 
           {jwsStatus === 'Verified' && (
-            <button className={styles.startOverBtn} onClick={handleDeleteAll} />
+            <button
+              className={styles.startOverButton}
+              onClick={handleDeleteAll}
+            />
           )}
         </div>
       </section>

@@ -98,6 +98,6 @@
   composes: verificationText from '../BottomSection/BottomSection.module.css';
 }
 
-.startOverBtn {
-  composes: startOverBtn from '../BottomSection/BottomSection.module.css';
+.startOverButton {
+  composes: startOverButton from '../BottomSection/BottomSection.module.css';
 }

@@ -13,5 +13,5 @@ export const inputError: string;
 export const name: string;
 export const editingInfo: string;
 export const editContainer: string;
-export const editBtn: string;
-export const deleteBtn: string;
+export const editButton: string;
+export const deleteButton: string;

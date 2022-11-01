@@ -47,9 +47,9 @@ export function DownloadButtons() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.zipBtnWrapper}>
+      <div className={styles.zipButtonWrapper}>
         <span className={styles.zipText}>now</span>
-        <button className={styles.zipBtn} onClick={handleZip}>
+        <button className={styles.zipButton} onClick={handleZip}>
           <span>{showLoader.current ? 'ZIPPING' : 'ZIP ALL FILES'}</span>
         </button>
       </div>
@@ -68,10 +68,10 @@ export function DownloadButtons() {
       )}
 
       {!showLoader.current && (
-        <div className={styles.downloadSignBtnWrapper}>
+        <div className={styles.downloadSignButtonWrapper}>
           <span className={styles.downloadSignText}>or only download</span>
           <button
-            className={styles.downloadSignBtn}
+            className={styles.downloadSignButton}
             onClick={handleDownloadSign}
           >
             <span>SIGNATURE</span>

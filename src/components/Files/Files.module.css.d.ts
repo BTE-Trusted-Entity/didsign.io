@@ -7,5 +7,5 @@ export const fileName: string;
 export const didsignFile: string;
 export const imageFile: string;
 export const docFile: string;
-export const iconBtn: string;
-export const deleteBtn: string;
+export const iconButton: string;
+export const deleteButton: string;

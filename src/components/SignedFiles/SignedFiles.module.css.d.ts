@@ -6,6 +6,6 @@ export const file: string;
 export const docFile: string;
 export const imageFile: string;
 export const didsignFile: string;
-export const deleteBtn: string;
-export const infoBtn: string;
+export const deleteButton: string;
+export const infoButton: string;
 export const didsignInfo: string;

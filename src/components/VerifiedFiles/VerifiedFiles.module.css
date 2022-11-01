@@ -29,8 +29,8 @@
   composes: didsignFile from '../Files/Files.module.css';
 }
 
-.deleteBtn {
-  composes: deleteBtn from '../Files/Files.module.css';
+.deleteButton {
+  composes: deleteButton from '../Files/Files.module.css';
 }
 
 .fileOk {

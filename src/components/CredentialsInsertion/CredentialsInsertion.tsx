@@ -144,7 +144,7 @@ function EditContents({ credential, isEditing, stopEditing }: EditingProps) {
       <div className={styles.editContainer}>
         <span className={styles.editingInfo}>rename or delete</span>
         <button
-          className={styles.deleteBtn}
+          className={styles.deleteButton}
           aria-label="delete credential"
           onClick={showDeletePopup.on}
         />
@@ -183,7 +183,7 @@ function CredentialRow({ credential }: Props) {
       <span className={styles.name}>{credentialName}</span>
       <div className={styles.editContainer}>
         <button
-          className={styles.editBtn}
+          className={styles.editButton}
           aria-label="edit name"
           onClick={isEditing.on}
         />

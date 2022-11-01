@@ -11,4 +11,4 @@ export const bottomContainer: string;
 export const bottomSection: string;
 export const verificationLoader: string;
 export const verificationText: string;
-export const startOverBtn: string;
+export const startOverButton: string;

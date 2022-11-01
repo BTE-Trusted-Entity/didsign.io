@@ -9,7 +9,7 @@ export function Header() {
     <header className={styles.container}>
       <div className={styles.primary}>
         <div className={styles.logoContainer}>
-          <NavLink to={paths.signer} className={styles.logoBtn} />
+          <NavLink to={paths.signer} className={styles.logoButton} />
         </div>
       </div>
 

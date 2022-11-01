@@ -78,7 +78,7 @@
   background-image: url('doc_generic.svg');
 }
 
-.iconBtn {
+.iconButton {
   height: 18px;
   width: 18px;
   border: none;
@@ -86,7 +86,7 @@
   cursor: pointer;
 }
 
-.deleteBtn {
-  composes: iconBtn;
+.deleteButton {
+  composes: iconButton;
   background: url('icon_delete.svg') no-repeat center/110%;
 }

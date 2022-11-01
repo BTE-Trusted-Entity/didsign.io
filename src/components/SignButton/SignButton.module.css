@@ -11,14 +11,14 @@
   gap: 8px;
 }
 
-.infoBtn {
+.infoButton {
   cursor: pointer;
   width: 18px;
   border: none;
   background: url('../../images/icon_info.svg') no-repeat right/100%;
 }
 
-.signBtn {
+.signButton {
   font-size: 14px;
   line-height: 16px;
   letter-spacing: 0.1px;
@@ -36,6 +36,6 @@
   border: none;
 }
 
-.signBtn:disabled {
+.signButton:disabled {
   opacity: 0.6;
 }

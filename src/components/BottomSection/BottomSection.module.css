@@ -82,7 +82,7 @@ div.verificationText {
   width: 15px;
 }
 
-.startOverBtn {
+.startOverButton {
   position: absolute;
   background: url('button_start_over_NEW.svg') no-repeat center/100%;
   right: 0;

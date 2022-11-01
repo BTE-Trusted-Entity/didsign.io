@@ -68,7 +68,7 @@ export function MultipleSignPopup({ onDismiss }: Props) {
           Multiple signature files found. Please import only one signature file.
         </p>
 
-        <button className={styles.dismissBtn} onClick={onDismiss}>
+        <button className={styles.dismissButton} onClick={onDismiss}>
           Dismiss
         </button>
       </div>
@@ -97,7 +97,7 @@ export function SignFileInfoPopup({ onDismiss }: Props) {
           The easiest way to proceed is to zip all files into one archive.
         </p>
 
-        <button className={styles.dismissBtn} onClick={onDismiss}>
+        <button className={styles.dismissButton} onClick={onDismiss}>
           OK
         </button>
       </div>
@@ -123,7 +123,7 @@ export function SignButtonInfoPopup({ onDismiss }: Props) {
           for Google Chrome and Mozilla Firefox.
         </p>
 
-        <button className={styles.dismissBtn} onClick={onDismiss}>
+        <button className={styles.dismissButton} onClick={onDismiss}>
           OK
         </button>
       </div>
@@ -142,7 +142,7 @@ export function SigningMultipleDidFiles({ onDismiss }: Props) {
 
         <p className={styles.text}>Signing of signature file is not allowed.</p>
 
-        <button className={styles.dismissBtn} onClick={onDismiss}>
+        <button className={styles.dismissButton} onClick={onDismiss}>
           Dismiss
         </button>
       </div>
@@ -164,7 +164,7 @@ export function SignPopup({ onDismiss }: Props) {
           there.
         </p>
 
-        <button className={styles.dismissBtn} onClick={onDismiss}>
+        <button className={styles.dismissButton} onClick={onDismiss}>
           Dismiss
         </button>
       </div>
@@ -188,7 +188,7 @@ export function NoWalletPopup({ onDismiss }: Props) {
           signing on the KILT blockchain can also be used.
         </p>
 
-        <button className={styles.dismissBtn} onClick={onDismiss}>
+        <button className={styles.dismissButton} onClick={onDismiss}>
           Dismiss
         </button>
       </div>
@@ -209,7 +209,7 @@ export function SignErrorPopup({ onDismiss }: Props) {
           It looks like error occurred while signing. Please try again.
         </p>
 
-        <button className={styles.dismissBtn} onClick={onDismiss}>
+        <button className={styles.dismissButton} onClick={onDismiss}>
           Dismiss
         </button>
       </div>
@@ -253,7 +253,7 @@ export function TimestampError({ onDismiss }: Props) {
           Click “Try Again” or reload the page or restart your browser.
         </p>
 
-        <button className={styles.dismissBtn} onClick={onDismiss}>
+        <button className={styles.dismissButton} onClick={onDismiss}>
           Dismiss
         </button>
       </div>
@@ -274,11 +274,11 @@ export function DeleteCredential({ onDismiss, onOkay }: Props) {
           Do you want to delete this credential from your signature file?
         </p>
 
-        <div className={styles.btnWrapper}>
-          <button className={styles.cancelBtn} onClick={onDismiss}>
+        <div className={styles.buttonWrapper}>
+          <button className={styles.cancelButton} onClick={onDismiss}>
             Cancel
           </button>
-          <button className={styles.okayBtn} onClick={onOkay}>
+          <button className={styles.okayButton} onClick={onOkay}>
             Ok
           </button>
         </div>
@@ -302,11 +302,11 @@ export function TimestampWarning({ onDismiss, onOkay }: Props) {
           verifier tab.
         </p>
 
-        <div className={styles.btnWrapper}>
-          <button className={styles.cancelBtn} onClick={onDismiss}>
+        <div className={styles.buttonWrapper}>
+          <button className={styles.cancelButton} onClick={onDismiss}>
             Cancel
           </button>
-          <button className={styles.okayBtn} onClick={onOkay}>
+          <button className={styles.okayButton} onClick={onOkay}>
             Ok
           </button>
         </div>

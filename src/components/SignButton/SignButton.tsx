@@ -74,7 +74,7 @@ export function SignButton() {
     <div className={styles.container}>
       <div className={styles.buttonContainer}>
         <button
-          className={styles.signBtn}
+          className={styles.signButton}
           disabled={files.length === 0}
           onClick={handleSign}
         >
@@ -82,7 +82,7 @@ export function SignButton() {
         </button>
 
         <button
-          className={styles.infoBtn}
+          className={styles.infoButton}
           aria-label="Sign Information"
           onClick={signPopup.on}
         ></button>
