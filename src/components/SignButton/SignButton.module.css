@@ -1,0 +1,41 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 8px;
+}
+
+.infoButton {
+  cursor: pointer;
+  width: 18px;
+  border: none;
+  background: url('../../images/icon_info.svg') no-repeat right/100%;
+}
+
+.signButton {
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: 0.1px;
+  color: white;
+  max-width: 160px;
+  cursor: pointer;
+  width: 60vw;
+  height: 30px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-medium-blue);
+  text-transform: uppercase;
+  border: none;
+}
+
+.signButton:disabled {
+  opacity: 0.6;
+}

@@ -1,0 +1,94 @@
+.bottomContainer {
+  width: 100vw;
+  position: relative;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 95px;
+  justify-content: flex-start;
+  align-items: center;
+  background: transparent;
+}
+
+.bottomSection {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 766px;
+  background-color: rgb(var(--color-dark-grey-rgb) / 50%);
+  width: 90%;
+  margin-bottom: 10px;
+  min-height: 95px;
+  border-radius: 0 0 15px 15px;
+  border: solid 1px;
+  border-color: rgb(var(--color-pale-blue-rgb) / 25%);
+  box-shadow: 0 2px 4px 0 rgb(var(--color-pale-blue-rgb) / 10%);
+  position: relative;
+}
+
+.infoLink {
+  width: 90%;
+  max-width: 766px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.infoItem {
+  font-size: 12px;
+  line-height: 12px;
+  letter-spacing: 0.2px;
+  padding: 0 0.2rem;
+}
+
+.infoItem a {
+  color: var(--color-medium-blue);
+}
+
+.infoItem:first-child::after {
+  content: '|';
+  padding-left: 0.5rem;
+}
+
+.verificationLoader {
+  position: absolute;
+  top: 24px;
+  right: 30px;
+  display: inline-block;
+  height: 40px;
+  width: 38px;
+  background: url('../../images/puff.svg') no-repeat center/100%;
+}
+
+.verificationText {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  top: 24px;
+  left: 40px;
+  color: var(--color-grey);
+  font-size: 16px;
+  line-height: 17px;
+  letter-spacing: 0.11px;
+}
+
+div.verificationText {
+  background-color: rgb(var(--color-dark-grey-rgb) / 50%);
+  height: 1px;
+  width: 15px;
+}
+
+.startOverButton {
+  position: absolute;
+  background: url('button_start_over_NEW.svg') no-repeat center/100%;
+  right: 0;
+  bottom: 0;
+  cursor: pointer;
+  border: none;
+  width: 40px;
+  height: 40px;
+}

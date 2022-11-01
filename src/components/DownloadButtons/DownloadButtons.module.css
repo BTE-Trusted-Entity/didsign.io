@@ -1,0 +1,101 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  gap: 8px;
+}
+
+.zipButtonWrapper {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: 0.1px;
+  max-width: 300px;
+  width: 70%;
+}
+
+.zipText {
+  width: 90px;
+  text-align: right;
+  color: var(--color-dark-purple);
+}
+
+.downloadSignText {
+  width: 70px;
+  text-align: right;
+  font-size: 14px;
+  line-height: 16px;
+  color: var(--color-dark-purple);
+}
+
+.zipButton {
+  width: 160px;
+  height: 30px;
+  color: white;
+  background-color: var(--color-medium-blue);
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.progressbarWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  justify-content: center;
+  align-items: flex-end;
+  width: 220px;
+  margin-bottom: 6px;
+  margin-left: 2px;
+}
+
+.progressbar {
+  width: 160px;
+  height: 6px;
+  border-radius: 10px;
+  border: solid 1px var(--color-medium-blue);
+}
+
+.progress {
+  background-color: var(--color-medium-blue);
+  height: 100%;
+  border-radius: 10px;
+}
+
+.progressInfo {
+  width: 160px;
+  text-align: center;
+  font-size: 12px;
+  height: 10px;
+  line-height: 16px;
+  letter-spacing: 0.1px;
+  color: var(--color-dark-purple);
+}
+
+.downloadSignButtonWrapper {
+  display: flex;
+  gap: 25px;
+  justify-content: flex-start;
+  align-items: center;
+  max-width: 260px;
+  width: 60%;
+}
+
+.downloadSignButton {
+  width: 130px;
+  height: 22px;
+  background-color: var(--color-medium-blue);
+  border-radius: 6px;
+  color: white;
+  font-size: 12px;
+  line-height: 14px;
+  border: none;
+  letter-spacing: 0.09px;
+  cursor: pointer;
+}

@@ -1,0 +1,175 @@
+.backdrop,
+::backdrop {
+  background-color: black;
+  opacity: 0.7;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 20;
+  overflow-y: hidden;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  top: 25%;
+  margin-top: 3%;
+  left: 0;
+  position: fixed;
+  z-index: 30;
+}
+
+.popup {
+  box-sizing: border-box;
+  width: 90%;
+  max-width: 300px;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background:
+    url('popup_bubbles.svg') no-repeat bottom left,
+    var(--color-silver-blue);
+  border-radius: 5px;
+  padding: 15px 30px 20px;
+  box-shadow: 1px 6px 9px 4px rgb(var(--color-black-rgb) / 20%);
+  color: var(--color-dark-purple);
+}
+
+.heading {
+  font-size: 18px;
+  line-height: 20px;
+  letter-spacing: 0.13px;
+  font-weight: normal;
+  padding-top: 90px;
+  margin-top: 0;
+  margin-bottom: 24px;
+  text-align: center;
+  width: 100%;
+}
+
+.infoHeading {
+  composes: heading;
+  background: url('iconBIG_info.svg') no-repeat center top;
+}
+
+.attentionHeading {
+  composes: heading;
+  background:
+    url('iconBIG_attention.svg') no-repeat center
+    top;
+}
+
+.spinnerHeading {
+  composes: heading;
+  background: url('../../images/puff.svg') no-repeat center top;
+  padding-top: 80px;
+}
+
+.signatureHeading {
+  composes: infoHeading;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.signatureHeading::before {
+  content: '';
+  display: inline-block;
+  height: 18px;
+  width: 10px;
+  background: url('icon_DID.svg') no-repeat center/auto;
+}
+
+.imprintHeading {
+  composes: heading;
+  background:
+    url('bte_logo_black.png') no-repeat center
+    top/auto 100px;
+  padding-top: 130px;
+  font-size: 14px;
+}
+
+.text {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.13px;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.bottomText {
+  composes: text;
+  margin: 0;
+}
+
+.buttonWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 22px;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.dismissButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  letter-spacing: 0.1px;
+  height: 22px;
+  width: 130px;
+  border-radius: 6px;
+  background-color: var(--color-medium-blue);
+  margin-top: 10px;
+  padding-top: 3px;
+  color: var(--color-white);
+  border: none;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.okayButton {
+  composes: dismissButton;
+  width: 100px;
+}
+
+.cancelButton {
+  composes: dismissButton;
+  width: 100px;
+}
+
+.imprint {
+  composes: container;
+  bottom: 113px;
+  top: initial;
+}
+
+.imprintPopup {
+  composes: popup;
+  max-width: 484px;
+  color: var(--color-dark-purple);
+  gap: 2px;
+  border-radius: 8px;
+}
+
+.imprintText {
+  composes: text;
+  letter-spacing: 0.1px;
+  line-height: 22px;
+  text-align: center;
+  margin: 0;
+}
+
+.imprintText a {
+  color: var(--color-medium-blue);
+}
+
+.imprintBottomText {
+  composes: text;
+  margin-top: 15px;
+}
