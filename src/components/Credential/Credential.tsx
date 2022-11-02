@@ -20,41 +20,46 @@ import { useBooleanState } from '../../hooks/useBooleanState';
 interface IDIDCredential {
   credential: unknown;
   did?: DidUri;
+  initialError?: string;
 }
 
-export function CredentialVerifier({ credential, did }: IDIDCredential) {
+export function CredentialVerifier({
+  credential,
+  did,
+  initialError,
+}: IDIDCredential) {
   const [claimContents, setClaimContents] = useState<IClaimContents>();
-  const isCredentialValid = useBooleanState(true);
+  const isValid = useBooleanState(!initialError);
   const [attester, setAttester] = useState('');
-  const [error, setError] = useState<string>();
+  const [error, setError] = useState(initialError);
 
   useEffect(() => {
     (async () => {
-      if (!did) return;
+      if (!did || error) return;
 
       if (Credential.isICredential(credential)) {
         setClaimContents(credential.request.claim.contents);
-        isCredentialValid.set(await validateCredential(credential));
+        isValid.set(await validateCredential(credential));
         const attesterDid = credential.attestation.owner;
         setAttester(await getW3NOrDid(attesterDid));
         return;
       }
 
       if (!RequestForAttestation.isIRequestForAttestation(credential)) {
-        isCredentialValid.off();
+        isValid.off();
         setError('Not valid Kilt Credential');
         return;
       }
 
       setClaimContents(credential.claim.contents);
       if (!Did.Utils.isSameSubject(credential.claim.owner, did)) {
-        isCredentialValid.off();
+        isValid.off();
         setError('Credential subject and signer DID are not the same');
         return;
       }
 
       const attestation = await getAttestationForRequest(credential);
-      isCredentialValid.set(await validateAttestation(attestation));
+      isValid.set(await validateAttestation(attestation));
 
       if (attestation) {
         setAttester(await getW3NOrDid(attestation.owner));
@@ -62,11 +67,11 @@ export function CredentialVerifier({ credential, did }: IDIDCredential) {
         setError('No Attestation found');
       }
     })();
-  }, [credential, did, isCredentialValid]);
+  }, [credential, did, error, isValid]);
 
   return (
     <div className={styles.credential}>
-      {isCredentialValid.current &&
+      {isValid.current &&
         claimContents &&
         Object.keys(claimContents).map((key, index) => (
           <div className={styles.property} key={index}>
@@ -83,11 +88,7 @@ export function CredentialVerifier({ credential, did }: IDIDCredential) {
       <div className={styles.property}>
         <span className={styles.name}>Valid</span>
         <span
-          className={
-            isCredentialValid
-              ? styles.credentialValid
-              : styles.credentialInvalid
-          }
+          className={isValid.current ? styles.valid : styles.invalid}
         ></span>
       </div>
     </div>

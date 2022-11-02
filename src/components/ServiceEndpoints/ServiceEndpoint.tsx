@@ -19,21 +19,21 @@ export function ServiceEndpoint({ url, endpointType, did }: Props) {
 
   const fetching = useBooleanState();
   const fetched = useBooleanState();
+  const [error, setError] = useState<string>();
 
   const handleFetch = useCallback(async () => {
     if (fetched.current) {
       fetched.off();
       setCredential(undefined);
       return;
-    } else {
-      fetched.on();
     }
-    if (credential) {
-      return;
-    }
-    fetching.on();
 
     try {
+      if (credential) {
+        return;
+      }
+
+      fetching.on();
       const response = await fetch(url);
       const result = await response.json();
       setCredential(result);
@@ -43,9 +43,10 @@ export function ServiceEndpoint({ url, endpointType, did }: Props) {
       }
     } catch (error) {
       console.log(error);
-      fetched.off();
+      setError('Cannot fetch the credentials from the given endpoint');
     } finally {
       fetching.off();
+      fetched.on();
     }
   }, [credential, did, fetched, fetching, url]);
 
@@ -68,7 +69,13 @@ export function ServiceEndpoint({ url, endpointType, did }: Props) {
 
       <span className={styles.endpoint}>{url}</span>
 
-      {credential && <CredentialVerifier credential={credential} did={did} />}
+      {fetched.current && (
+        <CredentialVerifier
+          credential={credential}
+          did={did}
+          initialError={error}
+        />
+      )}
     </div>
   );
 }
