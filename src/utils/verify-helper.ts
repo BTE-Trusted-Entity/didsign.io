@@ -20,18 +20,39 @@ import { FileEntry } from '../components/Files/Files';
 import { createHash, createHashFromHashArray } from './sign-helpers';
 import { IVerifiedSignatureContents, SignDoc } from './types';
 
+function addMissingPrefix(hash: string): string {
+  return hash.startsWith(base16.prefix) ? hash : `${base16.prefix}${hash}`;
+}
+
+export function parseJWS(jws: string) {
+  const [headerJSON, payloadJSON, signature] = jws.split('.').map(atob);
+
+  const header = JSON.parse(headerJSON);
+  const payload = JSON.parse(payloadJSON);
+
+  return {
+    header,
+    payload: {
+      ...payload,
+      hash: addMissingPrefix(payload.hash),
+    },
+    signature,
+  };
+}
+
 export async function getVerifiedData(jws: string) {
   if (jws === '') {
     return null;
   }
-  const [header64, payload64, signature64] = jws.split('.');
-  const header = atob(header64);
-  const payload = atob(payload64);
-  const signature = atob(signature64);
-  const keyUri = JSON.parse(header).kid;
-  const hash = JSON.parse(payload).hash;
+  const {
+    header: { kid: keyUri },
+    payload: { hash: message },
+    signature,
+  } = parseJWS(jws);
+  const { did } = Did.Utils.parseDidUri(keyUri);
+
   const { verified } = await Did.verifyDidSignature({
-    message: hash,
+    message,
     signature: { keyUri, signature },
     expectedVerificationMethod: KeyRelationship.authentication,
   });
@@ -39,7 +60,6 @@ export async function getVerifiedData(jws: string) {
     return null;
   }
 
-  const { did } = Did.Utils.parseDidUri(keyUri);
   return {
     did,
     signature,
@@ -80,16 +100,11 @@ export async function handleFilesFromZip(
     ? JSON.parse(await didSignFile.file.text())
     : { jws: '', hashes: [] };
 
-  function addMissingPrefix(hash: string): string {
-    return hash.startsWith(base16.prefix) ? hash : `${base16.prefix}${hash}`;
-  }
-
   const { jws, hashes, credentials } = doc;
   const hashesWithPrefix = hashes.map(addMissingPrefix);
 
   const baseHash = await createHashFromHashArray(hashesWithPrefix);
-  const jwsBaseJson = atob(jws.split('.')[1]);
-  const jwsBaseHash = addMissingPrefix(JSON.parse(jwsBaseJson).hash);
+  const jwsBaseHash = parseJWS(jws).payload.hash;
 
   if (baseHash !== jwsBaseHash || hasUnverified(files, hashesWithPrefix)) {
     return undefined;

@@ -17,6 +17,7 @@ import {
   handleFilesFromZip,
   hasUnverified,
   isDidSignFile,
+  parseJWS,
   unzipFileEntries,
 } from '../../utils/verify-helper';
 import { createHash, createHashFromHashArray } from '../../utils/sign-helpers';
@@ -179,7 +180,7 @@ export function Verify() {
 
         const hashesWithPrefix = hashes.map((hash) => addMissingPrefix(hash));
         const baseHash = await createHashFromHashArray(hashesWithPrefix);
-        const hashFromJWS: string = JSON.parse(atob(jws.split('.')[1])).hash;
+        const hashFromJWS = parseJWS(jws).payload.hash;
         if (baseHash !== addMissingPrefix(hashFromJWS)) {
           setJwsStatus('Corrupted');
         }
