@@ -47,14 +47,12 @@ export async function getVerifiedData(jws: string, remark?: IRemark) {
 
   const { did } = Did.Utils.parseDidUri(keyUri);
   const endpoints = await resolveServiceEndpoints(did);
-  const w3name = await Did.Web3Names.queryWeb3NameForDid(did);
   const timestampWithTxHash = await getVerifiedTimestamp(signature, remark);
   const { txHash, timestamp } = timestampWithTxHash || {};
   return {
     did,
     signature,
     endpoints,
-    w3name,
     timestamp,
     txHash,
   };

@@ -1,11 +1,11 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
+import { Did } from '@kiltprotocol/sdk-js';
 
 import * as styles from './DidDocument.module.css';
 
 import { IVerifiedSignatureContents, JWSStatus } from '../../utils/types';
 import { JWSErrors } from '../JWSErrors/JWSErrors';
 import { ServiceEndpoint } from '../ServiceEndpoints/ServiceEndpoint';
-
 import { useSubscanHost } from '../../hooks/useSubscanHost';
 import { CredentialVerifier } from '../Credential/Credential';
 
@@ -18,7 +18,6 @@ export function DidDocument({
 }) {
   const {
     did,
-    w3name,
     timestamp = 'No timestamp available',
     txHash,
     signature,
@@ -26,6 +25,17 @@ export function DidDocument({
     endpoints: serviceEndpoints,
   } = verifiedSignature;
   const subscanHost = useSubscanHost();
+
+  const [web3name, setWeb3Name] = useState<string>();
+  useEffect(() => {
+    (async () => {
+      if (!did) {
+        return;
+      }
+
+      setWeb3Name((await Did.Web3Names.queryWeb3NameForDid(did)) || undefined);
+    })();
+  }, [did]);
 
   if (jwsStatus === 'Not Checked' || jwsStatus === 'Validating' || !did) {
     return null;
@@ -44,9 +54,9 @@ export function DidDocument({
       <div className={styles.textWrapper}>
         <span className={styles.title}>Signed By</span>
         <span className={styles.text}>
-          {w3name && (
+          {web3name && (
             <Fragment>
-              w3n:{w3name}
+              w3n:{web3name}
               <br />
             </Fragment>
           )}

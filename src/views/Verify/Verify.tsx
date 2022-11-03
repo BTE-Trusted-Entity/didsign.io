@@ -56,7 +56,6 @@ const initialVerifiedSignature: IVerifiedSignatureContents = {
   signature: '',
   did: undefined,
   endpoints: [],
-  w3name: '',
   txHash: '',
   credentials: [],
 };

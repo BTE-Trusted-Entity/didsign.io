@@ -32,7 +32,6 @@ export interface IVerifiedSignatureContents {
   signature: string;
   did: DidUri | undefined;
   endpoints: DidServiceEndpoint[];
-  w3name: string | null;
   timestamp?: string;
   txHash?: string;
   credentials?: NamedCredential[];
