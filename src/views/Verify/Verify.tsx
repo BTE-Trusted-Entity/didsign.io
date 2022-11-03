@@ -55,7 +55,6 @@ const initialJws: JWSState = {
 const initialVerifiedSignature: IVerifiedSignatureContents = {
   signature: '',
   did: undefined,
-  txHash: '',
   credentials: [],
 };
 
@@ -337,6 +336,7 @@ export function Verify() {
           <DidDocument
             jwsStatus={jwsStatus}
             verifiedSignature={verifiedSignature}
+            remark={remark}
           />
 
           {jwsStatus === 'Verified' && (

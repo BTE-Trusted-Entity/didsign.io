@@ -3,7 +3,11 @@ import { Did, DidServiceEndpoint } from '@kiltprotocol/sdk-js';
 
 import * as styles from './DidDocument.module.css';
 
-import { IVerifiedSignatureContents, JWSStatus } from '../../utils/types';
+import {
+  IRemark,
+  IVerifiedSignatureContents,
+  JWSStatus,
+} from '../../utils/types';
 import { JWSErrors } from '../JWSErrors/JWSErrors';
 import { ServiceEndpoint } from '../ServiceEndpoints/ServiceEndpoint';
 import { useSubscanHost } from '../../hooks/useSubscanHost';
@@ -12,14 +16,15 @@ import { CredentialVerifier } from '../Credential/Credential';
 export function DidDocument({
   jwsStatus,
   verifiedSignature,
+  remark,
 }: {
   jwsStatus: JWSStatus;
   verifiedSignature: IVerifiedSignatureContents;
+  remark?: IRemark;
 }) {
   const {
     did,
     timestamp = 'No timestamp available',
-    txHash,
     signature,
     credentials: attachedCredentials,
   } = verifiedSignature;
@@ -71,9 +76,9 @@ export function DidDocument({
         <span className={styles.title}>Signed At</span>
         <span className={styles.text}>
           {timestamp}
-          {txHash && (
+          {remark && (
             <a
-              href={`${subscanHost}/extrinsic/${txHash}`}
+              href={`${subscanHost}/extrinsic/${remark.txHash}`}
               target="_blank"
               rel="noreferrer"
             >

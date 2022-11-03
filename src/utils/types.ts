@@ -32,7 +32,6 @@ export interface IVerifiedSignatureContents {
   signature: string;
   did: DidUri | undefined;
   timestamp?: string;
-  txHash?: string;
   credentials?: NamedCredential[];
 }
 

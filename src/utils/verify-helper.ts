@@ -42,12 +42,11 @@ export async function getVerifiedData(jws: string, remark?: IRemark) {
 
   const { did } = Did.Utils.parseDidUri(keyUri);
   const timestampWithTxHash = await getVerifiedTimestamp(signature, remark);
-  const { txHash, timestamp } = timestampWithTxHash || {};
+  const { timestamp } = timestampWithTxHash || {};
   return {
     did,
     signature,
     timestamp,
-    txHash,
   };
 }
 

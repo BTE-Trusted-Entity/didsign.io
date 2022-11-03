@@ -77,9 +77,8 @@ export async function getVerifiedTimestamp(
 ) {
   if (!remark) return;
   const signatureFromRemark = await getSignatureFromRemark(remark);
-  const { txHash, blockHash } = remark;
-  const timestamp = await getTimestamp(blockHash);
+  const timestamp = await getTimestamp(remark.blockHash);
   if (signatureFromRemark === signature) {
-    return { txHash, timestamp };
+    return { timestamp };
   }
 }
