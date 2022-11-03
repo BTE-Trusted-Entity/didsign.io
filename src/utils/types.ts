@@ -1,8 +1,4 @@
-import {
-  DidServiceEndpoint,
-  DidUri,
-  RequestForAttestation,
-} from '@kiltprotocol/sdk-js';
+import { DidUri, RequestForAttestation } from '@kiltprotocol/sdk-js';
 
 export interface Signature {
   credentials?: NamedCredential[];
@@ -31,7 +27,6 @@ export interface SignDoc {
 export interface IVerifiedSignatureContents {
   signature: string;
   did: DidUri | undefined;
-  timestamp?: string;
   credentials?: NamedCredential[];
 }
 

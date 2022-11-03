@@ -245,7 +245,7 @@ export function Verify() {
   const fetchDidDocument = useCallback(async () => {
     setJwsStatus('Validating');
 
-    const verifiedSignatureInstance = await getVerifiedData(jws, remark);
+    const verifiedSignatureInstance = await getVerifiedData(jws);
     if (!verifiedSignatureInstance) {
       setJwsStatus('Invalid');
       return;
@@ -256,7 +256,7 @@ export function Verify() {
       ...verifiedSignatureInstance,
       credentials,
     });
-  }, [credentials, jws, remark, setJwsStatus, setVerifiedSignature]);
+  }, [credentials, jws, setJwsStatus, setVerifiedSignature]);
 
   useEffect(() => {
     if (jwsStatus !== 'Not Checked') {

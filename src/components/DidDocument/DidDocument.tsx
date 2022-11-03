@@ -12,6 +12,7 @@ import { JWSErrors } from '../JWSErrors/JWSErrors';
 import { ServiceEndpoint } from '../ServiceEndpoints/ServiceEndpoint';
 import { useSubscanHost } from '../../hooks/useSubscanHost';
 import { CredentialVerifier } from '../Credential/Credential';
+import { getSignatureFromRemark, getTimestamp } from '../../utils/timestamp';
 
 export function DidDocument({
   jwsStatus,
@@ -24,7 +25,6 @@ export function DidDocument({
 }) {
   const {
     did,
-    timestamp = 'No timestamp available',
     signature,
     credentials: attachedCredentials,
   } = verifiedSignature;
@@ -45,6 +45,20 @@ export function DidDocument({
       setServices(result?.details?.getEndpoints() || []);
     })();
   }, [did]);
+
+  const [timestamp, setTimestamp] = useState<string>();
+  useEffect(() => {
+    (async () => {
+      if (!remark) {
+        return;
+      }
+      if (signature === (await getSignatureFromRemark(remark))) {
+        setTimestamp(await getTimestamp(remark.blockHash));
+      } else {
+        setTimestamp('No timestamp available');
+      }
+    })();
+  }, [remark, signature]);
 
   if (jwsStatus === 'Not Checked' || jwsStatus === 'Validating' || !did) {
     return null;

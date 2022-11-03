@@ -18,10 +18,9 @@ import JSZip from 'jszip';
 import { FileEntry } from '../components/Files/Files';
 
 import { createHash, createHashFromHashArray } from './sign-helpers';
-import { IRemark, IVerifiedSignatureContents, SignDoc } from './types';
-import { getVerifiedTimestamp } from './timestamp';
+import { IVerifiedSignatureContents, SignDoc } from './types';
 
-export async function getVerifiedData(jws: string, remark?: IRemark) {
+export async function getVerifiedData(jws: string) {
   if (jws === '') {
     return null;
   }
@@ -41,12 +40,9 @@ export async function getVerifiedData(jws: string, remark?: IRemark) {
   }
 
   const { did } = Did.Utils.parseDidUri(keyUri);
-  const timestampWithTxHash = await getVerifiedTimestamp(signature, remark);
-  const { timestamp } = timestampWithTxHash || {};
   return {
     did,
     signature,
-    timestamp,
   };
 }
 
@@ -88,7 +84,7 @@ export async function handleFilesFromZip(
     return hash.startsWith(base16.prefix) ? hash : `${base16.prefix}${hash}`;
   }
 
-  const { jws, hashes, remark, credentials } = doc;
+  const { jws, hashes, credentials } = doc;
   const hashesWithPrefix = hashes.map(addMissingPrefix);
 
   const baseHash = await createHashFromHashArray(hashesWithPrefix);
@@ -99,7 +95,7 @@ export async function handleFilesFromZip(
     return undefined;
   }
 
-  const verifiedContents = await getVerifiedData(jws, remark);
+  const verifiedContents = await getVerifiedData(jws);
   if (!verifiedContents) {
     return undefined;
   }
