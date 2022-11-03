@@ -14,7 +14,6 @@ import { base16 } from 'multiformats/bases/base16';
 
 import * as zip from '@zip.js/zip.js';
 import JSZip from 'jszip';
-import { some } from 'lodash-es';
 
 import { FileEntry } from '../components/Files/Files';
 
@@ -79,9 +78,17 @@ export async function unzipFileEntries(file: File): Promise<FileEntry[]> {
   return result;
 }
 
+export function isVerified(hash: string, name: string, hashes: string[]) {
+  return isDidSignFile({ name }) || hashes.includes(hash);
+}
+
+export function hasUnverified(files: FileEntry[], hashes: string[]) {
+  return files.some(({ hash, name }) => !isVerified(hash, name, hashes));
+}
+
 export async function handleFilesFromZip(
   files: FileEntry[],
-): Promise<(IVerifiedSignatureContents & { files: FileEntry[] }) | undefined> {
+): Promise<IVerifiedSignatureContents | undefined> {
   const didSignFile = files.find(isDidSignFile);
   const doc: SignDoc = didSignFile
     ? JSON.parse(await didSignFile.file.text())
@@ -98,11 +105,7 @@ export async function handleFilesFromZip(
   const jwsBaseJson = atob(jws.split('.')[1]);
   const jwsBaseHash = addMissingPrefix(JSON.parse(jwsBaseJson).hash);
 
-  const verifiedFiles = files.map((file) => ({
-    ...file,
-    verified: isDidSignFile(file) || hashesWithPrefix.includes(file.hash),
-  }));
-  if (baseHash !== jwsBaseHash || some(verifiedFiles, { verified: false })) {
+  if (baseHash !== jwsBaseHash || hasUnverified(files, hashesWithPrefix)) {
     return undefined;
   }
 
@@ -114,7 +117,6 @@ export async function handleFilesFromZip(
   return {
     ...verifiedContents,
     credentials,
-    files: verifiedFiles,
   };
 }
 

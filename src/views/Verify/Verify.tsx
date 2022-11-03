@@ -15,6 +15,7 @@ import {
   getFileNames,
   getVerifiedData,
   handleFilesFromZip,
+  hasUnverified,
   isDidSignFile,
   unzipFileEntries,
 } from '../../utils/verify-helper';
@@ -104,9 +105,6 @@ export function Verify() {
 
       const didSignFileDeleted = isDidSignFile(file);
       if (didSignFileDeleted) {
-        setFiles((oldFiles) =>
-          oldFiles.map((old) => ({ ...old, verified: false })),
-        );
         clearJWS();
       }
 
@@ -158,7 +156,6 @@ export function Verify() {
           ...verifiedSignatureContents,
           endpoints: [...old.endpoints, ...verifiedSignatureContents.endpoints],
         }));
-        setFiles(verifiedSignatureContents.files);
       } else {
         setJwsStatus('Invalid');
       }
@@ -174,7 +171,6 @@ export function Verify() {
 
       const isDidSign = isDidSignFile(file);
       const hash = isDidSign ? '' : await createHash(buffer);
-      const verified = isDidSign;
 
       if (isDidSign) {
         const decoder = new TextDecoder('utf-8');
@@ -200,7 +196,7 @@ export function Verify() {
           jwsHashes: [...old.jwsHashes, ...hashesWithPrefix],
         }));
       }
-      setFiles((files) => [...files, { file, buffer, name, hash, verified }]);
+      setFiles((files) => [...files, { file, buffer, name, hash }]);
     },
     [setFiles, setJwsStatus],
   );
@@ -247,34 +243,10 @@ export function Verify() {
   );
 
   useEffect(() => {
-    if (jwsHashes.length <= 0) {
-      return;
+    if (jwsHashes.length !== 0 && hasUnverified(files, jwsHashes)) {
+      setJwsStatus('Invalid');
     }
-
-    let needUpdate = false;
-    const newFiles = files.map((file) => {
-      if (file.hash !== '' && !jwsHashes.includes(file.hash)) {
-        setJwsStatus('Invalid');
-        return file;
-      }
-      if (file.verified) {
-        return file;
-      }
-      needUpdate = true;
-      return { ...file, verified: true };
-    });
-    if (needUpdate) {
-      setFiles(newFiles);
-    }
-  }, [
-    files,
-    jwsHashes,
-    jwsStatus,
-    setFiles,
-    setJwsState,
-    setJwsStatus,
-    setVerifiedSignature,
-  ]);
+  }, [files, jwsHashes, setJwsStatus]);
 
   const fetchDidDocument = useCallback(async () => {
     setJwsStatus('Validating');
@@ -297,17 +269,13 @@ export function Verify() {
     if (jwsStatus !== 'Not Checked') {
       return;
     }
-    const statuses = files
-      .map(({ verified }) => verified)
-      .filter((value) => typeof value === 'boolean');
-    if (statuses && statuses.length > 1) {
-      if (!statuses.includes(false)) {
-        fetchDidDocument();
-      } else {
-        clearVerifiedSignature();
-      }
+    if (hasUnverified(files, jwsHashes)) {
+      clearVerifiedSignature();
     }
-  }, [files, jwsStatus, fetchDidDocument, clearVerifiedSignature]);
+    if (false) {
+      fetchDidDocument();
+    }
+  }, [files, jwsStatus, fetchDidDocument, clearVerifiedSignature, jwsHashes]);
 
   return (
     <main className={styles.main}>
@@ -353,6 +321,7 @@ export function Verify() {
           <VerifiedFiles
             files={files}
             zip={zip}
+            hashes={jwsHashes}
             onDelete={handleDeleteFile}
             onDeleteAll={handleDeleteAll}
           />
