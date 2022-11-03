@@ -31,7 +31,6 @@ export interface SignDoc {
 export interface IVerifiedSignatureContents {
   signature: string;
   did: DidUri | undefined;
-  endpoints: DidServiceEndpoint[];
   timestamp?: string;
   txHash?: string;
   credentials?: NamedCredential[];

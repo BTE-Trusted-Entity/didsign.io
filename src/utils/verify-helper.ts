@@ -21,11 +21,6 @@ import { createHash, createHashFromHashArray } from './sign-helpers';
 import { IRemark, IVerifiedSignatureContents, SignDoc } from './types';
 import { getVerifiedTimestamp } from './timestamp';
 
-async function resolveServiceEndpoints(did: DidUri) {
-  const didDetails = await Did.DidResolver.resolveDoc(did);
-  return didDetails?.details?.getEndpoints() || [];
-}
-
 export async function getVerifiedData(jws: string, remark?: IRemark) {
   if (jws === '') {
     return null;
@@ -46,13 +41,11 @@ export async function getVerifiedData(jws: string, remark?: IRemark) {
   }
 
   const { did } = Did.Utils.parseDidUri(keyUri);
-  const endpoints = await resolveServiceEndpoints(did);
   const timestampWithTxHash = await getVerifiedTimestamp(signature, remark);
   const { txHash, timestamp } = timestampWithTxHash || {};
   return {
     did,
     signature,
-    endpoints,
     timestamp,
     txHash,
   };

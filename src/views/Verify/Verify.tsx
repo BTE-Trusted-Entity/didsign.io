@@ -55,7 +55,6 @@ const initialJws: JWSState = {
 const initialVerifiedSignature: IVerifiedSignatureContents = {
   signature: '',
   did: undefined,
-  endpoints: [],
   txHash: '',
   credentials: [],
 };
@@ -151,10 +150,7 @@ export function Verify() {
 
       if (verifiedSignatureContents) {
         setJwsStatus('Verified');
-        setVerifiedSignature((old) => ({
-          ...verifiedSignatureContents,
-          endpoints: [...old.endpoints, ...verifiedSignatureContents.endpoints],
-        }));
+        setVerifiedSignature(verifiedSignatureContents);
       } else {
         setJwsStatus('Invalid');
       }
@@ -257,11 +253,10 @@ export function Verify() {
     }
 
     setJwsStatus('Verified');
-    setVerifiedSignature((old) => ({
+    setVerifiedSignature({
       ...verifiedSignatureInstance,
       credentials,
-      endpoints: [...old.endpoints, ...verifiedSignatureInstance.endpoints],
-    }));
+    });
   }, [credentials, jws, remark, setJwsStatus, setVerifiedSignature]);
 
   useEffect(() => {

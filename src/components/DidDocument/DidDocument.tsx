@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from 'react';
-import { Did } from '@kiltprotocol/sdk-js';
+import { Did, DidServiceEndpoint } from '@kiltprotocol/sdk-js';
 
 import * as styles from './DidDocument.module.css';
 
@@ -22,11 +22,12 @@ export function DidDocument({
     txHash,
     signature,
     credentials: attachedCredentials,
-    endpoints: serviceEndpoints,
   } = verifiedSignature;
   const subscanHost = useSubscanHost();
 
   const [web3name, setWeb3Name] = useState<string>();
+  const [services, setServices] = useState<DidServiceEndpoint[]>([]);
+
   useEffect(() => {
     (async () => {
       if (!did) {
@@ -34,6 +35,9 @@ export function DidDocument({
       }
 
       setWeb3Name((await Did.Web3Names.queryWeb3NameForDid(did)) || undefined);
+
+      const result = await Did.DidResolver.resolveDoc(did);
+      setServices(result?.details?.getEndpoints() || []);
     })();
   }, [did]);
 
@@ -108,12 +112,12 @@ export function DidDocument({
       <div className={styles.textWrapper}>
         <span className={styles.title}>Service Endpoints</span>
         <div className={styles.endpointsWrapper}>
-          {serviceEndpoints.map((endpoint) => (
+          {services.map(({ id, types, urls }) => (
             <ServiceEndpoint
               did={did}
-              url={endpoint.urls[0]}
-              endpointType={endpoint.types[0]}
-              key={endpoint.id}
+              url={urls[0]}
+              endpointType={types[0]}
+              key={id}
             />
           ))}
         </div>
