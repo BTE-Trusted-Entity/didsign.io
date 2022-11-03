@@ -7,6 +7,7 @@ import {
   IRemark,
   IVerifiedSignatureContents,
   JWSStatus,
+  NamedCredential,
 } from '../../utils/types';
 import { JWSErrors } from '../JWSErrors/JWSErrors';
 import { ServiceEndpoint } from '../ServiceEndpoints/ServiceEndpoint';
@@ -18,16 +19,14 @@ export function DidDocument({
   jwsStatus,
   verifiedSignature,
   remark,
+  credentials,
 }: {
   jwsStatus: JWSStatus;
   verifiedSignature: IVerifiedSignatureContents;
   remark?: IRemark;
+  credentials?: NamedCredential[];
 }) {
-  const {
-    did,
-    signature,
-    credentials: attachedCredentials,
-  } = verifiedSignature;
+  const { did, signature } = verifiedSignature;
   const subscanHost = useSubscanHost();
 
   const [web3name, setWeb3Name] = useState<string>();
@@ -107,21 +106,18 @@ export function DidDocument({
         <span className={styles.text}>{signature}</span>
       </div>
 
-      {attachedCredentials && (
+      {credentials && (
         <div className={styles.textWrapper}>
           <span className={styles.title}>Attached Credentials</span>
 
           <div className={styles.credentialContainer}>
-            {attachedCredentials.map((credentialItem) => (
+            {credentials.map(({ credential, name }) => (
               <div
-                key={credentialItem.credential.rootHash}
+                key={credential.rootHash}
                 className={styles.credentialsWrapper}
               >
-                <span className={styles.text}>{credentialItem.name}</span>
-                <CredentialVerifier
-                  did={did}
-                  credential={credentialItem.credential}
-                />
+                <span className={styles.text}>{name}</span>
+                <CredentialVerifier did={did} credential={credential} />
               </div>
             ))}
           </div>

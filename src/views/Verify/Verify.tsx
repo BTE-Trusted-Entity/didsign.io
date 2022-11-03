@@ -330,6 +330,7 @@ export function Verify() {
             jwsStatus={jwsStatus}
             verifiedSignature={verifiedSignature}
             remark={remark}
+            credentials={credentials}
           />
 
           {jwsStatus === 'Verified' && (
