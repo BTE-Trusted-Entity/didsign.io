@@ -175,8 +175,8 @@ export function Verify() {
 
         const hashesWithPrefix = hashes.map(addMissingPrefix);
         const baseHash = await createHashFromHashArray(hashesWithPrefix);
-        const hashFromJWS = parseJWS(jws).payload.hash;
-        if (baseHash !== addMissingPrefix(hashFromJWS)) {
+        const jwsBaseHash = parseJWS(jws).payload.hash;
+        if (baseHash !== jwsBaseHash) {
           setJwsStatus('Corrupted');
         }
 
