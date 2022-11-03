@@ -2,10 +2,6 @@ import Dropzone from 'react-dropzone';
 import { Fragment, useCallback, useEffect, useState } from 'react';
 import { without } from 'lodash-es';
 
-// disabling until https://github.com/import-js/eslint-plugin-import/issues/2352 is fixed
-// eslint-disable-next-line import/no-unresolved
-import { base16 } from 'multiformats/bases/base16';
-
 import * as styles from '../../components/Layout/Layout.module.css';
 
 import ImportIcon from '../../images/iconBIG_import_NEW.svg';
