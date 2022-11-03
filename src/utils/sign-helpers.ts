@@ -39,23 +39,23 @@ export async function getSignatureContents(finalHash: string) {
   return sporranWindow.sporran.signWithDid(finalHash);
 }
 
+function encode(input: string) {
+  return btoa(input).replaceAll('=', '');
+}
+
 export function generateJWS(
-  signature: { signature: string; didKeyUri: string },
-  finalHash: string,
+  { didKeyUri, signature }: { signature: string; didKeyUri: string },
+  hash: string,
 ): string {
-  const header = {
+  const headers = JSON.stringify({
     alg: 'Sr25519',
     typ: 'JWS',
-    kid: signature.didKeyUri,
-  };
-  const encodedHeaders = btoa(JSON.stringify(header)).replaceAll('=', '');
-  const claim = {
-    hash: finalHash,
-  };
-  const encodedPayload = btoa(JSON.stringify(claim)).replaceAll('=', '');
-  const encodedSignature = btoa(signature.signature).replaceAll('=', '');
-  const jws = `${encodedHeaders}.${encodedPayload}.${encodedSignature}`;
-  return jws;
+    kid: didKeyUri,
+  });
+  const payload = JSON.stringify({
+    hash,
+  });
+  return `${encode(headers)}.${encode(payload)}.${encode(signature)}`;
 }
 
 export async function createDidSignFile(data: SignDoc) {
@@ -65,5 +65,6 @@ export async function createDidSignFile(data: SignDoc) {
   const name = 'signature.didsign';
   const file = new File([blob], name);
   const buffer = await file.arrayBuffer();
-  return { file, buffer, name, hash: '' };
+  const hash = await createHash(buffer);
+  return { file, buffer, name, hash };
 }

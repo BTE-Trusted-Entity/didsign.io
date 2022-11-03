@@ -163,22 +163,17 @@ export function Verify() {
     async (file: File) => {
       const { name } = file;
       const buffer = await file.arrayBuffer();
+      const hash = await createHash(buffer);
 
-      const isDidSign = isDidSignFile(file);
-      const hash = isDidSign ? '' : await createHash(buffer);
-
-      if (isDidSign) {
-        const decoder = new TextDecoder('utf-8');
-        const result = decoder.decode(buffer);
+      if (isDidSignFile(file)) {
         const { jws, hashes, remark, credentials } = JSON.parse(
-          result,
+          await file.text(),
         ) as SignDoc;
 
         if (remark) setRemark(remark);
-
         if (credentials) setCredentials(credentials);
 
-        const hashesWithPrefix = hashes.map((hash) => addMissingPrefix(hash));
+        const hashesWithPrefix = hashes.map(addMissingPrefix);
         const baseHash = await createHashFromHashArray(hashesWithPrefix);
         const hashFromJWS = parseJWS(jws).payload.hash;
         if (baseHash !== addMissingPrefix(hashFromJWS)) {
@@ -191,6 +186,7 @@ export function Verify() {
           jwsHashes: [...old.jwsHashes, ...hashesWithPrefix],
         }));
       }
+
       setFiles((files) => [...files, { file, buffer, name, hash }]);
     },
     [setFiles, setJwsStatus],
