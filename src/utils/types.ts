@@ -1,4 +1,4 @@
-import { DidUri, RequestForAttestation } from '@kiltprotocol/sdk-js';
+import { RequestForAttestation } from '@kiltprotocol/sdk-js';
 
 export interface Signature {
   credentials?: NamedCredential[];
