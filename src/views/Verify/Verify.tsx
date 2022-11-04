@@ -124,11 +124,10 @@ export function Verify() {
     })();
   }, [didSignFile, busy, zip]);
 
-  const verified =
-    signDoc &&
-    files.length > 0 &&
-    !error &&
-    !hasUnverified(files, signDoc.hashes);
+  const hasDataAndSignature = signDoc && files.length > 1;
+  const unverified =
+    hasDataAndSignature && hasUnverified(files, signDoc.hashes);
+  const verified = hasDataAndSignature && !error && !unverified;
 
   return (
     <main className={styles.main}>
@@ -171,7 +170,7 @@ export function Verify() {
             files={files}
             zip={zip}
             hashes={signDoc?.hashes || []}
-            verified={verified}
+            error={error}
             onDelete={handleDeleteFile}
             onDeleteAll={handleDeleteAll}
           />
@@ -182,7 +181,7 @@ export function Verify() {
         <div className={styles.bottomSection}>
           {busy.current && <span className={styles.verificationLoader} />}
 
-          {!verified && !error && (
+          {!verified && !unverified && !error && (
             <span className={styles.verificationText}>
               Verification <div></div>
             </span>
@@ -192,7 +191,7 @@ export function Verify() {
             <MultipleSignPopup onDismiss={dismissMultipleSignPopup} />
           )}
 
-          {(error === 'Corrupted' || error === 'Invalid') && (
+          {(error === 'Corrupted' || error === 'Invalid' || unverified) && (
             <JWSErrors error={error} />
           )}
 

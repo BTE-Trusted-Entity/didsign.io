@@ -2,24 +2,25 @@ import * as styles from './VerifiedFiles.module.css';
 
 import { FileEntry } from '../Files/Files';
 import { isDidSignFile, isVerified } from '../../utils/verify-helper';
+import { VerificationError } from '../../utils/types';
 
 export function VerifiedFiles({
   files,
   zip,
   hashes,
-  verified,
+  error,
   onDelete,
   onDeleteAll,
 }: {
   files: FileEntry[];
   zip?: string;
   hashes: string[];
-  verified?: boolean;
+  error?: VerificationError;
   onDelete: (index: number) => void;
   onDeleteAll: () => void;
 }) {
   function isOk(hash: string, name: string) {
-    return isDidSignFile({ name }) ? verified : isVerified(hash, name, hashes);
+    return isDidSignFile({ name }) ? !error : isVerified(hash, name, hashes);
   }
 
   if (zip) {

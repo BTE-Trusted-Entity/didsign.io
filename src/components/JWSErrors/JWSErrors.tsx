@@ -2,7 +2,7 @@ import * as styles from './JWSErrors.module.css';
 
 import { VerificationError } from '../../utils/types';
 
-export function JWSErrors({ error }: { error: VerificationError }) {
+export function JWSErrors({ error }: { error?: VerificationError }) {
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
@@ -19,7 +19,7 @@ export function JWSErrors({ error }: { error: VerificationError }) {
           </span>
         )}
 
-        {error === 'Invalid' && (
+        {error !== 'Corrupted' && (
           <span className={styles.text}>
             The signature does not match with the imported files. Please make
             sure to import the correct files.
