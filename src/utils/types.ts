@@ -1,8 +1,4 @@
-import {
-  DidServiceEndpoint,
-  DidUri,
-  RequestForAttestation,
-} from '@kiltprotocol/sdk-js';
+import { RequestForAttestation } from '@kiltprotocol/sdk-js';
 
 export interface Signature {
   credentials?: NamedCredential[];
@@ -28,26 +24,10 @@ export interface SignDoc {
   credentials?: NamedCredential[];
 }
 
-export interface IVerifiedSignatureContents {
-  signature: string;
-  did: DidUri | undefined;
-  endpoints: DidServiceEndpoint[];
-  w3name: string | null;
-  timestamp?: string;
-  txHash?: string;
-  credentials?: NamedCredential[];
-}
-
 export interface IKiltAccount {
   address: string;
   source: string;
   name?: string;
 }
 
-export type JWSStatus =
-  | 'Verified'
-  | 'Not Checked'
-  | 'Validating'
-  | 'Corrupted'
-  | 'Multiple Sign'
-  | 'Invalid';
+export type VerificationError = 'Corrupted' | 'Multiple Sign' | 'Invalid';

@@ -61,7 +61,7 @@ export async function getTimestamp(blockHash: string) {
   return `${date.toLocaleString()} (UTC ${utc})`;
 }
 
-async function getSignatureFromRemark(remark: IRemark) {
+export async function getSignatureFromRemark(remark: IRemark) {
   const { api } = await BlockchainApiConnection.getConnectionOrConnect();
   const { txHash, blockHash } = remark;
   const signedBlock = await api.rpc.chain.getBlock(blockHash);
@@ -69,17 +69,4 @@ async function getSignatureFromRemark(remark: IRemark) {
     ({ hash }) => hash.toHex() === txHash,
   );
   return extrinsicWithRemark?.method.args.toString();
-}
-
-export async function getVerifiedTimestamp(
-  signature: string,
-  remark?: IRemark,
-) {
-  if (!remark) return;
-  const signatureFromRemark = await getSignatureFromRemark(remark);
-  const { txHash, blockHash } = remark;
-  const timestamp = await getTimestamp(blockHash);
-  if (signatureFromRemark === signature) {
-    return { txHash, timestamp };
-  }
 }

@@ -2,10 +2,6 @@ import Dropzone from 'react-dropzone';
 import { Fragment, useCallback, useEffect, useState } from 'react';
 import { without } from 'lodash-es';
 
-// disabling until https://github.com/import-js/eslint-plugin-import/issues/2352 is fixed
-// eslint-disable-next-line import/no-unresolved
-import { base16 } from 'multiformats/bases/base16';
-
 import * as styles from '../../components/Layout/Layout.module.css';
 
 import ImportIcon from '../../images/iconBIG_import_NEW.svg';
@@ -13,19 +9,13 @@ import ReleaseIcon from '../../images/iconBIG_import_release.svg';
 import { FileEntry } from '../../components/Files/Files';
 import {
   getFileNames,
-  getVerifiedData,
-  handleFilesFromZip,
+  getSignDoc,
+  hasUnverified,
   isDidSignFile,
   unzipFileEntries,
 } from '../../utils/verify-helper';
-import { createHash, createHashFromHashArray } from '../../utils/sign-helpers';
-import {
-  IRemark,
-  IVerifiedSignatureContents,
-  JWSStatus,
-  NamedCredential,
-  SignDoc,
-} from '../../utils/types';
+import { createHash } from '../../utils/sign-helpers';
+import { SignDoc, VerificationError } from '../../utils/types';
 import {
   FastAnimation,
   SlowAnimationVerifier,
@@ -38,286 +28,112 @@ import { VerifiedFiles } from '../../components/VerifiedFiles/VerifiedFiles';
 import { usePreventNavigation } from '../../hooks/usePreventNavigation';
 import { DidDocument } from '../../components/DidDocument/DidDocument';
 import { useBooleanState } from '../../hooks/useBooleanState';
-
-interface JWSState {
-  jws: string;
-  jwsStatus: JWSStatus;
-  jwsHashes: string[];
-}
-
-const initialJws: JWSState = {
-  jws: '',
-  jwsStatus: 'Not Checked',
-  jwsHashes: [],
-};
-
-const initialVerifiedSignature: IVerifiedSignatureContents = {
-  signature: '',
-  did: undefined,
-  endpoints: [],
-  w3name: '',
-  txHash: '',
-  credentials: [],
-};
-
-function addMissingPrefix(hash: string): string {
-  return hash.startsWith(base16.prefix) ? hash : `${base16.prefix}${hash}`;
-}
+import { JWSErrors } from '../../components/JWSErrors/JWSErrors';
 
 export function Verify() {
+  const busy = useBooleanState();
   const dragging = useBooleanState();
   const icon = dragging.current ? ReleaseIcon : ImportIcon;
 
-  const [jwsState, setJwsState] = useState(initialJws);
-  const { jws, jwsStatus, jwsHashes } = jwsState;
-  const clearJWS = useCallback(() => setJwsState(initialJws), []);
-  const setJwsStatus = useCallback(
-    (status: JWSStatus) =>
-      setJwsState((old) => ({ ...old, jwsStatus: status })),
-    [],
-  );
+  const [error, setError] = useState<VerificationError>();
 
   const [zip, setZip] = useState<string>();
   const [files, setFiles] = useState<FileEntry[]>([]);
-  const [remark, setRemark] = useState<IRemark>();
-  const [credentials, setCredentials] = useState<NamedCredential[]>();
-
-  const [verifiedSignature, setVerifiedSignature] = useState(
-    initialVerifiedSignature,
-  );
-  const clearVerifiedSignature = useCallback(
-    () => setVerifiedSignature(initialVerifiedSignature),
-    [],
-  );
 
   useConnect();
 
   //allows navigation prevented by time stamping
   usePreventNavigation(false);
 
-  const handleDeleteFile = useCallback(
-    (index: number) => {
-      if (jwsStatus === 'Validating') return;
-
-      const file = files[index];
-      setFiles((files) => without(files, file));
-
-      const didSignFileDeleted = isDidSignFile(file);
-      if (didSignFileDeleted) {
-        setFiles((oldFiles) =>
-          oldFiles.map((old) => ({ ...old, verified: false })),
-        );
-        clearJWS();
-      }
-
-      if (jwsStatus !== 'Corrupted') {
-        setJwsStatus('Not Checked');
-      }
-
-      clearVerifiedSignature();
-    },
-    [
-      clearJWS,
-      clearVerifiedSignature,
-      files,
-      jwsStatus,
-      setFiles,
-      setJwsStatus,
-    ],
-  );
+  const handleDeleteFile = useCallback((index: number) => {
+    setFiles((files) => without(files, files[index]));
+  }, []);
 
   const handleDeleteAll = useCallback(() => {
-    if (jwsStatus === 'Validating') {
-      return;
-    }
-
-    clearVerifiedSignature();
     setFiles([]);
     setZip(undefined);
-    clearJWS();
-  }, [clearJWS, clearVerifiedSignature, jwsStatus, setFiles, setZip]);
+    setError(undefined);
+  }, []);
 
-  const dismissMultipleSignPopup = useCallback(() => {
-    clearVerifiedSignature();
-    setJwsStatus('Not Checked');
-  }, [clearVerifiedSignature, setJwsStatus]);
-
-  const handleZipCase = useCallback(
-    async (file: File) => {
-      setJwsStatus('Validating');
-
-      setZip(file.name);
-
-      const newFiles = await unzipFileEntries(file);
-      setFiles(newFiles);
-      const verifiedSignatureContents = await handleFilesFromZip(newFiles);
-
-      if (verifiedSignatureContents) {
-        setJwsStatus('Verified');
-        setVerifiedSignature((old) => ({
-          ...verifiedSignatureContents,
-          endpoints: [...old.endpoints, ...verifiedSignatureContents.endpoints],
-        }));
-        setFiles(verifiedSignatureContents.files);
-      } else {
-        setJwsStatus('Invalid');
-      }
-      return;
-    },
-    [setFiles, setJwsStatus, setVerifiedSignature, setZip],
-  );
-
-  const handleIndividualCase = useCallback(
-    async (file: File) => {
-      const { name } = file;
-      const buffer = await file.arrayBuffer();
-
-      const isDidSign = isDidSignFile(file);
-      const hash = isDidSign ? '' : await createHash(buffer);
-      const verified = isDidSign;
-
-      if (isDidSign) {
-        const decoder = new TextDecoder('utf-8');
-        const result = decoder.decode(buffer);
-        const { jws, hashes, remark, credentials } = JSON.parse(
-          result,
-        ) as SignDoc;
-
-        if (remark) setRemark(remark);
-
-        if (credentials) setCredentials(credentials);
-
-        const hashesWithPrefix = hashes.map((hash) => addMissingPrefix(hash));
-        const baseHash = await createHashFromHashArray(hashesWithPrefix);
-        const hashFromJWS: string = JSON.parse(atob(jws.split('.')[1])).hash;
-        if (baseHash !== addMissingPrefix(hashFromJWS)) {
-          setJwsStatus('Corrupted');
-        }
-
-        setJwsState((old) => ({
-          ...old,
-          jws,
-          jwsHashes: [...old.jwsHashes, ...hashesWithPrefix],
-        }));
-      }
-      setFiles((files) => [...files, { file, buffer, name, hash, verified }]);
-    },
-    [setFiles, setJwsStatus],
-  );
+  const dismissMultipleSignPopup = useCallback(() => setError(undefined), []);
 
   const handleDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      dragging.off();
+    async (droppedFiles: File[]) => {
+      try {
+        dragging.off();
+        busy.on();
 
-      if (files.some(isDidSignFile) && acceptedFiles.some(isDidSignFile)) {
-        setJwsStatus('Multiple Sign');
-        return;
-      }
+        const existingDidSignCount = zip || files.some(isDidSignFile) ? 1 : 0;
+        const droppedDidSignCount = droppedFiles.filter(isDidSignFile).length;
 
-      const signatureFilesCount = acceptedFiles.filter(isDidSignFile).length;
-      if (signatureFilesCount > 1) {
-        setJwsStatus('Multiple Sign');
-        return;
-      }
-
-      acceptedFiles.forEach(async (file: File) => {
-        if (files.length === 0) {
-          setJwsStatus('Not Checked');
+        if (existingDidSignCount + droppedDidSignCount > 1) {
+          setError('Multiple Sign');
+          return;
         }
 
-        if (file.name.endsWith('.zip')) {
-          const filenames = await getFileNames(file);
-          const didSignFile = filenames.find((name) => isDidSignFile({ name }));
-
-          if (didSignFile && acceptedFiles.length > 1) {
-            return;
-          }
-
-          if (didSignFile) {
-            if (files.length === 0) {
-              await handleZipCase(file);
+        if (files.length === 0 && droppedFiles.length === 1) {
+          const [file] = droppedFiles;
+          if (file.name.endsWith('.zip')) {
+            const filenames = await getFileNames(file);
+            const didSignFile = filenames.find((name) =>
+              isDidSignFile({ name }),
+            );
+            if (didSignFile) {
+              setZip(file.name);
+              setFiles(await unzipFileEntries(file));
+              return;
             }
-            return;
           }
         }
-        await handleIndividualCase(file);
-      });
+
+        const newFiles = await Promise.all(
+          droppedFiles.map(async (file: File) => {
+            const { name } = file;
+            const buffer = await file.arrayBuffer();
+            const hash = await createHash(buffer);
+            return { file, buffer, name, hash };
+          }),
+        );
+        setFiles((files) => [...files, ...newFiles]);
+      } finally {
+        busy.off();
+      }
     },
-    [dragging, files, handleIndividualCase, handleZipCase, setJwsStatus],
+    [busy, dragging, files, zip],
   );
 
-  useEffect(() => {
-    if (jwsHashes.length <= 0) {
-      return;
-    }
-
-    let needUpdate = false;
-    const newFiles = files.map((file) => {
-      if (file.hash !== '' && !jwsHashes.includes(file.hash)) {
-        setJwsStatus('Invalid');
-        return file;
-      }
-      if (file.verified) {
-        return file;
-      }
-      needUpdate = true;
-      return { ...file, verified: true };
-    });
-    if (needUpdate) {
-      setFiles(newFiles);
-    }
-  }, [
-    files,
-    jwsHashes,
-    jwsStatus,
-    setFiles,
-    setJwsState,
-    setJwsStatus,
-    setVerifiedSignature,
-  ]);
-
-  const fetchDidDocument = useCallback(async () => {
-    setJwsStatus('Validating');
-
-    const verifiedSignatureInstance = await getVerifiedData(jws, remark);
-    if (!verifiedSignatureInstance) {
-      setJwsStatus('Invalid');
-      return;
-    }
-
-    setJwsStatus('Verified');
-    setVerifiedSignature((old) => ({
-      ...verifiedSignatureInstance,
-      credentials,
-      endpoints: [...old.endpoints, ...verifiedSignatureInstance.endpoints],
-    }));
-  }, [credentials, jws, remark, setJwsStatus, setVerifiedSignature]);
+  const didSignFile = files.find(isDidSignFile);
+  const [signDoc, setSignDoc] = useState<SignDoc>();
 
   useEffect(() => {
-    if (jwsStatus !== 'Not Checked') {
-      return;
-    }
-    const statuses = files
-      .map(({ verified }) => verified)
-      .filter((value) => typeof value === 'boolean');
-    if (statuses && statuses.length > 1) {
-      if (!statuses.includes(false)) {
-        fetchDidDocument();
-      } else {
-        clearVerifiedSignature();
+    (async () => {
+      try {
+        setSignDoc(undefined);
+        setError(undefined);
+
+        if (didSignFile) {
+          busy.on();
+          setSignDoc(await getSignDoc(didSignFile.file));
+        }
+      } catch (exception) {
+        setError(zip ? 'Invalid' : 'Corrupted');
+        console.error(exception);
+      } finally {
+        busy.off();
       }
-    }
-  }, [files, jwsStatus, fetchDidDocument, clearVerifiedSignature]);
+    })();
+  }, [didSignFile, busy, zip]);
+
+  const hasDataAndSignature = signDoc && files.length > 1;
+  const unverified =
+    hasDataAndSignature && hasUnverified(files, signDoc.hashes);
+  const verified = hasDataAndSignature && !error && !unverified;
 
   return (
     <main className={styles.main}>
       <Navigation />
       <div className={styles.middleSection}>
         <div className={styles.container}>
-          {jwsStatus === 'Multiple Sign' && (
-            <MultipleSignPopup onDismiss={dismissMultipleSignPopup} />
-          )}
-
           <Dropzone
             onDrop={handleDrop}
             onDragEnter={dragging.on}
@@ -353,6 +169,8 @@ export function Verify() {
           <VerifiedFiles
             files={files}
             zip={zip}
+            hashes={signDoc?.hashes || []}
+            error={error}
             onDelete={handleDeleteFile}
             onDeleteAll={handleDeleteAll}
           />
@@ -361,22 +179,25 @@ export function Verify() {
 
       <section className={styles.bottomContainer}>
         <div className={styles.bottomSection}>
-          {jwsStatus === 'Validating' && (
-            <span className={styles.verificationLoader} />
-          )}
+          {busy.current && <span className={styles.verificationLoader} />}
 
-          {jwsStatus === 'Not Checked' && (
+          {!verified && !unverified && !error && (
             <span className={styles.verificationText}>
               Verification <div></div>
             </span>
           )}
 
-          <DidDocument
-            jwsStatus={jwsStatus}
-            verifiedSignature={verifiedSignature}
-          />
+          {error === 'Multiple Sign' && (
+            <MultipleSignPopup onDismiss={dismissMultipleSignPopup} />
+          )}
 
-          {jwsStatus === 'Verified' && (
+          {(error === 'Corrupted' || error === 'Invalid' || unverified) && (
+            <JWSErrors error={error} />
+          )}
+
+          {verified && <DidDocument signDoc={signDoc} />}
+
+          {verified && (
             <button
               className={styles.startOverButton}
               onClick={handleDeleteAll}

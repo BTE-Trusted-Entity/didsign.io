@@ -1,19 +1,28 @@
 import * as styles from './VerifiedFiles.module.css';
 
 import { FileEntry } from '../Files/Files';
-import { isDidSignFile } from '../../utils/verify-helper';
+import { isDidSignFile, isVerified } from '../../utils/verify-helper';
+import { VerificationError } from '../../utils/types';
 
 export function VerifiedFiles({
   files,
   zip,
+  hashes,
+  error,
   onDelete,
   onDeleteAll,
 }: {
   files: FileEntry[];
   zip?: string;
+  hashes: string[];
+  error?: VerificationError;
   onDelete: (index: number) => void;
   onDeleteAll: () => void;
 }) {
+  function isOk(hash: string, name: string) {
+    return isDidSignFile({ name }) ? !error : isVerified(hash, name, hashes);
+  }
+
   if (zip) {
     return (
       <div className={styles.zipContainer}>
@@ -30,10 +39,12 @@ export function VerifiedFiles({
         <h2 className={styles.heading}>Files</h2>
 
         <ul className={styles.list}>
-          {files.map(({ file, name, verified }, index) => (
+          {files.map(({ file, name, hash }, index) => (
             <li
               className={
-                verified ? styles.unzippedFileOk : styles.unzippedFileInvalid
+                isOk(hash, name)
+                  ? styles.unzippedFileOk
+                  : styles.unzippedFileInvalid
               }
               key={index}
             >
@@ -56,9 +67,9 @@ export function VerifiedFiles({
       <h2 className={styles.heading}>Files</h2>
 
       <ul className={styles.list}>
-        {files.map(({ file, name, verified }, index) => (
+        {files.map(({ file, name, hash }, index) => (
           <li
-            className={verified ? styles.fileOk : styles.fileInvalid}
+            className={isOk(hash, name) ? styles.fileOk : styles.fileInvalid}
             key={index}
           >
             {isDidSignFile(file) ? (

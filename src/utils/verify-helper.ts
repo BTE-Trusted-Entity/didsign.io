@@ -14,50 +14,68 @@ import { base16 } from 'multiformats/bases/base16';
 
 import * as zip from '@zip.js/zip.js';
 import JSZip from 'jszip';
-import { some } from 'lodash-es';
 
 import { FileEntry } from '../components/Files/Files';
 
 import { createHash, createHashFromHashArray } from './sign-helpers';
-import { IRemark, IVerifiedSignatureContents, SignDoc } from './types';
-import { getVerifiedTimestamp } from './timestamp';
+import { SignDoc } from './types';
 
-async function resolveServiceEndpoints(did: DidUri) {
-  const didDetails = await Did.DidResolver.resolveDoc(did);
-  return didDetails?.details?.getEndpoints() || [];
+export function addMissingPrefix(hash: string): string {
+  return hash.startsWith(base16.prefix) ? hash : `${base16.prefix}${hash}`;
 }
 
-export async function getVerifiedData(jws: string, remark?: IRemark) {
-  if (jws === '') {
-    return null;
+export function parseJWS(jws: string) {
+  const [headerJSON, payloadJSON, signature] = jws.split('.').map(atob);
+
+  const header = JSON.parse(headerJSON);
+  const payload = JSON.parse(payloadJSON);
+
+  return {
+    header,
+    payload: {
+      ...payload,
+      hash: addMissingPrefix(payload.hash),
+    },
+    signature,
+  };
+}
+
+export async function getSignDoc(file: File): Promise<SignDoc> {
+  const data = JSON.parse(await file.text()) as SignDoc;
+
+  const { jws, hashes, remark, credentials } = data;
+  if (!jws || !hashes) {
+    throw new Error('Invalid content');
   }
-  const [header64, payload64, signature64] = jws.split('.');
-  const header = atob(header64);
-  const payload = atob(payload64);
-  const signature = atob(signature64);
-  const keyUri = JSON.parse(header).kid;
-  const hash = JSON.parse(payload).hash;
+  const parsedJWS = parseJWS(jws);
+
+  const hashesWithPrefix = hashes.map(addMissingPrefix);
+  const baseHash = await createHashFromHashArray(hashesWithPrefix);
+  const baseHashesMatch = baseHash === parsedJWS.payload.hash;
+  if (!baseHashesMatch) {
+    throw new Error('Hashes do not match');
+  }
+
+  const {
+    header: { kid: keyUri },
+    payload: { hash: message },
+    signature,
+  } = parsedJWS;
+
   const { verified } = await Did.verifyDidSignature({
-    message: hash,
+    message,
     signature: { keyUri, signature },
     expectedVerificationMethod: KeyRelationship.authentication,
   });
   if (!verified) {
-    return null;
+    throw new Error('Signature is invalid');
   }
 
-  const { did } = Did.Utils.parseDidUri(keyUri);
-  const endpoints = await resolveServiceEndpoints(did);
-  const w3name = await Did.Web3Names.queryWeb3NameForDid(did);
-  const timestampWithTxHash = await getVerifiedTimestamp(signature, remark);
-  const { txHash, timestamp } = timestampWithTxHash || {};
   return {
-    did,
-    signature,
-    endpoints,
-    w3name,
-    timestamp,
-    txHash,
+    jws,
+    hashes: hashesWithPrefix,
+    remark,
+    credentials,
   };
 }
 
@@ -79,43 +97,12 @@ export async function unzipFileEntries(file: File): Promise<FileEntry[]> {
   return result;
 }
 
-export async function handleFilesFromZip(
-  files: FileEntry[],
-): Promise<(IVerifiedSignatureContents & { files: FileEntry[] }) | undefined> {
-  const didSignFile = files.find(isDidSignFile);
-  const doc: SignDoc = didSignFile
-    ? JSON.parse(await didSignFile.file.text())
-    : { jws: '', hashes: [] };
+export function isVerified(hash: string, name: string, hashes: string[]) {
+  return isDidSignFile({ name }) || hashes.includes(hash);
+}
 
-  function addMissingPrefix(hash: string): string {
-    return hash.startsWith(base16.prefix) ? hash : `${base16.prefix}${hash}`;
-  }
-
-  const { jws, hashes, remark, credentials } = doc;
-  const hashesWithPrefix = hashes.map(addMissingPrefix);
-
-  const baseHash = await createHashFromHashArray(hashesWithPrefix);
-  const jwsBaseJson = atob(jws.split('.')[1]);
-  const jwsBaseHash = addMissingPrefix(JSON.parse(jwsBaseJson).hash);
-
-  const verifiedFiles = files.map((file) => ({
-    ...file,
-    verified: isDidSignFile(file) || hashesWithPrefix.includes(file.hash),
-  }));
-  if (baseHash !== jwsBaseHash || some(verifiedFiles, { verified: false })) {
-    return undefined;
-  }
-
-  const verifiedContents = await getVerifiedData(jws, remark);
-  if (!verifiedContents) {
-    return undefined;
-  }
-
-  return {
-    ...verifiedContents,
-    credentials,
-    files: verifiedFiles,
-  };
+export function hasUnverified(files: FileEntry[], hashes: string[]) {
+  return files.some(({ hash, name }) => !isVerified(hash, name, hashes));
 }
 
 export async function getFileNames(file: File): Promise<string[]> {

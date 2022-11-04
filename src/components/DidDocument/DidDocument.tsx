@@ -1,39 +1,48 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
+import { Did, DidServiceEndpoint } from '@kiltprotocol/sdk-js';
 
 import * as styles from './DidDocument.module.css';
 
-import { IVerifiedSignatureContents, JWSStatus } from '../../utils/types';
-import { JWSErrors } from '../JWSErrors/JWSErrors';
+import { SignDoc } from '../../utils/types';
 import { ServiceEndpoint } from '../ServiceEndpoints/ServiceEndpoint';
-
 import { useSubscanHost } from '../../hooks/useSubscanHost';
 import { CredentialVerifier } from '../Credential/Credential';
+import { getSignatureFromRemark, getTimestamp } from '../../utils/timestamp';
+import { parseJWS } from '../../utils/verify-helper';
 
-export function DidDocument({
-  jwsStatus,
-  verifiedSignature,
-}: {
-  jwsStatus: JWSStatus;
-  verifiedSignature: IVerifiedSignatureContents;
-}) {
-  const {
-    did,
-    w3name,
-    timestamp = 'No timestamp available',
-    txHash,
-    signature,
-    credentials: attachedCredentials,
-    endpoints: serviceEndpoints,
-  } = verifiedSignature;
+export function DidDocument({ signDoc }: { signDoc: SignDoc }) {
+  const { jws, remark, credentials } = signDoc;
+
+  const { signature, header } = parseJWS(jws);
+  const { did } = Did.Utils.parseDidUri(header.kid);
+
   const subscanHost = useSubscanHost();
 
-  if (jwsStatus === 'Not Checked' || jwsStatus === 'Validating' || !did) {
-    return null;
-  }
+  const [web3name, setWeb3Name] = useState<string>();
+  const [services, setServices] = useState<DidServiceEndpoint[]>([]);
 
-  if (jwsStatus !== 'Verified') {
-    return <JWSErrors jwsStatus={jwsStatus} />;
-  }
+  useEffect(() => {
+    (async () => {
+      setWeb3Name((await Did.Web3Names.queryWeb3NameForDid(did)) || undefined);
+
+      const result = await Did.DidResolver.resolveDoc(did);
+      setServices(result?.details?.getEndpoints() || []);
+    })();
+  }, [did]);
+
+  const [timestamp, setTimestamp] = useState<string>();
+  useEffect(() => {
+    (async () => {
+      if (!remark) {
+        return;
+      }
+      if (signature === (await getSignatureFromRemark(remark))) {
+        setTimestamp(await getTimestamp(remark.blockHash));
+      } else {
+        setTimestamp('No timestamp available');
+      }
+    })();
+  }, [remark, signature]);
 
   return (
     <div className={styles.container}>
@@ -44,9 +53,9 @@ export function DidDocument({
       <div className={styles.textWrapper}>
         <span className={styles.title}>Signed By</span>
         <span className={styles.text}>
-          {w3name && (
+          {web3name && (
             <Fragment>
-              w3n:{w3name}
+              w3n:{web3name}
               <br />
             </Fragment>
           )}
@@ -57,9 +66,9 @@ export function DidDocument({
         <span className={styles.title}>Signed At</span>
         <span className={styles.text}>
           {timestamp}
-          {txHash && (
+          {remark && (
             <a
-              href={`${subscanHost}/extrinsic/${txHash}`}
+              href={`${subscanHost}/extrinsic/${remark.txHash}`}
               target="_blank"
               rel="noreferrer"
             >
@@ -74,21 +83,18 @@ export function DidDocument({
         <span className={styles.text}>{signature}</span>
       </div>
 
-      {attachedCredentials && (
+      {credentials && (
         <div className={styles.textWrapper}>
           <span className={styles.title}>Attached Credentials</span>
 
           <div className={styles.credentialContainer}>
-            {attachedCredentials.map((credentialItem) => (
+            {credentials.map(({ credential, name }) => (
               <div
-                key={credentialItem.credential.rootHash}
+                key={credential.rootHash}
                 className={styles.credentialsWrapper}
               >
-                <span className={styles.text}>{credentialItem.name}</span>
-                <CredentialVerifier
-                  did={did}
-                  credential={credentialItem.credential}
-                />
+                <span className={styles.text}>{name}</span>
+                <CredentialVerifier did={did} credential={credential} />
               </div>
             ))}
           </div>
@@ -98,12 +104,12 @@ export function DidDocument({
       <div className={styles.textWrapper}>
         <span className={styles.title}>Service Endpoints</span>
         <div className={styles.endpointsWrapper}>
-          {serviceEndpoints.map((endpoint) => (
+          {services.map(({ id, types, urls }) => (
             <ServiceEndpoint
               did={did}
-              url={endpoint.urls[0]}
-              endpointType={endpoint.types[0]}
-              key={endpoint.id}
+              url={urls[0]}
+              endpointType={types[0]}
+              key={id}
             />
           ))}
         </div>
