@@ -31,6 +31,7 @@ import { useBooleanState } from '../../hooks/useBooleanState';
 import { JWSErrors } from '../../components/JWSErrors/JWSErrors';
 
 export function Verify() {
+  const busy = useBooleanState();
   const dragging = useBooleanState();
   const icon = dragging.current ? ReleaseIcon : ImportIcon;
 
@@ -58,45 +59,51 @@ export function Verify() {
 
   const handleDrop = useCallback(
     async (droppedFiles: File[]) => {
-      dragging.off();
+      try {
+        dragging.off();
+        busy.on();
 
-      const existingDidSignCount = zip || files.some(isDidSignFile) ? 1 : 0;
-      const droppedDidSignCount = droppedFiles.filter(isDidSignFile).length;
+        const existingDidSignCount = zip || files.some(isDidSignFile) ? 1 : 0;
+        const droppedDidSignCount = droppedFiles.filter(isDidSignFile).length;
 
-      if (existingDidSignCount + droppedDidSignCount > 1) {
-        setError('Multiple Sign');
-        return;
-      }
+        if (existingDidSignCount + droppedDidSignCount > 1) {
+          setError('Multiple Sign');
+          return;
+        }
 
-      if (files.length === 0 && droppedFiles.length === 1) {
-        const [file] = droppedFiles;
-        if (file.name.endsWith('.zip')) {
-          const filenames = await getFileNames(file);
-          const didSignFile = filenames.find((name) => isDidSignFile({ name }));
-          if (didSignFile) {
-            setZip(file.name);
-            setFiles(await unzipFileEntries(file));
-            return;
+        if (files.length === 0 && droppedFiles.length === 1) {
+          const [file] = droppedFiles;
+          if (file.name.endsWith('.zip')) {
+            const filenames = await getFileNames(file);
+            const didSignFile = filenames.find((name) =>
+              isDidSignFile({ name }),
+            );
+            if (didSignFile) {
+              setZip(file.name);
+              setFiles(await unzipFileEntries(file));
+              return;
+            }
           }
         }
-      }
 
-      const newFiles = await Promise.all(
-        droppedFiles.map(async (file: File) => {
-          const { name } = file;
-          const buffer = await file.arrayBuffer();
-          const hash = await createHash(buffer);
-          return { file, buffer, name, hash };
-        }),
-      );
-      setFiles((files) => [...files, ...newFiles]);
+        const newFiles = await Promise.all(
+          droppedFiles.map(async (file: File) => {
+            const { name } = file;
+            const buffer = await file.arrayBuffer();
+            const hash = await createHash(buffer);
+            return { file, buffer, name, hash };
+          }),
+        );
+        setFiles((files) => [...files, ...newFiles]);
+      } finally {
+        busy.off();
+      }
     },
-    [dragging, files, zip],
+    [busy, dragging, files, zip],
   );
 
   const didSignFile = files.find(isDidSignFile);
   const [signDoc, setSignDoc] = useState<SignDoc>();
-  const isValidating = useBooleanState();
 
   useEffect(() => {
     (async () => {
@@ -105,17 +112,17 @@ export function Verify() {
         setError(undefined);
 
         if (didSignFile) {
-          isValidating.on();
+          busy.on();
           setSignDoc(await getSignDoc(didSignFile.file));
         }
       } catch (exception) {
         setError(zip ? 'Invalid' : 'Corrupted');
         console.error(exception);
       } finally {
-        isValidating.off();
+        busy.off();
       }
     })();
-  }, [didSignFile, isValidating, zip]);
+  }, [didSignFile, busy, zip]);
 
   const verified =
     signDoc &&
@@ -173,9 +180,7 @@ export function Verify() {
 
       <section className={styles.bottomContainer}>
         <div className={styles.bottomSection}>
-          {isValidating.current && (
-            <span className={styles.verificationLoader} />
-          )}
+          {busy.current && <span className={styles.verificationLoader} />}
 
           {!verified && !error && (
             <span className={styles.verificationText}>
