@@ -24,12 +24,6 @@ export interface SignDoc {
   credentials?: NamedCredential[];
 }
 
-export interface IVerifiedSignatureContents {
-  signature: string;
-  did: DidUri | undefined;
-  credentials?: NamedCredential[];
-}
-
 export interface IKiltAccount {
   address: string;
   source: string;
