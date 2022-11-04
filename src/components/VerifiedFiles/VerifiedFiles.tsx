@@ -7,17 +7,19 @@ export function VerifiedFiles({
   files,
   zip,
   hashes,
+  verified,
   onDelete,
   onDeleteAll,
 }: {
   files: FileEntry[];
   zip?: string;
   hashes: string[];
+  verified?: boolean;
   onDelete: (index: number) => void;
   onDeleteAll: () => void;
 }) {
   function isOk(hash: string, name: string) {
-    return isVerified(hash, name, hashes);
+    return isDidSignFile({ name }) ? verified : isVerified(hash, name, hashes);
   }
 
   if (zip) {

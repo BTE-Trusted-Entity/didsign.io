@@ -164,6 +164,7 @@ export function Verify() {
             files={files}
             zip={zip}
             hashes={signDoc?.hashes || []}
+            verified={verified}
             onDelete={handleDeleteFile}
             onDeleteAll={handleDeleteAll}
           />
