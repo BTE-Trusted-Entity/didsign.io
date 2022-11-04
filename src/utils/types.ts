@@ -36,10 +36,4 @@ export interface IKiltAccount {
   name?: string;
 }
 
-export type JWSStatus =
-  | 'Verified'
-  | 'Not Checked'
-  | 'Validating'
-  | 'Corrupted'
-  | 'Multiple Sign'
-  | 'Invalid';
+export type VerificationError = 'Corrupted' | 'Multiple Sign' | 'Invalid';

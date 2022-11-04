@@ -1,12 +1,8 @@
 import * as styles from './JWSErrors.module.css';
 
-import { JWSStatus } from '../../utils/types';
+import { VerificationError } from '../../utils/types';
 
-export function JWSErrors({ jwsStatus }: { jwsStatus: JWSStatus }) {
-  if (jwsStatus === 'Multiple Sign') {
-    return null;
-  }
-
+export function JWSErrors({ error }: { error: VerificationError }) {
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
@@ -16,14 +12,14 @@ export function JWSErrors({ jwsStatus }: { jwsStatus: JWSStatus }) {
       <div className={styles.wrapper}>
         <span className={styles.title}>Attention</span>
 
-        {jwsStatus === 'Corrupted' && (
+        {error === 'Corrupted' && (
           <span className={styles.text}>
             The signature file is corrupted. Please make sure to import the
             correct signature file.
           </span>
         )}
 
-        {jwsStatus === 'Invalid' && (
+        {error === 'Invalid' && (
           <span className={styles.text}>
             The signature does not match with the imported files. Please make
             sure to import the correct files.

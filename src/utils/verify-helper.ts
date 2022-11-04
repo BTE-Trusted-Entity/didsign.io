@@ -18,9 +18,9 @@ import JSZip from 'jszip';
 import { FileEntry } from '../components/Files/Files';
 
 import { createHash, createHashFromHashArray } from './sign-helpers';
-import { IVerifiedSignatureContents, SignDoc } from './types';
+import { SignDoc } from './types';
 
-function addMissingPrefix(hash: string): string {
+export function addMissingPrefix(hash: string): string {
   return hash.startsWith(base16.prefix) ? hash : `${base16.prefix}${hash}`;
 }
 
@@ -40,16 +40,27 @@ export function parseJWS(jws: string) {
   };
 }
 
-export async function getVerifiedData(jws: string) {
-  if (jws === '') {
-    return null;
+export async function getSignDoc(file: File): Promise<SignDoc> {
+  const data = JSON.parse(await file.text()) as SignDoc;
+
+  const { jws, hashes, remark, credentials } = data;
+  if (!jws || !hashes) {
+    throw new Error('Invalid content');
   }
+  const parsedJWS = parseJWS(jws);
+
+  const hashesWithPrefix = hashes.map(addMissingPrefix);
+  const baseHash = await createHashFromHashArray(hashesWithPrefix);
+  const baseHashesMatch = baseHash === parsedJWS.payload.hash;
+  if (!baseHashesMatch) {
+    throw new Error('Hashes do not match');
+  }
+
   const {
     header: { kid: keyUri },
     payload: { hash: message },
     signature,
-  } = parseJWS(jws);
-  const { did } = Did.Utils.parseDidUri(keyUri);
+  } = parsedJWS;
 
   const { verified } = await Did.verifyDidSignature({
     message,
@@ -57,12 +68,14 @@ export async function getVerifiedData(jws: string) {
     expectedVerificationMethod: KeyRelationship.authentication,
   });
   if (!verified) {
-    return null;
+    throw new Error('Signature is invalid');
   }
 
   return {
-    did,
-    signature,
+    jws,
+    hashes: hashesWithPrefix,
+    remark,
+    credentials,
   };
 }
 
@@ -90,35 +103,6 @@ export function isVerified(hash: string, name: string, hashes: string[]) {
 
 export function hasUnverified(files: FileEntry[], hashes: string[]) {
   return files.some(({ hash, name }) => !isVerified(hash, name, hashes));
-}
-
-export async function handleFilesFromZip(
-  files: FileEntry[],
-): Promise<IVerifiedSignatureContents | undefined> {
-  const didSignFile = files.find(isDidSignFile);
-  const doc: SignDoc = didSignFile
-    ? JSON.parse(await didSignFile.file.text())
-    : { jws: '', hashes: [] };
-
-  const { jws, hashes, credentials } = doc;
-  const hashesWithPrefix = hashes.map(addMissingPrefix);
-
-  const baseHash = await createHashFromHashArray(hashesWithPrefix);
-  const jwsBaseHash = parseJWS(jws).payload.hash;
-
-  if (baseHash !== jwsBaseHash || hasUnverified(files, hashesWithPrefix)) {
-    return undefined;
-  }
-
-  const verifiedContents = await getVerifiedData(jws);
-  if (!verifiedContents) {
-    return undefined;
-  }
-
-  return {
-    ...verifiedContents,
-    credentials,
-  };
 }
 
 export async function getFileNames(file: File): Promise<string[]> {

@@ -3,30 +3,19 @@ import { Did, DidServiceEndpoint } from '@kiltprotocol/sdk-js';
 
 import * as styles from './DidDocument.module.css';
 
-import {
-  IRemark,
-  IVerifiedSignatureContents,
-  JWSStatus,
-  NamedCredential,
-} from '../../utils/types';
-import { JWSErrors } from '../JWSErrors/JWSErrors';
+import { SignDoc } from '../../utils/types';
 import { ServiceEndpoint } from '../ServiceEndpoints/ServiceEndpoint';
 import { useSubscanHost } from '../../hooks/useSubscanHost';
 import { CredentialVerifier } from '../Credential/Credential';
 import { getSignatureFromRemark, getTimestamp } from '../../utils/timestamp';
+import { parseJWS } from '../../utils/verify-helper';
 
-export function DidDocument({
-  jwsStatus,
-  verifiedSignature,
-  remark,
-  credentials,
-}: {
-  jwsStatus: JWSStatus;
-  verifiedSignature: IVerifiedSignatureContents;
-  remark?: IRemark;
-  credentials?: NamedCredential[];
-}) {
-  const { did, signature } = verifiedSignature;
+export function DidDocument({ signDoc }: { signDoc: SignDoc }) {
+  const { jws, remark, credentials } = signDoc;
+
+  const { signature, header } = parseJWS(jws);
+  const { did } = Did.Utils.parseDidUri(header.kid);
+
   const subscanHost = useSubscanHost();
 
   const [web3name, setWeb3Name] = useState<string>();
@@ -34,10 +23,6 @@ export function DidDocument({
 
   useEffect(() => {
     (async () => {
-      if (!did) {
-        return;
-      }
-
       setWeb3Name((await Did.Web3Names.queryWeb3NameForDid(did)) || undefined);
 
       const result = await Did.DidResolver.resolveDoc(did);
@@ -58,14 +43,6 @@ export function DidDocument({
       }
     })();
   }, [remark, signature]);
-
-  if (jwsStatus === 'Not Checked' || jwsStatus === 'Validating' || !did) {
-    return null;
-  }
-
-  if (jwsStatus !== 'Verified') {
-    return <JWSErrors jwsStatus={jwsStatus} />;
-  }
 
   return (
     <div className={styles.container}>
