@@ -8,11 +8,11 @@ import ImportIcon from '../../images/iconBIG_import_NEW.svg';
 import ReleaseIcon from '../../images/iconBIG_import_release.svg';
 import { FileEntry } from '../../components/Files/Files';
 import {
-  getFileNames,
   getSignDoc,
   hasUnverified,
   isDidSignFile,
   unzipFileEntries,
+  zipContainsDidSignFile,
 } from '../../utils/verify-helper';
 import { createHash } from '../../utils/sign-helpers';
 import { SignDoc, VerificationError } from '../../utils/types';
@@ -63,26 +63,23 @@ export function Verify() {
         dragging.off();
         busy.on();
 
-        const existingDidSignCount = zip || files.some(isDidSignFile) ? 1 : 0;
+        const existingDidSignCount = files.some(isDidSignFile) ? 1 : 0;
         const droppedDidSignCount = droppedFiles.filter(isDidSignFile).length;
 
-        if (existingDidSignCount + droppedDidSignCount > 1) {
+        if (
+          (zip && (await zipContainsDidSignFile(droppedFiles[0]))) ||
+          existingDidSignCount + droppedDidSignCount > 1
+        ) {
           setError('Multiple Sign');
           return;
         }
 
         if (files.length === 0 && droppedFiles.length === 1) {
           const [file] = droppedFiles;
-          if (file.name.endsWith('.zip')) {
-            const filenames = await getFileNames(file);
-            const didSignFile = filenames.find((name) =>
-              isDidSignFile({ name }),
-            );
-            if (didSignFile) {
-              setZip(file.name);
-              setFiles(await unzipFileEntries(file));
-              return;
-            }
+          if (await zipContainsDidSignFile(file)) {
+            setZip(file.name);
+            setFiles(await unzipFileEntries(file));
+            return;
           }
         }
 
