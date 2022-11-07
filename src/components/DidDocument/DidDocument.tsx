@@ -33,13 +33,8 @@ export function DidDocument({ signDoc }: { signDoc: SignDoc }) {
   const [timestamp, setTimestamp] = useState<string>();
   useEffect(() => {
     (async () => {
-      if (!remark) {
-        return;
-      }
-      if (signature === (await getSignatureFromRemark(remark))) {
+      if (remark && signature === (await getSignatureFromRemark(remark))) {
         setTimestamp(await getTimestamp(remark.blockHash));
-      } else {
-        setTimestamp('No timestamp available');
       }
     })();
   }, [remark, signature]);
@@ -65,7 +60,7 @@ export function DidDocument({ signDoc }: { signDoc: SignDoc }) {
       <div className={styles.textWrapper}>
         <span className={styles.title}>Signed At</span>
         <span className={styles.text}>
-          {timestamp}
+          {timestamp || 'No timestamp available'}
           {remark && (
             <a
               href={`${subscanHost}/extrinsic/${remark.txHash}`}
