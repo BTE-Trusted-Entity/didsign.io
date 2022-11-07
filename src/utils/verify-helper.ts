@@ -135,3 +135,11 @@ export async function validateCredential(
   const credential = Credential.fromCredential(credentialInput);
   return Credential.verify(credential);
 }
+
+export async function zipContainsDidSignFile(file: File) {
+  if (!file.name.endsWith('.zip')) {
+    return false;
+  }
+  const fileNames = await getFileNames(file);
+  return fileNames.some((name) => isDidSignFile({ name }));
+}
