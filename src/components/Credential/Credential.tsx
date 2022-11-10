@@ -4,7 +4,7 @@ import {
   DidUri,
   IClaimContents,
   Credential,
-  RequestForAttestation,
+  ICredential,
 } from '@kiltprotocol/sdk-js';
 
 import * as styles from './Credential.module.css';
@@ -13,7 +13,6 @@ import {
   getAttestationForRequest,
   getW3NOrDid,
   validateAttestation,
-  validateCredential,
 } from '../../utils/verify-helper';
 import { useBooleanState } from '../../hooks/useBooleanState';
 
@@ -21,6 +20,16 @@ interface IDIDCredential {
   credential: unknown;
   did?: DidUri;
   initialError?: string;
+}
+
+function isLegacyCredential(credential: unknown): credential is {
+  request: ICredential;
+} {
+  return (
+    typeof credential === 'object' &&
+    credential !== null &&
+    'request' in credential
+  );
 }
 
 export function CredentialVerifier({
@@ -37,22 +46,31 @@ export function CredentialVerifier({
     (async () => {
       if (!did || error) return;
 
-      if (Credential.isICredential(credential)) {
-        setClaimContents(credential.request.claim.contents);
-        isValid.set(await validateCredential(credential));
-        const attesterDid = credential.attestation.owner;
-        setAttester(await getW3NOrDid(attesterDid));
-        return;
+      if (isLegacyCredential(credential)) {
+        const realCredential = credential.request;
+        if (Credential.isICredential(realCredential)) {
+          setClaimContents(realCredential.claim.contents);
+          try {
+            await Credential.verifyCredential(realCredential);
+            isValid.on();
+          } catch {
+            isValid.off();
+          }
+
+          const attestation = await getAttestationForRequest(realCredential);
+          setAttester(await getW3NOrDid(attestation.owner));
+          return;
+        }
       }
 
-      if (!RequestForAttestation.isIRequestForAttestation(credential)) {
+      if (!Credential.isICredential(credential)) {
         isValid.off();
         setError('Not valid Kilt Credential');
         return;
       }
 
       setClaimContents(credential.claim.contents);
-      if (!Did.Utils.isSameSubject(credential.claim.owner, did)) {
+      if (!Did.isSameSubject(credential.claim.owner, did)) {
         isValid.off();
         setError('Credential subject and signer DID are not the same');
         return;

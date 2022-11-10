@@ -21,7 +21,6 @@ import {
   SlowAnimationVerifier,
 } from '../../components/Animation/Animation';
 import { MultipleSignPopup } from '../../components/Popups/Popups';
-import { useConnect } from '../../hooks/useConnect';
 import { Navigation } from '../../components/Navigation/Navigation';
 import { FilesEmpty } from '../../components/FilesEmpty/FilesEmpty';
 import { VerifiedFiles } from '../../components/VerifiedFiles/VerifiedFiles';
@@ -39,8 +38,6 @@ export function Verify() {
 
   const [zip, setZip] = useState<string>();
   const [files, setFiles] = useState<FileEntry[]>([]);
-
-  useConnect();
 
   //allows navigation prevented by time stamping
   usePreventNavigation(false);

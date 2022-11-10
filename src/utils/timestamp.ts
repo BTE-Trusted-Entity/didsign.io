@@ -1,11 +1,11 @@
-import { BlockchainApiConnection } from '@kiltprotocol/chain-helpers';
 import { Keyring } from '@polkadot/keyring';
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 
 import { IRemark } from './types';
+import { apiPromise } from './api';
 
 export async function getKiltAccountsWithEnoughBalance() {
-  const { api } = await BlockchainApiConnection.getConnectionOrConnect();
+  const api = await apiPromise;
   const genesisHash = api.genesisHash.toHex();
 
   await web3Enable('DIDsign by BTE');
@@ -32,7 +32,7 @@ export async function getKiltAccountsWithEnoughBalance() {
 }
 
 export async function getExtrinsic(signature: string) {
-  const { api } = await BlockchainApiConnection.getConnectionOrConnect();
+  const api = await apiPromise;
 
   return api.tx.system.remark(signature);
 }
@@ -50,7 +50,7 @@ export async function getFee() {
 }
 
 export async function getTimestamp(blockHash: string) {
-  const { api } = await BlockchainApiConnection.getConnectionOrConnect();
+  const api = await apiPromise;
 
   const apiInstance = await api.at(blockHash);
   const timestamp = (await apiInstance.query.timestamp.now()).toNumber();
@@ -62,7 +62,7 @@ export async function getTimestamp(blockHash: string) {
 }
 
 export async function getSignatureFromRemark(remark: IRemark) {
-  const { api } = await BlockchainApiConnection.getConnectionOrConnect();
+  const api = await apiPromise;
   const { txHash, blockHash } = remark;
   const signedBlock = await api.rpc.chain.getBlock(blockHash);
   const extrinsicWithRemark = signedBlock.block.extrinsics.find(

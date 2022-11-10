@@ -1,4 +1,4 @@
-import { RequestForAttestation } from '@kiltprotocol/sdk-js';
+import type { ICredential } from '@kiltprotocol/sdk-js';
 
 export interface Signature {
   credentials?: NamedCredential[];
@@ -9,7 +9,7 @@ export interface Signature {
 
 export interface NamedCredential {
   name: string;
-  credential: RequestForAttestation;
+  credential: ICredential;
 }
 
 export interface IRemark {

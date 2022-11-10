@@ -9,12 +9,13 @@ import { useSubscanHost } from '../../hooks/useSubscanHost';
 import { CredentialVerifier } from '../Credential/Credential';
 import { getSignatureFromRemark, getTimestamp } from '../../utils/timestamp';
 import { parseJWS } from '../../utils/verify-helper';
+import { apiPromise } from '../../utils/api';
 
 export function DidDocument({ signDoc }: { signDoc: SignDoc }) {
   const { jws, remark, credentials } = signDoc;
 
   const { signature, header } = parseJWS(jws);
-  const { did } = Did.Utils.parseDidUri(header.kid);
+  const { did } = Did.parse(header.kid);
 
   const subscanHost = useSubscanHost();
 
@@ -23,10 +24,12 @@ export function DidDocument({ signDoc }: { signDoc: SignDoc }) {
 
   useEffect(() => {
     (async () => {
-      setWeb3Name((await Did.Web3Names.queryWeb3NameForDid(did)) || undefined);
-
-      const result = await Did.DidResolver.resolveDoc(did);
-      setServices(result?.details?.getEndpoints() || []);
+      const api = await apiPromise;
+      const { document, web3Name } = Did.linkedInfoFromChain(
+        await api.call.did.query(Did.toChain(did)),
+      );
+      setWeb3Name(web3Name || undefined);
+      setServices(document.service || []);
     })();
   }, [did]);
 
@@ -99,11 +102,11 @@ export function DidDocument({ signDoc }: { signDoc: SignDoc }) {
       <div className={styles.textWrapper}>
         <span className={styles.title}>Service Endpoints</span>
         <div className={styles.endpointsWrapper}>
-          {services.map(({ id, types, urls }) => (
+          {services.map(({ id, type, serviceEndpoint }) => (
             <ServiceEndpoint
               did={did}
-              url={urls[0]}
-              endpointType={types[0]}
+              url={serviceEndpoint[0]}
+              endpointType={type[0]}
               key={id}
             />
           ))}
