@@ -65,11 +65,14 @@ export function Verify() {
 
         const existingDidSignCount = files.some(isDidSignFile) ? 1 : 0;
         const droppedDidSignCount = droppedFiles.filter(isDidSignFile).length;
+        const droppedDidSignZipsCount = (
+          await Promise.all(droppedFiles.map(zipContainsDidSignFile))
+        ).filter(Boolean).length;
 
-        if (
-          (zip && (await zipContainsDidSignFile(droppedFiles[0]))) ||
-          existingDidSignCount + droppedDidSignCount > 1
-        ) {
+        const newCount =
+          existingDidSignCount + droppedDidSignCount + droppedDidSignZipsCount;
+
+        if (zip || newCount > 1) {
           setError('Multiple Sign');
           return;
         }
