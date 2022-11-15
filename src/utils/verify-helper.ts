@@ -1,11 +1,10 @@
 import {
   Attestation,
-  Credential,
+  Utils,
   Did,
   DidUri,
+  IAttestation,
   ICredential,
-  IRequestForAttestation,
-  KeyRelationship,
 } from '@kiltprotocol/sdk-js';
 
 // disabling until https://github.com/import-js/eslint-plugin-import/issues/2352 is fixed
@@ -19,6 +18,7 @@ import { FileEntry } from '../components/Files/Files';
 
 import { createHash, createHashFromHashArray } from './sign-helpers';
 import { SignDoc } from './types';
+import { apiPromise } from './api';
 
 export function addMissingPrefix(hash: string): string {
   return hash.startsWith(base16.prefix) ? hash : `${base16.prefix}${hash}`;
@@ -62,14 +62,13 @@ export async function getSignDoc(file: File): Promise<SignDoc> {
     signature,
   } = parsedJWS;
 
-  const { verified } = await Did.verifyDidSignature({
+  await apiPromise;
+  await Did.verifyDidSignature({
     message,
-    signature: { keyUri, signature },
-    expectedVerificationMethod: KeyRelationship.authentication,
+    keyUri,
+    signature: Utils.Crypto.coToUInt8(signature),
+    expectedVerificationMethod: 'authentication',
   });
-  if (!verified) {
-    throw new Error('Signature is invalid');
-  }
 
   return {
     jws,
@@ -115,25 +114,23 @@ export function isDidSignFile({ name }: { name: string }) {
 }
 
 export async function getW3NOrDid(did: DidUri): Promise<string> {
-  const web3name = await Did.Web3Names.queryWeb3NameForDid(did);
-  return web3name ? `w3n:${web3name}` : did;
+  const api = await apiPromise;
+  const { web3Name } = Did.linkedInfoFromChain(
+    await api.call.did.query(Did.toChain(did)),
+  );
+  return web3Name ? `w3n:${web3Name}` : did;
 }
 
-export async function getAttestationForRequest(
-  req4Att: IRequestForAttestation,
-) {
-  return Attestation.query(req4Att.rootHash);
+export async function getAttestationForRequest({ rootHash }: ICredential) {
+  const api = await apiPromise;
+  return Attestation.fromChain(
+    await api.query.attestation.attestations(rootHash),
+    rootHash,
+  );
 }
 
-export async function validateAttestation(attestation: Attestation | null) {
+export async function validateAttestation(attestation: IAttestation | null) {
   return attestation !== null && !attestation.revoked;
-}
-
-export async function validateCredential(
-  credentialInput: ICredential,
-): Promise<boolean> {
-  const credential = Credential.fromCredential(credentialInput);
-  return Credential.verify(credential);
 }
 
 export async function zipContainsDidSignFile(file: File) {

@@ -9,7 +9,6 @@ import {
 } from 'react';
 import BN from 'bn.js';
 import { web3FromAddress } from '@polkadot/extension-dapp';
-import { BlockchainApiConnection } from '@kiltprotocol/chain-helpers';
 import { remove } from 'lodash-es';
 import classnames from 'classnames';
 
@@ -27,11 +26,11 @@ import { IKiltAccount, SignDoc } from '../../utils/types';
 import { asKiltCoins } from '../../utils/asKiltCoins';
 import { exceptionToError } from '../../utils/exceptionToError';
 import { createDidSignFile } from '../../utils/sign-helpers';
-import { useConnect } from '../../hooks/useConnect';
 import { usePreventNavigation } from '../../hooks/usePreventNavigation';
 import { Spinner } from '../Spinner/Spinner';
 import { PendingTx, SignPopup, TimestampError } from '../Popups/Popups';
 import { useBooleanState } from '../../hooks/useBooleanState';
+import { apiPromise } from '../../utils/api';
 
 function getAccountLabel({ source, address, name = address }: IKiltAccount) {
   return `${name} (${source})`;
@@ -50,8 +49,6 @@ function useFee() {
 }
 
 export function Timestamp() {
-  useConnect();
-
   const { files, setFiles } = useFiles();
   const {
     downloaded: signatureDownloaded,
@@ -159,7 +156,7 @@ export function Timestamp() {
           throw new Error('Impossible: signature not set');
         }
 
-        const { api } = await BlockchainApiConnection.getConnectionOrConnect();
+        const api = await apiPromise;
         const extrinsic = await getExtrinsic(signature);
         const injector = await web3FromAddress(selectedAccount.address);
 
