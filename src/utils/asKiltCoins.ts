@@ -2,7 +2,7 @@ import BN from 'bn.js';
 
 const KILT_POWER = 15;
 
-const PRECISION = 3;
+const PRECISION = 4;
 
 const FORMAT = {
   minimumFractionDigits: PRECISION,
