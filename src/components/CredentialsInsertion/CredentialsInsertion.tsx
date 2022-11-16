@@ -1,4 +1,10 @@
-import { ChangeEvent, KeyboardEvent, useCallback, useRef } from 'react';
+import {
+  ChangeEvent,
+  KeyboardEvent,
+  MouseEvent,
+  useCallback,
+  useRef,
+} from 'react';
 import { without } from 'lodash-es';
 import classnames from 'classnames';
 
@@ -167,6 +173,15 @@ function CredentialRow({ credential }: Props) {
   const isEditing = useBooleanState();
   const credentialName = credential.name;
 
+  const handleEditClick = useCallback(
+    (event: MouseEvent<HTMLButtonElement>) => {
+      // prevent bubbling to stop the same event from dismissing the editor
+      event.stopPropagation();
+      isEditing.on();
+    },
+    [isEditing],
+  );
+
   if (isEditing.current) {
     return (
       <EditContents
@@ -185,7 +200,7 @@ function CredentialRow({ credential }: Props) {
         <button
           className={styles.editButton}
           aria-label="edit name"
-          onClick={isEditing.on}
+          onClick={handleEditClick}
         />
       </div>
     </div>
