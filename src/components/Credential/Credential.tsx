@@ -5,6 +5,8 @@ import {
   IClaimContents,
   Credential,
   ICredential,
+  KiltPublishedCredentialCollectionV1,
+  KiltPublishedCredentialCollectionV1Type,
 } from '@kiltprotocol/sdk-js';
 
 import * as styles from './Credential.module.css';
@@ -18,6 +20,7 @@ import { useBooleanState } from '../../hooks/useBooleanState';
 
 interface IDIDCredential {
   credential: unknown;
+  endpointType?: string;
   did?: DidUri;
   initialError?: string;
 }
@@ -32,8 +35,23 @@ function isLegacyCredential(credential: unknown): credential is {
   );
 }
 
+function isPublishedCollection(
+  json: unknown,
+  endpointType: string,
+): json is KiltPublishedCredentialCollectionV1 {
+  if (endpointType !== KiltPublishedCredentialCollectionV1Type) {
+    return false;
+  }
+  if (!Array.isArray(json)) {
+    return false;
+  }
+  const [{ credential }] = json as KiltPublishedCredentialCollectionV1;
+  return Credential.isICredential(credential);
+}
+
 export function CredentialVerifier({
   credential,
+  endpointType,
   did,
   initialError,
 }: IDIDCredential) {
@@ -46,46 +64,53 @@ export function CredentialVerifier({
     (async () => {
       if (!did || error) return;
 
-      if (isLegacyCredential(credential)) {
-        const realCredential = credential.request;
-        if (Credential.isICredential(realCredential)) {
-          setClaimContents(realCredential.claim.contents);
-          try {
-            await Credential.verifyCredential(realCredential);
-            isValid.on();
-          } catch {
-            isValid.off();
-          }
+      let kiltCredential: ICredential | undefined;
 
-          const attestation = await getAttestationForRequest(realCredential);
-          setAttester(await getW3NOrDid(attestation.owner));
-          return;
-        }
+      if (isLegacyCredential(credential)) {
+        kiltCredential = credential.request;
       }
 
-      if (!Credential.isICredential(credential)) {
+      if (Credential.isICredential(credential)) {
+        kiltCredential = credential;
+      }
+
+      if (endpointType && isPublishedCollection(credential, endpointType)) {
+        kiltCredential = credential[0].credential;
+      }
+
+      if (!kiltCredential) {
         isValid.off();
-        setError('Not valid Kilt Credential');
+        setError('Not a valid Kilt Credential');
         return;
       }
 
-      setClaimContents(credential.claim.contents);
-      if (!Did.isSameSubject(credential.claim.owner, did)) {
+      setClaimContents(kiltCredential.claim.contents);
+
+      if (!Did.isSameSubject(kiltCredential.claim.owner, did)) {
         isValid.off();
         setError('Credential subject and signer DID are not the same');
         return;
       }
 
-      const attestation = await getAttestationForRequest(credential);
-      isValid.set(await validateAttestation(attestation));
+      try {
+        await Credential.verifyCredential(kiltCredential);
+      } catch {
+        isValid.off();
+        setError('Not a valid Kilt Credential');
+        return;
+      }
 
-      if (attestation) {
+      const attestation = await getAttestationForRequest(kiltCredential);
+
+      if (await validateAttestation(attestation)) {
         setAttester(await getW3NOrDid(attestation.owner));
+        isValid.on();
       } else {
-        setError('No Attestation found');
+        isValid.off();
+        setError('Attestation missing or revoked');
       }
     })();
-  }, [credential, did, error, isValid]);
+  }, [credential, did, error, isValid, endpointType]);
 
   return (
     <div className={styles.credential}>

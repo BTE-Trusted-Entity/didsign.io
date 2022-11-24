@@ -72,6 +72,7 @@ export function ServiceEndpoint({ url, endpointType, did }: Props) {
       {fetched.current && (
         <CredentialVerifier
           credential={credential}
+          endpointType={endpointType}
           did={did}
           initialError={error}
         />
