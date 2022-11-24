@@ -20,7 +20,7 @@ import { useBooleanState } from '../../hooks/useBooleanState';
 
 interface IDIDCredential {
   credential: unknown;
-  endpointType: string;
+  endpointType?: string;
   did?: DidUri;
   initialError?: string;
 }
@@ -74,7 +74,7 @@ export function CredentialVerifier({
         kiltCredential = credential;
       }
 
-      if (isPublishedCollection(credential, endpointType)) {
+      if (endpointType && isPublishedCollection(credential, endpointType)) {
         kiltCredential = credential[0].credential;
       }
 
@@ -86,17 +86,17 @@ export function CredentialVerifier({
 
       setClaimContents(kiltCredential.claim.contents);
 
+      if (!Did.isSameSubject(kiltCredential.claim.owner, did)) {
+        isValid.off();
+        setError('Credential subject and signer DID are not the same');
+        return;
+      }
+
       try {
         await Credential.verifyCredential(kiltCredential);
       } catch {
         isValid.off();
         setError('Not a valid Kilt Credential');
-        return;
-      }
-
-      if (!Did.isSameSubject(kiltCredential.claim.owner, did)) {
-        isValid.off();
-        setError('Credential subject and signer DID are not the same');
         return;
       }
 
