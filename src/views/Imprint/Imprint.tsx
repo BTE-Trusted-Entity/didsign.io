@@ -6,7 +6,7 @@ export function Imprint() {
       <div className={styles.content}>
         <h1 className={styles.heading}>Imprint</h1>
         <section className={styles.section}>
-          <p className={styles.line}>B.T.E. BOTLabs Trusted Entity GmbH</p>
+          <p className={styles.line}>BOTLabs GmbH</p>
           <p className={styles.line}>Keithstraße 2-4</p>
           <p className={styles.line}>10787 Berlin, Germany</p>
         </section>
@@ -14,8 +14,8 @@ export function Imprint() {
         <section className={styles.section}>
           <p className={styles.line}>German Commercial Court:</p>
           <p className={styles.line}>Amtsgericht Charlottenburg in Berlin</p>
-          <p className={styles.line}>Registration Number: HRB 231219B</p>
-          <p className={styles.line}>VAT No: DE 346528612</p>
+          <p className={styles.line}>Registration Number: HRB 193450B</p>
+          <p className={styles.line}>VAT No: DE316284270</p>
           <p className={styles.line}>Managing Director: Ingo Rübe</p>
         </section>
 
