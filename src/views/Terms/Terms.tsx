@@ -17,9 +17,9 @@ export function Terms() {
           </p>
           <p>
             The Services are provided to you via software (the “Software”)
-            created and run by BOTLabs GmbH (hereinafter
-            referred to as “BOTLabs”, “us”, “we” or “our”) as defined below. The
-            software is published and you are free to check out the code under{' '}
+            created and run by BOTLabs GmbH (hereinafter referred to as
+            “BOTLabs”, “us”, “we” or “our”) as defined below. The software is
+            published and you are free to check out the code under{' '}
             <a
               href="https://github.com/BTE-Trusted-Entity/didsign"
               target="_blank"
@@ -227,9 +227,9 @@ export function Terms() {
             device.
           </p>
           <p>
-            At launch, the Website supports only the Sporran wallet
-            developed by B.T.E. BOTLabs Trusted Entity GmbH; other wallets may follow over time. For those
-            other wallets, the process might differ slightly.
+            At launch, the Website supports only the Sporran wallet developed by
+            B.T.E. BOTLabs Trusted Entity GmbH; other wallets may follow over
+            time. For those other wallets, the process might differ slightly.
           </p>
           <p>The usage of the DIDsign Website is free of charge.</p>
         </section>
@@ -269,16 +269,16 @@ export function Terms() {
 
           <p>
             BOTLabs is liable for damages that are based on an intentional or
-            grossly negligent breach of duty by BOTLabs, its legal representatives
-            or various agents.
+            grossly negligent breach of duty by BOTLabs, its legal
+            representatives or various agents.
           </p>
           <p>
-            In the event of a breach of essential contractual duties, BOTLabs shall
-            only be liable for the contractually typical, foreseeable damage if
-            this was simply cause by negligence. Significant contractual
-            obligations are those whose fulfilment enables the proper execution
-            of the contract in the first place and whose compliance you can
-            regularly rely on.
+            In the event of a breach of essential contractual duties, BOTLabs
+            shall only be liable for the contractually typical, foreseeable
+            damage if this was simply cause by negligence. Significant
+            contractual obligations are those whose fulfilment enables the
+            proper execution of the contract in the first place and whose
+            compliance you can regularly rely on.
           </p>
           <p>
             The limitation of the two preceding paragraphs also apply to the
@@ -398,13 +398,14 @@ export function Terms() {
           </h2>
 
           <p>
-            BOTLabs reserves the right to change the DIDsign Software on the Website
-            as well as the commercial and non-commercial conditions for its
-            usage.
+            BOTLabs reserves the right to change the DIDsign Software on the
+            Website as well as the commercial and non-commercial conditions for
+            its usage.
           </p>
           <p>
-            BOTLabs also reserves the right to change these Terms and Conditions at
-            any time for any future products of DIDsign in our sole discretion.
+            BOTLabs also reserves the right to change these Terms and Conditions
+            at any time for any future products of DIDsign in our sole
+            discretion.
           </p>
           <p>
             Such changes will be made via uploading new Terms and Conditions,
@@ -423,10 +424,7 @@ export function Terms() {
         <section>
           <h2 className={styles.sectionHeading}>License to the Website </h2>
 
-          <p>
-            Copyright (c) 2022, BOTLabs GmbH. All rights
-            reserved.
-          </p>
+          <p>Copyright (c) 2022, BOTLabs GmbH. All rights reserved.</p>
         </section>
 
         <section>
@@ -463,10 +461,9 @@ export function Terms() {
           </ul>
 
           <p>
-            Disclaimer: The Liability of BOTLabs GmbH
-            (hereinafter referred to as “BOTLabs”) is limited according to these
-            Terms and Conditions for DIDsign as provided under
-            https://didsign.io/.
+            Disclaimer: The Liability of BOTLabs GmbH (hereinafter referred to
+            as “BOTLabs”) is limited according to these Terms and Conditions for
+            DIDsign as provided under https://didsign.io/.
           </p>
 
           <p>(BSD 4-Clause)</p>
