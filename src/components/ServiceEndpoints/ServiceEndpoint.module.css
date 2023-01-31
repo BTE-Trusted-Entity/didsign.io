@@ -78,3 +78,44 @@
   left: 5px;
   background: url('spinning-circles.svg') no-repeat left/100%;
 }
+
+.credentials {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.credential {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-top: 5px;
+  width: 100%;
+  gap: 10px;
+  margin-bottom: 18px;
+  border-bottom: 1px dotted rgba(var(--color-pale-blue-rgb) / 25%);
+  padding-bottom: 18px;
+}
+
+.credential:last-child {
+  padding: 0;
+  border: none;
+}
+
+.error {
+  composes: credential;
+}
+
+.collapse {
+  align-self: flex-end;
+  display: inline-flex;
+  border: none;
+  background: url('chevron_up_blue.svg') no-repeat center right;
+  color: var(--color-medium-blue);
+  cursor: pointer;
+  font-size: 12px;
+  font-family: Overpass, sans-serif;
+  margin-bottom: 8px;
+  padding-right: 12px;
+}
