@@ -9,7 +9,7 @@ import {
 import { Fragment, useCallback, useState } from 'react';
 import classnames from 'classnames';
 
-import { map } from 'lodash-es';
+import { every, map } from 'lodash-es';
 
 import * as styles from './ServiceEndpoint.module.css';
 
@@ -36,8 +36,18 @@ function isPublishedCollection(
   if (!Array.isArray(json)) {
     return false;
   }
-  const [{ credential }] = json as KiltPublishedCredentialCollectionV1;
-  return Credential.isICredential(credential);
+
+  if (json.length === 0) {
+    return false;
+  }
+
+  const credentials = map(
+    json as KiltPublishedCredentialCollectionV1,
+    'credential',
+  );
+  return every(credentials, (credential) =>
+    Credential.isICredential(credential),
+  );
 }
 
 interface Props {
@@ -65,6 +75,11 @@ export function ServiceEndpoint({ url, endpointType, did }: Props) {
       const response = await fetch(url);
       const json = await response.json();
 
+      if (isPublishedCollection(json, endpointType)) {
+        setCredentials(map(json, 'credential'));
+        return;
+      }
+
       if (isLegacyCredential(json)) {
         setCredentials([json.request]);
         return;
@@ -75,13 +90,8 @@ export function ServiceEndpoint({ url, endpointType, did }: Props) {
         return;
       }
 
-      if (isPublishedCollection(json, endpointType)) {
-        setCredentials(map(json, 'credential'));
-        return;
-      }
-
-      throw new Error();
-    } catch (err) {
+      throw new Error('No Kilt credentials found');
+    } catch {
       error.on();
     } finally {
       fetching.off();
