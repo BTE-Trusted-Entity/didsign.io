@@ -49,15 +49,15 @@ interface Props {
 export function ServiceEndpoint({ url, endpointType, did }: Props) {
   const [credentials, setCredentials] = useState<ICredential[]>();
 
+  const fetched = Boolean(credentials);
+
   const fetching = useBooleanState();
-  const fetched = useBooleanState();
   const error = useBooleanState();
 
   const handleClose = useCallback(() => {
     error.off();
-    fetched.off();
     setCredentials(undefined);
-  }, [error, fetched]);
+  }, [error]);
 
   const handleFetch = useCallback(async () => {
     try {
@@ -80,14 +80,13 @@ export function ServiceEndpoint({ url, endpointType, did }: Props) {
         return;
       }
 
-      throw new Error();
-    } catch (err) {
+      error.on();
+    } catch {
       error.on();
     } finally {
       fetching.off();
-      fetched.on();
     }
-  }, [fetched, fetching, url, endpointType, error]);
+  }, [fetching, url, endpointType, error]);
 
   return (
     <div className={styles.container}>
@@ -96,13 +95,13 @@ export function ServiceEndpoint({ url, endpointType, did }: Props) {
 
         <button
           className={classnames({
-            [styles.closeButton]: fetched.current,
-            [styles.fetchButton]: !fetched.current,
+            [styles.closeButton]: fetched,
+            [styles.fetchButton]: !fetched,
             [styles.loader]: fetching.current,
           })}
-          onClick={fetched.current ? handleClose : handleFetch}
+          onClick={fetched ? handleClose : handleFetch}
         >
-          <span>{fetched.current ? 'Close' : 'Fetch'}</span>
+          <span>{fetched ? 'Close' : 'Fetch'}</span>
         </button>
       </div>
 
