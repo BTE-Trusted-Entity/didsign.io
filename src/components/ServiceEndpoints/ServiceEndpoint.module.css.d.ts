@@ -7,3 +7,7 @@ export const fetchButton: string;
 export const closeButton: string;
 export const loader: string;
 export const spinner: string;
+export const credentials: string;
+export const credential: string;
+export const error: string;
+export const collapse: string;

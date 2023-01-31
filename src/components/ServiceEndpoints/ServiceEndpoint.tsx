@@ -1,12 +1,44 @@
-import type { DidUri } from '@kiltprotocol/sdk-js';
+import {
+  Credential,
+  DidUri,
+  ICredential,
+  KiltPublishedCredentialCollectionV1,
+  KiltPublishedCredentialCollectionV1Type,
+} from '@kiltprotocol/sdk-js';
 
-import { useCallback, useState } from 'react';
+import { Fragment, useCallback, useState } from 'react';
 import classnames from 'classnames';
+
+import { map } from 'lodash-es';
 
 import * as styles from './ServiceEndpoint.module.css';
 
 import { CredentialVerifier } from '../Credential/Credential';
 import { useBooleanState } from '../../hooks/useBooleanState';
+
+function isLegacyCredential(credential: unknown): credential is {
+  request: ICredential;
+} {
+  return (
+    typeof credential === 'object' &&
+    credential !== null &&
+    'request' in credential
+  );
+}
+
+function isPublishedCollection(
+  json: unknown,
+  endpointType: string,
+): json is KiltPublishedCredentialCollectionV1 {
+  if (endpointType !== KiltPublishedCredentialCollectionV1Type) {
+    return false;
+  }
+  if (!Array.isArray(json)) {
+    return false;
+  }
+  const [{ credential }] = json as KiltPublishedCredentialCollectionV1;
+  return Credential.isICredential(credential);
+}
 
 interface Props {
   url: string;
@@ -15,40 +47,47 @@ interface Props {
 }
 
 export function ServiceEndpoint({ url, endpointType, did }: Props) {
-  const [credential, setCredential] = useState();
+  const [credentials, setCredentials] = useState<ICredential[]>();
 
   const fetching = useBooleanState();
   const fetched = useBooleanState();
-  const [error, setError] = useState<string>();
+  const error = useBooleanState();
+
+  const handleClose = useCallback(() => {
+    error.off();
+    fetched.off();
+    setCredentials(undefined);
+  }, [error, fetched]);
 
   const handleFetch = useCallback(async () => {
-    if (fetched.current) {
-      fetched.off();
-      setCredential(undefined);
-      return;
-    }
-
     try {
-      if (credential) {
+      fetching.on();
+      const response = await fetch(url);
+      const json = await response.json();
+
+      if (isLegacyCredential(json)) {
+        setCredentials([json.request]);
         return;
       }
 
-      fetching.on();
-      const response = await fetch(url);
-      const result = await response.json();
-      setCredential(result);
-
-      if (!did) {
-        throw new Error('No DID');
+      if (Credential.isICredential(json)) {
+        setCredentials([json]);
+        return;
       }
-    } catch (error) {
-      console.log(error);
-      setError('Cannot fetch the credentials from the given endpoint');
+
+      if (isPublishedCollection(json, endpointType)) {
+        setCredentials(map(json, 'credential'));
+        return;
+      }
+
+      throw new Error();
+    } catch (err) {
+      error.on();
     } finally {
       fetching.off();
       fetched.on();
     }
-  }, [credential, did, fetched, fetching, url]);
+  }, [fetched, fetching, url, endpointType, error]);
 
   return (
     <div className={styles.container}>
@@ -61,7 +100,7 @@ export function ServiceEndpoint({ url, endpointType, did }: Props) {
             [styles.fetchButton]: !fetched.current,
             [styles.loader]: fetching.current,
           })}
-          onClick={handleFetch}
+          onClick={fetched.current ? handleClose : handleFetch}
         >
           <span>{fetched.current ? 'Close' : 'Fetch'}</span>
         </button>
@@ -69,13 +108,30 @@ export function ServiceEndpoint({ url, endpointType, did }: Props) {
 
       <span className={styles.endpoint}>{url}</span>
 
-      {fetched.current && (
-        <CredentialVerifier
-          credential={credential}
-          endpointType={endpointType}
-          did={did}
-          initialError={error}
-        />
+      {error.current && (
+        <div className={styles.error}>
+          <CredentialVerifier
+            did={did}
+            initialError="Cannot fetch the credentials from the given endpoint"
+          />
+        </div>
+      )}
+
+      {credentials && !error.current && (
+        <Fragment>
+          <ul className={styles.credentials}>
+            {credentials.map((credential) => (
+              <li key={credential.rootHash} className={styles.credential}>
+                <CredentialVerifier did={did} credential={credential} />
+              </li>
+            ))}
+          </ul>
+          {credentials.length > 1 && (
+            <button onClick={handleClose} className={styles.collapse}>
+              collapse
+            </button>
+          )}
+        </Fragment>
       )}
     </div>
   );
