@@ -228,8 +228,8 @@ export function Terms() {
           </p>
           <p>
             At launch, the Website supports only the Sporran wallet developed by
-            BOTLabs GmbH; other wallets may follow over time. For those other
-            wallets, the process might differ slightly.
+            B.T.E. BOTLabs Trusted Entity GmbH; other wallets may follow over
+            time. For those other wallets, the process might differ slightly.
           </p>
           <p>The usage of the DIDsign Website is free of charge.</p>
         </section>
