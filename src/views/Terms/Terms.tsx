@@ -228,8 +228,8 @@ export function Terms() {
           </p>
           <p>
             At launch, the Website supports only the Sporran wallet developed by
-            B.T.E. BOTLabs Trusted Entity GmbH; other wallets may follow over
-            time. For those other wallets, the process might differ slightly.
+            BOTLabs GmbH; other wallets may follow over time. For those other
+            wallets, the process might differ slightly.
           </p>
           <p>The usage of the DIDsign Website is free of charge.</p>
         </section>
@@ -424,13 +424,13 @@ export function Terms() {
         <section>
           <h2 className={styles.sectionHeading}>License to the Website </h2>
 
-          <p>Copyright (c) 2022, BOTLabs GmbH. All rights reserved.</p>
+          <p>Copyright (c) 2022-2023, BOTLabs GmbH. All rights reserved.</p>
         </section>
 
         <section>
           <h2 className={styles.sectionHeading}>License to the Software</h2>
 
-          <p>Copyright (c) 2022, built on KILT. All rights reserved.</p>
+          <p>Copyright (c) 2022-2023, built on KILT. All rights reserved.</p>
 
           <p>
             Redistribution and use in source and binary forms, with or without

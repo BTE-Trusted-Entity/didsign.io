@@ -8,7 +8,7 @@ export async function getKiltAccountsWithEnoughBalance() {
   const api = await apiPromise;
   const genesisHash = api.genesisHash.toHex();
 
-  await web3Enable('DIDsign by BTE');
+  await web3Enable('DIDsign by BOTLabs');
   const allAccounts = await web3Accounts();
 
   const kiltAccounts = allAccounts.filter(
