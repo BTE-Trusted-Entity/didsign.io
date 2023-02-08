@@ -8,7 +8,7 @@ import {
   useState,
 } from 'react';
 import BN from 'bn.js';
-import { web3FromAddress } from '@polkadot/extension-dapp';
+import { web3FromSource } from '@polkadot/extension-dapp';
 import { remove } from 'lodash-es';
 import classnames from 'classnames';
 
@@ -158,11 +158,11 @@ export function Timestamp() {
 
         const api = await apiPromise;
         const extrinsic = await getExtrinsic(signature);
-        const injector = await web3FromAddress(selectedAccount.address);
+        const { signer } = await web3FromSource(selectedAccount.source);
 
         await extrinsic.signAndSend(
           selectedAccount.address,
-          { signer: injector.signer },
+          { signer },
           ({ status, dispatchError }) => {
             if (status.isReady) {
               setStatus('finalizing');
