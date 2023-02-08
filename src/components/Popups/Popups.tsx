@@ -250,7 +250,7 @@ export function TimestampError({ onDismiss }: Props) {
         <h2 className={styles.attentionHeading}>Error Timestamping</h2>
 
         <p className={styles.text}>
-          Click “Try Again” or reload the page or restart your browser.
+          Try again or reload the page or restart your browser.
         </p>
 
         <button className={styles.dismissButton} onClick={onDismiss}>

@@ -4,12 +4,11 @@ import {
   KeyboardEvent,
   useCallback,
   useEffect,
-  useMemo,
   useState,
 } from 'react';
 import BN from 'bn.js';
 import { web3FromSource } from '@polkadot/extension-dapp';
-import { remove } from 'lodash-es';
+import { without } from 'lodash-es';
 import classnames from 'classnames';
 
 import * as styles from './Timestamp.module.css';
@@ -108,9 +107,9 @@ export function Timestamp() {
     [isAccountsMenuOpen],
   );
 
-  const remainingAccounts = useMemo(() => {
-    return remove(accounts || [], selectedAccount);
-  }, [selectedAccount, accounts]);
+  const remainingAccounts = !selectedAccount
+    ? accounts
+    : without(accounts, selectedAccount);
 
   const handleFinalized = useCallback(
     async (blockHash: string, txHash: string) => {
@@ -209,10 +208,6 @@ export function Timestamp() {
     }
   }
 
-  function handleTryAgain() {
-    setStatus('start');
-  }
-
   return (
     <div className={styles.container}>
       <div className={styles.timestamp}>
@@ -277,7 +272,7 @@ export function Timestamp() {
                       {remainingAccounts?.map((account) => (
                         <li
                           className={styles.option}
-                          key={account.address}
+                          key={`${account.source}${account.address}`}
                           onClick={() => handleSelectClick(account)}
                           onKeyPress={(event) =>
                             handleSelectKeyPress(account, event)
@@ -311,7 +306,7 @@ export function Timestamp() {
           <section className={styles.section}>{timestamp}</section>
         )}
 
-        {status === 'error' && <TimestampError onDismiss={handleTryAgain} />}
+        {status === 'error' && <TimestampError onDismiss={handleDismiss} />}
       </div>
     </div>
   );
