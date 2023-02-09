@@ -147,7 +147,7 @@
   composes: container;
   bottom: 113px;
   top: initial;
-}
+} 
 
 .imprintPopup {
   composes: popup;
@@ -172,4 +172,13 @@
 .imprintBottomText {
   composes: text;
   margin-top: 15px;
+}
+
+.errorText {
+  composes: text;
+  text-align: center;
+}
+
+.link {
+  color: inherit;
 }
