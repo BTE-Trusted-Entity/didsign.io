@@ -315,6 +315,59 @@ export function TimestampWarning({ onDismiss, onOkay }: Props) {
   );
 }
 
+export function NotAuthorized({ onDismiss }: Props) {
+  usePopupBackdrop();
+  useFixedBody();
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.popup}>
+        <h2 className={styles.infoHeading}>Authorization error</h2>
+
+        <p className={styles.errorText}>The authorization was rejected.</p>
+        <p className={styles.errorText}>
+          Follow the instructions on our{' '}
+          <a
+            className={styles.link}
+            href="https://support.kilt.io/support/solutions/articles/80000968082-how-to-grant-access-to-website-"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Tech Support
+          </a>{' '}
+          site to establish the connection between DIDsign and your wallet.
+        </p>
+
+        <button className={styles.cancelButton} onClick={onDismiss}>
+          Dismiss
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export function Rejected({ onDismiss }: Props) {
+  usePopupBackdrop();
+  useFixedBody();
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.popup}>
+        <h2 className={styles.infoHeading}>Signing error</h2>
+
+        <p className={styles.errorText}>
+          Your wallet was closed before the request was signed.
+        </p>
+        <p className={styles.errorText}>Click “Dismiss” to try again.</p>
+
+        <button className={styles.cancelButton} onClick={onDismiss}>
+          Dismiss
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export function Backdrop() {
   const { visible } = useShowPopup();
   if (!visible) {

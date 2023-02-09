@@ -173,3 +173,12 @@
   composes: text;
   margin-top: 15px;
 }
+
+.errorText {
+  composes: text;
+  text-align: center;
+}
+
+.link {
+  color: inherit;
+}

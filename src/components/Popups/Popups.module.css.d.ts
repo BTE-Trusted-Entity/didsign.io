@@ -18,3 +18,5 @@ export const imprint: string;
 export const imprintPopup: string;
 export const imprintText: string;
 export const imprintBottomText: string;
+export const errorText: string;
+export const link: string;

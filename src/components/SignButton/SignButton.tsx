@@ -11,7 +11,9 @@ import {
 } from '../../utils/sign-helpers';
 import { useFiles } from '../Files/Files';
 import {
+  NotAuthorized,
   NoWalletPopup,
+  Rejected,
   SignButtonInfoPopup,
   SignErrorPopup,
   SignPopup,
@@ -21,7 +23,7 @@ import { useBooleanState } from '../../hooks/useBooleanState';
 
 export function SignButton() {
   const [signStatus, setSignStatus] = useState<
-    'SignError' | 'Default' | 'No Sporran'
+    'SignError' | 'Default' | 'No Sporran' | 'NotAuthorized' | 'Rejected'
   >();
   const { files, setFiles } = useFiles();
   const { setSignature } = useSignature();
@@ -59,9 +61,17 @@ export function SignButton() {
       } else {
         const { message } = exceptionToError(error);
 
-        if (message.includes('Rejected')) {
-          setSignStatus('SignError');
+        if (message === 'Not authorized') {
+          setSignStatus('NotAuthorized');
+          return;
         }
+
+        if (message === 'Rejected' || message.includes('User closed')) {
+          setSignStatus('Rejected');
+          return;
+        }
+
+        setSignStatus('SignError');
       }
     }
   }, [files, setFiles, setSignature]);
@@ -98,6 +108,12 @@ export function SignButton() {
         {signStatus === 'SignError' && (
           <SignErrorPopup onDismiss={handleDismiss} />
         )}
+
+        {signStatus === 'NotAuthorized' && (
+          <NotAuthorized onDismiss={handleDismiss} />
+        )}
+
+        {signStatus === 'Rejected' && <Rejected onDismiss={handleDismiss} />}
       </div>
     </div>
   );
