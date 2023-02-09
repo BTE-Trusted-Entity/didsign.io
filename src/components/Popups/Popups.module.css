@@ -147,7 +147,7 @@
   composes: container;
   bottom: 113px;
   top: initial;
-}
+} 
 
 .imprintPopup {
   composes: popup;
