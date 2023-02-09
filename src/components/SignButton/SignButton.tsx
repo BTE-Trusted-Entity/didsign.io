@@ -67,7 +67,6 @@ export function SignButton() {
         }
 
         if (message === 'Rejected' || message.includes('User closed')) {
-          console.log('1');
           setSignStatus('Rejected');
           return;
         }
