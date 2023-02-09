@@ -358,7 +358,7 @@ export function Rejected({ onDismiss }: Props) {
         <p className={styles.errorText}>
           Your wallet was closed before the request was signed.
         </p>
-        <p className={styles.errorText}>Click “Dismiss“ to try again.</p>
+        <p className={styles.errorText}>Click “Dismiss” to try again.</p>
 
         <button className={styles.cancelButton} onClick={onDismiss}>
           Dismiss
