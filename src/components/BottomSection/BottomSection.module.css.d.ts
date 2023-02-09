@@ -1,5 +1,4 @@
 export const __esModule: true;
-export const bottomContainer: string;
 export const bottomSection: string;
 export const infoLink: string;
 export const infoItem: string;
