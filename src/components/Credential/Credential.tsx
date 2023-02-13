@@ -72,10 +72,30 @@ export function CredentialVerifier({ credential, did, initialError }: Props) {
           </div>
         ))}
 
-      <div className={styles.property}>
-        <span className={styles.name}>{error ? 'Error' : 'Attester'}</span>
-        <span className={styles.value}>{error ? error : attester}</span>
-      </div>
+      {error && (
+        <div className={styles.property}>
+          <span className={styles.name}>Error</span>
+          <span className={styles.value}>{error}</span>
+        </div>
+      )}
+
+      {!error && (
+        <div className={styles.property}>
+          <span className={styles.name}>Attester</span>
+          <span className={styles.value}>
+            {!attester.startsWith('w3n:') && attester}
+
+            {attester.startsWith('w3n:') && (
+              <a
+                className={styles.anchor}
+                href={`https://w3n.id/${attester.replace('w3n:', '')}`}
+              >
+                {attester}
+              </a>
+            )}
+          </span>
+        </div>
+      )}
 
       <div className={styles.property}>
         <span className={styles.name}>Valid</span>
