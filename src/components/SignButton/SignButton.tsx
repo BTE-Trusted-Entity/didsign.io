@@ -28,12 +28,14 @@ export function SignButton() {
   const { files, setFiles } = useFiles();
   const { setSignature } = useSignature();
   const signPopup = useBooleanState();
+  const isProcessing = useBooleanState();
 
   const handleSign = useCallback(async () => {
     if (files.length === 0) {
       return;
     }
-    setTimeout(() => setSignStatus('Default'), 100);
+    isProcessing.on();
+    setSignStatus('Default');
 
     try {
       const hashes = files.map(({ hash }) => hash);
@@ -73,8 +75,10 @@ export function SignButton() {
 
         setSignStatus('SignError');
       }
+    } finally {
+      isProcessing.off();
     }
-  }, [files, setFiles, setSignature]);
+  }, [files, setFiles, setSignature, isProcessing]);
 
   const handleDismiss = useCallback(() => {
     setSignStatus(undefined);
@@ -85,7 +89,7 @@ export function SignButton() {
       <div className={styles.buttonContainer}>
         <button
           className={styles.signButton}
-          disabled={files.length === 0}
+          disabled={files.length === 0 || isProcessing.current}
           onClick={handleSign}
         >
           Sign
