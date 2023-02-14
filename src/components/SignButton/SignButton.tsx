@@ -33,7 +33,7 @@ export function SignButton() {
     if (files.length === 0) {
       return;
     }
-    setSignStatus('Default');
+    setTimeout(() => setSignStatus('Default'), 100);
 
     try {
       const hashes = files.map(({ hash }) => hash);
@@ -56,6 +56,7 @@ export function SignButton() {
         ...(credentials && { credentials }),
       }));
     } catch (error) {
+      console.error(error);
       if (!window.kilt.sporran) {
         setSignStatus('No Sporran');
       } else {
