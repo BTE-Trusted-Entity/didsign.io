@@ -47,6 +47,7 @@
   font-weight: bold;
   word-break: break-all;
   width: 550px;
+  flex-wrap: wrap;
 }
 
 .credentialContainer {
@@ -70,11 +71,17 @@
   border-bottom: dotted 2px #4d6b85;
 }
 
-.text a {
+.anchor {
   color: var(--color-medium-blue);
-  padding-left: 10px;
-  padding-right: 20px;
   background: url('icon_link.svg') no-repeat right 40%;
+  padding-right: 20px;
+  margin-right: 50%;
+}
+
+.subscan {
+  composes: anchor;
+  padding-left: 10px;
+  margin-right: auto;
 }
 
 .errorText {

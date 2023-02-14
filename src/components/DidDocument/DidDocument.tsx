@@ -53,7 +53,14 @@ export function DidDocument({ signDoc }: { signDoc: SignDoc }) {
         <span className={styles.text}>
           {web3name && (
             <Fragment>
-              w3n:{web3name}
+              <a
+                className={styles.anchor}
+                href={`https://w3n.id/${web3name}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                w3n:{web3name}
+              </a>
               <br />
             </Fragment>
           )}
@@ -66,6 +73,7 @@ export function DidDocument({ signDoc }: { signDoc: SignDoc }) {
           {timestamp || 'No timestamp available'}
           {remark && (
             <a
+              className={styles.subscan}
               href={`${subscanHost}/extrinsic/${remark.txHash}`}
               target="_blank"
               rel="noreferrer"

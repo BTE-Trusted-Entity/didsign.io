@@ -89,6 +89,8 @@ export function CredentialVerifier({ credential, did, initialError }: Props) {
               <a
                 className={styles.anchor}
                 href={`https://w3n.id/${attester.replace('w3n:', '')}`}
+                target="_blank"
+                rel="noreferrer"
               >
                 {attester}
               </a>

@@ -6,6 +6,8 @@ export const verificationIcon: string;
 export const text: string;
 export const credentialContainer: string;
 export const credentialsWrapper: string;
+export const anchor: string;
+export const subscan: string;
 export const errorText: string;
 export const endpointsWrapper: string;
 export const title: string;
