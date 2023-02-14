@@ -56,7 +56,6 @@ export function SignButton() {
         ...(credentials && { credentials }),
       }));
     } catch (error) {
-      console.error(error);
       if (!window.kilt.sporran) {
         setSignStatus('No Sporran');
       } else {
