@@ -8,7 +8,7 @@ export function InfoLink() {
         <a
           target="_blank"
           rel="noreferrer"
-          href="https://www.trusted-entity.io/assets/pdf/Upgrading-to-on-chain-DID.pdf"
+          href="https://kilt-protocol.org/files/How-to-Guide-Get-Your-DID.pdf"
         >
           Read here
         </a>
@@ -18,7 +18,7 @@ export function InfoLink() {
         <a
           target="_blank"
           rel="noreferrer"
-          href="https://www.trusted-entity.io/assets/pdf/How_To_Guide_web3name_link_address_Full_May22.pdf"
+          href="https://kilt-protocol.org/files/How-to-Guide-Get-Your-web3name.pdf"
         >
           Read here
         </a>
