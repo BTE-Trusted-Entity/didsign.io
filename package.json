@@ -12,7 +12,7 @@
     "build": "parcel build",
     "lint-js": "eslint --max-warnings 0 --config ./.eslintrc.json \"src/**/*.ts*\"",
     "lint-css": "stylelint --max-warnings 0 --fix \"src/**/*.css\"",
-    "lint": "yarn run lint-css --formatter github && yarn run lint-js --format github-actions",
+    "lint": "yarn run lint-css --formatter github && yarn run lint-js",
     "check": "tsc --noEmit",
     "test-size": "bundlewatch --config bundlewatch.config.json",
     "prettify": "prettier --write \"src/**/*.ts*\" \"src/**/*.css*\"",

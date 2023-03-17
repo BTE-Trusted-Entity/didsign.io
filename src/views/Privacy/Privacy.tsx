@@ -2,7 +2,7 @@ import * as styles from './Privacy.module.css';
 
 export function Privacy() {
   return (
-    <main className={styles.container}>
+    <main className={styles.container} >
       <div className={styles.content}>
         <h1 className={styles.heading}>Privacy Policy</h1>
         <section>
