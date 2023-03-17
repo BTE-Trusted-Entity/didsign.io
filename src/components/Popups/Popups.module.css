@@ -29,8 +29,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background:
-    url('popup_bubbles.svg') no-repeat bottom left,
+  background: url('popup_bubbles.svg') no-repeat bottom left,
     var(--color-silver-blue);
   border-radius: 5px;
   padding: 15px 30px 20px;
@@ -57,9 +56,7 @@
 
 .attentionHeading {
   composes: heading;
-  background:
-    url('iconBIG_attention.svg') no-repeat center
-    top;
+  background: url('iconBIG_attention.svg') no-repeat center top;
 }
 
 .spinnerHeading {
@@ -86,9 +83,7 @@
 
 .imprintHeading {
   composes: heading;
-  background:
-    url('bte_logo_black.png') no-repeat center
-    top/auto 100px;
+  background: url('bte_logo_black.png') no-repeat center top/auto 100px;
   padding-top: 130px;
   font-size: 14px;
 }
