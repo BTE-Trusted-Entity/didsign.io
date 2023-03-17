@@ -35,15 +35,13 @@
 
 .fileOk {
   composes: file;
-  background:
-    url('../../images/icon_ok.svg') content-box no-repeat center
-    right 32px;
+  background: url('../../images/icon_ok.svg') content-box no-repeat center right
+    32px;
 }
 
 .fileInvalid {
   composes: file;
-  background:
-    url('../../images/icon_attention.svg') content-box no-repeat
+  background: url('../../images/icon_attention.svg') content-box no-repeat
     center right 32px;
 }
 
@@ -67,14 +65,11 @@
 
 .unzippedFileOk {
   composes: file;
-  background:
-    url('../../images/icon_ok.svg') content-box no-repeat center
-    right;
+  background: url('../../images/icon_ok.svg') content-box no-repeat center right;
 }
 
 .unzippedFileInvalid {
   composes: file;
-  background:
-    url('../../images/icon_attention.svg') content-box no-repeat
+  background: url('../../images/icon_attention.svg') content-box no-repeat
     center right;
 }

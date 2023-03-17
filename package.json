@@ -11,11 +11,11 @@
     "dev": "parcel --open",
     "build": "parcel build",
     "lint-js": "eslint --max-warnings 0 --config ./.eslintrc.json \"src/**/*.ts*\"",
-    "lint-css": "stylelint \"src/**/*.css\"",
-    "lint": "yarn run lint-css && yarn run lint-js",
+    "lint-css": "stylelint --max-warnings 0 --fix \"src/**/*.css\"",
+    "lint": "yarn run lint-css --formatter github && yarn run lint-js",
     "check": "tsc --noEmit",
     "test-size": "bundlewatch --config bundlewatch.config.json",
-    "prettify": "prettier --write \"src/**/*.ts*\"",
+    "prettify": "prettier --write \"src/**/*.ts*\" \"src/**/*.css*\"",
     "css": "tcm --namedExports --pattern 'src/**/*.module.css' && eslint --fix --config ./.eslintrc.json \"src/**/*.css.d.ts\""
   },
   "dependencies": {
@@ -58,7 +58,7 @@
     "prettier": "2.8.4",
     "process": "^0.11.10",
     "stream-browserify": "^3.0.0",
-    "stylelint": "^15.2.0",
+    "stylelint": "^15.3.0",
     "stylelint-config-css-modules": "^4.2.0",
     "stylelint-config-standard": "^30.0.1",
     "typed-css-modules": "^0.7.2",

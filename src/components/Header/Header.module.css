@@ -10,8 +10,8 @@
   align-items: center;
   position: relative;
   height: 76px;
-  background:
-    url('PrimaryHeaderLeftBubbles.svg') no-repeat left 18px / auto 100%,
+  background: url('PrimaryHeaderLeftBubbles.svg') no-repeat left 18px / auto
+      100%,
     url('PrimaryHeaderRightBubbles.svg') no-repeat right/auto 110%,
     var(--color-dark-purple);
 }
