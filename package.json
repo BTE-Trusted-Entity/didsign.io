@@ -8,8 +8,8 @@
   "license": "BSD-4-Clause",
   "type": "module",
   "scripts": {
-    "dev": "parcel --open",
-    "build": "parcel build",
+    "dev": "vite",
+    "build": "vite build",
     "lint-js": "eslint --max-warnings 0 --config ./.eslintrc.json \"src/**/*.ts*\"",
     "lint-css": "stylelint --max-warnings 0 --fix \"src/**/*.css\"",
     "lint": "yarn run lint-css --formatter github && yarn run lint-js",
@@ -45,6 +45,7 @@
     "@types/react-dom": "^18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",
+    "@vitejs/plugin-react": "^3.1.0",
     "bundlewatch": "^0.3.3",
     "eslint": "^8.36.0",
     "eslint-config-prettier": "^8.7.0",
@@ -62,7 +63,8 @@
     "stylelint-config-css-modules": "^4.2.0",
     "stylelint-config-standard": "^31.0.0",
     "typed-css-modules": "^0.7.2",
-    "typescript": "^5.0.2"
+    "typescript": "^5.0.2",
+    "vite": "^4.2.0"
   },
   "alias": {
     "multiformats/bases/base16": "./node_modules/multiformats/src/bases/base16.js",

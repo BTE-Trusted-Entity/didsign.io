@@ -7,7 +7,7 @@ const subscanHosts: Record<string, string | undefined> = {
 
 export function useSubscanHost(): string | undefined {
   const kiltEndpoint =
-    process.env.REACT_APP_CHAIN_ENDPOINT || 'wss://spiritnet.kilt.io';
+    import.meta.env.REACT_APP_CHAIN_ENDPOINT || 'wss://spiritnet.kilt.io';
 
   return subscanHosts[kiltEndpoint];
 }

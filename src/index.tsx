@@ -16,7 +16,7 @@ import { Terms } from './views/Terms/Terms';
 import { Privacy } from './views/Privacy/Privacy';
 import { Imprint } from './views/Imprint/Imprint';
 
-const isMaintenance = process.env.REACT_APP_MAINTENANCE === 'true';
+const isMaintenance = import.meta.env.REACT_APP_MAINTENANCE === 'true';
 const root = document.getElementById('root');
 if (!root) throw new Error('Cannot find #root to render');
 
