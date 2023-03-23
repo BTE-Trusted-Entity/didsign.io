@@ -1880,10 +1880,10 @@
     "@typescript-eslint/types" "5.56.0"
     eslint-visitor-keys "^3.3.0"
 
-"@zip.js/zip.js@^2.6.79":
-  version "2.6.79"
-  resolved "https://registry.yarnpkg.com/@zip.js/zip.js/-/zip.js-2.6.79.tgz#ddef50d4bd2672ac24be92cf8dff949cb1e74cb7"
-  integrity sha512-eQbCe2NHEaB9VqX4PQcbca8mnjjQNXZNudvCnGbtquujHy8vy9D2RSWT8OmKV2Ew6MPcEwDJJmqb+1tk1WcMwg==
+"@zip.js/zip.js@^2.6.81":
+  version "2.6.81"
+  resolved "https://registry.yarnpkg.com/@zip.js/zip.js/-/zip.js-2.6.81.tgz#c3c9618a8e02f3a24d359a0a14d46985fea971f5"
+  integrity sha512-VXrwa5fthYq74sIZsHarCFVSwnKdispTd/WQBgcNEuB9X0N3L5s8odRCjx9Zw6XsvpG5krqB4ZN4X0lLMyjgDA==
 
 abortcontroller-polyfill@^1.1.9:
   version "1.7.3"
