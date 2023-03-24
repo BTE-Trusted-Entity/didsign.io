@@ -3,11 +3,10 @@
   height: calc(100vh - 140px);
   display: flex;
   justify-content: center;
-  background:
-    url("../../components/Layout/BottomLeftBubble.svg") no-repeat
-    bottom left / auto 40%,
-    url("../../components/Layout/BottomRightBubble.svg") no-repeat bottom right /
-    auto 40%,
+  background: url('../../components/Layout/BottomLeftBubble.svg') no-repeat
+      bottom left / auto 40%,
+    url('../../components/Layout/BottomRightBubble.svg') no-repeat bottom right /
+      auto 40%,
     var(--color-silver-blue);
 }
 

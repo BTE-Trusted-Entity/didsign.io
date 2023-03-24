@@ -10,10 +10,9 @@
   align-items: center;
   position: relative;
   height: 76px;
-  background:
-    url("PrimaryHeaderLeftBubbles.svg") no-repeat left 18px / auto
-    100%,
-    url("PrimaryHeaderRightBubbles.svg") no-repeat right/auto 110%,
+  background: url('PrimaryHeaderLeftBubbles.svg') no-repeat left 18px / auto
+      100%,
+    url('PrimaryHeaderRightBubbles.svg') no-repeat right/auto 110%,
     var(--color-dark-purple);
 }
 
@@ -27,7 +26,7 @@
   width: 168.5px;
   height: 52px;
   border: none;
-  background: url("logo_DIDsign.svg") no-repeat;
+  background: url('logo_DIDsign.svg') no-repeat;
   cursor: pointer;
 }
 

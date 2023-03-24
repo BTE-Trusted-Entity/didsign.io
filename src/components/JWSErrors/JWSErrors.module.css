@@ -1,10 +1,10 @@
 .container {
-  composes: container from "../DidDocument/DidDocument.module.css";
+  composes: container from '../DidDocument/DidDocument.module.css';
   margin-bottom: 30px;
 }
 
 .wrapper {
-  composes: textWrapper from "../DidDocument/DidDocument.module.css";
+  composes: textWrapper from '../DidDocument/DidDocument.module.css';
 }
 
 .verificationText {
@@ -15,14 +15,14 @@
   letter-spacing: 0.11px;
   width: 80px;
   padding-right: 35px;
-  background: url("../../images/icon_attention.svg") no-repeat right 30%;
+  background: url('../../images/icon_attention.svg') no-repeat right 30%;
   color: var(--color-orange);
 }
 
 .title {
-  composes: errorTitle from "../DidDocument/DidDocument.module.css";
+  composes: errorTitle from '../DidDocument/DidDocument.module.css';
 }
 
 .text {
-  composes: errorText from "../DidDocument/DidDocument.module.css";
+  composes: errorText from '../DidDocument/DidDocument.module.css';
 }
