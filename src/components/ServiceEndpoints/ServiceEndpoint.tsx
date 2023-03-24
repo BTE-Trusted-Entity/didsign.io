@@ -3,7 +3,6 @@ import {
   DidUri,
   ICredential,
   KiltPublishedCredentialCollectionV1,
-  KiltPublishedCredentialCollectionV1Type,
 } from '@kiltprotocol/sdk-js';
 
 import { Fragment, useCallback, useState } from 'react';
@@ -28,11 +27,7 @@ function isLegacyCredential(credential: unknown): credential is {
 
 function isPublishedCollection(
   json: unknown,
-  endpointType: string,
 ): json is KiltPublishedCredentialCollectionV1 {
-  if (endpointType !== KiltPublishedCredentialCollectionV1Type) {
-    return false;
-  }
   if (!Array.isArray(json)) {
     return false;
   }
