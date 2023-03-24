@@ -70,7 +70,7 @@ export function ServiceEndpoint({ url, endpointType, did }: Props) {
       const response = await fetch(url);
       const json = await response.json();
 
-      if (isPublishedCollection(json, endpointType)) {
+      if (isPublishedCollection(json)) {
         setCredentials(map(json, 'credential'));
         return;
       }
@@ -92,7 +92,7 @@ export function ServiceEndpoint({ url, endpointType, did }: Props) {
       fetching.off();
       fetched.on();
     }
-  }, [fetched, fetching, url, endpointType, error]);
+  }, [fetched, fetching, url, error]);
 
   return (
     <div className={styles.container}>
