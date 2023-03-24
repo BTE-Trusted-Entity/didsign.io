@@ -64,18 +64,18 @@
 
 .didsignFile {
   composes: fileName;
-  background-image: url('doc_signature_NEW.svg');
+  background-image: url("doc_signature_NEW.svg");
   color: var(--color-pure-red);
 }
 
 .imageFile {
   composes: fileName;
-  background-image: url('doc_image.svg');
+  background-image: url("doc_image.svg");
 }
 
 .docFile {
   composes: fileName;
-  background-image: url('doc_generic.svg');
+  background-image: url("doc_generic.svg");
 }
 
 .iconButton {
@@ -88,5 +88,5 @@
 
 .deleteButton {
   composes: iconButton;
-  background: url('icon_delete.svg') no-repeat center/110%;
+  background: url("icon_delete.svg") no-repeat center/110%;
 }

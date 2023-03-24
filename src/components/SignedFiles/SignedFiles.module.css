@@ -1,41 +1,41 @@
 .container {
-  composes: container from '../Files/Files.module.css';
-  grid-template: 'heading list' / 15% auto;
+  composes: container from "../Files/Files.module.css";
+  grid-template: "heading list" / 15% auto;
 }
 
 .heading {
-  composes: heading from '../Files/Files.module.css';
+  composes: heading from "../Files/Files.module.css";
   grid-area: heading;
 }
 
 .list {
-  composes: list from '../Files/Files.module.css';
+  composes: list from "../Files/Files.module.css";
   grid-area: list;
 }
 
 .file {
-  composes: file from '../Files/Files.module.css';
+  composes: file from "../Files/Files.module.css";
 }
 
 .docFile {
-  composes: docFile from '../Files/Files.module.css';
+  composes: docFile from "../Files/Files.module.css";
 }
 
 .imageFile {
-  composes: imageFile from '../Files/Files.module.css';
+  composes: imageFile from "../Files/Files.module.css";
 }
 
 .didsignFile {
-  composes: didsignFile from '../Files/Files.module.css';
+  composes: didsignFile from "../Files/Files.module.css";
 }
 
 .deleteButton {
-  composes: deleteButton from '../Files/Files.module.css';
+  composes: deleteButton from "../Files/Files.module.css";
 }
 
 .infoButton {
-  composes: iconButton from '../Files/Files.module.css';
-  background: url('../../images/icon_info.svg') no-repeat center right/110%;
+  composes: iconButton from "../Files/Files.module.css";
+  background: url("../../images/icon_info.svg") no-repeat center right/110%;
 }
 
 .didsignInfo {

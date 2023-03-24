@@ -49,7 +49,7 @@
 }
 
 .infoItem:first-child::after {
-  content: '|';
+  content: "|";
   padding-left: 0.5rem;
 }
 
@@ -60,7 +60,7 @@
   display: inline-block;
   height: 40px;
   width: 38px;
-  background: url('../../images/puff.svg') no-repeat center/100%;
+  background: url("../../images/puff.svg") no-repeat center/100%;
 }
 
 .verificationText {
@@ -84,7 +84,7 @@ div.verificationText {
 
 .startOverButton {
   position: absolute;
-  background: url('button_start_over_NEW.svg') no-repeat center/100%;
+  background: url("button_start_over_NEW.svg") no-repeat center/100%;
   right: 0;
   bottom: 0;
   cursor: pointer;

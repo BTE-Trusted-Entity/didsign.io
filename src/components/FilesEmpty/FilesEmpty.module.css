@@ -1,16 +1,16 @@
 .container {
-  composes: container from '../Files/Files.module.css';
-  grid-template: 'heading list' / 15% auto;
+  composes: container from "../Files/Files.module.css";
+  grid-template: "heading list" / 15% auto;
 }
 
 .heading {
-  composes: heading from '../Files/Files.module.css';
+  composes: heading from "../Files/Files.module.css";
   grid-area: heading;
   color: var(--color-grey);
 }
 
 .list {
-  composes: list from '../Files/Files.module.css';
+  composes: list from "../Files/Files.module.css";
   grid-area: list;
   display: flex;
   flex-direction: column;

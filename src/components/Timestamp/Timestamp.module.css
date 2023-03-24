@@ -31,7 +31,7 @@
   font-weight: normal;
   padding-left: 36px;
   min-height: 34px;
-  background: url('timestamp.svg') no-repeat center left 5px;
+  background: url("timestamp.svg") no-repeat center left 5px;
 }
 
 .section {
@@ -110,7 +110,8 @@
   width: 100%;
   text-align: start;
   font-size: 14px;
-  background: url('chevron_down_dark.svg') no-repeat top 8px right 9px,
+  background:
+    url("chevron_down_dark.svg") no-repeat top 8px right 9px,
     var(--color-dropdown);
   cursor: pointer;
   color: rgb(var(--color-grey-rgb) / 75%);
@@ -125,7 +126,8 @@
 
 .closeButton {
   composes: openButton;
-  background: url('chevron_up_dark.svg') no-repeat top 8px right 9px,
+  background:
+    url("chevron_up_dark.svg") no-repeat top 8px right 9px,
     var(--color-dropdown);
   border-bottom: none;
 }

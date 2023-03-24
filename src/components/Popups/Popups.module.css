@@ -29,7 +29,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: url('popup_bubbles.svg') no-repeat bottom left,
+  background:
+    url("popup_bubbles.svg") no-repeat bottom left,
     var(--color-silver-blue);
   border-radius: 5px;
   padding: 15px 30px 20px;
@@ -51,17 +52,17 @@
 
 .infoHeading {
   composes: heading;
-  background: url('iconBIG_info.svg') no-repeat center top;
+  background: url("iconBIG_info.svg") no-repeat center top;
 }
 
 .attentionHeading {
   composes: heading;
-  background: url('iconBIG_attention.svg') no-repeat center top;
+  background: url("iconBIG_attention.svg") no-repeat center top;
 }
 
 .spinnerHeading {
   composes: heading;
-  background: url('../../images/puff.svg') no-repeat center top;
+  background: url("../../images/puff.svg") no-repeat center top;
   padding-top: 80px;
 }
 
@@ -74,16 +75,16 @@
 }
 
 .signatureHeading::before {
-  content: '';
+  content: "";
   display: inline-block;
   height: 18px;
   width: 10px;
-  background: url('icon_DID.svg') no-repeat center/auto;
+  background: url("icon_DID.svg") no-repeat center/auto;
 }
 
 .imprintHeading {
   composes: heading;
-  background: url('bte_logo_black.png') no-repeat center top/auto 100px;
+  background: url("bte_logo_black.png") no-repeat center top/auto 100px;
   padding-top: 130px;
   font-size: 14px;
 }

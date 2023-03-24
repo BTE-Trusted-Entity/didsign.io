@@ -49,20 +49,24 @@
   height: 22px;
   border-radius: 6px;
   color: white;
-  background: url('chevron_down_white.svg') no-repeat 90% / auto,
+  background:
+    url("chevron_down_white.svg") no-repeat 90% / auto,
     var(--color-medium-blue);
   cursor: pointer;
 }
 
 .closeButton {
   composes: fetchButton;
-  background: url('chevron_up_white.svg') no-repeat 90% / auto,
+  background:
+    url("chevron_up_white.svg") no-repeat 90% / auto,
     var(--color-medium-blue);
 }
 
 .loader {
-  background: url('spinning-circles.svg') no-repeat 10%/10%,
-    url('chevron_up_white.svg') no-repeat 90% / auto, var(--color-medium-blue);
+  background:
+    url("spinning-circles.svg") no-repeat 10%/10%,
+    url("chevron_up_white.svg") no-repeat 90% / auto,
+    var(--color-medium-blue);
 }
 
 .spinner {
@@ -71,7 +75,7 @@
   width: 12px;
   top: 5px;
   left: 5px;
-  background: url('spinning-circles.svg') no-repeat left/100%;
+  background: url("spinning-circles.svg") no-repeat left/100%;
 }
 
 .credentials {
@@ -106,7 +110,7 @@
   align-self: flex-end;
   display: inline-flex;
   border: none;
-  background: url('chevron_up_blue.svg') no-repeat center right;
+  background: url("chevron_up_blue.svg") no-repeat center right;
   color: var(--color-medium-blue);
   cursor: pointer;
   font-size: 12px;
