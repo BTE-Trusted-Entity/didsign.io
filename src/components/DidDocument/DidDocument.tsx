@@ -100,7 +100,7 @@ export function DidDocument({ signDoc }: { signDoc: SignDoc }) {
                 className={styles.credentialsWrapper}
               >
                 <span className={styles.text}>{name}</span>
-                <CredentialVerifier did={did} credential={credential} />
+                <CredentialVerifier did={did} credentialV1={{ credential }} />
               </div>
             ))}
           </div>

@@ -2,41 +2,90 @@ import { Fragment, useEffect, useState } from 'react';
 import {
   Did,
   DidUri,
-  IClaimContents,
   Credential,
-  ICredential,
+  KiltPublishedCredentialV1,
+  CType,
+  Attestation,
 } from '@kiltprotocol/sdk-js';
 
 import * as styles from './Credential.module.css';
 
-import {
-  getAttestationForRequest,
-  getW3NOrDid,
-  validateAttestation,
-} from '../../utils/verify-helper';
-import { useBooleanState } from '../../hooks/useBooleanState';
+import { apiPromise } from '../../utils/api';
 
-interface Props {
-  did: DidUri;
-
-  credential?: ICredential;
-  initialError?: string;
-}
-
-export function CredentialVerifier({ credential, did, initialError }: Props) {
-  const [claimContents, setClaimContents] = useState<IClaimContents>();
-  const isValid = useBooleanState(!initialError);
-  const [attester, setAttester] = useState('');
-  const [error, setError] = useState(initialError);
+function useChainData(credentialV1?: KiltPublishedCredentialV1) {
+  const [label, setLabel] = useState(credentialV1?.metadata?.label);
+  const [attester, setAttester] = useState<string | DidUri>();
+  const [error, setError] = useState<string>();
 
   useEffect(() => {
+    if (label || !credentialV1) {
+      return;
+    }
+
+    const { credential } = credentialV1;
+
     (async () => {
-      if (error || !credential) return;
+      try {
+        const { title } = await CType.fetchFromChain(
+          CType.hashToId(credential.claim.cTypeHash),
+        );
+        setLabel(title);
+      } catch {
+        // no error, credential can still be verified
+      }
+    })();
+  }, [label, credentialV1]);
 
-      setClaimContents(credential.claim.contents);
+  useEffect(() => {
+    if (!credentialV1) {
+      return;
+    }
+    const { credential } = credentialV1;
 
+    (async () => {
+      const api = await apiPromise;
+      const attestationChain = await api.query.attestation.attestations(
+        credential.rootHash,
+      );
+
+      if (attestationChain.isNone) {
+        setError('No Attestation found for credential');
+        return;
+      }
+      const attestation = Attestation.fromChain(
+        attestationChain,
+        credential.rootHash,
+      );
+
+      const didChain = await api.call.did.query(Did.toChain(attestation.owner));
+      if (didChain.isNone) {
+        setError('Unable to fetch attester details');
+        return;
+      }
+      const { web3Name } = Did.linkedInfoFromChain(didChain);
+      setAttester(web3Name ? `w3n:${web3Name}` : attestation.owner);
+
+      if (attestation.revoked) {
+        setError('Credential attestation revoked');
+        return;
+      }
+    })();
+  }, [credentialV1]);
+
+  return { label, attester, error };
+}
+
+function useVerify(did: DidUri, credentialV1?: KiltPublishedCredentialV1) {
+  const [error, setError] = useState<string>();
+
+  useEffect(() => {
+    if (!credentialV1) {
+      return;
+    }
+    const { credential } = credentialV1;
+
+    (async () => {
       if (!Did.isSameSubject(credential.claim.owner, did)) {
-        isValid.off();
         setError('Credential subject and signer DID are not the same');
         return;
       }
@@ -44,33 +93,40 @@ export function CredentialVerifier({ credential, did, initialError }: Props) {
       try {
         await Credential.verifyCredential(credential);
       } catch {
-        isValid.off();
         setError('Not a valid Kilt Credential');
-        return;
-      }
-
-      const attestation = await getAttestationForRequest(credential);
-
-      if (await validateAttestation(attestation)) {
-        setAttester(await getW3NOrDid(attestation.owner));
-        isValid.on();
-      } else {
-        isValid.off();
-        setError('Attestation missing or revoked');
       }
     })();
-  }, [credential, did, error, isValid]);
+  }, [credentialV1, did]);
+
+  return { error };
+}
+
+interface Props {
+  did: DidUri;
+
+  credentialV1?: KiltPublishedCredentialV1;
+  initialError?: string;
+}
+
+export function CredentialVerifier({ credentialV1, did, initialError }: Props) {
+  const { label, attester, error: chainError } = useChainData(credentialV1);
+  const { error: verifyError } = useVerify(did, credentialV1);
+
+  const error = [initialError, chainError, verifyError].filter(Boolean)[0];
 
   return (
     <Fragment>
-      {isValid.current &&
-        claimContents &&
-        Object.keys(claimContents).map((key, index) => (
-          <div className={styles.property} key={index}>
-            <span className={styles.name}>{key}</span>
-            <span className={styles.value}>{String(claimContents[key])}</span>
-          </div>
-        ))}
+      {label && <h2 className={styles.heading}>{label}</h2>}
+
+      {credentialV1 &&
+        Object.entries(credentialV1.credential.claim.contents).map(
+          ([name, value]) => (
+            <div className={styles.property} key={name}>
+              <span className={styles.name}>{name}</span>
+              <span className={styles.value}>{String(value)}</span>
+            </div>
+          ),
+        )}
 
       {error && (
         <div className={styles.property}>
@@ -83,9 +139,9 @@ export function CredentialVerifier({ credential, did, initialError }: Props) {
         <div className={styles.property}>
           <span className={styles.name}>Attester</span>
           <span className={styles.value}>
-            {!attester.startsWith('w3n:') && attester}
+            {attester && !attester.startsWith('w3n:') && attester}
 
-            {attester.startsWith('w3n:') && (
+            {attester && attester.startsWith('w3n:') && (
               <a
                 className={styles.anchor}
                 href={`https://w3n.id/${attester.replace('w3n:', '')}`}
@@ -101,9 +157,7 @@ export function CredentialVerifier({ credential, did, initialError }: Props) {
 
       <div className={styles.property}>
         <span className={styles.name}>Valid</span>
-        <span
-          className={isValid.current ? styles.valid : styles.invalid}
-        ></span>
+        <span className={error ? styles.invalid : styles.valid}></span>
       </div>
     </Fragment>
   );
