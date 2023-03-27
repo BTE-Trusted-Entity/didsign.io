@@ -67,7 +67,6 @@ function useChainData(credentialV1?: KiltPublishedCredentialV1) {
 
       if (attestation.revoked) {
         setError('Credential attestation revoked');
-        return;
       }
     })();
   }, [credentialV1]);
