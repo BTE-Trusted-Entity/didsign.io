@@ -1,11 +1,4 @@
-import {
-  Attestation,
-  Utils,
-  Did,
-  DidUri,
-  IAttestation,
-  ICredential,
-} from '@kiltprotocol/sdk-js';
+import { Utils, Did } from '@kiltprotocol/sdk-js';
 
 // disabling until https://github.com/import-js/eslint-plugin-import/issues/2352 is fixed
 // eslint-disable-next-line import/no-unresolved
@@ -111,26 +104,6 @@ export async function getFileNames(file: File): Promise<string[]> {
 
 export function isDidSignFile({ name }: { name: string }) {
   return name.endsWith('.didsign');
-}
-
-export async function getW3NOrDid(did: DidUri): Promise<string> {
-  const api = await apiPromise;
-  const { web3Name } = Did.linkedInfoFromChain(
-    await api.call.did.query(Did.toChain(did)),
-  );
-  return web3Name ? `w3n:${web3Name}` : did;
-}
-
-export async function getAttestationForRequest({ rootHash }: ICredential) {
-  const api = await apiPromise;
-  return Attestation.fromChain(
-    await api.query.attestation.attestations(rootHash),
-    rootHash,
-  );
-}
-
-export async function validateAttestation(attestation: IAttestation | null) {
-  return attestation !== null && !attestation.revoked;
 }
 
 export async function zipContainsDidSignFile(file: File) {

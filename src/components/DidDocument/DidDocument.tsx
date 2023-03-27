@@ -99,8 +99,10 @@ export function DidDocument({ signDoc }: { signDoc: SignDoc }) {
                 key={credential.rootHash}
                 className={styles.credentialsWrapper}
               >
-                <span className={styles.text}>{name}</span>
-                <CredentialVerifier did={did} credential={credential} />
+                <CredentialVerifier
+                  did={did}
+                  credentialV1={{ credential, metadata: { label: name } }}
+                />
               </div>
             ))}
           </div>

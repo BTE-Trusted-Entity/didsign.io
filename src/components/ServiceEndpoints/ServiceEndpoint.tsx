@@ -3,6 +3,7 @@ import {
   DidUri,
   ICredential,
   KiltPublishedCredentialCollectionV1,
+  KiltPublishedCredentialV1,
 } from '@kiltprotocol/sdk-js';
 
 import { Fragment, useCallback, useState } from 'react';
@@ -40,9 +41,7 @@ function isPublishedCollection(
     json as KiltPublishedCredentialCollectionV1,
     'credential',
   );
-  return every(credentials, (credential) =>
-    Credential.isICredential(credential),
-  );
+  return every(credentials, Credential.isICredential);
 }
 
 interface Props {
@@ -52,7 +51,7 @@ interface Props {
 }
 
 export function ServiceEndpoint({ url, endpointType, did }: Props) {
-  const [credentials, setCredentials] = useState<ICredential[]>();
+  const [credentials, setCredentials] = useState<KiltPublishedCredentialV1[]>();
 
   const fetching = useBooleanState();
   const fetched = useBooleanState();
@@ -71,17 +70,17 @@ export function ServiceEndpoint({ url, endpointType, did }: Props) {
       const json = await response.json();
 
       if (isPublishedCollection(json)) {
-        setCredentials(map(json, 'credential'));
-        return;
-      }
-
-      if (isLegacyCredential(json)) {
-        setCredentials([json.request]);
+        setCredentials(json);
         return;
       }
 
       if (Credential.isICredential(json)) {
-        setCredentials([json]);
+        setCredentials([{ credential: json }]);
+        return;
+      }
+
+      if (isLegacyCredential(json)) {
+        setCredentials([{ credential: json.request }]);
         return;
       }
 
@@ -126,8 +125,11 @@ export function ServiceEndpoint({ url, endpointType, did }: Props) {
         <Fragment>
           <ul className={styles.credentials}>
             {credentials.map((credential) => (
-              <li key={credential.rootHash} className={styles.credential}>
-                <CredentialVerifier did={did} credential={credential} />
+              <li
+                key={credential.credential.rootHash}
+                className={styles.credential}
+              >
+                <CredentialVerifier did={did} credentialV1={credential} />
               </li>
             ))}
           </ul>
