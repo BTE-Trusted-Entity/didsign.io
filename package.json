@@ -21,7 +21,7 @@
   "dependencies": {
     "@kiltprotocol/sdk-js": "0.32.0",
     "@polkadot/extension-dapp": "^0.44.8",
-    "@zip.js/zip.js": "^2.6.83",
+    "@zip.js/zip.js": "^2.7.1",
     "body-scroll-lock": "^4.0.0-beta.0",
     "buffer": "^6.0.3",
     "classnames": "^2.3.2",
