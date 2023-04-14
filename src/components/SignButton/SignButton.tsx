@@ -63,7 +63,7 @@ export function SignButton() {
       } else {
         const { message } = exceptionToError(error);
 
-        if (message === 'Not authorized') {
+        if (message.includes('Not authorized')) {
           setSignStatus('NotAuthorized');
           return;
         }
