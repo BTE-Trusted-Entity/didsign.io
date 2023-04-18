@@ -24,7 +24,7 @@ import { SignWithDid } from '../../utils/types';
 
 export function SignButton() {
   const [signStatus, setSignStatus] = useState<
-    'SignError' | 'Default' | 'No Sporran' | 'NotAuthorized' | 'Rejected'
+    'SignError' | 'Default' | 'No Wallet' | 'NotAuthorized' | 'Rejected'
   >();
   const { files, setFiles } = useFiles();
   const { setSignature } = useSignature();
@@ -81,7 +81,7 @@ export function SignButton() {
   );
 
   const handleNoWallet = useCallback(() => {
-    setSignStatus('No Sporran');
+    setSignStatus('No Wallet');
   }, []);
   const fakeWallet = { key: 'fake', name: 'Fake', handleClick: handleNoWallet };
 
@@ -122,7 +122,7 @@ export function SignButton() {
 
         {signStatus === 'Default' && <SignPopup onDismiss={handleDismiss} />}
 
-        {signStatus === 'No Sporran' && (
+        {signStatus === 'No Wallet' && (
           <NoWalletPopup onDismiss={handleDismiss} />
         )}
 
