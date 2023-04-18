@@ -1,4 +1,4 @@
-import type { ICredential } from '@kiltprotocol/sdk-js';
+import type { ICredential, DidResourceUri } from '@kiltprotocol/sdk-js';
 
 export interface Signature {
   credentials?: NamedCredential[];
@@ -31,3 +31,9 @@ export interface IKiltAccount {
 }
 
 export type VerificationError = 'Corrupted' | 'Multiple Sign' | 'Invalid';
+
+export type SignWithDid = (plaintext: string) => Promise<{
+  signature: string;
+  didKeyUri: DidResourceUri;
+  credentials?: { name: string; credential: ICredential }[];
+}>;

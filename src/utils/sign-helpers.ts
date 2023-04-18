@@ -22,8 +22,6 @@ export async function createHash(blob: ArrayBuffer | null): Promise<string> {
   return base16.encode(hash.bytes);
 }
 
-const sporranWindow = window.kilt || {};
-
 export async function createHashFromHashArray(
   hashArray: string[],
 ): Promise<string> {
@@ -33,10 +31,6 @@ export async function createHashFromHashArray(
   const sortedHash = [...hashArray].sort();
   const asJson = json.encode(sortedHash);
   return createHash(asJson);
-}
-
-export async function getSignatureContents(finalHash: string) {
-  return sporranWindow.sporran.signWithDid(finalHash);
 }
 
 function encode(input: string) {
