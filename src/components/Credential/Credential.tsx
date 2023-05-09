@@ -1,11 +1,13 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, JSX, useEffect, useState } from 'react';
+import { find } from 'lodash-es';
 import {
+  Attestation,
+  Credential,
+  CType,
   Did,
   DidUri,
-  Credential,
+  IClaim,
   KiltPublishedCredentialV1,
-  CType,
-  Attestation,
 } from '@kiltprotocol/sdk-js';
 
 import * as styles from './Credential.module.css';
@@ -100,6 +102,78 @@ function useVerify(did: DidUri, credentialV1?: KiltPublishedCredentialV1) {
   return { error };
 }
 
+function ClaimValue({
+  claim,
+  name,
+  value,
+}: {
+  claim: IClaim;
+  name: string;
+  value: string;
+}): JSX.Element {
+  const { cTypeHash, contents } = claim;
+  const linkableFields = [
+    {
+      cTypeHash:
+        '0x3291bb126e33b4862d421bfaa1d2f272e6cdfc4f96658988fbcffea8914bd9ac',
+      name: 'Email',
+      href: `mailto:${value}`,
+    },
+    {
+      cTypeHash:
+        '0x47d04c42bdf7fdd3fc5a194bcaa367b2f4766a6b16ae3df628927656d818f420',
+      name: 'Twitter',
+      href: `https://twitter.com/${value}/`,
+    },
+    {
+      cTypeHash:
+        '0xd8c61a235204cb9e3c6acb1898d78880488846a7247d325b833243b46d923abe',
+      name: 'Username',
+      href: `https://discordapp.com/users/${contents['User ID']}`,
+    },
+    {
+      cTypeHash:
+        '0xad52bd7a8bd8a52e03181a99d2743e00d0a5e96fdc0182626655fcf0c0a776d0',
+      name: 'Username',
+      href: `https://github.com/${value}`,
+    },
+    {
+      cTypeHash:
+        '0x568ec5ffd7771c4677a5470771adcdea1ea4d6b566f060dc419ff133a0089d80',
+      name: 'Username',
+      href: `https://www.twitch.tv/${value}`,
+    },
+    {
+      cTypeHash:
+        '0xcef8f3fe5aa7379faea95327942fd77287e1c144e3f53243e55705f11e890a4c',
+      name: 'Username',
+      href: `https://t.me/${value}`,
+    },
+    {
+      cTypeHash:
+        '0x329a2a5861ea63c250763e5e4c4d4a18fe4470a31e541365c7fb831e5432b940',
+      name: 'Channel Name',
+      href: `https://www.youtube.com/channel/${contents['Channel ID']}`,
+    },
+  ];
+
+  const candidate = find(linkableFields, { cTypeHash, name });
+  if (!candidate) {
+    return <Fragment>{value}</Fragment>;
+  }
+
+  return (
+    <a
+      href={candidate.href}
+      className={styles.anchor}
+      target="_blank"
+      rel="noreferrer"
+    >
+      {value}
+    </a>
+  );
+}
+
 interface Props {
   did: DidUri;
 
@@ -122,7 +196,13 @@ export function CredentialVerifier({ credentialV1, did, initialError }: Props) {
           ([name, value]) => (
             <div className={styles.property} key={name}>
               <span className={styles.name}>{name}</span>
-              <span className={styles.value}>{String(value)}</span>
+              <span className={styles.value}>
+                <ClaimValue
+                  claim={credentialV1.credential.claim}
+                  name={name}
+                  value={String(value)}
+                />
+              </span>
             </div>
           ),
         )}
