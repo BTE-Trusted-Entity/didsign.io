@@ -4202,18 +4202,18 @@ react-refresh@^0.9.0:
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.9.0.tgz#71863337adc3e5c2f8a6bfddd12ae3bfe32aafbf"
   integrity sha512-Gvzk7OZpiqKSkxsQvO/mbTN1poglhmAV7gR/DdIrRrSMXraRQQlfikRJOr3Nb9GTMPC5kof948Zy6jJZIFtDvQ==
 
-react-router-dom@^6.12.0:
-  version "6.12.0"
-  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-6.12.0.tgz#372279caaaa1ffb0204926c83e93a139b112d861"
-  integrity sha512-UzLwZ3ZVaDr6YV0HdjwxuwtDKgwpJx9o1ea9fU0HV4tTvzdB8WPHzlLFMo5orchpIS84e8G4Erlhu7Rl84XDFQ==
+react-router-dom@^6.12.1:
+  version "6.12.1"
+  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-6.12.1.tgz#601fe7eb493071a33dc7573a20b920324a834606"
+  integrity sha512-POIZN9UDKWwEDga054LvYr2KnK8V+0HR4Ny4Bwv8V7/FZCPxJgsCjYxXGxqxzHs7VBxMKZfgvtKhafuJkJSPGA==
   dependencies:
     "@remix-run/router" "1.6.3"
-    react-router "6.12.0"
+    react-router "6.12.1"
 
-react-router@6.12.0:
-  version "6.12.0"
-  resolved "https://registry.yarnpkg.com/react-router/-/react-router-6.12.0.tgz#1afae9219c24c8611809469d7a386c8023ade39a"
-  integrity sha512-/tCGtLq9umxRvbYeIx3j94CmpQfue0E3qnetVm9luKhu58cR4t+3O4ZrQXBdXfJrBATOAj+wF/1ihJJQI8AoTw==
+react-router@6.12.1:
+  version "6.12.1"
+  resolved "https://registry.yarnpkg.com/react-router/-/react-router-6.12.1.tgz#9e4126aa1139ec6b5d347e19576d5e940cd46362"
+  integrity sha512-evd/GrKJOeOypD0JB9e1r7pQh2gWCsTbUfq059Wm1AFT/K2MNZuDo19lFtAgIhlBrp0MmpgpqtvZC7LPAs7vSw==
   dependencies:
     "@remix-run/router" "1.6.3"
 
@@ -4840,12 +4840,7 @@ tslib@^1.8.1:
   resolved "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
 
-tslib@^2.1.0, tslib@^2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.4.0.tgz#7cecaa7f073ce680a05847aa77be941098f36dc3"
-  integrity sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==
-
-tslib@^2.5.0, tslib@^2.5.3:
+tslib@^2.1.0, tslib@^2.4.0, tslib@^2.5.0, tslib@^2.5.3:
   version "2.5.3"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.5.3.tgz#24944ba2d990940e6e982c4bea147aba80209913"
   integrity sha512-mSxlJJwl3BMEQCUNnxXBU9jP4JBktcEGhURcPR6VQVlnP0FdDEsIaz0C35dXNGLyRfrATNofF0F5p2KPxQgB+w==
@@ -5036,15 +5031,10 @@ write-file-atomic@^5.0.1:
     imurmurhash "^0.1.4"
     signal-exit "^4.0.1"
 
-ws@^8.13.0:
+ws@^8.13.0, ws@^8.8.1:
   version "8.13.0"
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.13.0.tgz#9a9fb92f93cf41512a0735c8f4dd09b8a1211cd0"
   integrity sha512-x9vcZYTrFPC7aSIbj7sRCYo7L/Xb8Iy+pW0ng0wt2vCJv7M9HOMy0UoN3rr+IFC7hb7vXoqS+P9ktyLLLhO+LA==
-
-ws@^8.8.1:
-  version "8.8.1"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-8.8.1.tgz#5dbad0feb7ade8ecc99b830c1d77c913d4955ff0"
-  integrity sha512-bGy2JzvzkPowEJV++hF07hAD6niYSr0JzBNo/J29WsB57A2r7Wlc1UFcTR9IzrPvuNVO4B8LGqF8qcpsVOhJCA==
 
 xxhash-wasm@^0.4.2:
   version "0.4.2"
