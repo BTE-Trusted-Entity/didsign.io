@@ -7,7 +7,8 @@
   position: relative;
   overflow-x: hidden;
   flex: 1;
-  background: url('BottomLeftBubble.svg') no-repeat bottom left / auto 40%,
+  background:
+    url('BottomLeftBubble.svg') no-repeat bottom left / auto 40%,
     url('BottomRightBubble.svg') no-repeat bottom right / auto 40%,
     var(--color-light-blue);
   padding-bottom: 100px;
@@ -18,7 +19,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: url('CenterLeftBubble.svg') no-repeat bottom left/ auto 20%,
+  background:
+    url('CenterLeftBubble.svg') no-repeat bottom left/ auto 20%,
     url('CenterRightBubble.svg') no-repeat bottom right/auto 20%,
     var(--color-silver-blue);
 }
