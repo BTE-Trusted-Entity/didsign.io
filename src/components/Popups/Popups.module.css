@@ -29,7 +29,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: url('popup_bubbles.svg') no-repeat bottom left,
+  background:
+    url('popup_bubbles.svg') no-repeat bottom left,
     var(--color-silver-blue);
   border-radius: 5px;
   padding: 15px 30px 20px;
