@@ -15,6 +15,9 @@ import { Maintenance } from './views/Maintenance/Maintenance';
 import { Terms } from './views/Terms/Terms';
 import { Privacy } from './views/Privacy/Privacy';
 import { Imprint } from './views/Imprint/Imprint';
+import { checkTestEnvironment } from './utils/checkTestEnvironment';
+
+checkTestEnvironment();
 
 const isMaintenance = process.env.REACT_APP_MAINTENANCE === 'true';
 const root = document.getElementById('root');
