@@ -55,7 +55,7 @@
     "events": "^3.3.0",
     "parcel": "^2.7.0",
     "postcss": "8.4.27",
-    "prettier": "3.0.0",
+    "prettier": "3.0.1",
     "process": "^0.11.10",
     "stylelint": "^15.10.2",
     "stylelint-config-css-modules": "^4.3.0",
