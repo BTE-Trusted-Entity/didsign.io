@@ -1,4 +1,11 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 
 import * as styles from './Popups.module.css';
@@ -20,11 +27,7 @@ export function useShowPopup(): ShowPopupContextType {
   return useContext(ShowPopupContext);
 }
 
-export function ShowPopupProvider({
-  children,
-}: {
-  children: JSX.Element[] | JSX.Element;
-}): JSX.Element {
+export function ShowPopupProvider({ children }: PropsWithChildren) {
   const [visible, showPopup] = useState(false);
   const value = useMemo(() => ({ visible, showPopup }), [visible]);
   return (
