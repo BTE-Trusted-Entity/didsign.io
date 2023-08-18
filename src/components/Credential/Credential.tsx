@@ -1,4 +1,4 @@
-import { Fragment, JSX, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { find } from 'lodash-es';
 import {
   Attestation,
@@ -110,7 +110,7 @@ function ClaimValue({
   claim: IClaim;
   name: string;
   value: string;
-}): JSX.Element {
+}) {
   const { cTypeHash, contents } = claim;
   const linkableFields = [
     {
