@@ -28,10 +28,15 @@ function useChainData(credentialV1?: KiltPublishedCredentialV1) {
 
     (async () => {
       try {
-        const { title } = await CType.fetchFromChain(
+        const fetched = await CType.fetchFromChain(
           CType.hashToId(credential.claim.cTypeHash),
         );
-        setLabel(title);
+        if ('title' in fetched) {
+          // TODO: remove this `if` once the Spiritnet is updated
+          setLabel(fetched.title as string);
+          return;
+        }
+        setLabel(fetched.cType.title);
       } catch {
         // no error, credential can still be verified
       }
