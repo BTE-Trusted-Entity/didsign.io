@@ -54,7 +54,7 @@
   line-height: 16px;
 }
 
-@media (max-width: 600px) {
+@media (width <= 600px) {
   .text {
     visibility: hidden;
   }
