@@ -8,8 +8,22 @@
   ],
   "packageRules": [
     {
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true
+    },
+    {
+      "matchDepTypes": ["devDependencies"],
+      "automerge": true
+    },
+    {
       "matchPackagePatterns": ["parcel"],
-      "groupName": "parcel"
+      "groupName": "parcel",
+      "automerge": false
+    },
+    {
+      "matchPackagePatterns": ["kiltprotocol"],
+      "groupName": "kiltprotocol",
+      "automerge": false
     }
   ]
 }
