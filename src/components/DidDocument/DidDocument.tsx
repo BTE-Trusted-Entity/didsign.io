@@ -55,7 +55,7 @@ export function DidDocument({ signDoc }: { signDoc: SignDoc }) {
             <Fragment>
               <a
                 className={styles.anchor}
-                href={`https://w3n.id/${web3name}`}
+                href={`${process.env.REACT_APP_W3NID_ORIGIN}/${web3name}`}
                 target="_blank"
                 rel="noreferrer"
               >

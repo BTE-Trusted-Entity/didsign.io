@@ -228,7 +228,10 @@ export function CredentialVerifier({ credentialV1, did, initialError }: Props) {
             {attester && attester.startsWith('w3n:') && (
               <a
                 className={styles.anchor}
-                href={`https://w3n.id/${attester.replace('w3n:', '')}`}
+                href={`${process.env.REACT_APP_W3NID_ORIGIN}/${attester.replace(
+                  'w3n:',
+                  '',
+                )}`}
                 target="_blank"
                 rel="noreferrer"
               >
