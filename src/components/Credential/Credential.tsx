@@ -14,10 +14,6 @@ import * as styles from './Credential.module.css';
 
 import { apiPromise } from '../../utils/api';
 
-const W3N_ORIGIN = process.env.REACT_APP_IS_TEST_ENV
-  ? 'https://test.w3n.id'
-  : 'https://w3n.id';
-
 function useChainData(credentialV1?: KiltPublishedCredentialV1) {
   const [label, setLabel] = useState(credentialV1?.metadata?.label);
   const [attester, setAttester] = useState<string | DidUri>();
@@ -232,7 +228,10 @@ export function CredentialVerifier({ credentialV1, did, initialError }: Props) {
             {attester && attester.startsWith('w3n:') && (
               <a
                 className={styles.anchor}
-                href={`${W3N_ORIGIN}/${attester.replace('w3n:', '')}`}
+                href={`${process.env.REACT_APP_W3NID_ORIGIN}/${attester.replace(
+                  'w3n:',
+                  '',
+                )}`}
                 target="_blank"
                 rel="noreferrer"
               >

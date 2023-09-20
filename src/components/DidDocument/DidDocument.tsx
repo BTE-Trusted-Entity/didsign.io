@@ -11,10 +11,6 @@ import { getSignatureFromRemark, getTimestamp } from '../../utils/timestamp';
 import { parseJWS } from '../../utils/verify-helper';
 import { apiPromise } from '../../utils/api';
 
-const W3N_ORIGIN = process.env.REACT_APP_IS_TEST_ENV
-  ? 'https://test.w3n.id'
-  : 'https://w3n.id';
-
 export function DidDocument({ signDoc }: { signDoc: SignDoc }) {
   const { jws, remark, credentials } = signDoc;
 
@@ -59,7 +55,7 @@ export function DidDocument({ signDoc }: { signDoc: SignDoc }) {
             <Fragment>
               <a
                 className={styles.anchor}
-                href={`${W3N_ORIGIN}/${web3name}`}
+                href={`${process.env.REACT_APP_W3NID_ORIGIN}/${web3name}`}
                 target="_blank"
                 rel="noreferrer"
               >
