@@ -1715,10 +1715,10 @@
   resolved "https://registry.yarnpkg.com/@types/body-scroll-lock/-/body-scroll-lock-3.1.1.tgz#67b548176d416bd88f8d4a30a7ebb48f5bfa95cd"
   integrity sha512-W5tM34rxQzEGXomqg5A2V8pHl/NQDCCuf7pygI2+2SZEbFB6zPDuX3uwkUxlVLIF31fob4elEjiMLliq3szk0g==
 
-"@types/file-saver@^2.0.5":
-  version "2.0.5"
-  resolved "https://registry.npmjs.org/@types/file-saver/-/file-saver-2.0.5.tgz"
-  integrity sha512-zv9kNf3keYegP5oThGLaPk8E081DFDuwfqjtiTzm6PoxChdJ1raSuADf2YGCVIyrSynLrgc8JWv296s7Q7pQSQ==
+"@types/file-saver@^2.0.6":
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/@types/file-saver/-/file-saver-2.0.6.tgz#914688eec1ccce7dd1bf655c0b0a178e89303589"
+  integrity sha512-Mw671DVqoMHbjw0w4v2iiOro01dlT/WhWp5uwecBa0Wg8c+bcZOjgF1ndBnlaxhtvFCgTRBtsGivSVhrK/vnag==
 
 "@types/json-schema@^7.0.12":
   version "7.0.12"
