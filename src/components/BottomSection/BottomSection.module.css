@@ -1,8 +1,7 @@
 .bottomContainer {
   width: 100vw;
   position: relative;
-  overflow-y: hidden;
-  overflow-x: hidden;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   min-height: 95px;
