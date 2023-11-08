@@ -5434,10 +5434,10 @@ typed-array-length@^1.0.4:
     for-each "^0.3.3"
     is-typed-array "^1.1.9"
 
-typed-css-modules@^0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/typed-css-modules/-/typed-css-modules-0.8.0.tgz#4f5b44163bb43ecc7667f25f23aa044d28983631"
-  integrity sha512-zX9n45IYv27B/85W/b7o+PLmSiLHKSGI/loE8etbIrkVPqB60S7Le7Bkcxl7KR1/visRJRPC/DDFiwx4370FEg==
+typed-css-modules@^0.8.1:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/typed-css-modules/-/typed-css-modules-0.8.1.tgz#80fb06797db14309177a80b6fa675b185af61255"
+  integrity sha512-OhM5FntBI+BvwXHvnApyzUYxFLEU2qxta24FPmz00Qp2nPQsdl+TB7a3vvGa89Z8ug1E2bqIOkSPA3iUaT3UGw==
   dependencies:
     camelcase "^6.0.0"
     chalk "^4.0.0"
