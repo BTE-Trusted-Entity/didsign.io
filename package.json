@@ -23,7 +23,7 @@
     "@polkadot/extension-dapp": "^0.46.5",
     "@zip.js/zip.js": "^2.7.32",
     "body-scroll-lock": "^4.0.0-beta.0",
-    "classnames": "^2.5.0",
+    "classnames": "^2.5.1",
     "file-saver": "^2.0.5",
     "jszip": "^3.10.1",
     "lodash-es": "^4.17.21",
