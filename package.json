@@ -31,7 +31,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
-    "react-router-dom": "^6.21.2"
+    "react-router-dom": "^6.21.3"
   },
   "devDependencies": {
     "@parcel/packager-raw-url": "2.7.0",
