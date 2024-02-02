@@ -1,4 +1,5 @@
-import { Utils, Did } from '@kiltprotocol/sdk-js';
+import * as Did from '@kiltprotocol/did';
+import { Crypto } from '@kiltprotocol/utils';
 
 // disabling until https://github.com/import-js/eslint-plugin-import/issues/2352 is fixed
 // eslint-disable-next-line import/no-unresolved
@@ -50,7 +51,7 @@ export async function getSignDoc(file: File): Promise<SignDoc> {
   }
 
   const {
-    header: { kid: keyUri },
+    header: { kid: signerUrl },
     payload: { hash: message },
     signature,
   } = parsedJWS;
@@ -58,9 +59,9 @@ export async function getSignDoc(file: File): Promise<SignDoc> {
   await apiPromise;
   await Did.verifyDidSignature({
     message,
-    keyUri,
-    signature: Utils.Crypto.coToUInt8(signature),
-    expectedVerificationMethod: 'authentication',
+    signerUrl,
+    signature: Crypto.coToUInt8(signature),
+    expectedVerificationRelationship: 'authentication',
   });
 
   return {

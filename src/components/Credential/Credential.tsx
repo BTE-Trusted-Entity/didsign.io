@@ -1,14 +1,16 @@
-import { Fragment, useEffect, useState } from 'react';
-import { find } from 'lodash-es';
-import {
-  Attestation,
-  Credential,
-  CType,
+import type {
   Did,
-  DidUri,
   IClaim,
   KiltPublishedCredentialV1,
-} from '@kiltprotocol/sdk-js';
+} from '@kiltprotocol/types';
+
+import { Fragment, useEffect, useState } from 'react';
+import { find } from 'lodash-es';
+
+import { CType } from '@kiltprotocol/credentials';
+import { Credential, Attestation } from '@kiltprotocol/legacy-credentials';
+import { isSameSubject } from '@kiltprotocol/did';
+import { DidResolver } from '@kiltprotocol/sdk-js';
 
 import * as styles from './Credential.module.css';
 
@@ -16,7 +18,7 @@ import { apiPromise } from '../../utils/api';
 
 function useChainData(credentialV1?: KiltPublishedCredentialV1) {
   const [label, setLabel] = useState(credentialV1?.metadata?.label);
-  const [attester, setAttester] = useState<string | DidUri>();
+  const [attester, setAttester] = useState<string | Did>();
   const [error, setError] = useState<string>();
 
   useEffect(() => {
@@ -64,12 +66,12 @@ function useChainData(credentialV1?: KiltPublishedCredentialV1) {
         credential.rootHash,
       );
 
-      const didChain = await api.call.did.query(Did.toChain(attestation.owner));
-      if (didChain.isNone) {
+      const { didDocument } = await DidResolver.resolve(attestation.owner, {});
+      if (!didDocument) {
         setError('Unable to fetch attester details');
         return;
       }
-      const { web3Name } = Did.linkedInfoFromChain(didChain);
+      const web3Name = didDocument.alsoKnownAs?.[0];
       setAttester(web3Name ? `w3n:${web3Name}` : attestation.owner);
 
       if (attestation.revoked) {
@@ -81,7 +83,7 @@ function useChainData(credentialV1?: KiltPublishedCredentialV1) {
   return { label, attester, error };
 }
 
-function useVerify(did: DidUri, credentialV1?: KiltPublishedCredentialV1) {
+function useVerify(did: Did, credentialV1?: KiltPublishedCredentialV1) {
   const [error, setError] = useState<string>();
 
   useEffect(() => {
@@ -91,7 +93,7 @@ function useVerify(did: DidUri, credentialV1?: KiltPublishedCredentialV1) {
     const { credential } = credentialV1;
 
     (async () => {
-      if (!Did.isSameSubject(credential.claim.owner, did)) {
+      if (!isSameSubject(credential.claim.owner, did)) {
         setError('Credential subject and signer DID are not the same');
         return;
       }
@@ -180,7 +182,7 @@ function ClaimValue({
 }
 
 interface Props {
-  did: DidUri;
+  did: Did;
 
   credentialV1?: KiltPublishedCredentialV1;
   initialError?: string;
