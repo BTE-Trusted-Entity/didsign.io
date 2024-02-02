@@ -1,5 +1,8 @@
+import type { Service } from '@kiltprotocol/types';
+
 import { Fragment, useEffect, useState } from 'react';
-import { Did, DidServiceEndpoint } from '@kiltprotocol/sdk-js';
+
+import * as Did from '@kiltprotocol/did';
 
 import * as styles from './DidDocument.module.css';
 
@@ -9,7 +12,6 @@ import { useSubscanHost } from '../../hooks/useSubscanHost';
 import { CredentialVerifier } from '../Credential/Credential';
 import { getSignatureFromRemark, getTimestamp } from '../../utils/timestamp';
 import { parseJWS } from '../../utils/verify-helper';
-import { apiPromise } from '../../utils/api';
 
 export function DidDocument({ signDoc }: { signDoc: SignDoc }) {
   const { jws, remark, credentials } = signDoc;
@@ -20,16 +22,14 @@ export function DidDocument({ signDoc }: { signDoc: SignDoc }) {
   const subscanHost = useSubscanHost();
 
   const [web3name, setWeb3Name] = useState<string>();
-  const [services, setServices] = useState<DidServiceEndpoint[]>([]);
+  const [services, setServices] = useState<Service[]>([]);
 
   useEffect(() => {
     (async () => {
-      const api = await apiPromise;
-      const { document, web3Name } = Did.linkedInfoFromChain(
-        await api.call.did.query(Did.toChain(did)),
-      );
+      const { didDocument } = await Did.resolve(did);
+      const web3Name = didDocument?.alsoKnownAs?.[0];
       setWeb3Name(web3Name || undefined);
-      setServices(document.service || []);
+      setServices(didDocument?.service || []);
     })();
   }, [did]);
 
