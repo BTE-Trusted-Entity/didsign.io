@@ -71,7 +71,7 @@ export function DidDocument({ signDoc }: { signDoc: SignDoc }) {
         <span className={styles.title}>Signed At</span>
         <span className={styles.text}>
           {timestamp || 'No timestamp available'}
-          {remark && (
+          {remark && subscanHost && (
             <a
               className={styles.subscan}
               href={`${subscanHost}/extrinsic/${remark.txHash}`}
