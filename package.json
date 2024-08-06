@@ -19,9 +19,9 @@
     "css": "tcm --namedExports --pattern 'src/**/*.module.css' && eslint --fix --config ./.eslintrc.json \"src/**/*.css.d.ts\""
   },
   "dependencies": {
-    "@kiltprotocol/sdk-js": "1.0.0-alpha.1",
-    "@kiltprotocol/legacy-credentials": "0.100.0-alpha.1",
-    "@polkadot/extension-dapp": "^0.47.1",
+    "@kiltprotocol/legacy-credentials": "0.100.0-beta.1",
+    "@kiltprotocol/sdk-js": "1.0.0-beta.1",
+    "@polkadot/extension-dapp": "^0.50.1",
     "@zip.js/zip.js": "^2.7.48",
     "body-scroll-lock": "^4.0.0-beta.0",
     "classnames": "^2.5.1",
@@ -35,6 +35,7 @@
     "react-router-dom": "^6.26.0"
   },
   "devDependencies": {
+    "@kiltprotocol/augment-api": "^1.11300.0-rc.1",
     "@parcel/packager-raw-url": "2.7.0",
     "@parcel/transformer-svg-react": "^2.7.0",
     "@parcel/transformer-webmanifest": "2.7.0",
