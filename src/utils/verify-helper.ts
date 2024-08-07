@@ -10,9 +10,9 @@ import JSZip from 'jszip';
 
 import { FileEntry } from '../components/Files/Files';
 
+import { apiPromise } from './api';
 import { createHash, createHashFromHashArray } from './sign-helpers';
 import { SignDoc } from './types';
-import { apiPromise } from './api';
 
 export function addMissingPrefix(hash: string): string {
   return hash.startsWith(base16.prefix) ? hash : `${base16.prefix}${hash}`;
@@ -37,7 +37,7 @@ export function parseJWS(jws: string) {
 export async function getSignDoc(file: File): Promise<SignDoc> {
   const data = JSON.parse(await file.text()) as SignDoc;
 
-  const { jws, hashes, remark, credentials } = data;
+  const { jws, hashes, remark, credentials, verifiablePresentation } = data;
   if (!jws || !hashes) {
     throw new Error('Invalid content');
   }
@@ -69,6 +69,7 @@ export async function getSignDoc(file: File): Promise<SignDoc> {
     hashes: hashesWithPrefix,
     remark,
     credentials,
+    verifiablePresentation,
   };
 }
 

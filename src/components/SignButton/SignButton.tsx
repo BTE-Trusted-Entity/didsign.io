@@ -1,13 +1,23 @@
+import type { Did } from '@kiltprotocol/types';
+
 import { useCallback, useState } from 'react';
+
+import { toVc } from '@kiltprotocol/legacy-credentials';
+import { DidResolver, Holder } from '@kiltprotocol/sdk-js';
+import { hexToU8a, u8aToHex } from '@polkadot/util';
 
 import * as styles from './SignButton.module.css';
 
-import { useSignature } from '../Signature/Signature';
+import { useBooleanState } from '../../hooks/useBooleanState';
+import { apiPromise } from '../../utils/api';
+import { exceptionToError } from '../../utils/exceptionToError';
 import {
   createDidSignFile,
   createHashFromHashArray,
   generateJWS,
 } from '../../utils/sign-helpers';
+import { SignWithDid } from '../../utils/types';
+import { KiltVerifiablePresentationV1 } from '../Credential/Credential';
 import { useFiles } from '../Files/Files';
 import {
   NotAuthorized,
@@ -17,10 +27,51 @@ import {
   SignErrorPopup,
   SignPopup,
 } from '../Popups/Popups';
-import { exceptionToError } from '../../utils/exceptionToError';
-import { useBooleanState } from '../../hooks/useBooleanState';
+import { useSignature } from '../Signature/Signature';
 
-import { SignWithDid } from '../../utils/types';
+const INDEXER_URL = 'https://dev-indexer.kilt.io/';
+
+async function queryCredentialInfo(claimHash: string) {
+  const query = `
+{
+  attestations(filter: {claimHash: {equalTo: "${claimHash}"}}) {
+    totalCount
+    nodes {
+      creationBlock {
+        hash
+        timeStamp
+      }
+      issuerId
+      claimHash
+    }
+  }
+}`;
+  const response = await fetch(INDEXER_URL, {
+    method: 'POST',
+    body: JSON.stringify({ query }),
+    headers: [['Content-Type', 'application/json']],
+  });
+  const {
+    data: {
+      attestations: { totalCount, nodes },
+    },
+  } = await response.json();
+  if (totalCount !== 1) {
+    throw new Error('did not find credential info');
+  }
+  const [
+    {
+      creationBlock: { hash, timeStamp },
+      issuerId,
+    },
+  ] = nodes;
+  console.log('timestamp is', timeStamp);
+  return {
+    blockHash: hexToU8a(hash),
+    timestamp: new Date(timeStamp + 'Z'),
+    issuer: issuerId as Did,
+  };
+}
 
 export function SignButton() {
   const [signStatus, setSignStatus] = useState<
@@ -51,7 +102,46 @@ export function SignButton() {
 
         const jws = generateJWS({ signature, didKeyUri }, signingData);
 
-        const file = await createDidSignFile({ hashes, jws, credentials });
+        let verifiablePresentation: KiltVerifiablePresentationV1 | undefined;
+        if (credentials) {
+          const { genesisHash } = await apiPromise;
+          const VCs = await Promise.all(
+            credentials.map(async ({ credential }) => {
+              const info = await queryCredentialInfo(credential.rootHash);
+              console.log('timestamp parsed as', info.timestamp);
+              return toVc(credential, {
+                ...info,
+                chainGenesisHash: genesisHash,
+              });
+            }),
+          );
+          const { didDocument } = await DidResolver.resolve(
+            didKeyUri.split('#')[0] as Did,
+          );
+          if (!didDocument) {
+            console.error('aaaaaaaaaaaa');
+            throw new Error('aaaaaaaaaaaargh');
+          }
+          const signer = {
+            id: didKeyUri,
+            algorithm: 'Sr25519',
+            sign: async ({ data }: { data: Uint8Array }) => {
+              const signed = await signWithDid(u8aToHex(data), didDocument.id);
+              return hexToU8a(signed.signature);
+            },
+          };
+          verifiablePresentation = (await Holder.createPresentation({
+            credentials: VCs,
+            holder: { didDocument, signers: [signer] },
+            proofOptions: { domain: signingData },
+          })) as KiltVerifiablePresentationV1;
+        }
+
+        const file = await createDidSignFile({
+          hashes,
+          jws,
+          verifiablePresentation,
+        });
         setFiles((files) => [file, ...files]);
 
         setSignature((old) => ({
