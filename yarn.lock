@@ -340,10 +340,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@kiltprotocol/augment-api@^1.11300.0-rc.1":
-  version "1.11300.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@kiltprotocol/augment-api/-/augment-api-1.11300.0-rc.1.tgz#585b043bcbcef3c9043881a11c1d254954f1d7a4"
-  integrity sha512-22/bb6vYFzWQF3FKNSs2qyl0HuFIpahb9wgrq7joBc8lFXWy+/AkrdybpgmvtSubmnyZXN1F1DetmzNBO3OQVA==
+"@kiltprotocol/augment-api@^1.11300.0-rc.2":
+  version "1.11300.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@kiltprotocol/augment-api/-/augment-api-1.11300.0-rc.2.tgz#9afd159cb6998a504c680cbafce3c1ecd4cc4fbc"
+  integrity sha512-PYQfTFhOP2vCY9epoibg7wwBi7hXoyHs8ayMFonNjXlAI60SVtElxO/CvMooUuY3KgdIXlptvXr+UPveUyZKmw==
   optionalDependencies:
     "@typescript-eslint/eslint-plugin" "^7.0.2"
     "@typescript-eslint/parser" "^7.0.2"

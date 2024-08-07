@@ -36,7 +36,7 @@
     "react-router-dom": "^6.26.0"
   },
   "devDependencies": {
-    "@kiltprotocol/augment-api": "^1.11300.0-rc.1",
+    "@kiltprotocol/augment-api": "^1.11300.0-rc.2",
     "@parcel/packager-raw-url": "2.7.0",
     "@parcel/transformer-svg-react": "^2.7.0",
     "@parcel/transformer-webmanifest": "2.7.0",
@@ -93,5 +93,6 @@
   },
   "engines": {
     "node": ">=20.16.0"
-  }
+  },
+  "packageManager": "yarn@1.22.19+sha1.4ba7fc5c6e704fce2066ecbfb0b0d8976fe62447"
 }
