@@ -1,35 +1,88 @@
+import type { Types } from '@kiltprotocol/credentials';
+import type { Did, Service } from '@kiltprotocol/types';
+
 import { Fragment, useEffect, useState } from 'react';
-import { Did, DidServiceEndpoint } from '@kiltprotocol/sdk-js';
+
+import { isSameSubject, parse } from '@kiltprotocol/did';
+import { DidResolver, Verifier } from '@kiltprotocol/sdk-js';
 
 import * as styles from './DidDocument.module.css';
 
-import { SignDoc } from '../../utils/types';
-import { ServiceEndpoint } from '../ServiceEndpoints/ServiceEndpoint';
 import { useSubscanHost } from '../../hooks/useSubscanHost';
-import { CredentialVerifier } from '../Credential/Credential';
 import { getSignatureFromRemark, getTimestamp } from '../../utils/timestamp';
+import { SignDoc } from '../../utils/types';
 import { parseJWS } from '../../utils/verify-helper';
-import { apiPromise } from '../../utils/api';
+import {
+  CredentialVerifier,
+  KiltVerifiablePresentationV1,
+} from '../Credential/Credential';
+import { ServiceEndpoint } from '../ServiceEndpoints/ServiceEndpoint';
+
+function usePresentationVerify(
+  did: Did,
+  presentation?: KiltVerifiablePresentationV1,
+  filesHash?: string,
+) {
+  const [result, setResult] =
+    useState<Awaited<ReturnType<typeof Verifier.verifyPresentation>>>();
+
+  useEffect(() => {
+    if (!presentation) {
+      return;
+    }
+
+    (async () => {
+      if (!isSameSubject(presentation.holder, did)) {
+        setResult({
+          verified: false,
+          error: [
+            new Error('Presentation holder and signer DID are not the same'),
+          ],
+        });
+        return;
+      }
+
+      setResult(
+        await Verifier.verifyPresentation({
+          presentation: presentation,
+          verificationCriteria: {
+            proofPurpose: 'authentication',
+            domain: filesHash,
+          },
+          // config: {
+          //   //  cTypes: cType ? [cType] : undefined,
+          // },
+        }),
+      );
+    })();
+  }, [presentation, did, filesHash]);
+
+  return result;
+}
 
 export function DidDocument({ signDoc }: { signDoc: SignDoc }) {
-  const { jws, remark, credentials } = signDoc;
+  const { jws, remark, verifiablePresentation, credentials } = signDoc;
 
-  const { signature, header } = parseJWS(jws);
-  const { did } = Did.parse(header.kid);
+  const { signature, header, payload } = parseJWS(jws);
+  const { did } = parse(header.kid);
+
+  const presentationResult = usePresentationVerify(
+    did,
+    verifiablePresentation,
+    payload.hash,
+  );
 
   const subscanHost = useSubscanHost();
 
   const [web3name, setWeb3Name] = useState<string>();
-  const [services, setServices] = useState<DidServiceEndpoint[]>([]);
+  const [services, setServices] = useState<Service[]>([]);
 
   useEffect(() => {
     (async () => {
-      const api = await apiPromise;
-      const { document, web3Name } = Did.linkedInfoFromChain(
-        await api.call.did.query(Did.toChain(did)),
-      );
+      const { didDocument } = await DidResolver.resolve(did);
+      const web3Name = didDocument?.alsoKnownAs?.[0];
       setWeb3Name(web3Name || undefined);
-      setServices(document.service || []);
+      setServices(didDocument?.service || []);
     })();
   }, [did]);
 
@@ -105,6 +158,31 @@ export function DidDocument({ signDoc }: { signDoc: SignDoc }) {
                 />
               </div>
             ))}
+          </div>
+        </div>
+      )}
+
+      {presentationResult && (
+        <div className={styles.textWrapper}>
+          <span className={styles.title}>Attached Credentials</span>
+
+          <div className={styles.credentialContainer}>
+            {presentationResult.credentialResults?.map(
+              ({ credential, error }) => (
+                <div key={credential.id} className={styles.credentialsWrapper}>
+                  <CredentialVerifier
+                    did={did}
+                    credentialV2={credential as Types.KiltCredentialV1}
+                    initialError={
+                      error?.map((e) => String(e)).join('\n') ||
+                      presentationResult.proofResults
+                        ?.flatMap(({ error }) => error)
+                        .join('\n')
+                    }
+                  />
+                </div>
+              ),
+            )}
           </div>
         </div>
       )}

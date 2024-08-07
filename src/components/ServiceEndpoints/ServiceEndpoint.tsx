@@ -1,10 +1,11 @@
-import {
-  Credential,
-  DidUri,
+import type {
+  Did,
   ICredential,
   KiltPublishedCredentialCollectionV1,
   KiltPublishedCredentialV1,
-} from '@kiltprotocol/sdk-js';
+} from '@kiltprotocol/types';
+
+import { Credential } from '@kiltprotocol/legacy-credentials';
 
 import { Fragment, useCallback, useState } from 'react';
 import classnames from 'classnames';
@@ -47,7 +48,7 @@ function isPublishedCollection(
 interface Props {
   url: string;
   endpointType: string;
-  did: DidUri;
+  did: Did;
 }
 
 export function ServiceEndpoint({ url, endpointType, did }: Props) {

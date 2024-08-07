@@ -1,4 +1,5 @@
-import { Utils, Did } from '@kiltprotocol/sdk-js';
+import * as Did from '@kiltprotocol/did';
+import { Crypto } from '@kiltprotocol/utils';
 
 // disabling until https://github.com/import-js/eslint-plugin-import/issues/2352 is fixed
 // eslint-disable-next-line import/no-unresolved
@@ -9,9 +10,9 @@ import JSZip from 'jszip';
 
 import { FileEntry } from '../components/Files/Files';
 
+import { apiPromise } from './api';
 import { createHash, createHashFromHashArray } from './sign-helpers';
 import { SignDoc } from './types';
-import { apiPromise } from './api';
 
 export function addMissingPrefix(hash: string): string {
   return hash.startsWith(base16.prefix) ? hash : `${base16.prefix}${hash}`;
@@ -36,7 +37,7 @@ export function parseJWS(jws: string) {
 export async function getSignDoc(file: File): Promise<SignDoc> {
   const data = JSON.parse(await file.text()) as SignDoc;
 
-  const { jws, hashes, remark, credentials } = data;
+  const { jws, hashes, remark, credentials, verifiablePresentation } = data;
   if (!jws || !hashes) {
     throw new Error('Invalid content');
   }
@@ -50,7 +51,7 @@ export async function getSignDoc(file: File): Promise<SignDoc> {
   }
 
   const {
-    header: { kid: keyUri },
+    header: { kid: signerUrl },
     payload: { hash: message },
     signature,
   } = parsedJWS;
@@ -58,9 +59,9 @@ export async function getSignDoc(file: File): Promise<SignDoc> {
   await apiPromise;
   await Did.verifyDidSignature({
     message,
-    keyUri,
-    signature: Utils.Crypto.coToUInt8(signature),
-    expectedVerificationMethod: 'authentication',
+    signerUrl,
+    signature: Crypto.coToUInt8(signature),
+    expectedVerificationRelationship: 'authentication',
   });
 
   return {
@@ -68,6 +69,7 @@ export async function getSignDoc(file: File): Promise<SignDoc> {
     hashes: hashesWithPrefix,
     remark,
     credentials,
+    verifiablePresentation,
   };
 }
 
