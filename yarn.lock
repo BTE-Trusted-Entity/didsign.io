@@ -1923,10 +1923,10 @@
   resolved "https://registry.yarnpkg.com/@ungap/structured-clone/-/structured-clone-1.2.0.tgz#756641adb587851b5ccb3e095daf27ae581c8406"
   integrity sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==
 
-"@zip.js/zip.js@^2.7.50":
-  version "2.7.50"
-  resolved "https://registry.yarnpkg.com/@zip.js/zip.js/-/zip.js-2.7.50.tgz#050a893957ce71bf2320987c6a021e425bda0d9f"
-  integrity sha512-9DtMwkebSBcqFl1ivb1YPBxhbDTkMrzVXbdY/MkeA822KgrsmQMX0DrCrdZUyM3LgEHoo+kCPPtKz/wk/ENmgQ==
+"@zip.js/zip.js@^2.7.51":
+  version "2.7.51"
+  resolved "https://registry.yarnpkg.com/@zip.js/zip.js/-/zip.js-2.7.51.tgz#a434e285048b951a5788d3d2d59aa68f209e7141"
+  integrity sha512-RKHaebzZZgQkUuzb49/qweN69e8Np9AUZ9QygydDIrbG1njypSAKwkeqIVeuf2JVGBDyB7Z9HKvzPgYrSlv9gw==
 
 abortcontroller-polyfill@^1.1.9:
   version "1.7.3"
