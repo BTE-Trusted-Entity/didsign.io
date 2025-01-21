@@ -2,7 +2,7 @@
   "files": [
     {
       "path": "build/**/*.{html,css,js,svg,png,ico,woff2}",
-      "maxSize": "1.90MB"
+      "maxSize": "2.00MB"
     }
   ],
   "ci": {
