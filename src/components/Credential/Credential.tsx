@@ -315,3 +315,70 @@ export function CredentialVerifier({
     </Fragment>
   );
 }
+
+interface RendererProps {
+  credentialV2?: Types.KiltCredentialV1;
+
+  verificationError?: string;
+}
+
+export function CredentialRenderer({
+  credentialV2,
+  verificationError,
+}: RendererProps) {
+  const { label, attester, error: chainError } = useChainData(credentialV2);
+  const error = [verificationError, chainError].filter(Boolean)[0];
+
+  const claim = credentialV2 && fromVC(credentialV2).claim;
+
+  return (
+    <Fragment>
+      {label && <h2 className={styles.heading}>{label}</h2>}
+
+      {claim &&
+        Object.entries(claim.contents).map(([name, value]) => (
+          <div className={styles.property} key={name}>
+            <span className={styles.name}>{name}</span>
+            <span className={styles.value}>
+              <ClaimValue claim={claim} name={name} value={String(value)} />
+            </span>
+          </div>
+        ))}
+
+      {error && (
+        <div className={styles.property}>
+          <span className={styles.name}>Error</span>
+          <span className={styles.value}>{error}</span>
+        </div>
+      )}
+
+      {!error && (
+        <div className={styles.property}>
+          <span className={styles.name}>Attester</span>
+          <span className={styles.value}>
+            {attester && !attester.startsWith('w3n:') && attester}
+
+            {attester && attester.startsWith('w3n:') && (
+              <a
+                className={styles.anchor}
+                href={`${process.env.REACT_APP_W3NID_ORIGIN}/${attester.replace(
+                  'w3n:',
+                  '',
+                )}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {attester}
+              </a>
+            )}
+          </span>
+        </div>
+      )}
+
+      <div className={styles.property}>
+        <span className={styles.name}>Valid</span>
+        <span className={error ? styles.invalid : styles.valid}></span>
+      </div>
+    </Fragment>
+  );
+}
