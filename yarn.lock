@@ -428,10 +428,10 @@
     "@kiltprotocol/types" "0.36.0-rc.1"
     "@kiltprotocol/utils" "0.36.0-rc.1"
 
-"@kiltprotocol/type-definitions@^1.0.0":
-  version "1.11401.1"
-  resolved "https://registry.yarnpkg.com/@kiltprotocol/type-definitions/-/type-definitions-1.11401.1.tgz#05d03c78cca480880eb2d0efc9b45ca2e1ebca15"
-  integrity sha512-NlKU8jm/MMCNdxb0WKC/s6rSbwitUkkf+WDMnOcu5yCiBppjnvGArwLsvDr3Z0Ld8HDmad+8316sEVxhtmHaWA==
+"@kiltprotocol/type-definitions@1.11501.0-rc.1", "@kiltprotocol/type-definitions@^1.0.0":
+  version "1.11501.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@kiltprotocol/type-definitions/-/type-definitions-1.11501.0-rc.1.tgz#e6a6f89b93a6e5168acdb1455cf5049cc837fc76"
+  integrity sha512-kPobNtNrI4rRjluew8NYoNmXVEK5UcZsztHmfk2LlsomMt+mxEMZ9hErPWEuA/MBf1TJDQfdMMN10mCBgGxj9Q==
 
 "@kiltprotocol/types@0.36.0-rc.1":
   version "0.36.0-rc.1"
@@ -2350,9 +2350,9 @@ camelcase@^6.0.0, camelcase@^6.2.0, camelcase@^6.3.0:
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
 
 caniuse-lite@^1.0.30001370:
-  version "1.0.30001450"
-  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001450.tgz"
-  integrity sha512-qMBmvmQmFXaSxexkjjfMvD5rnDL0+m+dUMZKoDYsGG8iZN29RuYh9eRoMvKsT6uMAWlyUUGDEQGJJYjzCIO9ew==
+  version "1.0.30001696"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001696.tgz"
+  integrity sha512-pDCPkvzfa39ehJtJ+OwGT/2yvT2SbjfHhiIW2LWOAcMQ7BzwxT/XuyUp4OTOd0XFWA6BKw0JalnBHgSi5DGJBQ==
 
 cbor-web@^9.0.0:
   version "9.0.1"
