@@ -6,43 +6,30 @@ export function Imprint() {
       <div className={styles.content}>
         <h1 className={styles.heading}>Imprint</h1>
         <section className={styles.section}>
-          <p className={styles.line}>BOTLabs GmbH</p>
-          <p className={styles.line}>Keithstraße 2-4</p>
-          <p className={styles.line}>10787 Berlin, Germany</p>
+          <p className={styles.line}>KILT Foundation</p>
+          <p className={styles.line}>
+            Genesis Building, 5th Floor, Genesis Close,{' '}
+          </p>
+          <p className={styles.line}>PO Box 446, Cayman Islands</p>
+          <p className={styles.line}>KY1-1106</p>
         </section>
 
         <section className={styles.section}>
-          <p className={styles.line}>German Commercial Court:</p>
-          <p className={styles.line}>Amtsgericht Charlottenburg in Berlin</p>
-          <p className={styles.line}>Registration Number: HRB 193450B</p>
+          <p className={styles.line}>Certificate No. 418097</p>
           <p className={styles.line}>VAT No: DE316284270</p>
-          <p className={styles.line}>Managing Director: Ingo Rübe</p>
+          <p className={styles.line}>
+            Directors: Rishant Kumar, Svetoslav Boyadzhiev
+          </p>
         </section>
 
         <section className={styles.section}>
           <p className={styles.line}>
             Contact:{' '}
-            <a className={styles.anchor} href="mailto:info@botlabs.org">
-              info@botlabs.org
+            <a className={styles.anchor} href="mailto:hello@kilt.io">
+              hello@kilt.io
             </a>
           </p>
-          <p className={styles.line}>
-            Or go to{' '}
-            <a
-              className={styles.anchor}
-              href="https://support.kilt.io/support/home"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Tech support
-            </a>{' '}
-            and click on ”Contact Us”
-          </p>
         </section>
-
-        <p className={styles.section}>
-          Requirements according to § 5 TMG (Germany)
-        </p>
       </div>
     </main>
   );
