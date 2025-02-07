@@ -38,7 +38,7 @@ export function Footer() {
 
           <a
             className={styles.navLink}
-            href="https://github.com/BTE-Trusted-Entity/didsign"
+            href="https://github.com/KILT-Foundation/didsign"
             target="_blank"
             rel="noreferrer"
           >

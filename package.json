@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "DID signing web app",
-  "repository": "https://github.com/BTE-Trusted-Entity/didsign.git",
+  "repository": "https://github.com/KILT-Foundation/didsign.git",
   "author": "usmangeek <usman@galaniprojects.de>",
   "license": "BSD-4-Clause",
   "type": "module",
