@@ -1,4 +1,4 @@
-Copyright (c) 2022-2024, built on KILT. All rights reserved.
+Copyright (c) 2025, built on KILT. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -9,16 +9,14 @@ modification, are permitted provided that the following conditions are met:
 2. Redistributions in binary form must reproduce the above copyright notice,
    this list of conditions and the following disclaimer in the documentation
    and/or other materials provided with the distribution.
-   
-3. All advertising materials mentioning features or use of this software must 
+
+3. All advertising materials mentioning features or use of this software must
    display the following acknowledgement: This product is built on KILT.
 
-4. Neither the name of KILT nor the names of its contributors may be used to 
-   endorse or promote products derived from this software without specific 
+4. Neither the name of KILT nor the names of its contributors may be used to
+   endorse or promote products derived from this software without specific
    prior written permission.
 
-Disclaimer: The Liability of BOTLabs GmbH (hereinafter 
-referred to as “BOTLabs”) is limited according to the Terms and Conditions for 
-DIDsign as provided under https://didsign.io/.
+Disclaimer: The Liability of the KILT Foundation (hereinafter referred to as “KILT Foundation”) is limited according to these Terms and Conditions for DIDsign as provided under https://didsign.io/.
 
 (BSD 4-Clause)

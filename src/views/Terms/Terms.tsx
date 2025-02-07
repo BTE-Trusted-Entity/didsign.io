@@ -17,15 +17,15 @@ export function Terms() {
           </p>
           <p>
             The Services are provided to you via software (the “Software”)
-            created and run by BOTLabs GmbH (hereinafter referred to as
-            “BOTLabs”, “us”, “we” or “our”) as defined below. The software is
-            published and you are free to check out the code under{' '}
+            created and run by the KILT Foundation (hereinafter referred to as
+            “KILT Foundation”, “us”, “we” or “our”) as defined below. The
+            software is published and you are free to check out the code under{' '}
             <a
-              href="https://github.com/BTE-Trusted-Entity/didsign"
+              href="https://github.com/KILT-Foundation/didsign.io"
               target="_blank"
               rel="noreferrer"
             >
-              https://github.com/BTE-Trusted-Entity/didsign
+              https://github.com/KILT-Foundation/didsign.io
             </a>
           </p>
           <p>
@@ -59,7 +59,7 @@ export function Terms() {
               insert credentials as a part of the signature for these documents,
             </li>
             <li>
-              use timestamping to proof the approximate time you signed them,
+              use timestamping to prove the approximate time you signed them,
             </li>
             <li>
               verify documents that have been signed with a KILT on-chain DID,
@@ -228,8 +228,8 @@ export function Terms() {
           </p>
           <p>
             At launch, the Website supports only the Sporran wallet developed by
-            B.T.E. BOTLabs Trusted Entity GmbH; other wallets may follow over
-            time. For those other wallets, the process might differ slightly.
+            the KILT Foundation; other wallets may follow over time. For those
+            other wallets, the process might differ slightly.
           </p>
           <p>The usage of the DIDsign Website is free of charge.</p>
         </section>
@@ -254,7 +254,7 @@ export function Terms() {
           </p>
           <p>
             As a verifier, you will determine for your purpose if and to what
-            extend you will trust received data – depending on your legal,
+            extent you will trust received data – depending on your legal,
             business or other requirements, you will determine, if the documents
             signed with a certain on-chain DID represent enough trust that these
             are coming from the right person/entity or if you need further
@@ -268,25 +268,25 @@ export function Terms() {
           <h2 className={styles.sectionHeading}>Liability</h2>
 
           <p>
-            BOTLabs is liable for damages that are based on an intentional or
-            grossly negligent breach of duty by BOTLabs, its legal
-            representatives or various agents.
+            The KILT Foundation is liable for damages that are based on an
+            intentional or grossly negligent breach of duty by the KILT
+            Foundation, its legal representatives or various agents.
           </p>
           <p>
-            In the event of a breach of essential contractual duties, BOTLabs
-            shall only be liable for the contractually typical, foreseeable
-            damage if this was simply cause by negligence. Significant
-            contractual obligations are those whose fulfilment enables the
-            proper execution of the contract in the first place and whose
-            compliance you can regularly rely on.
+            In the event of a breach of essential contractual duties, the KILT
+            Foundation shall only be liable for the contractually typical,
+            foreseeable damage if this was simply cause by negligence.
+            Significant contractual obligations are those whose fulfilment
+            enables the proper execution of the contract in the first place and
+            whose compliance you can regularly rely on.
           </p>
           <p>
             The limitation of the two preceding paragraphs also apply to the
-            legal representatives and various agents of BOTLabs, if claims are
-            asserted directly against them. The liability limitations resulting
-            from the two preceding paragraphs do not apply insofar as BOTLabs
-            fraudulently concealed the defect or assumed a guarantee for the
-            quality of DIDsign.
+            legal representatives and various agents of the KILT Foundation , if
+            claims are asserted directly against them. The liability limitations
+            resulting from the two preceding paragraphs do not apply insofar as
+            the KILT Foundation fraudulently concealed the defect or assumed a
+            guarantee for the quality of DIDsign.
           </p>
           <p>
             Liability for culpable injury to life, limb and health and liability
@@ -382,7 +382,7 @@ export function Terms() {
             and functionality of the DIDsign. To ensure you are using the
             original, always use through us directly and if uncertain, compare
             the code with the code published on GitHub before usage and only use
-            if it matches fully with the code there.
+            it if it matches fully with the code there.
           </p>
           <p>
             Communication via internet-based systems is fundamentally
@@ -398,14 +398,14 @@ export function Terms() {
           </h2>
 
           <p>
-            BOTLabs reserves the right to change the DIDsign Software on the
-            Website as well as the commercial and non-commercial conditions for
-            its usage.
+            The KILT Foundation reserves the right to change the DIDsign
+            Software on the Website as well as the commercial and non-commercial
+            conditions for its usage.
           </p>
           <p>
-            BOTLabs also reserves the right to change these Terms and Conditions
-            at any time for any future products of DIDsign in our sole
-            discretion.
+            The KILT Foundation also reserves the right to change these Terms
+            and Conditions at any time for any future products of DIDsign at our
+            sole discretion.
           </p>
           <p>
             Such changes will be made via uploading new Terms and Conditions,
@@ -424,13 +424,13 @@ export function Terms() {
         <section>
           <h2 className={styles.sectionHeading}>License to the Website </h2>
 
-          <p>Copyright (c) 2022-2024, BOTLabs GmbH. All rights reserved.</p>
+          <p>Copyright (c) 2025, KILT Foundation . All rights reserved.</p>
         </section>
 
         <section>
           <h2 className={styles.sectionHeading}>License to the Software</h2>
 
-          <p>Copyright (c) 2022-2024, built on KILT. All rights reserved.</p>
+          <p>Copyright (c) 2025, built on KILT. All rights reserved.</p>
 
           <p>
             Redistribution and use in source and binary forms, with or without
@@ -461,9 +461,10 @@ export function Terms() {
           </ul>
 
           <p>
-            Disclaimer: The Liability of BOTLabs GmbH (hereinafter referred to
-            as “BOTLabs”) is limited according to these Terms and Conditions for
-            DIDsign as provided under https://didsign.io/.
+            Disclaimer: The Liability of the KILT Foundation (hereinafter
+            referred to as “KILT Foundation ”) is limited according to these
+            Terms and Conditions for DIDsign as provided under
+            https://didsign.io/.
           </p>
 
           <p>(BSD 4-Clause)</p>
@@ -474,20 +475,19 @@ export function Terms() {
 
           <p>
             These Terms and Conditions and the entire legal relationship between
-            the parties shall be governed by the laws of the Federal Republic of
-            Germany to the exclusion of the UN Convention on Contracts for the
-            International Sale of Goods (CISG) unless the choice of law is
-            legally prohibited.
+            the parties shall be governed by the laws of the Cayman Islands
+            unless the choice of law is legally prohibited.
           </p>
           <p>
-            If a term of this agreement to be invalid or unenforceable, the
+            If a term of this agreement is invalid or unenforceable, the
             remaining provisions will continue in full force and effect.
           </p>
           <p>
             The place of performance and exclusive place of jurisdiction for all
             disputes arising from these Terms and Conditions and the entire
-            legal relationship between the parties shall be BOTLabs’ registered
-            office, unless choice of jurisdiction is legally prohibited.
+            legal relationship between the parties shall be KILT Foundations’
+            registered office, unless choice of jurisdiction is legally
+            prohibited.
           </p>
         </section>
       </div>

@@ -84,7 +84,7 @@
 
 .imprintHeading {
   composes: heading;
-  background: url('bte_logo_black.png') no-repeat center top/auto 100px;
+  background: url('KILT-Horizontal-black.png') no-repeat center top/auto 100px;
   padding-top: 130px;
   font-size: 14px;
 }

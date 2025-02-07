@@ -9,20 +9,20 @@ export function Privacy() {
           <p>
             We are very delighted that you have shown interest in our
             enterprise. Data protection is of a particularly high priority for
-            the management of the BOTLabs GmbH. The use of the Internet pages of
-            the BOTLabs GmbH is possible without any indication of personal
-            data; however, if a data subject wants to use special enterprise
-            services via our website, processing of personal data could become
-            necessary. If the processing of personal data is necessary and there
-            is no statutory basis for such processing, we generally obtain
-            consent from the data subject.
+            the management of the KILT Foundation. The use of the Internet pages
+            of the KILT Foundation is possible without any indication of
+            personal data; however, if a data subject wants to use special
+            enterprise services via our website, processing of personal data
+            could become necessary. If the processing of personal data is
+            necessary and there is no statutory basis for such processing, we
+            generally obtain consent from the data subject.
           </p>
           <p>
             The processing of personal data, such as the name, address, e-mail
             address, or telephone number of a data subject shall always be in
             line with the General Data Protection Regulation (GDPR), and in
             accordance with the country-specific data protection regulations
-            applicable to the BOTLabs GmbH. By means of this data protection
+            applicable to the KILT Foundation. By means of this data protection
             declaration, our enterprise would like to inform the general public
             of the nature, scope, and purpose of the personal data we collect,
             use and process. Furthermore, data subjects are informed, by means
@@ -30,7 +30,7 @@ export function Privacy() {
             entitled.
           </p>
           <p>
-            As the controller, the BOTLabs GmbH has implemented numerous
+            As the controller, the KILT Foundation has implemented numerous
             technical and organizational measures to ensure the most complete
             protection of personal data processed through this website. However,
             Internet-based data transmissions may in principle have security
@@ -43,8 +43,8 @@ export function Privacy() {
         <section>
           <h2 className={styles.sectionHeading}>1. Definitions</h2>
           <p>
-            The data protection declaration of the BOTLabs GmbH is based on the
-            terms used by the European legislator for the adoption of the
+            The data protection declaration of the KILT Foundation is based on
+            the terms used by the European legislator for the adoption of the
             General Data Protection Regulation (GDPR). Our data protection
             declaration should be legible and understandable for the general
             public, as well as our customers and business partners. To ensure
@@ -152,7 +152,7 @@ export function Privacy() {
                 whether a third party or not. However, public authorities which
                 may receive personal data in the framework of a particular
                 inquiry in accordance with Union or Member State law shall not
-                be regarded as recipients; the processing of those data by those
+                be regarded as recipients; the processing of that data by those
                 public authorities shall be in compliance with the applicable
                 data protection rules according to the purposes of the
                 processing.
@@ -191,27 +191,19 @@ export function Privacy() {
             states of the European Union and other provisions related to data
             protection is:
           </p>
-          <p>BOTLabs GmbH</p>
-          <p>Keithstr. 2-4</p>
-          <p>10787 Berlin</p>
-          <p>Germany</p>
+          <p>KILT Foundation</p>
+          <p>Genesis Building, 5th Floor</p>
+          <p>Genesis Close</p>
+          <p>PO Box 446, KY1-1106</p>
+          <p>Cayman Islands</p>
+          <p>Certificate No. 418097</p>
+          <p>Directors: Rishant Kumar, Svetoslav Boyadzhiev</p>
+
           <p>
             Email:{' '}
-            <a className={styles.anchor} href="mailto:info@botlabs.org">
-              info@botlabs.org
+            <a className={styles.anchor} href="mailto:hello@kilt.io">
+              hello@kilt.io
             </a>
-          </p>
-          <p>
-            Or go to{' '}
-            <a
-              className={styles.anchor}
-              href="https://support.kilt.io/support/home"
-              target="_blank"
-              rel="noreferrer"
-            >
-              https://support.kilt.io/support/home
-            </a>{' '}
-            and click on “Contact Us”
           </p>
           <p>
             Website:{' '}
@@ -242,7 +234,7 @@ export function Privacy() {
             website.
           </p>
           <p>
-            The data are stored in the log files of our system. These data are
+            The data is stored in the log files of our system. These data are
             not stored together with other User’s personal data and are not
             combined with other data sources.
           </p>
@@ -263,7 +255,7 @@ export function Privacy() {
             Website is not possible.
           </p>
           <p>
-            The data are stored for not more than 24 hours and will be then
+            The data is stored for not more than 24 hours and will be then
             deleted from the web server.
           </p>
         </section>
@@ -271,8 +263,8 @@ export function Privacy() {
         <section>
           <h2 className={styles.sectionHeading}>4. Email contact</h2>
           <p>
-            The email address given on our website: info@botlabs.io can of
-            course be used by you for electronic contact.
+            The email address given on our website: hello@kilt.io can of course
+            be used by you for electronic contact.
           </p>
           <p>
             All email communication in which we are involved is transferred to
@@ -470,9 +462,10 @@ export function Privacy() {
               <p>
                 If one of the aforementioned reasons applies, and a data subject
                 wishes to request the erasure of personal data stored by the
-                BOTLabs GmbH, he or she may, at any time, contact any employee
-                of the controller. An employee of BOTLabs GmbH shall promptly
-                ensure that the erasure request is complied with immediately.
+                KILT Foundation, he or she may, at any time, contact any
+                employee of the controller. An employee of the KILT Foundation
+                shall promptly ensure that the erasure request is complied with
+                immediately.
               </p>
               <p>
                 Where the controller has made personal data public and is
@@ -483,8 +476,8 @@ export function Privacy() {
                 personal data that the data subject has requested erasure by
                 such controllers of any links to, or copy or replication of,
                 those personal data, as far as processing is not required. An
-                employee of the BOTLabs GmbH will arrange the necessary measures
-                in individual cases.
+                employee of the KILT Foundation will arrange the necessary
+                measures in individual cases.
               </p>
             </li>
             <li>
@@ -504,8 +497,8 @@ export function Privacy() {
                 </li>
                 <li>
                   The processing is unlawful and the data subject opposes the
-                  erasure of the personal data and requests instead the
-                  restriction of their use instead.
+                  erasure of the personal data and requests the restriction of
+                  their use instead.
                 </li>
                 <li>
                   The controller no longer needs the personal data for the
@@ -523,9 +516,10 @@ export function Privacy() {
               <p>
                 If one of the aforementioned conditions is met, and a data
                 subject wishes to request the restriction of the processing of
-                personal data stored by the BOTLabs GmbH, he or she may at any
-                time contact any employee of the controller. The employee of the
-                BOTLabs GmbH will arrange the restriction of the processing.
+                personal data stored by the KILT Foundation, he or she may at
+                any time contact any employee of the controller. The employee of
+                the KILT Foundation will arrange the restriction of the
+                processing.
               </p>
             </li>
             <li>
@@ -557,8 +551,8 @@ export function Privacy() {
               </p>
               <p>
                 In order to assert the right to data portability, the data
-                subject may at any time contact any employee of the BOTLabs
-                GmbH.
+                subject may at any time contact any employee of the KILT
+                Foundation.
               </p>
             </li>
             <li>
@@ -572,26 +566,26 @@ export function Privacy() {
                 based on these provisions.
               </p>
               <p>
-                The BOTLabs GmbH shall no longer process the personal data in
+                The KILT Foundation shall no longer process the personal data in
                 the event of the objection, unless we can demonstrate compelling
                 legitimate grounds for the processing which override the
                 interests, rights and freedoms of the data subject, or for the
                 establishment, exercise or defence of legal claims.
               </p>
               <p>
-                If the BOTLabs GmbH processes personal data for direct marketing
-                purposes, the data subject shall have the right to object at any
-                time to processing of personal data concerning him or her for
-                such marketing. This applies to profiling to the extent that it
-                is related to such direct marketing. If the data subject objects
-                to the BOTLabs GmbH to the processing for direct marketing
-                purposes, the BOTLabs GmbH will no longer process the personal
-                data for these purposes.
+                If the KILT Foundation processes personal data for direct
+                marketing purposes, the data subject shall have the right to
+                object at any time to processing of personal data concerning him
+                or her for such marketing. This applies to profiling to the
+                extent that it is related to such direct marketing. If the data
+                subject objects to the KILT Foundation to the processing for
+                direct marketing purposes, the KILT Foundation will no longer
+                process the personal data for these purposes.
               </p>
               <p>
                 In addition, the data subject has the right, on grounds relating
                 to his or her particular situation, to object to processing of
-                personal data concerning him or her by the BOTLabs GmbH for
+                personal data concerning him or her by the KILT Foundation for
                 scientific or historical research purposes, or for statistical
                 purposes pursuant to Article 89(1) of the GDPR, unless the
                 processing is necessary for the performance of a task carried
@@ -599,11 +593,11 @@ export function Privacy() {
               </p>
               <p>
                 In order to exercise the right to object, the data subject may
-                contact any employee of the BOTLabs GmbH. In addition, the data
-                subject is free in the context of the use of information society
-                services, and notwithstanding Directive 2002/58/EC, to use his
-                or her right to object by automated means using technical
-                specifications.
+                contact any employee of the KILT Foundation. In addition, the
+                data subject is free in the context of the use of information
+                society services, and notwithstanding Directive 2002/58/EC, to
+                use his or her right to object by automated means using
+                technical specifications.
               </p>
             </li>
             <li>
@@ -628,16 +622,16 @@ export function Privacy() {
                 If the decision (1) is necessary for entering into, or the
                 performance of, a contract between the data subject and a data
                 controller, or (2) it is based on the data subject’s explicit
-                consent, the BOTLabs GmbH shall implement suitable measures to
-                safeguard the data subject’s rights and freedoms and legitimate
-                interests, at least the right to obtain human intervention on
-                the part of the controller, to express his or her point of view
-                and contest the decision.
+                consent, the the KILT Foundation shall implement suitable
+                measures to safeguard the data subject’s rights and freedoms and
+                legitimate interests, at least the right to obtain human
+                intervention on the part of the controller, to express his or
+                her point of view and contest the decision.
               </p>
               <p>
                 If the data subject wishes to exercise the rights concerning
                 automated individual decision-making, he or she may, at any
-                time, contact any employee of the BOTLabs GmbH.
+                time, contact any employee of the KILT Foundation.
               </p>
             </li>
             <li>
@@ -652,7 +646,7 @@ export function Privacy() {
               <p>
                 If the data subject wishes to exercise the right to withdraw the
                 consent, he or she may, at any time, contact any employee of the
-                BOTLabs GmbH.
+                KILT Foundation.
               </p>
             </li>
           </ul>
