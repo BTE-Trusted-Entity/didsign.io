@@ -55,7 +55,7 @@ export function Footer() {
           </a>
         </nav>
 
-        <p className={styles.copyright}>© 2024 BOTLabs GmbH</p>
+        <p className={styles.copyright}>© 2025 KILT Foundation</p>
       </div>
     </footer>
   );
