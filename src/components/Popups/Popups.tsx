@@ -328,18 +328,6 @@ export function NotAuthorized({ onDismiss }: Props) {
         <h2 className={styles.infoHeading}>Authorization error</h2>
 
         <p className={styles.errorText}>The authorization was rejected.</p>
-        <p className={styles.errorText}>
-          Follow the instructions on our{' '}
-          <a
-            className={styles.link}
-            href="https://support.kilt.io/support/solutions/articles/80001067303-giving-sporran-access-to-the-didsign-website"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Tech Support
-          </a>{' '}
-          site to establish the connection between DIDsign and your wallet.
-        </p>
 
         <button className={styles.cancelButton} onClick={onDismiss}>
           Dismiss
