@@ -21,11 +21,11 @@ export function Terms() {
             “KILT Foundation”, “us”, “we” or “our”) as defined below. The
             software is published and you are free to check out the code under{' '}
             <a
-              href="https://github.com/KILT-Foundation/didsign"
+              href="https://github.com/KILT-Foundation/didsign.io"
               target="_blank"
               rel="noreferrer"
             >
-              https://github.com/KILT-Foundation/didsign
+              https://github.com/KILT-Foundation/didsign.io
             </a>
           </p>
           <p>
