@@ -435,10 +435,10 @@
     "@kiltprotocol/types" "0.36.0-rc.1"
     "@kiltprotocol/utils" "0.36.0-rc.1"
 
-"@kiltprotocol/type-definitions@1.11501.0-rc.1", "@kiltprotocol/type-definitions@^1.0.0":
-  version "1.11501.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@kiltprotocol/type-definitions/-/type-definitions-1.11501.0-rc.1.tgz#e6a6f89b93a6e5168acdb1455cf5049cc837fc76"
-  integrity sha512-kPobNtNrI4rRjluew8NYoNmXVEK5UcZsztHmfk2LlsomMt+mxEMZ9hErPWEuA/MBf1TJDQfdMMN10mCBgGxj9Q==
+"@kiltprotocol/type-definitions@1.11502.0-rc.1", "@kiltprotocol/type-definitions@^1.0.0":
+  version "1.11502.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@kiltprotocol/type-definitions/-/type-definitions-1.11502.0-rc.1.tgz#876ccfe100bb9e76472d5c1fd6b35708a10c8368"
+  integrity sha512-NZhRRWu1qnqGiOOTpzjsma1IYQ4z9J5q3GdibXn6fHUpDEMg6DlLJv6AUWWDXOsTCH6zSZ4VwAmgrdGwckhKFQ==
 
 "@kiltprotocol/types@0.36.0-rc.1":
   version "0.36.0-rc.1"
